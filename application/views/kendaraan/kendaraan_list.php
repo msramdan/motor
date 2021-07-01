@@ -1,7 +1,7 @@
 
             <div class="page-title">
                           <div class="title_left">
-                          <h3>KELOLA DATA MOTOR</h3>
+                          <h3>KELOLA DATA KENDARAAN</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
@@ -12,12 +12,12 @@
             <div class='row'>
             <div class='col-md-9'>
             <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('motor/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('motor/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
-		<?php echo anchor(site_url('motor/word'), '<i class="fa fa-file-word-o" aria-hidden="true"></i> Export Ms Word', 'class="btn btn-primary btn-sm"'); ?></div>
+        <?php echo anchor(site_url('kendaraan/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+		<?php echo anchor(site_url('kendaraan/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
+		<?php echo anchor(site_url('kendaraan/word'), '<i class="fa fa-file-word-o" aria-hidden="true"></i> Export Ms Word', 'class="btn btn-primary btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
-            <form action="<?php echo site_url('motor/index'); ?>" class="form-inline" method="get">
+            <form action="<?php echo site_url('kendaraan/index'); ?>" class="form-inline" method="get">
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
                         <span class="input-group-btn">
@@ -25,7 +25,7 @@
                                 if ($q <> '')
                                 {
                                     ?>
-                                    <a href="<?php echo site_url('motor'); ?>" class="btn btn-default">Reset</a>
+                                    <a href="<?php echo site_url('kendaraan'); ?>" class="btn btn-default">Reset</a>
                                     <?php
                                 }
                             ?>
@@ -54,31 +54,33 @@
             <tr>
                 <th>No</th>
 		<th>Kd Motor</th>
-		<th>Nama Motor</th>
+		<th>Nama Kendaraan</th>
+		<th>Jenis Kendaraan</th>
 		<th>Merek</th>
 		<th>Deskripsi</th>
 		<th>Stok</th>
 		<th>Photo</th>
 		<th>Action</th>
             </tr><?php
-            foreach ($motor_data as $motor)
+            foreach ($kendaraan_data as $kendaraan)
             {
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $motor->kd_motor ?></td>
-			<td><?php echo $motor->nama_motor ?></td>
-			<td><?php echo $motor->nama_merek ?></td>
-			<td><?php echo $motor->deskripsi ?></td>
-			<td><?php echo $motor->stok ?></td>
-			<td><img style="width: 30%; text-align: center;" src="<?= base_url() ?>assets/img/motor/<?= $motor->photo ?>"></td>
+			<td><?php echo $kendaraan->kd_motor ?></td>
+			<td><?php echo $kendaraan->nama_kendaraan ?></td>
+			<td><?php echo $kendaraan->nama_jenis_kendaraan ?></td>
+			<td><?php echo $kendaraan->nama_merek ?></td>
+			<td><?php echo $kendaraan->deskripsi ?></td>
+			<td><?php echo $kendaraan->stok ?></td>
+			<td><img style="width: 40%; text-align: center;" src="<?= base_url() ?>assets/img/kendaraan/<?= $kendaraan->photo ?>"></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('motor/read/'.$motor->motor_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
+				echo anchor(site_url('kendaraan/read/'.$kendaraan->kendaraan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
 				echo '  '; 
-				echo anchor(site_url('motor/update/'.$motor->motor_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+				echo anchor(site_url('kendaraan/update/'.$kendaraan->kendaraan_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
 				echo '  '; 
-				echo anchor(site_url('motor/delete/'.$motor->motor_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				echo anchor(site_url('kendaraan/delete/'.$kendaraan->kendaraan_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>
 		</tr>

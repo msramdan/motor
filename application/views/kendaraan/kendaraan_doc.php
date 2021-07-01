@@ -16,29 +16,31 @@
         </style>
     </head>
     <body>
-        <h2>Motor List</h2>
+        <h2>Kendaraan List</h2>
         <table class="word-table" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
 		<th>Kd Motor</th>
-		<th>Nama Motor</th>
+		<th>Nama Kendaraan</th>
+		<th>Jenis Kendaraan Id</th>
 		<th>Merek Id</th>
 		<th>Deskripsi</th>
 		<th>Stok</th>
 		<th>Photo</th>
 		
             </tr><?php
-            foreach ($motor_data as $motor)
+            foreach ($kendaraan_data as $kendaraan)
             {
                 ?>
                 <tr>
 		      <td><?php echo ++$start ?></td>
-		      <td><?php echo $motor->kd_motor ?></td>
-		      <td><?php echo $motor->nama_motor ?></td>
-		      <td><?php echo $motor->merek_id ?></td>
-		      <td><?php echo $motor->deskripsi ?></td>
-		      <td><?php echo $motor->stok ?></td>
-		      <td><?php echo $motor->photo ?></td>	
+		      <td><?php echo $kendaraan->kd_motor ?></td>
+		      <td><?php echo $kendaraan->nama_kendaraan ?></td>
+		      <td><?php echo $kendaraan->jenis_kendaraan_id ?></td>
+		      <td><?php echo $kendaraan->merek_id ?></td>
+		      <td><?php echo $kendaraan->deskripsi ?></td>
+		      <td><?php echo $kendaraan->stok ?></td>
+		      <td><?php echo $kendaraan->photo ?></td>	
                 </tr>
                 <?php
             }

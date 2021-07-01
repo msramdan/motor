@@ -50,10 +50,11 @@
                   </li>
                   <li><a href="<?php echo base_url() ?>Agen"><i class="fa fa-truck"></i> Agen</a>
                   </li>
-                  <li><a><i class="fa fa-motorcycle "></i> Data Motor <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-motorcycle "></i> Data Kendaraan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<?php echo base_url() ?>Motor">List Motor</a></li>
+                      <li><a href="<?php echo base_url() ?>Kendaraan">List Kendaraan</a></li>
                       <li><a href="<?php echo base_url() ?>Merek">Merk</a></li>
+                      <li><a href="<?php echo base_url() ?>Jenis_kendaraan">Jenis Kendaraan</a></li>
                     </ul>
                   </li>
                   <li><a href="<?php echo base_url() ?>User"><i class="fa fa-shopping-cart"></i> Transaksi Cash</a>

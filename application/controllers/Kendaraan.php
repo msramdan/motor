@@ -3,14 +3,15 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Motor extends CI_Controller
+class Kendaraan extends CI_Controller
 {
     function __construct()
     {
         parent::__construct();
         is_login();
-        $this->load->model('Motor_model');
+        $this->load->model('Kendaraan_model');
         $this->load->model('Merek_model');
+        $this->load->model('Jenis_kendaraan_model');
         $this->load->library('form_validation');
     }
 
@@ -21,48 +22,49 @@ class Motor extends CI_Controller
         
         if ($q <> '') {
             $config['base_url'] = base_url() . '.php/c_url/index.html?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'index.php/motor/index.html?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'index.php/kendaraan/index.html?q=' . urlencode($q);
         } else {
-            $config['base_url'] = base_url() . 'index.php/motor/index/';
-            $config['first_url'] = base_url() . 'index.php/motor/index/';
+            $config['base_url'] = base_url() . 'index.php/kendaraan/index/';
+            $config['first_url'] = base_url() . 'index.php/kendaraan/index/';
         }
 
         $config['per_page'] = 10;
         $config['page_query_string'] = FALSE;
-        $config['total_rows'] = $this->Motor_model->total_rows($q);
-        $motor = $this->Motor_model->get_limit_data($config['per_page'], $start, $q);
+        $config['total_rows'] = $this->Kendaraan_model->total_rows($q);
+        $kendaraan = $this->Kendaraan_model->get_limit_data($config['per_page'], $start, $q);
         $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
         $config['full_tag_close'] = '</ul>';
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
         $data = array(
-            'motor_data' => $motor,
+            'kendaraan_data' => $kendaraan,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        $this->template->load('template','motor/motor_list', $data);
+        $this->template->load('template','kendaraan/kendaraan_list', $data);
     }
 
     public function read($id) 
     {
-        $row = $this->Motor_model->get_by_id($id);
+        $row = $this->Kendaraan_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'motor_id' => $row->motor_id,
+		'kendaraan_id' => $row->kendaraan_id,
 		'kd_motor' => $row->kd_motor,
-		'nama_motor' => $row->nama_motor,
+		'nama_kendaraan' => $row->nama_kendaraan,
+		'jenis_kendaraan_id' => $row->jenis_kendaraan_id,
 		'merek_id' => $row->merek_id,
 		'deskripsi' => $row->deskripsi,
 		'stok' => $row->stok,
 		'photo' => $row->photo,
 	    );
-            $this->template->load('template','motor/motor_read', $data);
+            $this->template->load('template','kendaraan/kendaraan_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('motor'));
+            redirect(site_url('kendaraan'));
         }
     }
 
@@ -70,17 +72,19 @@ class Motor extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
+            'jenis' =>$this->Jenis_kendaraan_model->get_all(),
             'merek' =>$this->Merek_model->get_all(),
-            'action' => site_url('motor/create_action'),
-	    'motor_id' => set_value('motor_id'),
+            'action' => site_url('kendaraan/create_action'),
+	    'kendaraan_id' => set_value('kendaraan_id'),
 	    'kd_motor' => set_value('kd_motor'),
-	    'nama_motor' => set_value('nama_motor'),
+	    'nama_kendaraan' => set_value('nama_kendaraan'),
+	    'jenis_kendaraan_id' => set_value('jenis_kendaraan_id'),
 	    'merek_id' => set_value('merek_id'),
 	    'deskripsi' => set_value('deskripsi'),
 	    'stok' => set_value('stok'),
 	    'photo' => set_value('photo'),
 	);
-        $this->template->load('template','motor/motor_form', $data);
+        $this->template->load('template','kendaraan/kendaraan_form', $data);
     }
     
     public function create_action() 
@@ -90,7 +94,7 @@ class Motor extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
-             $config['upload_path']      = './assets/img/motor'; 
+         $config['upload_path']      = './assets/img/kendaraan'; 
         $config['allowed_types']    = 'jpg|png|jpeg'; 
         $config['max_size']         = 10048; 
         $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
@@ -98,45 +102,48 @@ class Motor extends CI_Controller
         $this->upload->initialize($config);
         $this->upload->do_upload("photo");
         $data = $this->upload->data();
-        
         $photo =$data['file_name'];
+
 
             $data = array(
 		'kd_motor' => $this->input->post('kd_motor',TRUE),
-		'nama_motor' => $this->input->post('nama_motor',TRUE),
+		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
+		'jenis_kendaraan_id' => $this->input->post('jenis_kendaraan_id',TRUE),
 		'merek_id' => $this->input->post('merek_id',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
 		'stok' => $this->input->post('stok',TRUE),
 		'photo' => $photo,
 	    );
 
-            $this->Motor_model->insert($data);
+            $this->Kendaraan_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success 2');
-            redirect(site_url('motor'));
+            redirect(site_url('kendaraan'));
         }
     }
     
     public function update($id) 
     {
-        $row = $this->Motor_model->get_by_id($id);
+        $row = $this->Kendaraan_model->get_by_id($id);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
+                'jenis' =>$this->Jenis_kendaraan_model->get_all(),
                 'merek' =>$this->Merek_model->get_all(),
-                'action' => site_url('motor/update_action'),
-		'motor_id' => set_value('motor_id', $row->motor_id),
+                'action' => site_url('kendaraan/update_action'),
+		'kendaraan_id' => set_value('kendaraan_id', $row->kendaraan_id),
 		'kd_motor' => set_value('kd_motor', $row->kd_motor),
-		'nama_motor' => set_value('nama_motor', $row->nama_motor),
+		'nama_kendaraan' => set_value('nama_kendaraan', $row->nama_kendaraan),
+		'jenis_kendaraan_id' => set_value('jenis_kendaraan_id', $row->jenis_kendaraan_id),
 		'merek_id' => set_value('merek_id', $row->merek_id),
 		'deskripsi' => set_value('deskripsi', $row->deskripsi),
 		'stok' => set_value('stok', $row->stok),
 		'photo' => set_value('photo', $row->photo),
 	    );
-            $this->template->load('template','motor/motor_form', $data);
+            $this->template->load('template','kendaraan/kendaraan_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('motor'));
+            redirect(site_url('kendaraan'));
         }
     }
     
@@ -145,10 +152,9 @@ class Motor extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('motor_id', TRUE));
+            $this->update($this->input->post('kendaraan_id', TRUE));
         } else {
-
-             $config['upload_path']      = './assets/img/motor'; 
+        $config['upload_path']      = './assets/img/kendaraan'; 
             $config['allowed_types']    = 'jpg|png|jpeg|gif'; 
             $config['max_size']         = 10048; 
             $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
@@ -156,14 +162,14 @@ class Motor extends CI_Controller
             $this->upload->initialize($config);
 
             if ($this->upload->do_upload("photo")) {
-            $id = $this->input->post('motor_id');
-            $row = $this->Motor_model->get_by_id($id);
+            $id = $this->input->post('kendaraan_id');
+            $row = $this->Kendaraan_model->get_by_id($id);
             $data = $this->upload->data();
             $photo =$data['file_name'];
             if($row->photo==null || $row->photo=='' ){
             }else{
 
-            $target_file = './assets/img/motor/'.$row->photo;
+            $target_file = './assets/img/kendaraan/'.$row->photo;
             unlink($target_file);
             
             }
@@ -173,51 +179,58 @@ class Motor extends CI_Controller
 
             $data = array(
 		'kd_motor' => $this->input->post('kd_motor',TRUE),
-		'nama_motor' => $this->input->post('nama_motor',TRUE),
+		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
+		'jenis_kendaraan_id' => $this->input->post('jenis_kendaraan_id',TRUE),
 		'merek_id' => $this->input->post('merek_id',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
 		'stok' => $this->input->post('stok',TRUE),
 		'photo' => $photo,
 	    );
 
-            $this->Motor_model->update($this->input->post('motor_id', TRUE), $data);
+            $this->Kendaraan_model->update($this->input->post('kendaraan_id', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('motor'));
+            redirect(site_url('kendaraan'));
         }
     }
     
     public function delete($id) 
     {
-        $row = $this->Motor_model->get_by_id($id);
+        $row = $this->Kendaraan_model->get_by_id($id);
 
         if ($row) {
-            $this->Motor_model->delete($id);
+            if($row->photo==null || $row->photo=='' ){
+                }else{
+                $target_file = './assets/img/kendaraan/'.$row->photo;
+                unlink($target_file);
+                }
+            $this->Kendaraan_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('motor'));
+            redirect(site_url('kendaraan'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('motor'));
+            redirect(site_url('kendaraan'));
         }
     }
 
     public function _rules() 
     {
 	$this->form_validation->set_rules('kd_motor', 'kd motor', 'trim|required');
-	$this->form_validation->set_rules('nama_motor', 'nama motor', 'trim|required');
+	$this->form_validation->set_rules('nama_kendaraan', 'nama kendaraan', 'trim|required');
+	$this->form_validation->set_rules('jenis_kendaraan_id', 'jenis kendaraan id', 'trim|required');
 	$this->form_validation->set_rules('merek_id', 'merek id', 'trim|required');
 	$this->form_validation->set_rules('deskripsi', 'deskripsi', 'trim|required');
 	$this->form_validation->set_rules('stok', 'stok', 'trim|required');
 	// $this->form_validation->set_rules('photo', 'photo', 'trim|required');
 
-	$this->form_validation->set_rules('motor_id', 'motor_id', 'trim');
+	$this->form_validation->set_rules('kendaraan_id', 'kendaraan_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
     public function excel()
     {
         $this->load->helper('exportexcel');
-        $namaFile = "motor.xls";
-        $judul = "motor";
+        $namaFile = "kendaraan.xls";
+        $judul = "kendaraan";
         $tablehead = 0;
         $tablebody = 1;
         $nourut = 1;
@@ -236,19 +249,21 @@ class Motor extends CI_Controller
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
 	xlsWriteLabel($tablehead, $kolomhead++, "Kd Motor");
-	xlsWriteLabel($tablehead, $kolomhead++, "Nama Motor");
+	xlsWriteLabel($tablehead, $kolomhead++, "Nama Kendaraan");
+	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kendaraan Id");
 	xlsWriteLabel($tablehead, $kolomhead++, "Merek Id");
 	xlsWriteLabel($tablehead, $kolomhead++, "Deskripsi");
 	xlsWriteLabel($tablehead, $kolomhead++, "Stok");
 	xlsWriteLabel($tablehead, $kolomhead++, "Photo");
 
-	foreach ($this->Motor_model->get_all() as $data) {
+	foreach ($this->Kendaraan_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->kd_motor);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_motor);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_kendaraan);
+	    xlsWriteNumber($tablebody, $kolombody++, $data->jenis_kendaraan_id);
 	    xlsWriteNumber($tablebody, $kolombody++, $data->merek_id);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->deskripsi);
 	    xlsWriteNumber($tablebody, $kolombody++, $data->stok);
@@ -265,20 +280,20 @@ class Motor extends CI_Controller
     public function word()
     {
         header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=motor.doc");
+        header("Content-Disposition: attachment;Filename=kendaraan.doc");
 
         $data = array(
-            'motor_data' => $this->Motor_model->get_all(),
+            'kendaraan_data' => $this->Kendaraan_model->get_all(),
             'start' => 0
         );
         
-        $this->load->view('motor/motor_doc',$data);
+        $this->load->view('kendaraan/kendaraan_doc',$data);
     }
 
 }
 
-/* End of file Motor.php */
-/* Location: ./application/controllers/Motor.php */
+/* End of file Kendaraan.php */
+/* Location: ./application/controllers/Kendaraan.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2021-06-29 10:31:45 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-01 08:37:31 */
 /* http://harviacode.com */
