@@ -51,6 +51,7 @@ class Pelanggan extends CI_Controller
         if ($row) {
             $data = array(
 		'pelanggan_id' => $row->pelanggan_id,
+        'berkas' =>$this->Pelanggan_model->get_berkas($id),
 		'no_ktp' => $row->no_ktp,
 		'no_kk' => $row->no_kk,
 		'nama_pelanggan' => $row->nama_pelanggan,
@@ -267,6 +268,72 @@ class Pelanggan extends CI_Controller
         );
         
         $this->load->view('pelanggan/pelanggan_doc',$data);
+    }
+
+    public function download_berkas($gambar){
+        force_download('assets/img/berkas/'.$gambar,NULL);
+    }
+
+    public function upload($id){
+        $this->template->load('template','pelanggan/upload');
+    }
+
+    public function upload_berkas(){
+        
+        
+
+        $config['upload_path']          = './assets/img/berkas'; 
+        $config['allowed_types']        = 'jpg|png|pdf|docx|doc';
+        $config['max_size']             = 10000;
+        // $config['max_width']            = 2048;
+        // $config['max_height']           = 1000;
+        // $config['encrypt_name']         = true;
+        $this->load->library('upload',$config);
+        $nama               = $_POST['nama_berkas'];
+        $pelanggan_id       = $_POST['pelanggan_id'];
+        $jumlah_berkas = count($_FILES['berkas']['name']);
+
+        for($i = 0; $i < $jumlah_berkas;$i++)
+        {
+            if(!empty($_FILES['berkas']['name'][$i])){
+ 
+                $_FILES['file']['name'] = $_FILES['berkas']['name'][$i];
+                $_FILES['file']['type'] = $_FILES['berkas']['type'][$i];
+                $_FILES['file']['tmp_name'] = $_FILES['berkas']['tmp_name'][$i];
+                $_FILES['file']['error'] = $_FILES['berkas']['error'][$i];
+                $_FILES['file']['size'] = $_FILES['berkas']['size'][$i];
+       
+                if($this->upload->do_upload('file')){
+                    $uploadData = $this->upload->data();
+                    $data['nama_berkas'] = $nama[$i];
+                    $data['photo'] = $uploadData['file_name'];
+                    $data['pelanggan_id'] = $pelanggan_id[$i];
+                    $this->db->insert('berkas',$data);
+                }
+            }
+        }
+
+        redirect(site_url('pelanggan'));
+
+    }
+
+    public function del_berkas($id,$uri) 
+    {
+        $row = $this->Pelanggan_model->get_berkas_by_id($id);
+
+        if ($row) {
+            if($row->photo==null || $row->photo==''){
+                }else{
+                $target_file = './assets/img/berkas/'.$row->photo;
+                unlink($target_file);
+                }
+            $this->Pelanggan_model->delete_berkas($id);
+            $this->session->set_flashdata('message', 'Delete Record Success');
+            redirect(site_url('pelanggan/read/'.$uri));
+        } else {
+            $this->session->set_flashdata('message', 'Record Not Found');
+            redirect(site_url('pelanggan/read/'.$uri));
+        }
     }
 
 }

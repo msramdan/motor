@@ -55,6 +55,7 @@
                       <li><a href="<?php echo base_url() ?>Kendaraan">List Kendaraan</a></li>
                       <li><a href="<?php echo base_url() ?>Merek">Merk</a></li>
                       <li><a href="<?php echo base_url() ?>Jenis_kendaraan">Jenis Kendaraan</a></li>
+                      <li><a href="<?php echo base_url() ?>Type">Type</a></li>
                     </ul>
                   </li>
                   <li><a href="<?php echo base_url() ?>User"><i class="fa fa-shopping-cart"></i> Transaksi Cash</a>
@@ -157,3 +158,21 @@
     <script src="<?= base_url()?>assets/build/js/custom.min.js"></script>
   </body>
 </html>
+
+
+<script>
+$(document).ready(function(){
+  var i=1;
+  $('#add').click(function(){
+    i++;
+    $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="nama_berkas[]" placeholder="Nama Berkas" class="form-control" required="" /></td><input type="hidden" name="pelanggan_id[]" class="form-control" value="<?php echo $this->uri->segment(3) ?>"><td><input type="file" name="berkas[]" class="form-control" required="" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');
+  });
+  
+  $(document).on('click', '.btn_remove', function(){
+    var button_id = $(this).attr("id"); 
+    $('#row'+button_id+'').remove();
+  });
+  
+  
+});
+</script>

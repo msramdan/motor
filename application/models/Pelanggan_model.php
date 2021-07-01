@@ -8,6 +8,8 @@ class Pelanggan_model extends CI_Model
 
     public $table = 'pelanggan';
     public $id = 'pelanggan_id';
+    public $table2 = 'berkas';
+    public $id2 = 'berkas_id';
     public $order = 'DESC';
 
     function __construct()
@@ -22,11 +24,25 @@ class Pelanggan_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function get_berkas ($id){
+        $this->db->select('berkas.*');
+        $this->db->from('berkas');
+        $this->db->where('pelanggan_id', $id);
+        $query = $this->db->get();
+        return $query;
+    }
+
     // get data by id
     function get_by_id($id)
     {
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
+    }
+
+    function get_berkas_by_id($id)
+    {
+        $this->db->where($this->id2, $id);
+        return $this->db->get($this->table2)->row();
     }
     
     // get total rows
@@ -82,6 +98,16 @@ class Pelanggan_model extends CI_Model
     {
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
+    }
+
+    function delete_berkas($id_berkas)
+    {
+        $this->db->where($this->id2, $id_berkas);
+        $this->db->delete($this->table2);
+    }
+
+    public function add_stok_detail($params){
+        $this->db->insert_batch('berkas',$params);
     }
 
 }

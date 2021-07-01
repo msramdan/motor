@@ -10,8 +10,6 @@ class Kendaraan extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('Kendaraan_model');
-        $this->load->model('Merek_model');
-        $this->load->model('Jenis_kendaraan_model');
         $this->load->library('form_validation');
     }
 
@@ -57,9 +55,11 @@ class Kendaraan extends CI_Controller
 		'nama_kendaraan' => $row->nama_kendaraan,
 		'jenis_kendaraan_id' => $row->jenis_kendaraan_id,
 		'merek_id' => $row->merek_id,
+		'no_stnk' => $row->no_stnk,
+		'no_bpkb' => $row->no_bpkb,
 		'deskripsi' => $row->deskripsi,
-		'stok' => $row->stok,
 		'photo' => $row->photo,
+		'status' => $row->status,
 	    );
             $this->template->load('template','kendaraan/kendaraan_read', $data);
         } else {
@@ -72,17 +72,17 @@ class Kendaraan extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
-            'jenis' =>$this->Jenis_kendaraan_model->get_all(),
-            'merek' =>$this->Merek_model->get_all(),
             'action' => site_url('kendaraan/create_action'),
 	    'kendaraan_id' => set_value('kendaraan_id'),
 	    'kd_motor' => set_value('kd_motor'),
 	    'nama_kendaraan' => set_value('nama_kendaraan'),
 	    'jenis_kendaraan_id' => set_value('jenis_kendaraan_id'),
 	    'merek_id' => set_value('merek_id'),
+	    'no_stnk' => set_value('no_stnk'),
+	    'no_bpkb' => set_value('no_bpkb'),
 	    'deskripsi' => set_value('deskripsi'),
-	    'stok' => set_value('stok'),
 	    'photo' => set_value('photo'),
+	    'status' => set_value('status'),
 	);
         $this->template->load('template','kendaraan/kendaraan_form', $data);
     }
@@ -94,25 +94,16 @@ class Kendaraan extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
-         $config['upload_path']      = './assets/img/kendaraan'; 
-        $config['allowed_types']    = 'jpg|png|jpeg'; 
-        $config['max_size']         = 10048; 
-        $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
-        $this->load->library('upload',$config);
-        $this->upload->initialize($config);
-        $this->upload->do_upload("photo");
-        $data = $this->upload->data();
-        $photo =$data['file_name'];
-
-
             $data = array(
 		'kd_motor' => $this->input->post('kd_motor',TRUE),
 		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
 		'jenis_kendaraan_id' => $this->input->post('jenis_kendaraan_id',TRUE),
 		'merek_id' => $this->input->post('merek_id',TRUE),
+		'no_stnk' => $this->input->post('no_stnk',TRUE),
+		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
-		'stok' => $this->input->post('stok',TRUE),
-		'photo' => $photo,
+		'photo' => $this->input->post('photo',TRUE),
+		'status' => $this->input->post('status',TRUE),
 	    );
 
             $this->Kendaraan_model->insert($data);
@@ -128,17 +119,17 @@ class Kendaraan extends CI_Controller
         if ($row) {
             $data = array(
                 'button' => 'Update',
-                'jenis' =>$this->Jenis_kendaraan_model->get_all(),
-                'merek' =>$this->Merek_model->get_all(),
                 'action' => site_url('kendaraan/update_action'),
 		'kendaraan_id' => set_value('kendaraan_id', $row->kendaraan_id),
 		'kd_motor' => set_value('kd_motor', $row->kd_motor),
 		'nama_kendaraan' => set_value('nama_kendaraan', $row->nama_kendaraan),
 		'jenis_kendaraan_id' => set_value('jenis_kendaraan_id', $row->jenis_kendaraan_id),
 		'merek_id' => set_value('merek_id', $row->merek_id),
+		'no_stnk' => set_value('no_stnk', $row->no_stnk),
+		'no_bpkb' => set_value('no_bpkb', $row->no_bpkb),
 		'deskripsi' => set_value('deskripsi', $row->deskripsi),
-		'stok' => set_value('stok', $row->stok),
 		'photo' => set_value('photo', $row->photo),
+		'status' => set_value('status', $row->status),
 	    );
             $this->template->load('template','kendaraan/kendaraan_form', $data);
         } else {
@@ -154,37 +145,16 @@ class Kendaraan extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('kendaraan_id', TRUE));
         } else {
-        $config['upload_path']      = './assets/img/kendaraan'; 
-            $config['allowed_types']    = 'jpg|png|jpeg|gif'; 
-            $config['max_size']         = 10048; 
-            $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
-            $this->load->library('upload',$config);
-            $this->upload->initialize($config);
-
-            if ($this->upload->do_upload("photo")) {
-            $id = $this->input->post('kendaraan_id');
-            $row = $this->Kendaraan_model->get_by_id($id);
-            $data = $this->upload->data();
-            $photo =$data['file_name'];
-            if($row->photo==null || $row->photo=='' ){
-            }else{
-
-            $target_file = './assets/img/kendaraan/'.$row->photo;
-            unlink($target_file);
-            
-            }
-                }else{
-                $photo = $this->input->post('photo_lama');
-            }
-
             $data = array(
 		'kd_motor' => $this->input->post('kd_motor',TRUE),
 		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
 		'jenis_kendaraan_id' => $this->input->post('jenis_kendaraan_id',TRUE),
 		'merek_id' => $this->input->post('merek_id',TRUE),
+		'no_stnk' => $this->input->post('no_stnk',TRUE),
+		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
-		'stok' => $this->input->post('stok',TRUE),
-		'photo' => $photo,
+		'photo' => $this->input->post('photo',TRUE),
+		'status' => $this->input->post('status',TRUE),
 	    );
 
             $this->Kendaraan_model->update($this->input->post('kendaraan_id', TRUE), $data);
@@ -198,11 +168,6 @@ class Kendaraan extends CI_Controller
         $row = $this->Kendaraan_model->get_by_id($id);
 
         if ($row) {
-            if($row->photo==null || $row->photo=='' ){
-                }else{
-                $target_file = './assets/img/kendaraan/'.$row->photo;
-                unlink($target_file);
-                }
             $this->Kendaraan_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
             redirect(site_url('kendaraan'));
@@ -218,9 +183,11 @@ class Kendaraan extends CI_Controller
 	$this->form_validation->set_rules('nama_kendaraan', 'nama kendaraan', 'trim|required');
 	$this->form_validation->set_rules('jenis_kendaraan_id', 'jenis kendaraan id', 'trim|required');
 	$this->form_validation->set_rules('merek_id', 'merek id', 'trim|required');
+	$this->form_validation->set_rules('no_stnk', 'no stnk', 'trim|required');
+	$this->form_validation->set_rules('no_bpkb', 'no bpkb', 'trim|required');
 	$this->form_validation->set_rules('deskripsi', 'deskripsi', 'trim|required');
-	$this->form_validation->set_rules('stok', 'stok', 'trim|required');
-	// $this->form_validation->set_rules('photo', 'photo', 'trim|required');
+	$this->form_validation->set_rules('photo', 'photo', 'trim|required');
+	$this->form_validation->set_rules('status', 'status', 'trim|required');
 
 	$this->form_validation->set_rules('kendaraan_id', 'kendaraan_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -252,9 +219,11 @@ class Kendaraan extends CI_Controller
 	xlsWriteLabel($tablehead, $kolomhead++, "Nama Kendaraan");
 	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kendaraan Id");
 	xlsWriteLabel($tablehead, $kolomhead++, "Merek Id");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Stnk");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Bpkb");
 	xlsWriteLabel($tablehead, $kolomhead++, "Deskripsi");
-	xlsWriteLabel($tablehead, $kolomhead++, "Stok");
 	xlsWriteLabel($tablehead, $kolomhead++, "Photo");
+	xlsWriteLabel($tablehead, $kolomhead++, "Status");
 
 	foreach ($this->Kendaraan_model->get_all() as $data) {
             $kolombody = 0;
@@ -265,9 +234,11 @@ class Kendaraan extends CI_Controller
 	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_kendaraan);
 	    xlsWriteNumber($tablebody, $kolombody++, $data->jenis_kendaraan_id);
 	    xlsWriteNumber($tablebody, $kolombody++, $data->merek_id);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_stnk);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_bpkb);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->deskripsi);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->stok);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->photo);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->status);
 
 	    $tablebody++;
             $nourut++;
@@ -290,14 +261,10 @@ class Kendaraan extends CI_Controller
         $this->load->view('kendaraan/kendaraan_doc',$data);
     }
 
-    public function download($gambar){
-        force_download('assets/img/kendaraan/'.$gambar,NULL);
-    }
-
 }
 
 /* End of file Kendaraan.php */
 /* Location: ./application/controllers/Kendaraan.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-01 08:37:31 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-01 09:53:33 */
 /* http://harviacode.com */
