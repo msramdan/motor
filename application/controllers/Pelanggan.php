@@ -51,11 +51,16 @@ class Pelanggan extends CI_Controller
         if ($row) {
             $data = array(
 		'pelanggan_id' => $row->pelanggan_id,
-		'ktp' => $row->ktp,
+		'no_ktp' => $row->no_ktp,
+		'no_kk' => $row->no_kk,
 		'nama_pelanggan' => $row->nama_pelanggan,
 		'no_hp_pelanggan' => $row->no_hp_pelanggan,
 		'jenis_kelamin' => $row->jenis_kelamin,
-		'alamat' => $row->alamat,
+		'alamat_ktp' => $row->alamat_ktp,
+		'alamat_domisili' => $row->alamat_domisili,
+		'nama_saudara' => $row->nama_saudara,
+		'alamat_saudara' => $row->alamat_saudara,
+		'no_hp_saudara' => $row->no_hp_saudara,
 	    );
             $this->template->load('template','pelanggan/pelanggan_read', $data);
         } else {
@@ -70,11 +75,16 @@ class Pelanggan extends CI_Controller
             'button' => 'Create',
             'action' => site_url('pelanggan/create_action'),
 	    'pelanggan_id' => set_value('pelanggan_id'),
-	    'ktp' => set_value('ktp'),
+	    'no_ktp' => set_value('no_ktp'),
+	    'no_kk' => set_value('no_kk'),
 	    'nama_pelanggan' => set_value('nama_pelanggan'),
 	    'no_hp_pelanggan' => set_value('no_hp_pelanggan'),
 	    'jenis_kelamin' => set_value('jenis_kelamin'),
-	    'alamat' => set_value('alamat'),
+	    'alamat_ktp' => set_value('alamat_ktp'),
+	    'alamat_domisili' => set_value('alamat_domisili'),
+	    'nama_saudara' => set_value('nama_saudara'),
+	    'alamat_saudara' => set_value('alamat_saudara'),
+	    'no_hp_saudara' => set_value('no_hp_saudara'),
 	);
         $this->template->load('template','pelanggan/pelanggan_form', $data);
     }
@@ -87,11 +97,16 @@ class Pelanggan extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'ktp' => $this->input->post('ktp',TRUE),
+		'no_ktp' => $this->input->post('no_ktp',TRUE),
+		'no_kk' => $this->input->post('no_kk',TRUE),
 		'nama_pelanggan' => $this->input->post('nama_pelanggan',TRUE),
 		'no_hp_pelanggan' => $this->input->post('no_hp_pelanggan',TRUE),
 		'jenis_kelamin' => $this->input->post('jenis_kelamin',TRUE),
-		'alamat' => $this->input->post('alamat',TRUE),
+		'alamat_ktp' => $this->input->post('alamat_ktp',TRUE),
+		'alamat_domisili' => $this->input->post('alamat_domisili',TRUE),
+		'nama_saudara' => $this->input->post('nama_saudara',TRUE),
+		'alamat_saudara' => $this->input->post('alamat_saudara',TRUE),
+		'no_hp_saudara' => $this->input->post('no_hp_saudara',TRUE),
 	    );
 
             $this->Pelanggan_model->insert($data);
@@ -109,11 +124,16 @@ class Pelanggan extends CI_Controller
                 'button' => 'Update',
                 'action' => site_url('pelanggan/update_action'),
 		'pelanggan_id' => set_value('pelanggan_id', $row->pelanggan_id),
-		'ktp' => set_value('ktp', $row->ktp),
+		'no_ktp' => set_value('no_ktp', $row->no_ktp),
+		'no_kk' => set_value('no_kk', $row->no_kk),
 		'nama_pelanggan' => set_value('nama_pelanggan', $row->nama_pelanggan),
 		'no_hp_pelanggan' => set_value('no_hp_pelanggan', $row->no_hp_pelanggan),
 		'jenis_kelamin' => set_value('jenis_kelamin', $row->jenis_kelamin),
-		'alamat' => set_value('alamat', $row->alamat),
+		'alamat_ktp' => set_value('alamat_ktp', $row->alamat_ktp),
+		'alamat_domisili' => set_value('alamat_domisili', $row->alamat_domisili),
+		'nama_saudara' => set_value('nama_saudara', $row->nama_saudara),
+		'alamat_saudara' => set_value('alamat_saudara', $row->alamat_saudara),
+		'no_hp_saudara' => set_value('no_hp_saudara', $row->no_hp_saudara),
 	    );
             $this->template->load('template','pelanggan/pelanggan_form', $data);
         } else {
@@ -130,11 +150,16 @@ class Pelanggan extends CI_Controller
             $this->update($this->input->post('pelanggan_id', TRUE));
         } else {
             $data = array(
-		'ktp' => $this->input->post('ktp',TRUE),
+		'no_ktp' => $this->input->post('no_ktp',TRUE),
+		'no_kk' => $this->input->post('no_kk',TRUE),
 		'nama_pelanggan' => $this->input->post('nama_pelanggan',TRUE),
 		'no_hp_pelanggan' => $this->input->post('no_hp_pelanggan',TRUE),
 		'jenis_kelamin' => $this->input->post('jenis_kelamin',TRUE),
-		'alamat' => $this->input->post('alamat',TRUE),
+		'alamat_ktp' => $this->input->post('alamat_ktp',TRUE),
+		'alamat_domisili' => $this->input->post('alamat_domisili',TRUE),
+		'nama_saudara' => $this->input->post('nama_saudara',TRUE),
+		'alamat_saudara' => $this->input->post('alamat_saudara',TRUE),
+		'no_hp_saudara' => $this->input->post('no_hp_saudara',TRUE),
 	    );
 
             $this->Pelanggan_model->update($this->input->post('pelanggan_id', TRUE), $data);
@@ -159,11 +184,16 @@ class Pelanggan extends CI_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('ktp', 'ktp', 'trim|required');
+	$this->form_validation->set_rules('no_ktp', 'no ktp', 'trim|required');
+	$this->form_validation->set_rules('no_kk', 'no kk', 'trim|required');
 	$this->form_validation->set_rules('nama_pelanggan', 'nama pelanggan', 'trim|required');
 	$this->form_validation->set_rules('no_hp_pelanggan', 'no hp pelanggan', 'trim|required');
 	$this->form_validation->set_rules('jenis_kelamin', 'jenis kelamin', 'trim|required');
-	$this->form_validation->set_rules('alamat', 'alamat', 'trim|required');
+	$this->form_validation->set_rules('alamat_ktp', 'alamat ktp', 'trim|required');
+	$this->form_validation->set_rules('alamat_domisili', 'alamat domisili', 'trim|required');
+	$this->form_validation->set_rules('nama_saudara', 'nama saudara', 'trim|required');
+	$this->form_validation->set_rules('alamat_saudara', 'alamat saudara', 'trim|required');
+	$this->form_validation->set_rules('no_hp_saudara', 'no hp saudara', 'trim|required');
 
 	$this->form_validation->set_rules('pelanggan_id', 'pelanggan_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -191,22 +221,32 @@ class Pelanggan extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Ktp");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Ktp");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Kk");
 	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pelanggan");
 	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Pelanggan");
 	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kelamin");
-	xlsWriteLabel($tablehead, $kolomhead++, "Alamat");
+	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Ktp");
+	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Domisili");
+	xlsWriteLabel($tablehead, $kolomhead++, "Nama Saudara");
+	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Saudara");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Saudara");
 
 	foreach ($this->Pelanggan_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->ktp);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_ktp);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_kk);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_pelanggan);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_pelanggan);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->jenis_kelamin);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_ktp);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_domisili);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_saudara);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_saudara);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_saudara);
 
 	    $tablebody++;
             $nourut++;
@@ -234,5 +274,5 @@ class Pelanggan extends CI_Controller
 /* End of file Pelanggan.php */
 /* Location: ./application/controllers/Pelanggan.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2021-06-29 10:57:42 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-01 09:21:03 */
 /* http://harviacode.com */

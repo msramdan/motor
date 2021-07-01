@@ -73,7 +73,7 @@
 			<td><?php echo $kendaraan->nama_merek ?></td>
 			<td><?php echo $kendaraan->deskripsi ?></td>
 			<td><?php echo $kendaraan->stok ?></td>
-			<td><img style="width: 40%; text-align: center;" src="<?= base_url() ?>assets/img/kendaraan/<?= $kendaraan->photo ?>"></td>
+			<td><a href="<?php echo base_url().'kendaraan/download/'.$kendaraan->photo ?>"><i class="ace-icon fa fa-download"> Download</i></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('kendaraan/read/'.$kendaraan->kendaraan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 

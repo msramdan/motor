@@ -53,11 +53,16 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Ktp</th>
+		<th>No Ktp</th>
+		<th>No Kk</th>
 		<th>Nama Pelanggan</th>
 		<th>No Hp Pelanggan</th>
 		<th>Jenis Kelamin</th>
-		<th>Alamat</th>
+		<th>Alamat Ktp</th>
+		<th>Alamat Domisili</th>
+		<th>Nama Saudara</th>
+		<th>Alamat Saudara</th>
+		<th>No Hp Saudara</th>
 		<th>Action</th>
             </tr><?php
             foreach ($pelanggan_data as $pelanggan)
@@ -65,11 +70,16 @@
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $pelanggan->ktp ?></td>
+			<td><?php echo $pelanggan->no_ktp ?></td>
+			<td><?php echo $pelanggan->no_kk ?></td>
 			<td><?php echo $pelanggan->nama_pelanggan ?></td>
 			<td><?php echo $pelanggan->no_hp_pelanggan ?></td>
 			<td><?php echo $pelanggan->jenis_kelamin ?></td>
-			<td><?php echo $pelanggan->alamat ?></td>
+			<td><?php echo $pelanggan->alamat_ktp ?></td>
+			<td><?php echo $pelanggan->alamat_domisili ?></td>
+			<td><?php echo $pelanggan->nama_saudara ?></td>
+			<td><?php echo $pelanggan->alamat_saudara ?></td>
+			<td><?php echo $pelanggan->no_hp_saudara ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('pelanggan/read/'.$pelanggan->pelanggan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 

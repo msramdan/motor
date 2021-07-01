@@ -290,6 +290,10 @@ class Kendaraan extends CI_Controller
         $this->load->view('kendaraan/kendaraan_doc',$data);
     }
 
+    public function download($gambar){
+        force_download('assets/img/kendaraan/'.$gambar,NULL);
+    }
+
 }
 
 /* End of file Kendaraan.php */
