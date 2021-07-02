@@ -134,16 +134,16 @@ class User extends CI_Controller
                 'level' =>$this->Level_model->get_all(),
                 'button' => 'Update',
                 'action' => site_url('user/update_action'),
-        'user_id' => set_value('user_id', $row->user_id),
-        'nama_user' => set_value('nama_user', $row->nama_user),
-        'username' => set_value('username', $row->username),
-        'password' => set_value('password', $row->password),
-        'level_id' => set_value('level_id', $row->level_id),
-        'email' => set_value('email', $row->email),
-        'no_hp_user' => set_value('no_hp_user', $row->no_hp_user),
-        'alamat_user' => set_value('alamat_user', $row->alamat_user),
-        'photo' => set_value('photo', $row->photo),
-        );
+                'user_id' => set_value('user_id', $row->user_id),
+                'nama_user' => set_value('nama_user', $row->nama_user),
+                'username' => set_value('username', $row->username),
+                'password' => set_value('password', $row->password),
+                'level_id' => set_value('level_id', $row->level_id),
+                'email' => set_value('email', $row->email),
+                'no_hp_user' => set_value('no_hp_user', $row->no_hp_user),
+                'alamat_user' => set_value('alamat_user', $row->alamat_user),
+                'photo' => set_value('photo', $row->photo),
+            );
             $this->template->load('template','user/user_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
