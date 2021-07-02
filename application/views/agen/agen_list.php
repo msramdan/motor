@@ -53,7 +53,7 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Nama Agan</th>
+		<th>Nama Agen</th>
 		<th>No Hp Agen</th>
 		<th>Alamat</th>
 		<th>Deskripsi</th>
@@ -64,7 +64,7 @@
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $agen->nama_agan ?></td>
+			<td><?php echo $agen->nama_agen ?></td>
 			<td><?php echo $agen->no_hp_agen ?></td>
 			<td><?php echo $agen->alamat ?></td>
 			<td><?php echo $agen->deskripsi ?></td>

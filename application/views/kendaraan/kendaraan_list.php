@@ -53,13 +53,17 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Kd Motor</th>
+		<th>Kd Pembelian</th>
+		<th>Agen</th>
+		<th>Kd Kendaraan</th>
 		<th>Nama Kendaraan</th>
-		<th>Jenis Kendaraan Id</th>
-		<th>Merek Id</th>
+		<th>Jenis Kendaraan</th>
+        <th>Merek</th>
+		<th>Merek</th>
 		<th>No Stnk</th>
 		<th>No Bpkb</th>
 		<th>Deskripsi</th>
+		<th>Harga Beli</th>
 		<th>Photo</th>
 		<th>Status</th>
 		<th>Action</th>
@@ -69,17 +73,23 @@
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $kendaraan->kd_motor ?></td>
+			<td><?php echo $kendaraan->kd_pembelian ?></td>
+			<td><?php echo $kendaraan->nama_agen ?></td>
+			<td><?php echo $kendaraan->kd_kendaraan ?></td>
 			<td><?php echo $kendaraan->nama_kendaraan ?></td>
-			<td><?php echo $kendaraan->jenis_kendaraan_id ?></td>
-			<td><?php echo $kendaraan->merek_id ?></td>
+			<td><?php echo $kendaraan->nama_jenis_kendaraan ?></td>
+            <td><?php echo $kendaraan->nama_type ?></td>
+			<td><?php echo $kendaraan->nama_merek ?></td>
 			<td><?php echo $kendaraan->no_stnk ?></td>
 			<td><?php echo $kendaraan->no_bpkb ?></td>
 			<td><?php echo $kendaraan->deskripsi ?></td>
-			<td><?php echo $kendaraan->photo ?></td>
+			<td><?php echo $kendaraan->harga_beli ?></td>
+			<td><a href="<?php echo base_url(); ?>kendaraan/download/<?php echo $kendaraan->photo?>"><i class="ace-icon fa fa-download"></i> Download Logo</td>
 			<td><?php echo $kendaraan->status ?></td>
 			<td style="text-align:center" width="200px">
-				<?php 
+				<?php
+                echo anchor(site_url('kendaraan/update_harga/'.$kendaraan->kendaraan_id),'<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
+                echo '  '; 
 				echo anchor(site_url('kendaraan/read/'.$kendaraan->kendaraan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
 				echo '  '; 
 				echo anchor(site_url('kendaraan/update/'.$kendaraan->kendaraan_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 

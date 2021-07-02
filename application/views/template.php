@@ -176,3 +176,21 @@ $(document).ready(function(){
   
 });
 </script>
+
+
+<script>
+$(document).ready(function(){
+  var i=1;
+  $('#add_harga').click(function(){
+    i++;
+    $('#dynamic_field').append('<tr id="row'+i+'"><td><input type="text" name="nama_harga[]" placeholder="Nama Harga" class="form-control nama_harga" required="" /></td><input type="hidden" name="kendaraan_id[]" class="form-control" value="<?php echo $this->uri->segment(3) ?>"><td><input type="number" name="nominal[]" placeholder="Nominal" class="form-control nominal" required="" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove_harga">X</button></td></tr>');
+  });
+  
+  $(document).on('click', '.btn_remove_harga', function(){
+    var button_id = $(this).attr("id"); 
+    $('#row'+button_id+'').remove();
+  });
+  
+  
+});
+</script>

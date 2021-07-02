@@ -17,7 +17,15 @@
 	    <tr><td width='200'>No Kk <?php echo form_error('no_kk') ?></td><td><input type="text" class="form-control" name="no_kk" id="no_kk" placeholder="No Kk" value="<?php echo $no_kk; ?>" /></td></tr>
 	    <tr><td width='200'>Nama Pelanggan <?php echo form_error('nama_pelanggan') ?></td><td><input type="text" class="form-control" name="nama_pelanggan" id="nama_pelanggan" placeholder="Nama Pelanggan" value="<?php echo $nama_pelanggan; ?>" /></td></tr>
 	    <tr><td width='200'>No Hp Pelanggan <?php echo form_error('no_hp_pelanggan') ?></td><td><input type="text" class="form-control" name="no_hp_pelanggan" id="no_hp_pelanggan" placeholder="No Hp Pelanggan" value="<?php echo $no_hp_pelanggan; ?>" /></td></tr>
-	    <tr><td width='200'>Jenis Kelamin <?php echo form_error('jenis_kelamin') ?></td><td><input type="text" class="form-control" name="jenis_kelamin" id="jenis_kelamin" placeholder="Jenis Kelamin" value="<?php echo $jenis_kelamin; ?>" /></td></tr>
+	    <tr>
+            <td width='200'>Jenis Kelamin <?php echo form_error('jenis_kelamin') ?></td>
+            <td><select name="jenis_kelamin" class="form-control" value="<?= $jenis_kelamin ?>">
+                <option value="">- Pilih -</option>
+                <option value="Laki Laki" <?php echo $jenis_kelamin == 'Laki Laki' ? 'selected' : 'null' ?>>Laki Laki</option>
+                <option value="Perempuan" <?php echo $jenis_kelamin == 'Perempuan' ? 'selected' : 'null' ?>>Perempuan</option>
+              </select>
+            </td>
+          </tr>
 	    
         <tr><td width='200'>Alamat Ktp <?php echo form_error('alamat_ktp') ?></td><td> <textarea class="form-control" rows="3" name="alamat_ktp" id="alamat_ktp" placeholder="Alamat Ktp"><?php echo $alamat_ktp; ?></textarea></td></tr>
 	    

@@ -20,13 +20,16 @@
         <table class="word-table" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Kd Motor</th>
+		<th>Kd Pembelian</th>
+		<th>Agen Id</th>
+		<th>Kd Kendaraan</th>
 		<th>Nama Kendaraan</th>
 		<th>Jenis Kendaraan Id</th>
 		<th>Merek Id</th>
 		<th>No Stnk</th>
 		<th>No Bpkb</th>
 		<th>Deskripsi</th>
+		<th>Harga Beli</th>
 		<th>Photo</th>
 		<th>Status</th>
 		
@@ -36,13 +39,16 @@
                 ?>
                 <tr>
 		      <td><?php echo ++$start ?></td>
-		      <td><?php echo $kendaraan->kd_motor ?></td>
+		      <td><?php echo $kendaraan->kd_pembelian ?></td>
+		      <td><?php echo $kendaraan->agen_id ?></td>
+		      <td><?php echo $kendaraan->kd_kendaraan ?></td>
 		      <td><?php echo $kendaraan->nama_kendaraan ?></td>
 		      <td><?php echo $kendaraan->jenis_kendaraan_id ?></td>
 		      <td><?php echo $kendaraan->merek_id ?></td>
 		      <td><?php echo $kendaraan->no_stnk ?></td>
 		      <td><?php echo $kendaraan->no_bpkb ?></td>
 		      <td><?php echo $kendaraan->deskripsi ?></td>
+		      <td><?php echo $kendaraan->harga_beli ?></td>
 		      <td><?php echo $kendaraan->photo ?></td>
 		      <td><?php echo $kendaraan->status ?></td>	
                 </tr>
