@@ -58,7 +58,7 @@
                       <li><a href="<?php echo base_url() ?>Type">Type</a></li>
                     </ul>
                   </li>
-                  <li><a href="<?php echo base_url() ?>User"><i class="fa fa-shopping-cart"></i> Transaksi Cash</a>
+                  <li><a href="<?php echo base_url() ?>Sale"><i class="fa fa-shopping-cart"></i> Transaksi Cash</a>
                   </li>
                   <li><a href="<?php echo base_url() ?>User"><i class="fa fa-shopping-cart"></i> Transaksi Kredit</a>
                   </li>

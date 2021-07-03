@@ -70,7 +70,6 @@
 				    	<td>
 				    		<input type="hidden" name="user_id" value="<?php echo $user_id; ?>" /> 
 				    		<button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
-				    		<a href="<?php echo site_url('user') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a>
 				    	</td>
 				    </tr>
 					</table>
