@@ -27,9 +27,9 @@ class Dashboard_model extends CI_Model
 
     function count_transaksi()
     {
-        // $this->db->select('*');
-        // $this->db->from('pelanggan');
-        return 'empty'; //$this->db->count_all_results();
+        $this->db->select('*');
+        $this->db->from('sale');
+        return $this->db->count_all_results();
     }
 
     function count_allusers()

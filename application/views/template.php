@@ -61,6 +61,8 @@
                   </li>
                   <li><a href="<?php echo base_url() ?>Sale"><i class="fa fa-shopping-cart"></i> Transaksi Sale</a>
                   </li>
+                  <li><a href="<?php echo base_url() ?>paypall"><i class="fa fa-money"></i> Pembayaran Cicilan</a>
+                  </li>
 
                   <li><a><i class="fa fa-file"></i> Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
