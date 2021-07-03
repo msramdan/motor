@@ -64,7 +64,27 @@
 
 
 	    <tr><td width='200'>Total Price Sale <?php echo form_error('total_price_sale') ?></td><td><input type="text" class="form-control" name="total_price_sale" id="total_price_sale" placeholder="Total Price Sale" value="<?php echo $total_price_sale; ?>" /></td></tr>
-	    <tr><td width='200'>Type Sale <?php echo form_error('type_sale') ?></td><td><input type="text" class="form-control" name="type_sale" id="type_sale" placeholder="Type Sale" value="Cash" readonly="" /></td></tr>
+
+      <tr>
+            <td width='200'>Type Sale <?php echo form_error('type_sale') ?></td>
+            <td><select name="type_sale" id="type_sale" class="form-control" >
+                <option value="Cash" >Cash</option>
+                <option value="Kredit" >Kredit</option>
+              </select><br>
+                    <div class="form-group">
+                        <input type="number" name="dp" class="form-control" id="dp" value="" placeholder="Uang DP">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="lama_cicilan" class="form-control" id="lama_cicilan" value="" placeholder="Lama Cicilan">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="bunga_cicilan" class="form-control" id="bunga_cicilan" value="" placeholder="Bunga Cicilan">
+                    </div>
+            </td>
+          </tr>
+
+
+
 	    <tr><td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="date" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>" /></td></tr>
 	    <tr><td width='200'>User Penginput <?php echo form_error('user_id') ?></td><td><input type="text" class="form-control" name="nama_user" id="nama_user" placeholder="User Id" readonly="" value="<?= ucfirst($this->fungsi->user_login()->nama_user) ?>" />
 
@@ -193,3 +213,27 @@
           $('#modal-kendaraan').modal('hide')
         })
     </script>
+
+    <script type="text/javascript">
+ //Inisiasi awal penggunaan jQuery
+ $(document).ready(function(){
+  $('#dp').hide(); 
+                $('#lama_cicilan').hide();
+                $('#bunga_cicilan').hide();
+
+    $(function () {
+        $("#type_sale").change(function () {
+            if ($(this).val() == "Kredit") {
+                $('#dp').show(); 
+                $('#lama_cicilan').show();
+                $('#bunga_cicilan').show(); 
+            } else {
+                $('#dp').hide(); 
+                $('#lama_cicilan').hide();
+                $('#bunga_cicilan').hide();
+            }
+        });
+    });     
+
+ });
+</script>
