@@ -3,17 +3,17 @@
     <body>
         <h2 style="margin-top:0px">Kendaraan Read</h2>
         <table class="table">
-	    <tr><td>Kd Pembelian</td><td><?php echo $kd_pembelian; ?></td></tr>
-	    <tr><td>Agen Id</td><td><?php echo $agen_id; ?></td></tr>
-	    <tr><td>Kd Kendaraan</td><td><?php echo $kd_kendaraan; ?></td></tr>
+	    <tr><td>Kode Pembelian</td><td><?php echo $kd_pembelian; ?></td></tr>
+	    <tr><td>Agen</td><td><?php echo $agen_id; ?></td></tr>
+	    <tr><td>Kode Kendaraan</td><td><?php echo $kd_kendaraan; ?></td></tr>
 	    <tr><td>Nama Kendaraan</td><td><?php echo $nama_kendaraan; ?></td></tr>
-	    <tr><td>Jenis Kendaraan Id</td><td><?php echo $jenis_kendaraan_id; ?></td></tr>
-	    <tr><td>Merek Id</td><td><?php echo $merek_id; ?></td></tr>
+	    <tr><td>Jenis Kendaraan</td><td><?php echo $jenis_kendaraan_id; ?></td></tr>
+	    <tr><td>Merek</td><td><?php echo $merek_id; ?></td></tr>
 	    <tr><td>No Stnk</td><td><?php echo $no_stnk; ?></td></tr>
 	    <tr><td>No Bpkb</td><td><?php echo $no_bpkb; ?></td></tr>
 	    <tr><td>Deskripsi</td><td><?php echo $deskripsi; ?></td></tr>
 	    <tr><td>Harga Beli</td><td><?php echo $harga_beli; ?></td></tr>
-	    <tr><td>Photo</td><td><?php echo $photo; ?></td></tr>
+	    <tr><td>Photo</td><td><a class="hover-on-pic" data-toggle="modal" data-target=".bs-example-modal-lg"><img src="<?php echo base_url().'/assets/img/kendaraan/'.$photo ?>" width="300"/></a></td></tr>
 	    <tr><td>Status</td><td><?php echo $status; ?></td></tr>
 
 	    <tr>
@@ -43,4 +43,24 @@
 	</table>
         </body>
     </div>
+</div>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title" id="myModalLabel">Preview</h4>
+		</div>
+		<div class="modal-body">
+			<img src="<?php echo base_url().'/assets/img/kendaraan/'.$photo ?>" width="100%"/>
+		</div>
+		<div class="modal-footer">
+			<a class="btn btn-primary" href="<?php echo base_url(); ?>kendaraan/download/<?php echo $photo ?>"><i class="ace-icon fa fa-download"></i> Download</a>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		</div>
+
+		</div>
+	</div>
 </div>

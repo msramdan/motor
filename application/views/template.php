@@ -12,7 +12,11 @@
     <link href="<?= base_url()?>assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/vendors/nprogress/nprogress.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/build/css/custom.min.css" rel="stylesheet">
+<<<<<<< HEAD
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+=======
+    <link href="<?= base_url()?>assets/build/css/style.css" rel="stylesheet">
+>>>>>>> tampilan-action-read-pada-setiap-menu-kendaraan
   </head>
   <body class="nav-md">
     <div class="container body">
