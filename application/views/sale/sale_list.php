@@ -68,12 +68,12 @@
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
 			<td><?php echo $sale->invoice ?></td>
-			<td><?php echo $sale->pelanggan_id ?></td>
-			<td><?php echo $sale->kendaraan_id ?></td>
+			<td><?php echo $sale->nama_pelanggan ?></td>
+			<td><?php echo $sale->nama_kendaraan ?></td>
 			<td><?php echo $sale->total_price_sale ?></td>
 			<td><?php echo $sale->type_sale ?></td>
 			<td><?php echo $sale->tanggal_sale ?></td>
-			<td><?php echo $sale->user_id ?></td>
+			<td><?php echo $sale->nama_user ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('sale/read/'.$sale->sale_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
