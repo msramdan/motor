@@ -59,10 +59,9 @@
                       <li><a href="<?php echo base_url() ?>Type">Type</a></li>
                     </ul>
                   </li>
-                  <li><a href="<?php echo base_url() ?>Sale"><i class="fa fa-shopping-cart"></i> Transaksi Cash</a>
+                  <li><a href="<?php echo base_url() ?>Sale"><i class="fa fa-shopping-cart"></i> Transaksi Sale</a>
                   </li>
-                  <li><a href="<?php echo base_url() ?>User"><i class="fa fa-shopping-cart"></i> Transaksi Kredit</a>
-                  </li>
+
                   <li><a><i class="fa fa-file"></i> Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="index.html">Penjualan</a></li>
