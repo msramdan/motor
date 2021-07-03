@@ -54,21 +54,21 @@ class Kendaraan extends CI_Controller
         $row = $this->Kendaraan_model->get_by_id($id);
         if ($row) {
             $data = array(
-        'harga' =>$this->Kendaraan_model->get_harga($id),
-		'kendaraan_id' => $row->kendaraan_id,
-		'kd_pembelian' => $row->kd_pembelian,
-		'agen_id' => $row->agen_id,
-		'kd_kendaraan' => $row->kd_kendaraan,
-		'nama_kendaraan' => $row->nama_kendaraan,
-		'jenis_kendaraan_id' => $row->jenis_kendaraan_id,
-		'merek_id' => $row->merek_id,
-		'no_stnk' => $row->no_stnk,
-		'no_bpkb' => $row->no_bpkb,
-		'deskripsi' => $row->deskripsi,
-		'harga_beli' => $row->harga_beli,
-		'photo' => $row->photo,
-		'status' => $row->status,
-	    );
+                'harga' =>$this->Kendaraan_model->get_harga($id),
+                'kendaraan_id' => $row->kendaraan_id,
+                'kd_pembelian' => $row->kd_pembelian,
+                'agen_id' => $row->nama_agen,
+                'kd_kendaraan' => $row->kd_kendaraan,
+                'nama_kendaraan' => $row->nama_kendaraan,
+                'jenis_kendaraan_id' => $row->nama_jenis_kendaraan,
+                'merek_id' => $row->nama_merek,
+                'no_stnk' => $row->no_stnk,
+                'no_bpkb' => $row->no_bpkb,
+                'deskripsi' => $row->deskripsi,
+                'harga_beli' => $row->harga_beli,
+                'photo' => $row->photo,
+                'status' => $row->status,
+            );
             $this->template->load('template','kendaraan/kendaraan_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');

@@ -35,6 +35,11 @@ class Kendaraan_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
+        $this->db->select('*')
+            ->join('agen','agen.agen_id = kendaraan.agen_id')
+            ->join('jenis_kendaraan','jenis_kendaraan.jenis_kendaraan_id = kendaraan.jenis_kendaraan_id')
+            ->join('merek','merek.merek_id = kendaraan.merek_id');
+
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
