@@ -70,10 +70,12 @@ class Sale extends CI_Controller
 
     public function create() 
     {
+        $kode = $this->Sale_model->buat_kode();
         $data = array(
             'button' => 'Create',
             'pelanggan' =>$this->Pelanggan_model->get_all(),
             'kendaraan' =>$this->Kendaraan_model->get_all(),
+            'kodeunik' =>$kode,
             'action' => site_url('sale/create_action'),
 	    'sale_id' => set_value('sale_id'),
 	    'invoice' => set_value('invoice'),

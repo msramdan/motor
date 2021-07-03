@@ -78,8 +78,8 @@
 				<?php 
 				echo anchor(site_url('sale/read/'.$sale->sale_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
 				echo '  '; 
-				echo anchor(site_url('sale/update/'.$sale->sale_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
+				// echo anchor(site_url('sale/update/'.$sale->sale_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+				// echo '  '; 
 				echo anchor(site_url('sale/delete/'.$sale->sale_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>

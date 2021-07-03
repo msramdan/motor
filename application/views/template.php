@@ -12,6 +12,7 @@
     <link href="<?= base_url()?>assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/vendors/nprogress/nprogress.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/build/css/custom.min.css" rel="stylesheet">
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
   </head>
   <body class="nav-md">
     <div class="container body">

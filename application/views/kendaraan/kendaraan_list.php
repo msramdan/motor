@@ -58,7 +58,7 @@
 		<th>Kd Kendaraan</th>
 		<th>Nama Kendaraan</th>
 		<th>Jenis Kendaraan</th>
-        <th>Merek</th>
+        <th>Type</th>
 		<th>Merek</th>
 		<th>No Stnk</th>
 		<th>No Bpkb</th>

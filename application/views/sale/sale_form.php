@@ -11,24 +11,56 @@
         
             <form action="<?php echo $action; ?>" method="post">
             
-<table class='table table-bordered>'        
+<table class='table table-bordered'>       
 
-	    <tr><td width='200'>Invoice <?php echo form_error('invoice') ?></td><td><input type="text" class="form-control" name="invoice" id="invoice" placeholder="Invoice" value="<?php echo $invoice; ?>" /></td></tr>
-	    <tr>
-            <td width='200'>pelanggan <?php echo form_error('pelanggan_id') ?></td>
-            <td><select name="pelanggan_id" class="form-control">
-                <option value="">-- Pilih -- </option>
-                <?php foreach ($pelanggan as $key => $data) { ?>
-                  <?php if ($pelanggan_id == $data->pelanggan_id) { ?>
-                    <option value="<?php echo $data->pelanggan_id ?>" selected><?php echo $data->nama_pelanggan ?></option>
-                  <?php } else { ?>
-                    <option value="<?php echo $data->pelanggan_id ?>"><?php echo $data->nama_pelanggan ?></option>
-                  <?php } ?>
-                <?php } ?>
-              </select></td>
-          </tr>
-
-	    <tr><td width='200'>Kendaraan Id <?php echo form_error('kendaraan_id') ?></td><td><input type="text" class="form-control" name="kendaraan_id" id="kendaraan_id" placeholder="Kendaraan Id" value="<?php echo $kendaraan_id; ?>" /></td></tr>
+	    <tr><td width='200'>Invoice <?php echo form_error('invoice') ?></td><td><input type="text" readonly="" class="form-control" name="invoice" id="invoice" placeholder="Invoice" value="<?= $kodeunik ?>" /></td></tr>
+      <tr>
+                  <td width='200'>pelanggan <?php echo form_error('pelanggan_id') ?></td>
+                  <td>
+                    <div class="form-group input-group">
+                      <input type="hidden" id="pelanggan_id" name="pelanggan_id">
+                      <input type="text" id="nama_pelanggan" name="nama_pelanggan" class="form-control" readonly="">
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-pelanggan">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </td>   
+                </tr>
+      <tr>
+                  <td width='200'>Kendaraan<?php echo form_error('kendaraan_id') ?></td>
+                  <td>
+                    <div class="form-group input-group">
+                      <input type="hidden" id="kendaraan_id" name="kendaraan_id">
+                      <input type="text" id="kd_kendaraan" name="kd_kendaraan" class="form-control" readonly="">
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-kendaraan">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </span>
+                    </div>
+                    <label for="nama_item_pro">Nama Kendaraan</label>
+                    <div class="form-group">
+                        <input type="text" name="nama_kendaraan" class="form-control" id="nama_kendaraan" value="-" readonly="">
+                    </div>
+                    <label for="nama_item_pro">Jenis Kendaraan</label>
+                    <div class="form-group">
+                        <input type="text" name="nama_jenis" class="form-control" id="nama_jenis" value="-" readonly="">
+                    </div>
+                    <label for="nama_item_pro">Merk</label>
+                    <div class="form-group">
+                        <input type="text" name="nama_merek" class="form-control" id="nama_merek" value="-" readonly="">
+                    </div>
+                    <label for="nama_item_pro">Type</label>
+                    <div class="form-group">
+                        <input type="text" name="nama_type" class="form-control" id="nama_type" value="-" readonly="">
+                    </div>
+        
+  
+                  </td>   
+                </tr>
+                                
 
 
 	    <tr><td width='200'>Total Price Sale <?php echo form_error('total_price_sale') ?></td><td><input type="text" class="form-control" name="total_price_sale" id="total_price_sale" placeholder="Total Price Sale" value="<?php echo $total_price_sale; ?>" /></td></tr>
@@ -43,3 +75,121 @@
 	</table></form>        </div>
 </div>
 </div>
+
+ <div class="modal fade" id="modal-pelanggan">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" arial-label="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add Pelanggan</h4>
+          </div>
+          <div class="modal-body table-responsive">
+            <table class="table table-bordered table-striped" id="table1">
+                <thead>
+                    <tr>
+                        <th>Nama Pelanggan</th>
+                        <th>KTP</th>
+                        <th>No HP</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($pelanggan as $key => $data) { ?>
+                    <tr>
+                      <td><?= $data->nama_pelanggan ?></td>
+                      <td><?= $data->no_ktp ?></td>
+                      <td><?= $data->no_hp_pelanggan ?></td>
+                      <td>
+                        <button class="btn btn-xs btn-info" id="select"
+                          data-pelanggan_id="<?php echo $data->pelanggan_id ?>"
+                          data-nama_pelanggan="<?php echo $data->nama_pelanggan ?>">
+                          <i class="fa fa-check"></i> Select
+                        </button>
+                      </td>
+                    </tr>
+                  <?php } ?>
+
+                </tbody>
+
+            </table>
+            
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+
+     <div class="modal fade" id="modal-kendaraan">
+      <div class="modal-dialog">E
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" arial-label="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add Kendaraan</h4>
+          </div>
+          <div class="modal-body table-responsive">
+            <table class="table table-bordered table-striped" id="table1">
+                <thead>
+                    <tr>
+                        <th>Kode Kendaraan</th>
+                        <th>Nama Kendaraan</th>
+                        <th>Jenis Kendaraan</th>
+                        <th>Merk</th>
+                        <th>Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($kendaraan as $key => $data2) { ?>
+                    <tr>
+                      <td><?= $data2->kd_kendaraan ?></td>
+                      <td><?= $data2->nama_kendaraan ?></td>
+                      <td><?= $data2->nama_jenis ?></td>
+                      <td><?= $data2->nama_merek ?></td>
+                      <td><?= $data2->nama_type ?></td>
+                      <td>
+                        <button class="btn btn-xs btn-info" id="pilih"
+                          data-1="<?php echo $data2->kendaraan_id ?>"
+                          data-2="<?php echo $data2->nama_kendaraan ?>"
+                          data-3="<?php echo $data2->nama_jenis ?>"
+                          data-4="<?php echo $data2->nama_merek ?>"
+                          data-5="<?php echo $data2->nama_type ?>"
+                          data-6="<?php echo $data2->kd_kendaraan ?>">
+                          <i class="fa fa-check"></i> Select
+                        </button>
+                      </td>
+                    </tr>
+                  <?php } ?>
+
+                </tbody>
+
+            </table>
+            
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+
+    <script>
+        $(document).on('click','#select',function(){
+          $('#pelanggan_id').val($(this).data('pelanggan_id'))
+          $('#nama_pelanggan').val($(this).data('nama_pelanggan'))
+          $('#modal-pelanggan').modal('hide')
+        })
+
+        $(document).on('click','#pilih',function(){
+          $('#kendaraan_id').val($(this).data('1'))
+          $('#nama_kendaraan').val($(this).data('2'))
+          $('#nama_jenis').val($(this).data('3'))
+          $('#nama_merek').val($(this).data('4'))
+          $('#nama_type').val($(this).data('5'))
+          $('#kd_kendaraan').val($(this).data('6'))
+          $('#modal-kendaraan').modal('hide')
+        })
+    </script>
