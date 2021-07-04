@@ -1,5 +1,10 @@
 <?php
 
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -189,53 +194,94 @@ class Sale extends CI_Controller
 
     public function excel()
     {
-        $this->load->helper('exportexcel');
-        $namaFile = "sale.xls";
-        $judul = "sale";
-        $tablehead = 0;
-        $tablebody = 1;
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        /*$sheet->mergeCells('A1:A2'); // No
+        $sheet->mergeCells('B1:B2'); //invoice
+        $sheet->mergeCells('C1:E1'); //item
+        $sheet->mergeCells('F1:F2'); //kategori
+        $sheet->mergeCells('G1:G2'); //jenis kendaraan
+        $sheet->mergeCells('H1:H2'); //nama pelanggan
+        $sheet->mergeCells('I1:I2'); //id pelanggan
+        $sheet->mergeCells('J1:J2'); //id pembelian
+        $sheet->mergeCells('K1:L1'); //waktu (meliputi tanggal dan jam)
+        $sheet->mergeCells('M1:M2'); //Harga beli pokok
+        $sheet->mergeCells('N1:S1'); //Haarga (meliputi perolehan, rekondisi, stnk, komisi, admin, lainnya)
+        $sheet->mergeCells('T1:T2'); //User
+        
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Invoice');
+        $sheet->setCellValue('C1', 'Item');
+        $sheet->setCellValue('C2', 'Merek');
+        $sheet->setCellValue('D2', 'Type');
+        $sheet->setCellValue('E2', 'Nopol');
+        $sheet->setCellValue('F1', 'Kategori');
+        $sheet->setCellValue('G1', 'Jenis');
+        $sheet->setCellValue('H1', 'Nama Pelanggan');
+        $sheet->setCellValue('I1', 'ID Pelanggan');
+        $sheet->setCellValue('J1', 'ID Pembelian');
+        $sheet->setCellValue('K1', 'Waktu');
+        $sheet->setCellValue('K2', 'Tanggal');
+        $sheet->setCellValue('L2', 'Jam');
+        $sheet->setCellValue('M1', 'Harga Beli Pokok');
+        $sheet->setCellValue('N1', 'Harga');
+        $sheet->setCellValue('N2', 'Perolehan');
+        $sheet->setCellValue('O2', 'Rekondisi');
+        $sheet->setCellValue('P2', 'STNK');
+        $sheet->setCellValue('Q2', 'Komisi');
+        $sheet->setCellValue('R2', 'Admin');
+        $sheet->setCellValue('S2', 'Lainnya');
+        $sheet->setCellValue('T1', 'User');*/
+
+        $sheet->mergeCells('A1:A2'); // No
+        $sheet->mergeCells('B1:B2'); //invoice
+        $sheet->mergeCells('C1:C2'); //id pelanggan
+        $sheet->mergeCells('D1:D2'); //Nama pelanggan
+        $sheet->mergeCells('E1:F1'); //Kendaraan (meliputi merek dan type)
+        $sheet->mergeCells('G1:G2'); //TOTAL PRICE Sale
+        $sheet->mergeCells('H1:H2'); //Type sale
+        $sheet->mergeCells('I1:I2'); //TANGGAL Sale
+        $sheet->mergeCells('J1:J2'); //USER
+
+        $sheet->setCellVAlue('A1','No');
+        $sheet->setCellVAlue('B1','Invoice');
+        $sheet->setCellVAlue('C1','ID Pelanggan');
+        $sheet->setCellVAlue('D1','Nama Pelanggan');
+        $sheet->setCellVAlue('E1','Kendaraan');
+        $sheet->setCellVAlue('E2','Merek');
+        $sheet->setCellVAlue('F2','Type');
+        $sheet->setCellVAlue('G1','Total Price Sale');
+        $sheet->setCellVAlue('H1','Type Sale');
+        $sheet->setCellVAlue('I1','Tanggal Sale');
+        $sheet->setCellVAlue('J1','User');
+        
         $nourut = 1;
-        //penulisan header
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-        header("Content-Disposition: attachment;filename=" . $namaFile . "");
-        header("Content-Transfer-Encoding: binary ");
-
-        xlsBOF();
-
-        $kolomhead = 0;
-        xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Invoice");
-	xlsWriteLabel($tablehead, $kolomhead++, "Pelanggan Id");
-	xlsWriteLabel($tablehead, $kolomhead++, "Kendaraan Id");
-	xlsWriteLabel($tablehead, $kolomhead++, "Total Price Sale");
-	xlsWriteLabel($tablehead, $kolomhead++, "Type Sale");
-	xlsWriteLabel($tablehead, $kolomhead++, "Tanggal Sale");
-	xlsWriteLabel($tablehead, $kolomhead++, "User Id");
-
-	foreach ($this->Sale_model->get_all() as $data) {
-            $kolombody = 0;
-
-            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
-            xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->invoice);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->pelanggan_id);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->kendaraan_id);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->total_price_sale);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->type_sale);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_sale);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->user_id);
-
-	    $tablebody++;
-            $nourut++;
+        $baris = 3;
+        foreach($this->Sale_model->get_all() as $data)
+        {
+            
+            $sheet->setCellValue('A'.$baris, $nourut++);
+            $sheet->setCellValue('B'.$baris, $data->invoice);
+            $sheet->setCellValue('C'.$baris, $data->pelanggan_id);
+            $sheet->setCellValue('D'.$baris, $data->nama_pelanggan);
+            $sheet->setCellValue('E'.$baris, $data->nama_merek);
+            $sheet->setCellValue('F'.$baris, $data->nama_type);
+            $sheet->setCellValue('G'.$baris, $data->total_price_sale);
+            $sheet->setCellValue('H'.$baris, $data->type_sale);
+            $sheet->setCellValue('I'.$baris, $data->tanggal_sale);
+            $sheet->setCellValue('J'.$baris, $data->nama_user);
+            $baris++;
         }
 
-        xlsEOF();
-        exit();
+        
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'sale-report';
+        
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
     }
 
     public function word()
