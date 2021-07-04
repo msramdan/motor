@@ -13,8 +13,7 @@
             <div class='col-md-9'>
             <div style="padding-bottom: 10px;"'>
         <?php echo anchor(site_url('kendaraan/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('kendaraan/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
-		<?php echo anchor(site_url('kendaraan/word'), '<i class="fa fa-file-word-o" aria-hidden="true"></i> Export Ms Word', 'class="btn btn-primary btn-sm"'); ?></div>
+		<?php echo anchor(site_url('kendaraan/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('kendaraan/index'); ?>" class="form-inline" method="get">
@@ -38,11 +37,7 @@
         
    
         <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-4 text-center">
-                <div style="margin-top: 8px" id="message">
-                    <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
-                </div>
-            </div>
+            
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
@@ -54,16 +49,19 @@
             <tr>
                 <th>No</th>
 		<th>Kd Pembelian</th>
-		<th>Agen</th>
-		<th>Kd Kendaraan</th>
-		<th>Nama Kendaraan</th>
+		
+		<th>Kode Item</th>
+		<th>Nama Item</th>
+        <th>Agen</th>
+        <th>Kategori Item</th>
 		<th>Jenis Kendaraan</th>
         <th>Type</th>
 		<th>Merek</th>
 		<th>No Stnk</th>
 		<th>No Bpkb</th>
 		<th>Deskripsi</th>
-		<th>Harga Beli</th>
+		<th>Harga Perolehan</th>
+        <th>Harga Pokok</th>
 		<th>Photo</th>
 		<th>Status</th>
 		<th>Action</th>
@@ -74,9 +72,11 @@
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
 			<td><?php echo $kendaraan->kd_pembelian ?></td>
-			<td><?php echo $kendaraan->nama_agen ?></td>
+			
 			<td><?php echo $kendaraan->kd_kendaraan ?></td>
 			<td><?php echo $kendaraan->nama_kendaraan ?></td>
+            <td><?php echo $kendaraan->nama_agen ?></td>
+            <td><?php echo $kendaraan->nama_kategori ?></td>
 			<td><?php echo $kendaraan->nama_jenis_kendaraan ?></td>
             <td><?php echo $kendaraan->nama_type ?></td>
 			<td><?php echo $kendaraan->nama_merek ?></td>
@@ -84,6 +84,7 @@
 			<td><?php echo $kendaraan->no_bpkb ?></td>
 			<td><?php echo $kendaraan->deskripsi ?></td>
 			<td><?php echo $kendaraan->harga_beli ?></td>
+            <td><?php echo $kendaraan->harga_beli ?></td>
 			<td><a href="<?php echo base_url(); ?>kendaraan/download/<?php echo $kendaraan->photo?>"><i class="ace-icon fa fa-download"></i> Download Logo</td>
 			<td><?php echo $kendaraan->status ?></td>
 			<td style="text-align:center" width="200px">

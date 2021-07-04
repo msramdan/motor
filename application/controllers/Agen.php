@@ -92,7 +92,7 @@ class Agen extends CI_Controller
 	    );
 
             $this->Agen_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('agen'));
         }
     }

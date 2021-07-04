@@ -112,7 +112,7 @@ foreach ($non_pk as $row) {
 $string .= "\n\t    );
 
             \$this->".$m."->insert(\$data);
-            \$this->session->set_flashdata('message', 'Create Record Success 2');
+            \$this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('$c_url'));
         }
     }

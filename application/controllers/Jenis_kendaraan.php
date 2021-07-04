@@ -83,7 +83,7 @@ class Jenis_kendaraan extends CI_Controller
 	    );
 
             $this->Jenis_kendaraan_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('jenis_kendaraan'));
         }
     }

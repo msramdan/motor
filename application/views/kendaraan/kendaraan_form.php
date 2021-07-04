@@ -11,10 +11,29 @@
         
             <form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
             
-<table class='table table-bordered>'        
+<table class='table table-bordered'>        
 
-	    <tr><td width='200'>Kd Pembelian <?php echo form_error('kd_pembelian') ?></td><td><input type="text" class="form-control" name="kd_pembelian" id="kd_pembelian" placeholder="Kd Pembelian" value="<?php echo $kd_pembelian; ?>" /></td></tr>
+	    
+
+
+      <?php if ($this->uri->segment(2) == 'create' || $this->uri->segment(2) == 'create_action' ) { ?>
+                     <tr><td width='200'>Kd Pembelian <?php echo form_error('kd_pembelian') ?></td><td><input type="text" class="form-control" name="kd_pembelian" id="kd_pembelian" placeholder="Kd Pembelian" readonly="" value="B<?= $kodeunik ?>"  /></td></tr>
+                  <?php }else{ ?>
+                      <tr><td width='200'>Kd Pembelian <?php echo form_error('kd_pembelian') ?></td><td><input type="text" class="form-control" name="kd_pembelian" id="kd_pembelian" placeholder="Kd Pembelian" readonly="" value="<?php echo $kd_pembelian ?>"  /></td></tr>
+                  <?php } ?>
+
+	    
+
+            <?php if ($this->uri->segment(2) == 'create' || $this->uri->segment(2) == 'create_action' ) { ?>
+                     <tr><td width='200'>Kode Item <?php echo form_error('kd_kendaraan') ?></td><td><input type="text" class="form-control" name="kd_kendaraan" readonly="" id="kd_kendaraan" placeholder="Kode Item" value="BRG<?php echo sprintf("%04s", $kode_barang) ?>" /></td></tr>
+                  <?php }else{ ?>
+                      <tr><td width='200'>Kode Item <?php echo form_error('kd_kendaraan') ?></td><td><input type="text" class="form-control" name="kd_kendaraan" readonly="" id="kd_kendaraan" placeholder="Kode Item" value="<?php echo $kd_kendaraan; ?>" /></td></tr>
+                  <?php } ?>
+
+	    <tr><td width='200'>Nama Item <?php echo form_error('nama_kendaraan') ?></td><td><input type="text" class="form-control" name="nama_kendaraan" id="nama_kendaraan" placeholder="Nama Item" value="<?php echo $nama_kendaraan; ?>" /></td></tr>
 	    <tr>
+
+        <tr>
             <td width='200'>Agen <?php echo form_error('agen_id') ?></td>
             <td><select name="agen_id" class="form-control">
                 <option value="">-- Pilih -- </option>
@@ -28,10 +47,21 @@
               </select></td>
           </tr>
 
+          <tr>
+            <td width='200'>Kategori Item <?php echo form_error('kategori_id') ?></td>
+            <td><select name="kategori_id" class="form-control">
+                <option value="">-- Pilih -- </option>
+                <?php foreach ($kategori as $key => $data) { ?>
+                  <?php if ($kategori_id == $data->kategori_id) { ?>
+                    <option value="<?php echo $data->kategori_id ?>" selected><?php echo $data->nama_kategori ?></option>
+                  <?php } else { ?>
+                    <option value="<?php echo $data->kategori_id ?>"><?php echo $data->nama_kategori ?></option>
+                  <?php } ?>
+                <?php } ?>
+              </select></td>
+          </tr>
 
-	    <tr><td width='200'>Kd Kendaraan <?php echo form_error('kd_kendaraan') ?></td><td><input type="text" class="form-control" name="kd_kendaraan" id="kd_kendaraan" placeholder="Kd Kendaraan" value="<?php echo $kd_kendaraan; ?>" /></td></tr>
-	    <tr><td width='200'>Nama Kendaraan <?php echo form_error('nama_kendaraan') ?></td><td><input type="text" class="form-control" name="nama_kendaraan" id="nama_kendaraan" placeholder="Nama Kendaraan" value="<?php echo $nama_kendaraan; ?>" /></td></tr>
-	    <tr>
+
             <td width='200'>Jenis Kendaraan <?php echo form_error('jenis_kendaraan_id') ?></td>
             <td><select name="jenis_kendaraan_id" class="form-control">
                 <option value="">-- Pilih -- </option>
@@ -76,7 +106,7 @@
 	    <tr><td width='200'>No Bpkb <?php echo form_error('no_bpkb') ?></td><td><input type="text" class="form-control" name="no_bpkb" id="no_bpkb" placeholder="No Bpkb" value="<?php echo $no_bpkb; ?>" /></td></tr>
 	    
         <tr><td width='200'>Deskripsi <?php echo form_error('deskripsi') ?></td><td> <textarea class="form-control" rows="3" name="deskripsi" id="deskripsi" placeholder="Deskripsi"><?php echo $deskripsi; ?></textarea></td></tr>
-	    <tr><td width='200'>Harga Beli <?php echo form_error('harga_beli') ?></td><td><input type="text" class="form-control" name="harga_beli" id="harga_beli" placeholder="Harga Beli" value="<?php echo $harga_beli; ?>" /></td></tr>
+	    <tr><td width='200'>Harga Perolehan <?php echo form_error('harga_beli') ?></td><td><input type="text" class="form-control" name="harga_beli" id="harga_beli" placeholder="Harga Beli" value="<?php echo $harga_beli; ?>" /></td></tr>
 
       <?php if ($this->uri->segment(2) == 'create' || $this->uri->segment(2) == 'create_action' ) { ?>
                      <tr><td width='200'>photo <?php echo form_error('photo') ?></td><td><input type="file" class="form-control" name="photo" id="photo" placeholder="photo" required="" value="" onchange="return validasiEkstensi()" />

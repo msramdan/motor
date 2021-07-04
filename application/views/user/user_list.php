@@ -38,11 +38,7 @@
         
    
         <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-4 text-center">
-                <div style="margin-top: 8px" id="message">
-                    <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
-                </div>
-            </div>
+            
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">

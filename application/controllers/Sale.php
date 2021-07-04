@@ -58,6 +58,7 @@ class Sale extends CI_Controller
         if ($row) {
             $data = array(
                 'sale_id' => $row->sale_id,
+                'biaya_admin' => $row->biaya_admin,
                 'invoice' => $row->invoice,
                 'pelanggan_id' => $row->nama_pelanggan,
                 'kendaraan_id' => $row->nama_kendaraan,
@@ -75,15 +76,15 @@ class Sale extends CI_Controller
 
     public function create() 
     {
-        $kode = $this->Sale_model->buat_kode();
         $data = array(
             'button' => 'Create',
             'pelanggan' =>$this->Pelanggan_model->get_all(),
             'kendaraan' =>$this->Kendaraan_model->get_all('Ready'),
-            'kodeunik' =>$kode,
+            'kodeunik' =>$this->Sale_model->buat_kode(),
             'action' => site_url('sale/create_action'),
             'sale_id' => set_value('sale_id'),
             'invoice' => set_value('invoice'),
+            'biaya_admin' => set_value('biaya_admin'),
             'pelanggan_id' => set_value('pelanggan_id'),
             'kendaraan_id' => set_value('kendaraan_id'),
             'total_price_sale' => set_value('total_price_sale'),
@@ -103,6 +104,8 @@ class Sale extends CI_Controller
         } else {
             $data = array(
 		'invoice' => $this->input->post('invoice',TRUE),
+        'biaya_admin' => $this->input->post('biaya_admin',TRUE),
+        'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
 		'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
 		'kendaraan_id' => $this->input->post('kendaraan_id',TRUE),
 		'total_price_sale' => $this->input->post('total_price_sale',TRUE),
@@ -112,7 +115,7 @@ class Sale extends CI_Controller
 	    );
 
             $this->Sale_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('sale'));
         }
     }

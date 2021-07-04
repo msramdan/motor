@@ -12,7 +12,7 @@
 	    <tr><td>No Stnk</td><td><?php echo $no_stnk; ?></td></tr>
 	    <tr><td>No Bpkb</td><td><?php echo $no_bpkb; ?></td></tr>
 	    <tr><td>Deskripsi</td><td><?php echo $deskripsi; ?></td></tr>
-	    <tr><td>Harga Beli</td><td><?php echo $harga_beli; ?></td></tr>
+	    <tr><td>Harga Perolehan</td><td><?php echo $harga_beli; ?></td></tr>
 	    <tr><td>Photo</td><td><a class="hover-on-pic" data-toggle="modal" data-target=".bs-example-modal-lg"><img src="<?php echo base_url().'/assets/img/kendaraan/'.$photo ?>" width="300"/></a></td></tr>
 	    <tr><td>Status</td><td><?php echo $status; ?></td></tr>
 

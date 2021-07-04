@@ -13,8 +13,7 @@
             <div class='col-md-9'>
             <div style="padding-bottom: 10px;"'>
         <?php echo anchor(site_url('sale/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('sale/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
-		<?php echo anchor(site_url('sale/word'), '<i class="fa fa-file-word-o" aria-hidden="true"></i> Export Ms Word', 'class="btn btn-primary btn-sm"'); ?></div>
+		<?php echo anchor(site_url('sale/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('sale/index'); ?>" class="form-inline" method="get">
@@ -38,11 +37,7 @@
         
    
         <div class="row" style="margin-bottom: 10px">
-            <div class="col-md-4 text-center">
-                <div style="margin-top: 8px" id="message">
-                    <?php echo $this->session->userdata('message') <> '' ? $this->session->userdata('message') : ''; ?>
-                </div>
-            </div>
+            
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
@@ -55,8 +50,9 @@
                 <th>No</th>
 		<th>Invoice</th>
 		<th>Pelanggan</th>
-		<th>Kendaraan</th>
+		<th>Item</th>
 		<th>Total Price Sale</th>
+        <th>Biaya Admin</th>
 		<th>Type Sale</th>
 		<th>Tanggal Sale</th>
 		<th>Penginput</th>
@@ -71,6 +67,7 @@
 			<td><?php echo $sale->nama_pelanggan ?></td>
 			<td><?php echo $sale->nama_kendaraan ?></td>
 			<td><?php echo $sale->total_price_sale ?></td>
+            <td><?php echo $sale->biaya_admin ?></td>
 			<td><?php echo $sale->type_sale ?></td>
 			<td><?php echo $sale->tanggal_sale ?></td>
 			<td><?php echo $sale->nama_user ?></td>

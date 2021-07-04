@@ -120,7 +120,7 @@ class User extends CI_Controller
         );
 
             $this->User_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('user'));
         }
     }

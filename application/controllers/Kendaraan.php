@@ -11,6 +11,7 @@ class Kendaraan extends CI_Controller
         is_login();
         $this->load->model('Kendaraan_model');
         $this->load->model('Type_model');
+        $this->load->model('Kategori_model');
         $this->load->model('Merek_model');
         $this->load->model('Jenis_kendaraan_model');
         $this->load->model('Agen_model');
@@ -78,11 +79,19 @@ class Kendaraan extends CI_Controller
 
     public function create() 
     {
+        $dariDB = $this->Kendaraan_model->cekkodebarang();
+        // contoh JRD0004, angka 3 adalah awal pengambilan angka, dan 4 jumlah angka yang diambil
+        $nourut = substr($dariDB, 3, 4);
+        $kodeBarangSekarang = $nourut + 1;
+
         $data = array(
             'button' => 'Create',
+            'kode_barang' => $kodeBarangSekarang,
+            'kodeunik' =>$this->Kendaraan_model->buat_kode(),
             'action' => site_url('kendaraan/create_action'),
             'jenis' =>$this->Jenis_kendaraan_model->get_all(),
             'type' =>$this->Type_model->get_all(),
+            'kategori' =>$this->Kategori_model->get_all(),
             'merek' =>$this->Merek_model->get_all(),
             'agen' =>$this->Agen_model->get_all(),
             'kendaraan_id' => set_value('kendaraan_id'),
@@ -95,6 +104,7 @@ class Kendaraan extends CI_Controller
             'type_id' => set_value('type_id'),
             'no_stnk' => set_value('no_stnk'),
             'no_bpkb' => set_value('no_bpkb'),
+            'kategori_id' => set_value('kategori_id'),
             'deskripsi' => set_value('deskripsi'),
             'harga_beli' => set_value('harga_beli'),
             'photo' => set_value('photo'),
@@ -124,6 +134,7 @@ class Kendaraan extends CI_Controller
             $data = array(
 		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
 		'agen_id' => $this->input->post('agen_id',TRUE),
+        'kategori_id' => $this->input->post('kategori_id',TRUE),
 		'kd_kendaraan' => $this->input->post('kd_kendaraan',TRUE),
 		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
 		'jenis_kendaraan_id' => $this->input->post('jenis_kendaraan_id',TRUE),
@@ -138,7 +149,7 @@ class Kendaraan extends CI_Controller
 	    );
 
             $this->Kendaraan_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('kendaraan'));
         }
     }
@@ -154,10 +165,12 @@ class Kendaraan extends CI_Controller
                 'jenis' =>$this->Jenis_kendaraan_model->get_all(),
             'type' =>$this->Type_model->get_all(),
             'merek' =>$this->Merek_model->get_all(),
+            'kategori' =>$this->Kategori_model->get_all(),
             'agen' =>$this->Agen_model->get_all(),
 		'kendaraan_id' => set_value('kendaraan_id', $row->kendaraan_id),
 		'kd_pembelian' => set_value('kd_pembelian', $row->kd_pembelian),
 		'agen_id' => set_value('agen_id', $row->agen_id),
+        'kategori_id' => set_value('kategori_id', $row->kategori_id),
 		'kd_kendaraan' => set_value('kd_kendaraan', $row->kd_kendaraan),
 		'nama_kendaraan' => set_value('nama_kendaraan', $row->nama_kendaraan),
 		'jenis_kendaraan_id' => set_value('jenis_kendaraan_id', $row->jenis_kendaraan_id),
@@ -211,6 +224,7 @@ class Kendaraan extends CI_Controller
             $data = array(
 		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
 		'agen_id' => $this->input->post('agen_id',TRUE),
+        'kategori_id' => $this->input->post('kategori_id',TRUE),
 		'kd_kendaraan' => $this->input->post('kd_kendaraan',TRUE),
 		'nama_kendaraan' => $this->input->post('nama_kendaraan',TRUE),
 		'jenis_kendaraan_id' => $this->input->post('jenis_kendaraan_id',TRUE),

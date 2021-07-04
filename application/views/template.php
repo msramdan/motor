@@ -16,6 +16,11 @@
     <link href="<?= base_url()?>assets/build/css/style.css" rel="stylesheet">
   </head>
   <body class="nav-md">
+                  <div class="flash-data" data-flashdata="<?= $this->session->flashdata('message'); ?>"></div>
+
+<?php if ($this->session->flashdata('message') ) : ?>
+
+ <?php endif; ?>
     <div class="container body">
       <div class="main_container">
         <div class="col-md-3 left_col">
@@ -52,9 +57,10 @@
                   </li>
                   <li><a href="<?php echo base_url() ?>Agen"><i class="fa fa-truck"></i> Agen</a>
                   </li>
-                  <li><a><i class="fa fa-motorcycle "></i> Data Kendaraan <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-cube "></i> Data Item <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="<?php echo base_url() ?>Kendaraan">List Kendaraan</a></li>
+                      <li><a href="<?php echo base_url() ?>Kendaraan">List Item</a></li>
+                      <li><a href="<?php echo base_url() ?>Kategori">Kategori</a></li>
                       <li><a href="<?php echo base_url() ?>Merek">Merk</a></li>
                       <li><a href="<?php echo base_url() ?>Jenis_kendaraan">Jenis Kendaraan</a></li>
                       <li><a href="<?php echo base_url() ?>Type">Type</a></li>
@@ -64,14 +70,14 @@
                   </li>
                   <li><a href="<?php echo base_url() ?>paypall"><i class="fa fa-money"></i> Pembayaran Cicilan</a>
                   </li>
-
+<!-- 
                   <li><a><i class="fa fa-file"></i> Laporan <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="index.html">Penjualan</a></li>
                       <li><a href="index.html">Pembelian</a></li>
                       <li><a href="index.html">Pembayaran</a></li>
                     </ul>
-                  </li>                
+                  </li>    -->             
                 </ul>
               </div>
               <div class="menu_section">
@@ -160,6 +166,11 @@
     
     <!-- Custom Theme Scripts -->
     <script src="<?= base_url()?>assets/build/js/custom.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/sweetalert.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> <!-- untuk sweet alret -->
+    <script src="<?php echo base_url();?>assets/js/dataflash.js"></script>
+
   </body>
 </html>
 

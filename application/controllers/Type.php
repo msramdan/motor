@@ -83,7 +83,7 @@ class Type extends CI_Controller
 	    );
 
             $this->Type_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success 2');
+            $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('type'));
         }
     }

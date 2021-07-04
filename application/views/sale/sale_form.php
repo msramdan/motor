@@ -64,6 +64,7 @@
 
 
 	    <tr><td width='200'>Total Price Sale <?php echo form_error('total_price_sale') ?></td><td><input type="text" class="form-control" name="total_price_sale" id="total_price_sale" placeholder="Total Price Sale" value="<?php echo $total_price_sale; ?>" /></td></tr>
+      <tr><td width='200'>Biaya Admin <?php echo form_error('biaya_admin') ?></td><td><input type="text" class="form-control" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $biaya_admin; ?>" /></td></tr>
 
       <tr>
             <td width='200'>Type Sale <?php echo form_error('type_sale') ?></td>
@@ -71,6 +72,10 @@
                 <option value="Cash" >Cash</option>
                 <option value="Kredit" >Kredit</option>
               </select><br>
+              <div class="form-group">
+                        <input type="text" name="jenis_pembayaran" class="form-control" id="jenis_pembayaran" value="" placeholder="Cth : Tunai, Transfer, Dll">
+                    </div>
+
                     <div class="form-group">
                         <input type="number" name="dp" class="form-control" id="dp" value="" placeholder="Uang DP">
                     </div>
@@ -226,11 +231,13 @@
             if ($(this).val() == "Kredit") {
                 $('#dp').show(); 
                 $('#lama_cicilan').show();
-                $('#bunga_cicilan').show(); 
+                $('#bunga_cicilan').show();
+                $('#jenis_pembayaran').hide(); 
             } else {
                 $('#dp').hide(); 
                 $('#lama_cicilan').hide();
                 $('#bunga_cicilan').hide();
+                $('#jenis_pembayaran').show(); 
             }
         });
     });     

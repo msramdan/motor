@@ -92,23 +92,21 @@ class Sale_model extends CI_Model
         $this->db->delete($this->table);
     }
 
-    public function buat_kode()
-    {
-        $sql= "SELECT MAX(MID(invoice,9,4)) AS invoice_no
-        FROM sale
-        where MID(invoice,3,6) = DATE_FORMAT(CURDATE(),'%y%m%d')";
-        $query = $this->db->query($sql);
-        if ($query->num_rows()>0) {
-            $row = $query->row();
-            $n = ((int)$row->invoice_no)+1;
-            $no = sprintf("%'.04d", $n);
+    
+    function buat_kode(){
+        $q = $this->db->query("SELECT MAX(RIGHT(invoice,4)) AS kd_max FROM sale WHERE DATE(tanggal_sale)=CURDATE()");
+        $kd = "";
+        if($q->num_rows()>0){
+            foreach($q->result() as $k){
+                $tmp = ((int)$k->kd_max)+1;
+                $kd = sprintf("%04s", $tmp);
+            }
         }else{
-            $no = "0001";
+            $kd = "0001";
         }
-        $invoice = "ST".date('ymd').$no;
-        return $invoice;
-    }
-}
+        date_default_timezone_set('Asia/Jakarta');
+        return 'S'.date('dmy').$kd;
+    }}
 
 /* End of file Sale_model.php */
 /* Location: ./application/models/Sale_model.php */
