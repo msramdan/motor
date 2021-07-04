@@ -20,14 +20,24 @@ class Kendaraan_model extends CI_Model
 
 
     // get all
-    function get_all()
+    function get_all($status)
     {
-        $this->db->select('kendaraan.*, merek.nama_merek as nama_merek, type.nama_type as nama_type,jenis_kendaraan.nama_jenis_kendaraan as nama_jenis');
-        $this->db->join('merek', 'merek.merek_id = kendaraan.merek_id', 'left');
-        $this->db->join('type', 'type.type_id = kendaraan.type_id', 'left');
-        $this->db->join('jenis_kendaraan', 'jenis_kendaraan.jenis_kendaraan_id = kendaraan.jenis_kendaraan_id', 'left');
-        $this->db->order_by($this->id, $this->order);
-        return $this->db->get($this->table)->result();
+        if(!$status) {
+            $this->db->select('kendaraan.*, merek.nama_merek as nama_merek, type.nama_type as nama_type,jenis_kendaraan.nama_jenis_kendaraan as nama_jenis');
+            $this->db->join('merek', 'merek.merek_id = kendaraan.merek_id', 'left');
+            $this->db->join('type', 'type.type_id = kendaraan.type_id', 'left');
+            $this->db->join('jenis_kendaraan', 'jenis_kendaraan.jenis_kendaraan_id = kendaraan.jenis_kendaraan_id', 'left');
+            $this->db->order_by($this->id, $this->order);
+            return $this->db->get($this->table)->result();
+        } else {
+            $this->db->select('kendaraan.*, merek.nama_merek as nama_merek, type.nama_type as nama_type,jenis_kendaraan.nama_jenis_kendaraan as nama_jenis');
+            $this->db->join('merek', 'merek.merek_id = kendaraan.merek_id', 'left');
+            $this->db->join('type', 'type.type_id = kendaraan.type_id', 'left');
+            $this->db->join('jenis_kendaraan', 'jenis_kendaraan.jenis_kendaraan_id = kendaraan.jenis_kendaraan_id', 'left');
+            $this->db->where('kendaraan.status',$status);
+            $this->db->order_by($this->id, $this->order);
+            return $this->db->get($this->table)->result();
+        }
     }
 
     function get_harga ($id){

@@ -74,18 +74,18 @@ class Sale extends CI_Controller
         $data = array(
             'button' => 'Create',
             'pelanggan' =>$this->Pelanggan_model->get_all(),
-            'kendaraan' =>$this->Kendaraan_model->get_all(),
+            'kendaraan' =>$this->Kendaraan_model->get_all('Ready'),
             'kodeunik' =>$kode,
             'action' => site_url('sale/create_action'),
-	    'sale_id' => set_value('sale_id'),
-	    'invoice' => set_value('invoice'),
-	    'pelanggan_id' => set_value('pelanggan_id'),
-	    'kendaraan_id' => set_value('kendaraan_id'),
-	    'total_price_sale' => set_value('total_price_sale'),
-	    'type_sale' => set_value('type_sale'),
-	    'tanggal_sale' => set_value('tanggal_sale'),
-	    'user_id' => set_value('user_id'),
-	);
+            'sale_id' => set_value('sale_id'),
+            'invoice' => set_value('invoice'),
+            'pelanggan_id' => set_value('pelanggan_id'),
+            'kendaraan_id' => set_value('kendaraan_id'),
+            'total_price_sale' => set_value('total_price_sale'),
+            'type_sale' => set_value('type_sale'),
+            'tanggal_sale' => set_value('tanggal_sale'),
+            'user_id' => set_value('user_id'),
+        );
         $this->template->load('template','sale/sale_form', $data);
     }
     
