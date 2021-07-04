@@ -52,15 +52,15 @@ class Sale extends CI_Controller
         $row = $this->Sale_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'sale_id' => $row->sale_id,
-		'invoice' => $row->invoice,
-		'pelanggan_id' => $row->pelanggan_id,
-		'kendaraan_id' => $row->kendaraan_id,
-		'total_price_sale' => $row->total_price_sale,
-		'type_sale' => $row->type_sale,
-		'tanggal_sale' => $row->tanggal_sale,
-		'user_id' => $row->user_id,
-	    );
+                'sale_id' => $row->sale_id,
+                'invoice' => $row->invoice,
+                'pelanggan_id' => $row->nama_pelanggan,
+                'kendaraan_id' => $row->nama_kendaraan,
+                'total_price_sale' => $row->total_price_sale,
+                'type_sale' => $row->type_sale,
+                'tanggal_sale' => $row->tanggal_sale,
+                'user_id' => $row->nama_user,
+            );
             $this->template->load('template','sale/sale_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');

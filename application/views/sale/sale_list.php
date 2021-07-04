@@ -54,12 +54,12 @@
             <tr>
                 <th>No</th>
 		<th>Invoice</th>
-		<th>Pelanggan Id</th>
-		<th>Kendaraan Id</th>
+		<th>Pelanggan</th>
+		<th>Kendaraan</th>
 		<th>Total Price Sale</th>
 		<th>Type Sale</th>
 		<th>Tanggal Sale</th>
-		<th>User Id</th>
+		<th>Penginput</th>
 		<th>Action</th>
             </tr><?php
             foreach ($sale_data as $sale)

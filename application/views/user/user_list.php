@@ -53,9 +53,9 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-        <th>Nama User</th>
+        <th>Nama Lengkap</th>
         <th>Username</th>
-        <th>Nama Level</th>
+        <th>Level</th>
         <th>Email</th>
         <th>No Hp User</th>
         <th>Alamat User</th>

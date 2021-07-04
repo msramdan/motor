@@ -168,14 +168,14 @@
                     <tr>
                       <td><?= $data2->kd_kendaraan ?></td>
                       <td><?= $data2->nama_kendaraan ?></td>
-                      <td><?= $data2->nama_jenis ?></td>
+                      <td><?= $data2->nama_jenis_kendaraan ?></td>
                       <td><?= $data2->nama_merek ?></td>
                       <td><?= $data2->nama_type ?></td>
                       <td>
                         <button class="btn btn-xs btn-info" id="pilih"
                           data-1="<?php echo $data2->kendaraan_id ?>"
                           data-2="<?php echo $data2->nama_kendaraan ?>"
-                          data-3="<?php echo $data2->nama_jenis ?>"
+                          data-3="<?php echo $data2->nama_jenis_kendaraan ?>"
                           data-4="<?php echo $data2->nama_merek ?>"
                           data-5="<?php echo $data2->nama_type ?>"
                           data-6="<?php echo $data2->kd_kendaraan ?>">
