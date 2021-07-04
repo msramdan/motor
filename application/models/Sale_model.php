@@ -18,6 +18,12 @@ class Sale_model extends CI_Model
     // get all
     function get_all()
     {
+        $this->db->join('user', 'user.user_id = sale.user_id');
+        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('kendaraan', 'kendaraan.kendaraan_id = sale.kendaraan_id','left');
+        $this->db->join('merek', 'merek.merek_id = kendaraan.merek_id','left');
+        $this->db->join('type', 'type.type_id = kendaraan.type_id','left');
+        
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
     }
@@ -25,6 +31,9 @@ class Sale_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('kendaraan','kendaraan.kendaraan_id = sale.kendaraan_id');
+        $this->db->join('user','user.user_id = sale.user_id');
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }

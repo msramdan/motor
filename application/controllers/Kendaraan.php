@@ -85,21 +85,21 @@ class Kendaraan extends CI_Controller
             'type' =>$this->Type_model->get_all(),
             'merek' =>$this->Merek_model->get_all(),
             'agen' =>$this->Agen_model->get_all(),
-	    'kendaraan_id' => set_value('kendaraan_id'),
-	    'kd_pembelian' => set_value('kd_pembelian'),
-	    'agen_id' => set_value('agen_id'),
-	    'kd_kendaraan' => set_value('kd_kendaraan'),
-	    'nama_kendaraan' => set_value('nama_kendaraan'),
-	    'jenis_kendaraan_id' => set_value('jenis_kendaraan_id'),
-	    'merek_id' => set_value('merek_id'),
-        'type_id' => set_value('type_id'),
-	    'no_stnk' => set_value('no_stnk'),
-	    'no_bpkb' => set_value('no_bpkb'),
-	    'deskripsi' => set_value('deskripsi'),
-	    'harga_beli' => set_value('harga_beli'),
-	    'photo' => set_value('photo'),
-	    'status' => set_value('status'),
-	);
+            'kendaraan_id' => set_value('kendaraan_id'),
+            'kd_pembelian' => set_value('kd_pembelian'),
+            'agen_id' => set_value('agen_id'),
+            'kd_kendaraan' => set_value('kd_kendaraan'),
+            'nama_kendaraan' => set_value('nama_kendaraan'),
+            'jenis_kendaraan_id' => set_value('jenis_kendaraan_id'),
+            'merek_id' => set_value('merek_id'),
+            'type_id' => set_value('type_id'),
+            'no_stnk' => set_value('no_stnk'),
+            'no_bpkb' => set_value('no_bpkb'),
+            'deskripsi' => set_value('deskripsi'),
+            'harga_beli' => set_value('harga_beli'),
+            'photo' => set_value('photo'),
+            'status' => set_value('status'),
+        );
         $this->template->load('template','kendaraan/kendaraan_form', $data);
     }
     
@@ -293,36 +293,36 @@ class Kendaraan extends CI_Controller
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
 	xlsWriteLabel($tablehead, $kolomhead++, "Kd Pembelian");
-	xlsWriteLabel($tablehead, $kolomhead++, "Agen Id");
+	xlsWriteLabel($tablehead, $kolomhead++, "Agen");
 	xlsWriteLabel($tablehead, $kolomhead++, "Kd Kendaraan");
 	xlsWriteLabel($tablehead, $kolomhead++, "Nama Kendaraan");
-	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kendaraan Id");
-	xlsWriteLabel($tablehead, $kolomhead++, "Merek Id");
-    xlsWriteLabel($tablehead, $kolomhead++, "Type Id");
+	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kendaraan");
+    xlsWriteLabel($tablehead, $kolomhead++, "Kategori");
+	xlsWriteLabel($tablehead, $kolomhead++, "Merek");
+    xlsWriteLabel($tablehead, $kolomhead++, "Type");
 	xlsWriteLabel($tablehead, $kolomhead++, "No Stnk");
 	xlsWriteLabel($tablehead, $kolomhead++, "No Bpkb");
 	xlsWriteLabel($tablehead, $kolomhead++, "Deskripsi");
 	xlsWriteLabel($tablehead, $kolomhead++, "Harga Beli");
-	xlsWriteLabel($tablehead, $kolomhead++, "Photo");
 	xlsWriteLabel($tablehead, $kolomhead++, "Status");
 
-	foreach ($this->Kendaraan_model->get_all() as $data) {
+	foreach ($this->Kendaraan_model->get_all('') as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->kd_pembelian);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->agen_id);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_agen);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->kd_kendaraan);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_kendaraan);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->jenis_kendaraan_id);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->merek_id);
-        xlsWriteNumber($tablebody, $kolombody++, $data->type_id);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_jenis_kendaraan);
+        xlsWriteLabel($tablebody, $kolombody++, $data->kategori_item);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_merek);
+        xlsWriteLabel($tablebody, $kolombody++, $data->nama_type);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->no_stnk);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->no_bpkb);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->deskripsi);
 	    xlsWriteNumber($tablebody, $kolombody++, $data->harga_beli);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->photo);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->status);
 
 	    $tablebody++;
@@ -339,7 +339,7 @@ class Kendaraan extends CI_Controller
         header("Content-Disposition: attachment;Filename=kendaraan.doc");
 
         $data = array(
-            'kendaraan_data' => $this->Kendaraan_model->get_all(),
+            'kendaraan_data' => $this->Kendaraan_model->get_all(''),
             'start' => 0
         );
         
