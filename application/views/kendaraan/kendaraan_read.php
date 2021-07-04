@@ -39,7 +39,8 @@
 	    	</td>
 	    </tr>
 
-	    <tr><td></td><td><a href="<?php echo site_url('kendaraan') ?>" class="btn btn-default">Cancel</a></td></tr>
+	    <tr><td></td><td><a href="<?php echo site_url('kendaraan') ?>" class="btn btn-default">Cancel</a>
+	    	<a href="" class="btn btn-warning">Cetak</a></td></tr>
 	</table>
         </body>
     </div>

@@ -11,7 +11,7 @@
 	    <tr><td>Type Sale</td><td><?php echo $type_sale; ?></td></tr>
 	    <tr><td>Tanggal Sale</td><td><?php echo $tanggal_sale; ?></td></tr>
 	    <tr><td>Penginput</td><td><?php echo $user_id; ?></td></tr>
-	    <tr><td></td><td><a href="<?php echo site_url('sale') ?>" class="btn btn-default">Cancel</a></td></tr>
+	    <tr><td></td><td><a href="<?php echo site_url('sale') ?>" class="btn btn-default">Cancel</a><a href="" class="btn btn-warning">Cetak</a></td></tr>
 	</table>
         </body>
     </div>

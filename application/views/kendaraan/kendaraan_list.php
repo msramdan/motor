@@ -90,7 +90,7 @@
 			<td style="text-align:center" width="200px">
 				<?php
                 echo anchor(site_url('kendaraan/update_harga/'.$kendaraan->kendaraan_id),'<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
-                echo '  '; 
+                echo '  ';
 				echo anchor(site_url('kendaraan/read/'.$kendaraan->kendaraan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
 				echo '  '; 
 				echo anchor(site_url('kendaraan/update/'.$kendaraan->kendaraan_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
