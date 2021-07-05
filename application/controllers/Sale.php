@@ -18,6 +18,7 @@ class Sale extends CI_Controller
         $this->load->model('Kendaraan_model');
         $this->load->model('Pelanggan_model');
         $this->load->library('form_validation');
+        $this->load->library('pdf');
     }
 
     public function index()
@@ -287,17 +288,100 @@ class Sale extends CI_Controller
         $writer->save('php://output');
     }
 
-    public function word()
-    {
-        header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=sale.doc");
+    public function cetak_faktur($id) {
+        $pdf = new FPDF('l','mm','A5');
+        $data = $this->Sale_model->get_by_id($id);
+    
+        $pdf->AddPage();
 
-        $data = array(
-            'sale_data' => $this->Sale_model->get_all(),
-            'start' => 0
-        );
+        $pdf->setxY(15, 10);$pdf->SetFont('Arial','B',16);$pdf->Cell(100,7,'FAKTUR PENJUALAAN',0,0,'L');
+
+        $pdf->setXY(15, 25);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(35,6,'Nama Pelanggan',0,2,'L');
+        $pdf->Cell(35,6,'No. HP',0,2,'L');
+        $pdf->Cell(35,6,'Alamat',0,2,'L');
+        $pdf->setXY(15, 55);
+        $pdf->Cell(35,6,'Type Sale',0,2,'L');
+
+        $pdf->setXY(40, 25);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+
+        $pdf->setXY(42, 25);
+        $pdf->SetFont('Arial','',8);
+        $pdf->Cell(65,6,$data->nama_pelanggan,0,2,'L');
+        $pdf->Cell(65,6,$data->no_hp_pelanggan,0,2,'L');
+        $pdf->MultiCell(50,6,$data->alamat_ktp,0,'L',false);
         
-        $this->load->view('sale/sale_doc',$data);
+        $pdf->setXY(15, 55);
+        $pdf->Cell(35,6,'Type Sale',0,2,'L');
+        $pdf->setXY(50, 55);
+        $pdf->Cell(65,6,': '.$data->type_sale,0,2,'L');
+
+        
+        // SET X itu dari pojok kiri atas ke kanan
+        // SET Y itu dari pojok kiri atas ke bawah
+        // setXY() DUAA DUANYA
+        
+        $pdf->setXY(120, 19);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(20,6,'Invoice',0,2,'L');
+        $pdf->Cell(20,6,'Tanggal',0,2,'L');
+        $pdf->Cell(20,6,'Halaman',0,2,'L');
+
+        $pdf->setXY(140, 19);
+        $pdf->SetFont('Arial','',8);
+        $pdf->Cell(50,6,': '.$data->invoice,0,2,'L');
+        $pdf->Cell(50,6,': '.$data->tanggal_sale,0,2,'L');
+        $pdf->Cell(50,6,': 1',0,2,'L');
+        
+
+        $pdf->setXY(10, 70);
+        $pdf->SetFont('Arial','B',9);
+        $pdf->Cell(7,6,'No',1,0);
+        $pdf->Cell(85,6,'Item',1,0);
+        $pdf->Cell(25,6,'Qty',1,0);
+        $pdf->Cell(25,6,'Harga',1,0);
+        $pdf->Cell(25,6,'Jumlah',1,1);
+        
+        $pdf->SetFont('Arial','',9);
+        $pdf->Cell(7,25,'1',1,0);
+        $pdf->Cell(85,25,$data->nama_kendaraan,1,0);
+        $pdf->Cell(25,25,'1',1,0);
+        $pdf->Cell(25,25,$data->harga_beli,1,0);
+        $pdf->Cell(25,25,floatval($data->harga_beli) * 1,1,0); //harga beli dikali 1
+        $pdf->setXY(127, 101);
+        $pdf->Cell(25,6,'Biaya Admin',0,0);
+        $pdf->Cell(25,6,$data->biaya_admin,1,0);
+        $pdf->setXY(127, 107);
+        $pdf->Cell(25,6,'Grand Total',0,0);
+        $pdf->Cell(25,6,$data->total_price_sale,1,0);
+
+
+        $pdf->setXY(20, 120);
+        $pdf->Cell(50,6,'(KASIR)',0,0,'C');
+        $pdf->Cell(40,6,'(PENERIMA)',0,0,'R');
+        // Memberikan space kebawah agar tidak terlalu rapat
+        /* $pdf->Cell(10,7,'',0,1);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(20,6,'NIM',1,0);
+        $pdf->Cell(85,6,'NAMA MAHASISWA',1,0);
+        $pdf->Cell(27,6,'NO HP',1,0);
+        $pdf->Cell(25,6,'TANGGAL LHR',1,1);
+        $pdf->SetFont('Arial','',10);
+        $mahasiswa = $this->db->get('mahasiswa')->result();
+        foreach ($mahasiswa as $row){
+            $pdf->Cell(20,6,$row->nim,1,0);
+            $pdf->Cell(85,6,$row->nama_lengkap,1,0);
+            $pdf->Cell(27,6,$row->no_hp,1,0);
+            $pdf->Cell(25,6,$row->tanggal_lahir,1,1);
+        }*/
+
+        //$pdf->Output();
+        $pdf->Output('result.pdf', 'D');
     }
 
 }
