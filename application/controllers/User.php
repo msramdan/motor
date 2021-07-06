@@ -10,6 +10,7 @@ class User extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('User_model');
+        $this->load->model('Grup_model');
         $this->load->model('Level_model');
         $this->load->library('form_validation');
     }
@@ -299,6 +300,32 @@ class User extends CI_Controller
 
         xlsEOF();
         exit();
+    }
+
+    public function akses_unit($id)
+    {
+        $data['user'] = $this->db->get_where('user', ['user_id' =>$id])->row_array();
+        $data['data_grup']= $this->Grup_model->get_all();
+        $this->template->load('template','user/access_unit', $data);
+    }
+
+    public function changeaccess(){
+        $user_id = $this->input->post('user_id');
+        $unit_id = $this->input->post('unit_id');
+
+        $data=[
+            'user_id' =>$user_id,
+            'unit_id' =>$unit_id
+        ];
+
+        $result = $this->db->get_where('user_access_unit', $data);
+
+        if ($result->num_rows() < 1) {
+            $this->db->insert('user_access_unit', $data);
+        }else{
+            $this->db->delete('user_access_unit', $data);
+        }
+
     }
 
 }

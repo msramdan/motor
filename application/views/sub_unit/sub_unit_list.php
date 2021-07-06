@@ -47,7 +47,8 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Unit Id</th>
+		<th>Unit</th>
+        <th>Kode Sub Unit</th>
 		<th>Nama Sub Unit</th>
 		<th>Action</th>
             </tr><?php
@@ -57,6 +58,7 @@
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
 			<td><?php echo $sub_unit->nama_unit ?></td>
+            <td><?php echo $sub_unit->kd_sub_unit ?></td>
 			<td><?php echo $sub_unit->nama_sub_unit ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 

@@ -1,7 +1,7 @@
 
             <div class="page-title">
                           <div class="title_left">
-                          <h3>KELOLA DATA UNIT</h3>
+                          <h3>KELOLA DATA KARYAWAN</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
@@ -12,11 +12,11 @@
             <div class='row'>
             <div class='col-md-9'>
             <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('unit/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('unit/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
+        <?php echo anchor(site_url('karyawan/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+		<?php echo anchor(site_url('karyawan/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
-            <form action="<?php echo site_url('unit/index'); ?>" class="form-inline" method="get">
+            <form action="<?php echo site_url('karyawan/index'); ?>" class="form-inline" method="get">
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
                         <span class="input-group-btn">
@@ -24,7 +24,7 @@
                                 if ($q <> '')
                                 {
                                     ?>
-                                    <a href="<?php echo site_url('unit'); ?>" class="btn btn-default">Reset</a>
+                                    <a href="<?php echo site_url('karyawan'); ?>" class="btn btn-default">Reset</a>
                                     <?php
                                 }
                             ?>
@@ -47,26 +47,37 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Grup</th>
-        <th>Kode Unit</th>
-		<th>Nama Unit</th>
+		<th>Nama Karyawan</th>
+		<th>No Ktp Karyawan</th>
+		<th>No Hp Karyawan</th>
+		<th>Jenis Kelamin</th>
+		<th>Pendidikan</th>
+		<th>Alamat</th>
+		<th>Unit Id</th>
+		<th>Photo</th>
 		<th>Action</th>
             </tr><?php
-            foreach ($unit_data as $unit)
+            foreach ($karyawan_data as $karyawan)
             {
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $unit->nama_grup?></td>
-            <td><?php echo $unit->kd_unit?></td>
-			<td><?php echo $unit->nama_unit ?></td>
+			<td><?php echo $karyawan->nama_karyawan ?></td>
+			<td><?php echo $karyawan->no_ktp_karyawan ?></td>
+			<td><?php echo $karyawan->no_hp_karyawan ?></td>
+			<td><?php echo $karyawan->jenis_kelamin ?></td>
+			<td><?php echo $karyawan->pendidikan ?></td>
+			<td><?php echo $karyawan->alamat ?></td>
+			<td><?php echo $karyawan->nama_unit ?></td>
+            <td><a href="<?php echo base_url(); ?>karyawan/download/<?php echo $karyawan->photo?>"><i
+                                                class="ace-icon fa fa-download"></i> Download Photo</td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('unit/read/'.$unit->unit_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
+				echo anchor(site_url('karyawan/read/'.$karyawan->karyawan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
 				echo '  '; 
-				echo anchor(site_url('unit/update/'.$unit->unit_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+				echo anchor(site_url('karyawan/update/'.$karyawan->karyawan_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
 				echo '  '; 
-				echo anchor(site_url('unit/delete/'.$unit->unit_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				echo anchor(site_url('karyawan/delete/'.$karyawan->karyawan_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>
 		</tr>

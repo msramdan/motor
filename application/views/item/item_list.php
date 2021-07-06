@@ -85,7 +85,7 @@
                                     <td><?php echo $item->harga_beli ?></td>
                                     <td><?php echo $item->harga_beli ?></td>
                                     <td><a href="<?php echo base_url(); ?>item/download/<?php echo $item->photo?>"><i
-                                                class="ace-icon fa fa-download"></i> Download Logo</td>
+                                                class="ace-icon fa fa-download"></i> Download Photo</td>
                                     <td><?php echo $item->status ?></td>
                                     <td style="text-align:center" width="200px">
                                         <?php

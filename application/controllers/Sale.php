@@ -349,7 +349,7 @@ class Sale extends CI_Controller
         
         $pdf->SetFont('Arial','',9);
         $pdf->Cell(7,25,'1',1,0);
-        $pdf->Cell(85,25,$data->nama_kendaraan,1,0);
+        $pdf->Cell(85,25,$data->nama_item,1,0);
         $pdf->Cell(25,25,'1',1,0);
         $pdf->Cell(25,25,$data->harga_beli,1,0);
         $pdf->Cell(25,25,floatval($data->harga_beli) * 1,1,0); //harga beli dikali 1

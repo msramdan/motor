@@ -66,9 +66,11 @@ class Sub_unit extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
+            'kodeunik' =>$this->Sub_unit_model->buat_kode(),
             'unit' =>$this->Unit_model->get_all(),
             'action' => site_url('sub_unit/create_action'),
 	    'sub_unit_id' => set_value('sub_unit_id'),
+        'kd_sub_unit' => set_value('kd_sub_unit'),
 	    'unit_id' => set_value('unit_id'),
 	    'nama_sub_unit' => set_value('nama_sub_unit'),
 	);
@@ -82,8 +84,29 @@ class Sub_unit extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
+            $unit_id = $this->input->post('unit_id');
+            $cek = $this->db->get_where('unit', ['unit_id' =>$unit_id])->row_array();
+
+            // var_dump($cek['kd_unit']);
+            // exit();
+            $q = $this->db->query("SELECT MAX(RIGHT(kd_sub_unit,3)) AS kd_max FROM sub_unit WHERE unit_id='$unit_id'");
+            $kd = "";
+            if($q->num_rows()>0){
+                foreach($q->result() as $k){
+                    $tmp = ((int)$k->kd_max)+1;
+                    $kd = sprintf("%03s", $tmp);
+                    $buat_kode = $cek['kd_unit'].$kd;
+                }
+            }else{
+                $kd = "001";
+                $buat_kode = $cek['kd_unit'].$kd;
+            }
+
+
+
             $data = array(
-		'unit_id' => $this->input->post('unit_id',TRUE),
+		'kd_sub_unit' => $buat_kode,
+        'unit_id' => $this->input->post('unit_id',TRUE),
 		'nama_sub_unit' => $this->input->post('nama_sub_unit',TRUE),
 	    );
 
@@ -103,6 +126,7 @@ class Sub_unit extends CI_Controller
                 'unit' =>$this->Unit_model->get_all(),
                 'action' => site_url('sub_unit/update_action'),
 		'sub_unit_id' => set_value('sub_unit_id', $row->sub_unit_id),
+        'kd_sub_unit' => set_value('kd_sub_unit', $row->kd_sub_unit),
 		'unit_id' => set_value('unit_id', $row->unit_id),
 		'nama_sub_unit' => set_value('nama_sub_unit', $row->nama_sub_unit),
 	    );
@@ -121,6 +145,7 @@ class Sub_unit extends CI_Controller
             $this->update($this->input->post('sub_unit_id', TRUE));
         } else {
             $data = array(
+                'kd_sub_unit' => $this->input->post('kd_sub_unit',TRUE),
 		'unit_id' => $this->input->post('unit_id',TRUE),
 		'nama_sub_unit' => $this->input->post('nama_sub_unit',TRUE),
 	    );

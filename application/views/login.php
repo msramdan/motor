@@ -35,13 +35,23 @@
                 <!-- <img style="width: 90%;height: auto;margin-top: 20px;" src="<?php echo base_url(); ?>assets/img/logo.png"> -->
                 <h1>Login Form</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Username" name="username" required="" />
+                <input type="text" class="form-control" placeholder="Username" name="username" required="" autocomplete="off" />
               </div>
               <div>
-                <input type="password" name="password" class="form-control" placeholder="Password" required="" />
+                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password" required="" />
               </div>
-              <div>
-                <button type="submit" class="btn btn-success" name="login" style="float: left;">Login</button>
+              <div style="float: left;">
+                <?=$image;?>
+              </div>
+              <div  style="float: right;">
+                <input type="text" name="captcha_code" class="form-control" id="captcha_code" placeholder="Kode Captcha" required="" />
+              </div>
+              <div class="clearfix"></div>
+              <div style="float: left;">
+                <input type="checkbox" onclick="myFunction()"> Show Password
+              </div>
+              <div  style="float: right;">
+                <button type="submit" class="btn btn-success" name="login"><i class="fa fa-unlock" aria-hidden="true"></i> Login</button>
               </div>
               <div class="clearfix"></div>
 
@@ -60,3 +70,15 @@
     </div>
   </body>
 </html>
+
+
+<script>
+        function myFunction() {
+            var x = document.getElementById("inputPassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>

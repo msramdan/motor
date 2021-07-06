@@ -47,6 +47,7 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
+                <th>Kode Grup</th>
 		<th>Nama Grup</th>
 		<th>Action</th>
             </tr><?php
@@ -55,7 +56,8 @@
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $grup->nama_grup ?></td>
+			<td><?php echo $grup->kd_grup ?></td>
+            <td><?php echo $grup->nama_grup ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
 				echo anchor(site_url('grup/read/'.$grup->grup_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 

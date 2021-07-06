@@ -64,8 +64,10 @@ class Grup extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
+            'kodeunik' =>$this->Grup_model->buat_kode(),
             'action' => site_url('grup/create_action'),
 	    'grup_id' => set_value('grup_id'),
+        'kd_grup' => set_value('kd_grup'),
 	    'nama_grup' => set_value('nama_grup'),
 	);
         $this->template->load('template','grup/grup_form', $data);
@@ -79,6 +81,7 @@ class Grup extends CI_Controller
             $this->create();
         } else {
             $data = array(
+                'kd_grup' => $this->input->post('kd_grup',TRUE),
 		'nama_grup' => $this->input->post('nama_grup',TRUE),
 	    );
 
@@ -97,6 +100,7 @@ class Grup extends CI_Controller
                 'button' => 'Update',
                 'action' => site_url('grup/update_action'),
 		'grup_id' => set_value('grup_id', $row->grup_id),
+        'kd_grup' => set_value('kd_grup', $row->kd_grup),
 		'nama_grup' => set_value('nama_grup', $row->nama_grup),
 	    );
             $this->template->load('template','grup/grup_form', $data);
@@ -114,6 +118,7 @@ class Grup extends CI_Controller
             $this->update($this->input->post('grup_id', TRUE));
         } else {
             $data = array(
+                'kd_grup' => $this->input->post('kd_grup',TRUE),
 		'nama_grup' => $this->input->post('nama_grup',TRUE),
 	    );
 

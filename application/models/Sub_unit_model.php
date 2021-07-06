@@ -69,6 +69,21 @@ class Sub_unit_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+    function buat_kode(){
+        $q = $this->db->query("SELECT MAX(RIGHT(kd_sub_unit,3)) AS kd_max FROM sub_unit");
+        $kd = "";
+        if($q->num_rows()>0){
+            foreach($q->result() as $k){
+                $tmp = ((int)$k->kd_max)+1;
+                $kd = sprintf("%03s", $tmp);
+            }
+        }else{
+            $kd = "001";
+        }
+        date_default_timezone_set('Asia/Jakarta');
+        return $kd;
+    }
+
 }
 
 /* End of file Sub_unit_model.php */

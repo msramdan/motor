@@ -71,7 +71,7 @@
             <td><?php echo $user->no_hp_user ?></td>
             <td><?php echo $user->alamat_user ?></td>
             <td><img style="width: 40%; text-align: center;" src="<?= base_url() ?>assets/img/user/<?= $user->photo ?>"></td>
-            <td><a href="<?=site_url('level/role/'.$user->user_id)?>" class ="btn btn-success btn-xs"><i class=""></i>Access</a></td>      
+            <td><a href="<?=site_url('user/akses_unit/'.$user->user_id)?>" class ="btn btn-success btn-xs"><i class="fa fa-unlock" aria-hidden="true"></i> Access</a></td>      
             <td style="text-align:center" width="200px">
                 <?php 
                 echo anchor(site_url('user/update/'.$user->user_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 

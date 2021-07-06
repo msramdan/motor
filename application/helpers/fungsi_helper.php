@@ -18,6 +18,19 @@ function check_access($level_id, $menu_id ){
 
  }
 
+ function check_access_unit($user_id, $unit_id ){
+    $ci = get_instance();
+    $ci->db->where('user_id', $user_id);
+    $ci->db->where('unit_id', $unit_id);
+    $result = $ci->db->get('user_access_unit');
+    if ($result->num_rows() > 0 ) {
+         return "checked='checked'";
+    }
+
+ }
+
+ 
+
 function is_login(){
     $ci =& get_instance();
     $user_session = $ci->session->userdata('userid');

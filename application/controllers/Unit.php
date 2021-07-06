@@ -66,9 +66,11 @@ class Unit extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
+            'kodeunik' =>$this->Unit_model->buat_kode(),
             'grup' =>$this->Grup_model->get_all(),
             'action' => site_url('unit/create_action'),
 	    'unit_id' => set_value('unit_id'),
+        'kd_unit' => set_value('kd_unit'),
 	    'grup_id' => set_value('grup_id'),
 	    'nama_unit' => set_value('nama_unit'),
 	);
@@ -82,7 +84,25 @@ class Unit extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
+            $grup_id = $this->input->post('grup_id');
+            $cek = $this->db->get_where('grup', ['grup_id' =>$grup_id])->row_array();
+            $q = $this->db->query("SELECT MAX(RIGHT(kd_unit,3)) AS kd_max FROM unit WHERE grup_id='$grup_id'");
+            $kd = "";
+            if($q->num_rows()>0){
+                foreach($q->result() as $k){
+                    $tmp = ((int)$k->kd_max)+1;
+                    $kd = sprintf("%03s", $tmp);
+                    $buat_kode = $cek['kd_grup'].$kd;
+                }
+            }else{
+                $kd = "001";
+                $buat_kode = $cek['kd_grup'].$kd;
+            }
+
+
+
             $data = array(
+        'kd_unit' => $buat_kode,
 		'grup_id' => $this->input->post('grup_id',TRUE),
 		'nama_unit' => $this->input->post('nama_unit',TRUE),
 	    );
@@ -103,6 +123,7 @@ class Unit extends CI_Controller
                 'grup' =>$this->Grup_model->get_all(),
                 'action' => site_url('unit/update_action'),
 		'unit_id' => set_value('unit_id', $row->unit_id),
+        'kd_unit' => set_value('kd_unit', $row->kd_unit),
 		'grup_id' => set_value('grup_id', $row->grup_id),
 		'nama_unit' => set_value('nama_unit', $row->nama_unit),
 	    );
@@ -121,6 +142,7 @@ class Unit extends CI_Controller
             $this->update($this->input->post('unit_id', TRUE));
         } else {
             $data = array(
+                'kd_unit' => $this->input->post('kd_unit',TRUE),
 		'grup_id' => $this->input->post('grup_id',TRUE),
 		'nama_unit' => $this->input->post('nama_unit',TRUE),
 	    );

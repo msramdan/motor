@@ -11,7 +11,14 @@
         
             <form action="<?php echo $action; ?>" method="post">
             
-<table class='table table-bordered>'        
+<table class='table table-bordered'>
+       <?php if ($this->uri->segment(2) == 'create' || $this->uri->segment(2) == 'create_action' ) { ?>
+                          <input type="hidden" class="form-control" name="kd_sub_unit" id="kd_sub_unit"
+                                        placeholder="Kode Unit" readonly="" value="<?= $kodeunik ?>" />
+                            <?php }else{ ?>
+                            <tr><td width='200'>Kode Unit <?php echo form_error('kd_sub_unit') ?></td><td><input readonly="" type="text" class="form-control" name="kd_sub_unit" id="kd_sub_unit" placeholder="Kode Unit" value="<?php echo $kd_sub_unit; ?>" /></td></tr>
+                            <?php } ?>
+
 
       <tr>
             <td width='200'>unit <?php echo form_error('unit_id') ?></td>
