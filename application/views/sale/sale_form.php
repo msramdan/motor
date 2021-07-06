@@ -29,22 +29,22 @@
                   </td>   
                 </tr>
       <tr>
-                  <td width='200'>Kendaraan<?php echo form_error('kendaraan_id') ?></td>
+                  <td width='200'>item<?php echo form_error('item_id') ?></td>
                   <td>
                     <div class="form-group input-group">
-                      <input type="hidden" id="kendaraan_id" name="kendaraan_id">
-                      <input type="text" id="kd_kendaraan" name="kd_kendaraan" class="form-control" readonly="">
+                      <input type="hidden" id="item_id" name="item_id">
+                      <input type="text" id="kd_item" name="kd_item" class="form-control" readonly="">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-kendaraan">
+                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-item">
                           <i class="fa fa-search"></i>
                         </button>
                       </span>
                     </div>
-                    <label for="nama_item_pro">Nama Kendaraan</label>
+                    <label for="nama_item_pro">Nama item</label>
                     <div class="form-group">
-                        <input type="text" name="nama_kendaraan" class="form-control" id="nama_kendaraan" value="-" readonly="">
+                        <input type="text" name="nama_item" class="form-control" id="nama_item" value="-" readonly="">
                     </div>
-                    <label for="nama_item_pro">Jenis Kendaraan</label>
+                    <label for="nama_item_pro">Jenis item</label>
                     <div class="form-group">
                         <input type="text" name="nama_jenis" class="form-control" id="nama_jenis" value="-" readonly="">
                     </div>
@@ -147,43 +147,43 @@
       
     </div>
 
-     <div class="modal fade" id="modal-kendaraan">
+     <div class="modal fade" id="modal-item">
       <div class="modal-dialog">E
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" arial-label="close">
               <span aria-hidden="true">&times;</span>
             </button>
-            <h4 class="modal-title">Add Kendaraan</h4>
+            <h4 class="modal-title">Add item</h4>
           </div>
           <div class="modal-body table-responsive">
             <table class="table table-bordered table-striped" id="table1">
                 <thead>
                     <tr>
-                        <th>Kode Kendaraan</th>
-                        <th>Nama Kendaraan</th>
-                        <th>Jenis Kendaraan</th>
+                        <th>Kode item</th>
+                        <th>Nama item</th>
+                        <th>Jenis item</th>
                         <th>Merk</th>
                         <th>Type</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($kendaraan as $key => $data2) { ?>
+                    <?php foreach ($item as $key => $data2) { ?>
                     <tr>
-                      <td><?= $data2->kd_kendaraan ?></td>
-                      <td><?= $data2->nama_kendaraan ?></td>
-                      <td><?= $data2->nama_jenis_kendaraan ?></td>
+                      <td><?= $data2->kd_item ?></td>
+                      <td><?= $data2->nama_item ?></td>
+                      <td><?= $data2->nama_jenis_item ?></td>
                       <td><?= $data2->nama_merek ?></td>
                       <td><?= $data2->nama_type ?></td>
                       <td>
                         <button class="btn btn-xs btn-info" id="pilih"
-                          data-1="<?php echo $data2->kendaraan_id ?>"
-                          data-2="<?php echo $data2->nama_kendaraan ?>"
-                          data-3="<?php echo $data2->nama_jenis_kendaraan ?>"
+                          data-1="<?php echo $data2->item_id ?>"
+                          data-2="<?php echo $data2->nama_item ?>"
+                          data-3="<?php echo $data2->nama_jenis_item ?>"
                           data-4="<?php echo $data2->nama_merek ?>"
                           data-5="<?php echo $data2->nama_type ?>"
-                          data-6="<?php echo $data2->kd_kendaraan ?>">
+                          data-6="<?php echo $data2->kd_item ?>">
                           <i class="fa fa-check"></i> Select
                         </button>
                       </td>
@@ -209,13 +209,13 @@
         })
 
         $(document).on('click','#pilih',function(){
-          $('#kendaraan_id').val($(this).data('1'))
-          $('#nama_kendaraan').val($(this).data('2'))
+          $('#item_id').val($(this).data('1'))
+          $('#nama_item').val($(this).data('2'))
           $('#nama_jenis').val($(this).data('3'))
           $('#nama_merek').val($(this).data('4'))
           $('#nama_type').val($(this).data('5'))
-          $('#kd_kendaraan').val($(this).data('6'))
-          $('#modal-kendaraan').modal('hide')
+          $('#kd_item').val($(this).data('6'))
+          $('#modal-item').modal('hide')
         })
     </script>
 

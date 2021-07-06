@@ -7,6 +7,17 @@ function check_already_login(){
     }
 }
 
+function check_access($level_id, $menu_id ){
+    $ci = get_instance();
+    $ci->db->where('level_id', $level_id);
+    $ci->db->where('sub_menu_id', $menu_id);
+    $result = $ci->db->get('user_access_menu');
+    if ($result->num_rows() > 0 ) {
+         return "checked='checked'";
+    }
+
+ }
+
 function is_login(){
     $ci =& get_instance();
     $user_session = $ci->session->userdata('userid');

@@ -1,7 +1,7 @@
 
             <div class="page-title">
                           <div class="title_left">
-                          <h3>KELOLA DATA SALE</h3>
+                          <h3>KELOLA DATA HISTORY_LOGIN</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
@@ -12,11 +12,10 @@
             <div class='row'>
             <div class='col-md-9'>
             <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('sale/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('sale/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
+		<?php echo anchor(site_url('history_login/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
-            <form action="<?php echo site_url('sale/index'); ?>" class="form-inline" method="get">
+            <form action="<?php echo site_url('history_login/index'); ?>" class="form-inline" method="get">
                     <div class="input-group">
                         <input type="text" class="form-control" name="q" value="<?php echo $q; ?>">
                         <span class="input-group-btn">
@@ -24,7 +23,7 @@
                                 if ($q <> '')
                                 {
                                     ?>
-                                    <a href="<?php echo site_url('sale'); ?>" class="btn btn-default">Reset</a>
+                                    <a href="<?php echo site_url('history_login'); ?>" class="btn btn-default">Reset</a>
                                     <?php
                                 }
                             ?>
@@ -37,7 +36,6 @@
         
    
         <div class="row" style="margin-bottom: 10px">
-            
             <div class="col-md-1 text-right">
             </div>
             <div class="col-md-3 text-right">
@@ -48,38 +46,21 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Invoice</th>
-		<th>Pelanggan</th>
-		<th>Item</th>
-		<th>Total Price Sale</th>
-        <th>Biaya Admin</th>
-		<th>Type Sale</th>
-		<th>Tanggal Sale</th>
-		<th>Penginput</th>
-		<th>Action</th>
+		<th>User Id</th>
+		<th>Info</th>
+		<th>Tanggal</th>
+		<th>User Agent</th>
             </tr><?php
-            foreach ($sale_data as $sale)
+            foreach ($history_login_data as $history_login)
             {
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $sale->invoice ?></td>
-			<td><?php echo $sale->nama_pelanggan ?></td>
-			<td><?php echo $sale->nama_item ?></td>
-			<td><?php echo $sale->total_price_sale ?></td>
-            <td><?php echo $sale->biaya_admin ?></td>
-			<td><?php echo $sale->type_sale ?></td>
-			<td><?php echo $sale->tanggal_sale ?></td>
-			<td><?php echo $sale->nama_user ?></td>
-			<td style="text-align:center" width="200px">
-				<?php 
-				echo anchor(site_url('sale/read/'.$sale->sale_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				// echo anchor(site_url('sale/update/'.$sale->sale_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				// echo '  '; 
-				echo anchor(site_url('sale/delete/'.$sale->sale_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
-				?>
-			</td>
+			<td><?php echo $history_login->nama_user ?></td>
+			<td><?php echo $history_login->info ?></td>
+			<td><?php echo $history_login->tanggal ?></td>
+			<td><?php echo $history_login->user_agent ?></td>
+
 		</tr>
                 <?php
             }

@@ -67,8 +67,8 @@ class User_m extends CI_Model {
         $this->db->update('user',$params);
     }
 
-    public function addHistory($name, $info, $tanggal, $user_agent) {
-        return $this->db->insert('history_karyawan', array('nama' => $name, 'info' => $info, 'tanggal' => $tanggal, 'user_agent' =>$user_agent));
+    public function addHistory($user_id, $info, $user_agent) {
+        return $this->db->insert('history_login', array('user_id' => $user_id, 'info' => $info,'user_agent' =>$user_agent));
     }
 
     public function ubah_data($data,$id){

@@ -35,7 +35,8 @@ class Auth extends CI_Controller {
         );
         $this->session->set_userdata($params);
 
-        // $this->user_m->addHistory($this->fungsi->user_login()->name, $this->fungsi->user_login()->name.' Telah melakukan login', date('d/m/Y H:i:s'), $_SERVER['HTTP_USER_AGENT']);
+        $this->user_m->addHistory($this->fungsi->user_login()->user_id, $this->fungsi->user_login()->nama_user.' Telah melakukan login', $_SERVER['HTTP_USER_AGENT']);
+
       echo "<script>window.location='".site_url('dashboard')."'</script>";
 
 

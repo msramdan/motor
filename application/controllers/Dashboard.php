@@ -13,7 +13,7 @@ class Dashboard extends CI_Controller {
 	public function index()
 	{
 		$data['countpelanggan'] = $this->Dashboard_model->count_pelanggan();
-		$data['countkendaraan'] = $this->Dashboard_model->count_kendaraan();
+		$data['countitem'] = $this->Dashboard_model->count_item();
 		$data['counttransaksi'] = $this->Dashboard_model->count_transaksi();
 		$data['countusers'] = $this->Dashboard_model->count_allusers();
 		$this->template->load('template','dashboard',$data);
