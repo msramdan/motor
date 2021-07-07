@@ -13,7 +13,7 @@ class item extends CI_Controller
         $this->load->model('Type_model');
         $this->load->model('Kategori_model');
         $this->load->model('Merek_model');
-        $this->load->model('Jenis_Item_model');
+        $this->load->model('Jenis_item_model');
         $this->load->model('Agen_model');
         $this->load->library('form_validation');
     }
@@ -306,40 +306,40 @@ class item extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Kd Pembelian");
-	xlsWriteLabel($tablehead, $kolomhead++, "Agen");
-	xlsWriteLabel($tablehead, $kolomhead++, "Kd item");
-	xlsWriteLabel($tablehead, $kolomhead++, "Nama item");
-	xlsWriteLabel($tablehead, $kolomhead++, "Jenis item");
-    xlsWriteLabel($tablehead, $kolomhead++, "Kategori");
-	xlsWriteLabel($tablehead, $kolomhead++, "Merek");
-    xlsWriteLabel($tablehead, $kolomhead++, "Type");
-	xlsWriteLabel($tablehead, $kolomhead++, "No Stnk");
-	xlsWriteLabel($tablehead, $kolomhead++, "No Bpkb");
-	xlsWriteLabel($tablehead, $kolomhead++, "Deskripsi");
-	xlsWriteLabel($tablehead, $kolomhead++, "Harga Beli");
-	xlsWriteLabel($tablehead, $kolomhead++, "Status");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Kd Pembelian");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Agen");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Kd item");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama item");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Jenis item");
+        xlsWriteLabel($tablehead, $kolomhead++, "Kategori");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Merek");
+        xlsWriteLabel($tablehead, $kolomhead++, "Type");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Stnk");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Bpkb");
+        xlsWriteLabel($tablehead, $kolomhead++, "Deskripsi");
+        xlsWriteLabel($tablehead, $kolomhead++, "Harga Beli");
+        xlsWriteLabel($tablehead, $kolomhead++, "Status");
 
-	foreach ($this->Item_model->get_all('') as $data) {
+	    foreach ($this->Item_model->get_all('') as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->kd_pembelian);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_agen);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->kd_item);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_item);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_jenis_item);
-        xlsWriteLabel($tablebody, $kolombody++, $data->kategori_item);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_merek);
-        xlsWriteLabel($tablebody, $kolombody++, $data->nama_type);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->no_stnk);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->no_bpkb);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->deskripsi);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->harga_beli);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->status);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->kd_pembelian);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_agen);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->kd_item);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_item);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_jenis_item);
+            xlsWriteLabel($tablebody, $kolombody++, $data->nama_kategori);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_merek);
+            xlsWriteLabel($tablebody, $kolombody++, $data->nama_type);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_stnk);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_bpkb);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->deskripsi);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->harga_beli);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->status);
 
-	    $tablebody++;
+    	    $tablebody++;
             $nourut++;
         }
 

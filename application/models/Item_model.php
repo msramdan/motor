@@ -28,6 +28,7 @@ class item_model extends CI_Model
             $this->db->join('merek', 'merek.merek_id = item.merek_id', 'left');
             $this->db->join('type', 'type.type_id = item.type_id', 'left');
             $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
+            $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
             $this->db->order_by($this->id, $this->order);
             return $this->db->get($this->table)->result();
         } else {
@@ -36,6 +37,7 @@ class item_model extends CI_Model
             $this->db->join('merek', 'merek.merek_id = item.merek_id', 'left');
             $this->db->join('type', 'type.type_id = item.type_id', 'left');
             $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
+            $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
             $this->db->where('item.status',$status);
             $this->db->order_by($this->id, $this->order);
             return $this->db->get($this->table)->result();
