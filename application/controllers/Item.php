@@ -89,7 +89,7 @@ class item extends CI_Controller
             'kode_barang' => $kodeBarangSekarang,
             'kodeunik' =>$this->Item_model->buat_kode(),
             'action' => site_url('item/create_action'),
-            'jenis' =>$this->Jenis_Item_model->get_all(),
+            'jenis' =>$this->Jenis_item_model->get_all(),
             'type' =>$this->Type_model->get_all(),
             'kategori' =>$this->Kategori_model->get_all(),
             'merek' =>$this->Merek_model->get_all(),
