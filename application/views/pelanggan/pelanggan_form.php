@@ -30,13 +30,13 @@
                                 No Kk <?php echo form_error('no_kk') ?>
                             </td>
                             <td>
-                                <input id="no_kk" class="form-control input-validation col-md-7 col-xs-12" type="text" name="no_kk" data-validate-length="6,8" class="form-control input-validation col-md-7 col-xs-12" required="required">
+                                <input id="no_kk" class="form-control input-validation col-md-7 col-xs-12" type="text" name="no_kk" data-validate-length="6,8" placeholder="input No KK" class="form-control input-validation col-md-7 col-xs-12" required="required">
                             
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <input id="no_kk_confirm" type="text" name="no_kk_confirm" data-validate-linked="no_kk" class="form-control input-validation col-md-7 col-xs-12 need_to_confirm" make-sure-it-similar-to="no_kk" required="required">
+                                <input id="no_kk_confirm" type="text" name="no_kk_confirm" class="form-control input-validation col-md-7 col-xs-12 need_to_confirm" placeholder="ketik ulang No. KK" make-sure-it-similar-to="no_kk" required="required">
                                 <p style="display: none;"></p>
                             </td>
                         </tr>
