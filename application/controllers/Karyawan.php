@@ -1,5 +1,10 @@
 <?php
 
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -12,6 +17,7 @@ class Karyawan extends CI_Controller
         $this->load->model('Karyawan_model');
         $this->load->model('Unit_model');
         $this->load->library('form_validation');
+        $this->load->library('pdf');
     }
 
     public function index()
@@ -51,16 +57,16 @@ class Karyawan extends CI_Controller
         $row = $this->Karyawan_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'karyawan_id' => $row->karyawan_id,
-		'nama_karyawan' => $row->nama_karyawan,
-		'no_ktp_karyawan' => $row->no_ktp_karyawan,
-		'no_hp_karyawan' => $row->no_hp_karyawan,
-		'jenis_kelamin' => $row->jenis_kelamin,
-		'pendidikan' => $row->pendidikan,
-		'alamat' => $row->alamat,
-		'unit_id' => $row->unit_id,
-		'photo' => $row->photo,
-	    );
+        		'karyawan_id' => $row->karyawan_id,
+        		'nama_karyawan' => $row->nama_karyawan,
+        		'no_ktp_karyawan' => $row->no_ktp_karyawan,
+        		'no_hp_karyawan' => $row->no_hp_karyawan,
+        		'jenis_kelamin' => $row->jenis_kelamin,
+        		'pendidikan' => $row->pendidikan,
+        		'alamat' => $row->alamat,
+        		'unit_id' => $row->nama_unit,
+        		'photo' => $row->photo,
+    	    );
             $this->template->load('template','karyawan/karyawan_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -95,30 +101,28 @@ class Karyawan extends CI_Controller
             $this->create();
         } else {
 
-        $config['upload_path']      = './assets/img/karyawan'; 
-        $config['allowed_types']    = 'jpg|png|jpeg'; 
-        $config['max_size']         = 10048; 
-        $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
-        $this->load->library('upload',$config);
-        $this->upload->initialize($config);
-        $this->upload->do_upload("photo");
-        $data = $this->upload->data();
-        
-        $photo =$data['file_name'];
+            $config['upload_path']      = './assets/img/karyawan'; 
+            $config['allowed_types']    = 'jpg|png|jpeg'; 
+            $config['max_size']         = 10048; 
+            $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
+            $this->load->library('upload',$config);
+            $this->upload->initialize($config);
+            $this->upload->do_upload("photo");
+            $data = $this->upload->data();
+            
+            $photo = $data['file_name'];
 
-
-            $data = array(
-		'nama_karyawan' => $this->input->post('nama_karyawan',TRUE),
-		'no_ktp_karyawan' => $this->input->post('no_ktp_karyawan',TRUE),
-		'no_hp_karyawan' => $this->input->post('no_hp_karyawan',TRUE),
-		'jenis_kelamin' => $this->input->post('jenis_kelamin',TRUE),
-		'pendidikan' => $this->input->post('pendidikan',TRUE),
-		'alamat' => $this->input->post('alamat',TRUE),
-		'unit_id' => $this->input->post('unit_id',TRUE),
-		'photo' => $photo,
-	    );
-
-            $this->Karyawan_model->insert($data);
+            $record = array(
+        		'nama_karyawan' => $this->input->post('nama_karyawan',TRUE),
+        		'no_ktp_karyawan' => $this->input->post('no_ktp_karyawan',TRUE),
+        		'no_hp_karyawan' => $this->input->post('no_hp_karyawan',TRUE),
+        		'jenis_kelamin' => $this->input->post('jenis_kelamin',TRUE),
+        		'pendidikan' => $this->input->post('pendidikan',TRUE),
+        		'alamat' => $this->input->post('alamat',TRUE),
+        		'unit_id' => $this->input->post('unit_id',TRUE),
+        		'photo' => $photo,
+    	    );
+            $this->Karyawan_model->insert($record);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('karyawan'));
         }
@@ -182,7 +186,7 @@ class Karyawan extends CI_Controller
             }
 
 
-            $data = array(
+            $record = array(
 		'nama_karyawan' => $this->input->post('nama_karyawan',TRUE),
 		'no_ktp_karyawan' => $this->input->post('no_ktp_karyawan',TRUE),
 		'no_hp_karyawan' => $this->input->post('no_hp_karyawan',TRUE),
@@ -193,7 +197,7 @@ class Karyawan extends CI_Controller
 		'photo' => $this->input->post('photo',TRUE),
 	    );
 
-            $this->Karyawan_model->update($this->input->post('karyawan_id', TRUE), $data);
+            $this->Karyawan_model->update($this->input->post('karyawan_id', TRUE), $record);
             $this->session->set_flashdata('message', 'Update Record Success');
             redirect(site_url('karyawan'));
         }
@@ -288,8 +292,60 @@ class Karyawan extends CI_Controller
         exit();
     }
 
-    public function download($gambar){
-        force_download('assets/img/karyawan/'.$gambar,NULL);
+    public function download($gambar) {
+        if($gambar === 'no-photo-download') {
+            force_download('assets/img/karyawan/no-photo.jpg',NULL);
+        } else {
+            force_download('assets/img/karyawan/'.$gambar,NULL);
+        }
+    }
+
+    public function cetak_data($id) {
+
+        $defaultphoto = base_url().'assets/img/karyawan/no-photo.jpg';
+
+        $pdf = new FPDF('p','mm','A4');
+        $data = $this->Karyawan_model->get_by_id($id);
+
+        $gambar = base_url().'assets/img/karyawan/'.$data->photo;
+        $pdf->AddPage();
+
+        $pdf->setXY(0, 40);
+        $pdf->SetFont('Arial','B',16);$pdf->Cell(0,7,'DATA KARYAWAN',0,0,'C');
+        
+        $pdf->Image($data->photo ? $gambar : $defaultphoto,150, 15, 35, 50);
+        
+        $pdf->setY(90);
+        $pdf->SetFont('Arial','',12);
+        $pdf->Cell(10,10,'1.',0,0,'L');
+        $pdf->Cell(50,10,'Nama Lengkap',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->nama_karyawan,0,1,'L');
+        $pdf->Cell(10,10,'2.',0,0,'L');
+        $pdf->Cell(50,10,'No. KTP',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_ktp_karyawan,0,1,'L');
+        $pdf->Cell(10,10,'3.',0,0,'L');
+        $pdf->Cell(50,10,'No. HP',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_hp_karyawan,0,1,'L');
+        $pdf->Cell(10,10,'4.',0,0,'L');
+        $pdf->Cell(50,10,'Jenis Kelamin',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_ktp_karyawan,0,1,'L');
+        $pdf->Cell(10,10,'5.',0,0,'L');
+        $pdf->Cell(50,10,'Pendidikan Terakhir',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->pendidikan,0,1,'L');
+        $pdf->Cell(10,10,'6.',0,0,'L');
+        $pdf->Cell(50,10,'Alamat',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->alamat,0,1,'L');
+
+        $pdf->setXY(142,65);
+        $pdf->multiCell(50,7,$data->nama_unit,0,'C',false);        
+
+        $pdf->Output('result.pdf', 'D');
     }
 
 }

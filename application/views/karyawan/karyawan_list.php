@@ -11,9 +11,9 @@
         <div class="box-body">
             <div class='row'>
             <div class='col-md-9'>
-            <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('karyawan/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('karyawan/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
+            <div style="padding-bottom: 10px;">
+            <?php echo anchor(site_url('karyawan/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+    		<?php echo anchor(site_url('karyawan/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('karyawan/index'); ?>" class="form-inline" method="get">
@@ -69,7 +69,7 @@
 			<td><?php echo $karyawan->pendidikan ?></td>
 			<td><?php echo $karyawan->alamat ?></td>
 			<td><?php echo $karyawan->nama_unit ?></td>
-            <td><a href="<?php echo base_url(); ?>karyawan/download/<?php echo $karyawan->photo?>"><i
+            <td><a href="<?php echo base_url(); ?>karyawan/download/<?php echo $karyawan->photo ? $karyawan->photo : 'no-photo-download'; ?>"><i
                                                 class="ace-icon fa fa-download"></i> Download Photo</td>
 			<td style="text-align:center" width="200px">
 				<?php 
