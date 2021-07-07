@@ -261,30 +261,30 @@ class Karyawan extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Nama Karyawan");
-	xlsWriteLabel($tablehead, $kolomhead++, "No Ktp Karyawan");
-	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Karyawan");
-	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kelamin");
-	xlsWriteLabel($tablehead, $kolomhead++, "Pendidikan");
-	xlsWriteLabel($tablehead, $kolomhead++, "Alamat");
-	xlsWriteLabel($tablehead, $kolomhead++, "Unit Id");
-	xlsWriteLabel($tablehead, $kolomhead++, "Photo");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Karyawan");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Ktp Karyawan");
+    	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Karyawan");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kelamin");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Pendidikan");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Alamat");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Unit");
+    	xlsWriteLabel($tablehead, $kolomhead++, "Photo");
 
-	foreach ($this->Karyawan_model->get_all() as $data) {
+    	foreach ($this->Karyawan_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_karyawan);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->no_ktp_karyawan);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_karyawan);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->jenis_kelamin);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->pendidikan);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->unit_id);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->photo);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_karyawan);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_ktp_karyawan);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_karyawan);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->jenis_kelamin);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->pendidikan);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_unit);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->photo);
 
-	    $tablebody++;
+    	    $tablebody++;
             $nourut++;
         }
 
