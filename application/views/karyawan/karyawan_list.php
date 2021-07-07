@@ -53,7 +53,7 @@
 		<th>Jenis Kelamin</th>
 		<th>Pendidikan</th>
 		<th>Alamat</th>
-		<th>Unit Id</th>
+		<th>Unit</th>
 		<th>Photo</th>
 		<th>Action</th>
             </tr><?php
