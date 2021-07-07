@@ -16,7 +16,7 @@
                                 No Ktp <?php echo form_error('no_ktp') ?>
                             </td>
                             <td>
-                                <input type="text" class="form-control input-validation" name="no_ktp" id="no_ktp" placeholder="Input Nomor KTP" />    
+                                <input type="text" class="form-control input-validation no-copas-allowed" name="no_ktp" id="no_ktp" placeholder="Input Nomor KTP" />    
                             </td>
                         </tr>
                         <tr>
@@ -30,7 +30,7 @@
                                 No Kk <?php echo form_error('no_kk') ?>
                             </td>
                             <td>
-                                <input id="no_kk" class="form-control input-validation col-md-7 col-xs-12" type="text" name="no_kk" data-validate-length="6,8" placeholder="input No KK" class="form-control input-validation col-md-7 col-xs-12" required="required">
+                                <input id="no_kk" class="form-control input-validation col-md-7 col-xs-12 no-copas-allowed" type="text" name="no_kk" data-validate-length="6,8" placeholder="input No KK" class="form-control input-validation col-md-7 col-xs-12" required="required">
                             
                             </td>
                         </tr>
@@ -46,7 +46,7 @@
                                 No Hp Pelanggan <?php echo form_error('no_hp_pelanggan') ?>
                             </td>
                             <td>
-                                <input type="text" class="form-control input-validation" name="no_hp_pelanggan" id="no_hp_pelanggan" placeholder="No Hp Pelanggan" />
+                                <input type="text" class="form-control input-validation no-copas-allowed" name="no_hp_pelanggan" id="no_hp_pelanggan" placeholder="No Hp Pelanggan" />
                             </td>
                         </tr>
                         <tr>
@@ -151,14 +151,9 @@
                 return;
             }
             $(this).removeClass('parsley-error erroryahaha').next().css('display','none').text('').removeClass('warning');
-
-            
         }));
 
         $('.input-validation').on('focusout', (function(e) {
-            
-            
-
             var countemptyinput = $('.input-validation').filter(function() {
                                     return this.value.trim() == '';
                                 }).length; //can't using :empty selector?
@@ -180,12 +175,11 @@
             } else {
                 $('#buttonsubmit').attr('disabled','disabled');
             }
-            
-            
-            
         }));
 
-
+        $('.no-copas-allowed').bind('copy paste',function(e) {
+            e.preventDefault(); return false; 
+        });
     })
 
 </script>
