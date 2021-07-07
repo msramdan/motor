@@ -180,6 +180,10 @@
         $('.no-copas-allowed').bind('copy paste',function(e) {
             e.preventDefault(); return false; 
         });
+
+        $('.no-copas-allowed').keyup(function() {
+            this.value = this.value.replace(/\s/g,'');
+        });
     })
 
 </script>
