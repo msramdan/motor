@@ -1,3 +1,25 @@
 .hover-on-pic:hover {
     cursor: zoom-in;
 }
+
+.erroryahaha {
+    animation: animate-error 500ms ease-in-out;
+}
+
+@keyframes animate-error {
+    0% {
+        transform: scale(1.0);
+    }
+    25% {
+        transform: scale(1.020);
+    }
+    50% {
+        transform: scale(1.0);
+    }
+    75% {
+        transform: scale(1.020);
+    }
+    100% {
+        transform: scale(1.0);
+    }
+}

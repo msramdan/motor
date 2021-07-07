@@ -167,6 +167,8 @@
     <script src="<?= base_url()?>assets/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<?= base_url()?>assets/vendors/nprogress/nprogress.js"></script>
+    <!-- Validator -->
+    <script src="<?= base_url()?>assets/vendors/validator/validator.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="<?= base_url()?>assets/build/js/custom.min.js"></script>
