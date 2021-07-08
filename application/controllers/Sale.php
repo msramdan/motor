@@ -364,23 +364,6 @@ class Sale extends CI_Controller
         $pdf->setXY(20, 120);
         $pdf->Cell(50,6,'(KASIR)',0,0,'C');
         $pdf->Cell(40,6,'(PENERIMA)',0,0,'R');
-        // Memberikan space kebawah agar tidak terlalu rapat
-        /* $pdf->Cell(10,7,'',0,1);
-        $pdf->SetFont('Arial','B',10);
-        $pdf->Cell(20,6,'NIM',1,0);
-        $pdf->Cell(85,6,'NAMA MAHASISWA',1,0);
-        $pdf->Cell(27,6,'NO HP',1,0);
-        $pdf->Cell(25,6,'TANGGAL LHR',1,1);
-        $pdf->SetFont('Arial','',10);
-        $mahasiswa = $this->db->get('mahasiswa')->result();
-        foreach ($mahasiswa as $row){
-            $pdf->Cell(20,6,$row->nim,1,0);
-            $pdf->Cell(85,6,$row->nama_lengkap,1,0);
-            $pdf->Cell(27,6,$row->no_hp,1,0);
-            $pdf->Cell(25,6,$row->tanggal_lahir,1,1);
-        }*/
-
-        //$pdf->Output();
         $pdf->Output('result.pdf', 'D');
     }
 

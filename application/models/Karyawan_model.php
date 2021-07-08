@@ -18,6 +18,7 @@ class Karyawan_model extends CI_Model
     // get all
     function get_all()
     {
+        $this->db->join('unit','unit.unit_id = karyawan.unit_id','left');
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
     }
@@ -25,6 +26,7 @@ class Karyawan_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
+        $this->db->join('unit', 'unit.unit_id = karyawan.unit_id', 'left');
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }

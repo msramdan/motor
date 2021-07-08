@@ -13,7 +13,7 @@ class Auth extends CI_Controller {
   {
     check_already_login();
 
-        $options = array(
+    $options = array(
         'img_path'=>'./captcha/', #folder captcha yg sudah dibuat tadi
         'img_url'=>base_url('captcha'), #ini arahnya juga ke folder captcha
         'img_width'=>'145', #lebar image captcha
@@ -21,14 +21,16 @@ class Auth extends CI_Controller {
         'expiration'=>7200, #waktu expired
         'font_path' => FCPATH . 'assets/font/coolvetica.ttf', #load font jika mau ganti fontnya
         'pool' => '0123456789', #tipe captcha (angka/huruf, atau kombinasi dari keduanya)
- 
+
         # atur warna captcha-nya di sini ya.. gunakan kode RGB
         'colors' => array(
                 'background' => array(242, 242, 242),
                 'border' => array(255, 255, 255),
                 'text' => array(0, 0, 0),
-                'grid' => array(255, 40, 40))
-           );
+                'grid' => array(255, 40, 40)
+            )
+    );
+    
     $cap = create_captcha($options);
     $data['image'] = $cap['image'];
     $this->session->set_userdata('mycaptcha', $cap['word']);
@@ -45,7 +47,6 @@ class Auth extends CI_Controller {
 
   public function process()
   {
-
  $captcha = $this->input->post('captcha_code'); #mengambil value inputan pengguna
 $word = $this->session->userdata('mycaptcha'); #mengambil value captcha
 if (isset($captcha)) { #cek variabel $captcha kosong/tidak
@@ -65,21 +66,11 @@ if (isset($captcha)) { #cek variabel $captcha kosong/tidak
         $this->user_m->addHistory($this->fungsi->user_login()->user_id, $this->fungsi->user_login()->nama_user.' Telah melakukan login', $_SERVER['HTTP_USER_AGENT']);
 
       echo "<script>window.location='".site_url('beranda')."'</script>";
-
-
-
       } else{
         echo "<script>
-        alert('Login Gagal');
-        window.location='".site_url('auth')."'</script>";
-
-      }
+            alert('Kode captcha salah');
+            window.location='".site_url('auth')."'</script>";
     }
-   }else{
-    echo "<script>
-        alert('Kode captcha salah');
-        window.location='".site_url('auth')."'</script>";
-   }
  }
 
     
