@@ -64,7 +64,7 @@ if (isset($captcha)) { #cek variabel $captcha kosong/tidak
 
         $this->user_m->addHistory($this->fungsi->user_login()->user_id, $this->fungsi->user_login()->nama_user.' Telah melakukan login', $_SERVER['HTTP_USER_AGENT']);
 
-      echo "<script>window.location='".site_url('dashboard')."'</script>";
+      echo "<script>window.location='".site_url('beranda')."'</script>";
 
 
 

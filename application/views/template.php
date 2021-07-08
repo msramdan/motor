@@ -107,6 +107,7 @@
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
+
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
@@ -122,6 +123,18 @@
                                             Log Out</a></li>
                                 </ul>
                             </li>
+                            <li role="presentation">
+                              <a href="<?= base_url() ?>beranda/unit">
+                                <i class="fa fa-refresh"></i> Switch Unit
+                              </a>
+                            </li>
+                            <li role="presentation">
+                              <a href="#">
+                                <i class="fa fa-home" style="color: #26B99A"></i><span style="color: #26B99A"> Anda berada di unit Bogor Kota</span> 
+                              </a>
+                            </li>
+
+
                         </ul>
                     </nav>
                 </div>
@@ -151,7 +164,7 @@
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+                    Aplikasi POS V.1 <a href="#"></a>
                 </div>
                 <div class="clearfix"></div>
             </footer>
