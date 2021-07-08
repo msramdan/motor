@@ -73,26 +73,18 @@
 
                       <div class="" role="tabpanel" data-example-id="togglable-tabs">
                         <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
-                          <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">About US</a>
-                          </li>
-                          <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Visi Misi Company</a>
-                          </li>
-                          <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">About Application</a>
-                          </li>
+
+                          <?php foreach ($info as $key => $data) { ?>
+                              <li role="presentation" class=""><a href="#tab_content<?php echo $data->info_id ?>" id="<?php echo $data->title ?>" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $data->title ?></a>
+                              </li>
+                          <?php } ?>
                         </ul>
                         <div id="myTabContent" class="tab-content">
-                          <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                            <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                              photo booth letterpress, commodo enim craft beer mlkshk </p>
+                            <?php foreach ($info as $key => $data) { ?>
+                          <div role="tabpanel" class="tab-pane fade" id="tab_content<?php echo $data->info_id ?>" aria-labelledby="<?php echo $data->title ?>">
+                            <p><?php echo $data->desk ?></p>
                           </div>
-                          <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-                            <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                              photo booth letterpress, commodo enim craft beer mlkshk </p>
-                          </div>
-                          <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                            <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
-                              photo booth letterpress, commodo enim craft beer mlkshk </p>
-                          </div>
+                          <?php } ?>
                         </div>
                       </div>
                     </div>

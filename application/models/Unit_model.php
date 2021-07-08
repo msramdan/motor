@@ -8,6 +8,9 @@ class Unit_model extends CI_Model
 
     public $table = 'unit';
     public $id = 'unit_id';
+    public $table2 = 'user_access_unit';
+    public $id2 = 'user_access_unit_id';
+
     public $order = 'DESC';
 
     function __construct()
@@ -20,6 +23,16 @@ class Unit_model extends CI_Model
     {
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
+    }
+
+     function get_all_access()
+    {
+        $user_id=$this->fungsi->user_login()->user_id;
+        $this->db->join('unit', 'unit.unit_id = user_access_unit.unit_id', 'left');
+        $this->db->join('grup', 'grup.grup_id = unit.grup_id', 'left');
+        $this->db->order_by('kd_unit', 'ASC');
+        $this->db->where('user_id',$user_id);
+        return $this->db->get($this->table2)->result();
     }
 
     // get data by id

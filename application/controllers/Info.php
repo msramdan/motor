@@ -3,14 +3,13 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Level extends CI_Controller
+class Info extends CI_Controller
 {
     function __construct()
     {
         parent::__construct();
         is_login();
-        $this->load->model('Level_model');
-        $this->load->model('Menu_model');
+        $this->load->model('Info_model');
         $this->load->library('form_validation');
     }
 
@@ -21,62 +20,57 @@ class Level extends CI_Controller
         
         if ($q <> '') {
             $config['base_url'] = base_url() . '.php/c_url/index.html?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'index.php/level/index.html?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'index.php/info/index.html?q=' . urlencode($q);
         } else {
-            $config['base_url'] = base_url() . 'index.php/level/index/';
-            $config['first_url'] = base_url() . 'index.php/level/index/';
+            $config['base_url'] = base_url() . 'index.php/info/index/';
+            $config['first_url'] = base_url() . 'index.php/info/index/';
         }
 
         $config['per_page'] = 10;
         $config['page_query_string'] = FALSE;
-        $config['total_rows'] = $this->Level_model->total_rows($q);
-        $level = $this->Level_model->get_limit_data($config['per_page'], $start, $q);
+        $config['total_rows'] = $this->Info_model->total_rows($q);
+        $info = $this->Info_model->get_limit_data($config['per_page'], $start, $q);
         $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
         $config['full_tag_close'] = '</ul>';
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
         $data = array(
-            'level_data' => $level,
+            'info_data' => $info,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        $this->template->load('template','level/level_list', $data);
+        $this->template->load('template','info/info_list', $data);
     }
 
     public function read($id) 
     {
-        $row = $this->Level_model->get_by_id($id);
+        $row = $this->Info_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'level_id' => $row->level_id,
-		'nama_level' => $row->nama_level,
+		'info_id' => $row->info_id,
+		'title' => $row->title,
+		'desk' => $row->desk,
 	    );
-            $this->template->load('template','level/level_read', $data);
+            $this->template->load('template','info/info_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('level'));
+            redirect(site_url('info'));
         }
-    }
-
-     public function role($id)
-    {
-        $data['role'] = $this->db->get_where('level', ['level_id' =>$id])->row_array();
-        $data['row']= $this->Menu_model->get();
-        $this->template->load('template','level/role',$data);
     }
 
     public function create() 
     {
         $data = array(
             'button' => 'Create',
-            'action' => site_url('level/create_action'),
-	    'level_id' => set_value('level_id'),
-	    'nama_level' => set_value('nama_level'),
+            'action' => site_url('info/create_action'),
+	    'info_id' => set_value('info_id'),
+	    'title' => set_value('title'),
+	    'desk' => set_value('desk'),
 	);
-        $this->template->load('template','level/level_form', $data);
+        $this->template->load('template','info/info_form', $data);
     }
     
     public function create_action() 
@@ -87,30 +81,32 @@ class Level extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'nama_level' => $this->input->post('nama_level',TRUE),
+		'title' => $this->input->post('title',TRUE),
+		'desk' => $this->input->post('desk',TRUE),
 	    );
 
-            $this->Level_model->insert($data);
+            $this->Info_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('level'));
+            redirect(site_url('info'));
         }
     }
     
     public function update($id) 
     {
-        $row = $this->Level_model->get_by_id($id);
+        $row = $this->Info_model->get_by_id($id);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
-                'action' => site_url('level/update_action'),
-		'level_id' => set_value('level_id', $row->level_id),
-		'nama_level' => set_value('nama_level', $row->nama_level),
+                'action' => site_url('info/update_action'),
+		'info_id' => set_value('info_id', $row->info_id),
+		'title' => set_value('title', $row->title),
+		'desk' => set_value('desk', $row->desk),
 	    );
-            $this->template->load('template','level/level_form', $data);
+            $this->template->load('template','info/info_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('level'));
+            redirect(site_url('info'));
         }
     }
     
@@ -119,45 +115,47 @@ class Level extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('level_id', TRUE));
+            $this->update($this->input->post('info_id', TRUE));
         } else {
             $data = array(
-		'nama_level' => $this->input->post('nama_level',TRUE),
+		'title' => $this->input->post('title',TRUE),
+		'desk' => $this->input->post('desk',TRUE),
 	    );
 
-            $this->Level_model->update($this->input->post('level_id', TRUE), $data);
+            $this->Info_model->update($this->input->post('info_id', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('level'));
+            redirect(site_url('info'));
         }
     }
     
     public function delete($id) 
     {
-        $row = $this->Level_model->get_by_id($id);
+        $row = $this->Info_model->get_by_id($id);
 
         if ($row) {
-            $this->Level_model->delete($id);
+            $this->Info_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('level'));
+            redirect(site_url('info'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('level'));
+            redirect(site_url('info'));
         }
     }
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('nama_level', 'nama level', 'trim|required');
+	$this->form_validation->set_rules('title', 'title', 'trim|required');
+	$this->form_validation->set_rules('desk', 'desk', 'trim|required');
 
-	$this->form_validation->set_rules('level_id', 'level_id', 'trim');
+	$this->form_validation->set_rules('info_id', 'info_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
     public function excel()
     {
         $this->load->helper('exportexcel');
-        $namaFile = "level.xls";
-        $judul = "level";
+        $namaFile = "info.xls";
+        $judul = "info";
         $tablehead = 0;
         $tablebody = 1;
         $nourut = 1;
@@ -175,14 +173,16 @@ class Level extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Nama Level");
+	xlsWriteLabel($tablehead, $kolomhead++, "Title");
+	xlsWriteLabel($tablehead, $kolomhead++, "Desk");
 
-	foreach ($this->Level_model->get_all() as $data) {
+	foreach ($this->Info_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_level);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->title);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->desk);
 
 	    $tablebody++;
             $nourut++;
@@ -192,42 +192,10 @@ class Level extends CI_Controller
         exit();
     }
 
-    public function word()
-    {
-        header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=level.doc");
-
-        $data = array(
-            'level_data' => $this->Level_model->get_all(),
-            'start' => 0
-        );
-        
-        $this->load->view('level/level_doc',$data);
-    }
-
-    public function changeaccess(){
-        $menu_id = $this->input->post('menuId');
-        $level_id = $this->input->post('roleId');
-
-        $data=[
-            'level_id' =>$level_id,
-            'sub_menu_id' =>$menu_id
-        ];
-
-        $result = $this->db->get_where('user_access_menu', $data);
-
-        if ($result->num_rows() < 1) {
-            $this->db->insert('user_access_menu', $data);
-        }else{
-            $this->db->delete('user_access_menu', $data);
-        }
-
-    }
-
 }
 
-/* End of file Level.php */
-/* Location: ./application/controllers/Level.php */
+/* End of file Info.php */
+/* Location: ./application/controllers/Info.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2021-06-28 13:00:38 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-08 16:30:30 */
 /* http://harviacode.com */

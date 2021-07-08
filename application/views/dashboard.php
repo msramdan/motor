@@ -1,6 +1,6 @@
 <div class="">
     <div class="alert alert-success alert-dismissible fade in" role="alert" style="margin-top: 60px">
-        <strong>Selamat Datang <?= ucfirst($this->fungsi->user_login()->nama_user) ?></strong>
+        <strong>Selamat Datang <?= ucfirst($this->fungsi->user_login()->nama_user)?> || <?= $this->session->userdata('nama_unit')?></strong>
     </div>
     <div class="row top_tiles">
         <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">

@@ -39,7 +39,7 @@
                                 alt="..." class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
-                            <span>Welcome,</span>
+                            <span><?= $this->session->userdata('nama_unit')?></span>
                             <h2><?= ucfirst($this->fungsi->user_login()->nama_user) ?></h2>
                         </div>
                         <div class="clearfix"></div>
@@ -130,7 +130,7 @@
                             </li>
                             <li role="presentation">
                               <a href="#">
-                                <i class="fa fa-home" style="color: #26B99A"></i><span style="color: #26B99A"> Anda berada di unit Bogor Kota</span> 
+                                <i class="fa fa-home" style="color: #26B99A"></i><span style="color: #26B99A"> Anda berada di unit <?= $this->session->userdata('nama_unit')?></span> 
                               </a>
                             </li>
 

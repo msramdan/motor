@@ -69,15 +69,17 @@
                       <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                       </div>
                       <div class="clearfix"></div>
+
+                      <?php foreach ($unit as $key => $data) { ?>
                       <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
                         <div class="well profile_view">
                           <div class="col-sm-12">
-                            <h4 class="brief"><i>Nama Grup Usaha</i></h4>
+                            <h4 class="brief"><i><?= $data->nama_grup ?></i></h4>
                             <div class="left col-xs-7">
-                              <h2>Nama Unit</h2>
+                              <h2><?= $data->nama_unit ?></h2>
                               <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: Tajur Halang Kabupaten bogor </li>
-                                <li><i class="fa fa-phone"></i> Phone #: 083874731480 </li>
+                                <li><i class="fa fa-building"></i> Kode Unit: <?= $data->kd_unit ?> </li>
+                                <li><i class="fa fa-phone"></i> Phone #: <?= $data->alamat_unit ?> </li>
                               </ul>
                             </div>
                             <div class="right col-xs-5 text-center">
@@ -96,143 +98,15 @@
                               </p>
                             </div>
                             <div class="col-xs-12 col-sm-6 emphasis">
-                              <a href="<?= base_url() ?>Dashboard" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</a>
+                              <a href="<?= base_url() ?>beranda/session_unit/<?= $data->unit_id ?>" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</a>
                             </div>
                           </div>
                         </div>
                       </div>
 
-                      <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
-                        <div class="well profile_view">
-                          <div class="col-sm-12">
-                            <h4 class="brief"><i>Nama Grup Usaha</i></h4>
-                            <div class="left col-xs-7">
-                              <h2>Nama Unit</h2>
-                              <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: Tajur Halang Kabupaten bogor </li>
-                                <li><i class="fa fa-phone"></i> Phone #: 083874731480 </li>
-                              </ul>
-                            </div>
-                            <div class="right col-xs-5 text-center">
-                              <img src="<?= base_url() ?>assets/img/show1.jpg" alt="" class="img-circle img-responsive">
-                            </div>
-                          </div>
-                          <div class="col-xs-12 bottom text-center">
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <p class="ratings">
-                                <a>5.0</a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                              </p>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <a href="<?= base_url() ?>Dashboard" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <?php } ?>
 
-                      <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
-                        <div class="well profile_view">
-                          <div class="col-sm-12">
-                            <h4 class="brief"><i>Nama Grup Usaha</i></h4>
-                            <div class="left col-xs-7">
-                              <h2>Nama Unit</h2>
-                              <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: Tajur Halang Kabupaten bogor </li>
-                                <li><i class="fa fa-phone"></i> Phone #: 083874731480 </li>
-                              </ul>
-                            </div>
-                            <div class="right col-xs-5 text-center">
-                              <img src="<?= base_url() ?>assets/img/show1.jpg" alt="" class="img-circle img-responsive">
-                            </div>
-                          </div>
-                          <div class="col-xs-12 bottom text-center">
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <p class="ratings">
-                                <a>5.0</a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                              </p>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <a href="<?= base_url() ?>Dashboard" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
 
-                      <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
-                        <div class="well profile_view">
-                          <div class="col-sm-12">
-                            <h4 class="brief"><i>Nama Grup Usaha</i></h4>
-                            <div class="left col-xs-7">
-                              <h2>Nama Unit</h2>
-                              <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: Tajur Halang Kabupaten bogor </li>
-                                <li><i class="fa fa-phone"></i> Phone #: 083874731480 </li>
-                              </ul>
-                            </div>
-                            <div class="right col-xs-5 text-center">
-                              <img src="<?= base_url() ?>assets/img/show1.jpg" alt="" class="img-circle img-responsive">
-                            </div>
-                          </div>
-                          <div class="col-xs-12 bottom text-center">
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <p class="ratings">
-                                <a>5.0</a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                              </p>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <a href="<?= base_url() ?>Dashboard" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-md-4 col-sm-4 col-xs-12 profile_details">
-                        <div class="well profile_view">
-                          <div class="col-sm-12">
-                            <h4 class="brief"><i>Nama Grup Usaha</i></h4>
-                            <div class="left col-xs-7">
-                              <h2>Nama Unit</h2>
-                              <ul class="list-unstyled">
-                                <li><i class="fa fa-building"></i> Address: Tajur Halang Kabupaten bogor </li>
-                                <li><i class="fa fa-phone"></i> Phone #: 083874731480 </li>
-                              </ul>
-                            </div>
-                            <div class="right col-xs-5 text-center">
-                              <img src="<?= base_url() ?>assets/img/show1.jpg" alt="" class="img-circle img-responsive">
-                            </div>
-                          </div>
-                          <div class="col-xs-12 bottom text-center">
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <p class="ratings">
-                                <a>5.0</a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                                <a href="#"><span class="fa fa-star"></span></a>
-                              </p>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 emphasis">
-                              <a href="<?= base_url() ?>Dashboard" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
