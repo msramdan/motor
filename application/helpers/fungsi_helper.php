@@ -3,7 +3,7 @@ function check_already_login(){
     $ci =& get_instance();
     $user_session = $ci->session->userdata('userid');
     if ($user_session){
-        redirect('dashboard');
+        redirect('beranda');
     }
 }
 
@@ -44,7 +44,7 @@ function is_login(){
         $ci =& get_instance();
         $ci->load->library('fungsi');
         if($ci->fungsi->user_login()->level !=1 ){
-            redirect('dashboard');
+            redirect('beranda');
 
         }
 

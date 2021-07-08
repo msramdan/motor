@@ -47,34 +47,26 @@ class Auth extends CI_Controller {
 
   public function process()
   {
+ $captcha = $this->input->post('captcha_code'); #mengambil value inputan pengguna
+$word = $this->session->userdata('mycaptcha'); #mengambil value captcha
+if (isset($captcha)) { #cek variabel $captcha kosong/tidak
+   if (strtoupper($captcha)==strtoupper($word)) { #proses pencocokan captcha
+        $post =$this->input->post(null, TRUE);
+    if (isset($post['login'])){
+      $this->load->model('user_m');
+      $query =$this->user_m->login($post);
+      if($query->num_rows() >0){
+        $row =$query->row();
+        $params = array(
+          'userid'=>$row->user_id,
+          'level_id' =>$row->level_id
+        );
+        $this->session->set_userdata($params);
 
-    $captcha = $this->input->post('captcha_code'); #mengambil value inputan pengguna
-    $word = $this->session->userdata('mycaptcha'); #mengambil value captcha
-    if (isset($captcha)) { #cek variabel $captcha kosong/tidak
-       if (strtoupper($captcha)==strtoupper($word)) { #proses pencocokan captcha
-            $post =$this->input->post(null, TRUE);
-            if (isset($post['login'])){
-                $this->load->model('user_m');
-                $query =$this->user_m->login($post);
-                if($query->num_rows() >0){
-                    $row =$query->row();
-                    $params = array(
-                    'userid'=>$row->user_id,
-                    'level_id' =>$row->level_id
-                );
-                $this->session->set_userdata($params);
+        $this->user_m->addHistory($this->fungsi->user_login()->user_id, $this->fungsi->user_login()->nama_user.' Telah melakukan login', $_SERVER['HTTP_USER_AGENT']);
 
-                $this->user_m->addHistory($this->fungsi->user_login()->user_id, $this->fungsi->user_login()->nama_user.' Telah melakukan login', $_SERVER['HTTP_USER_AGENT']);
-
-                echo "<script>window.location='".site_url('dashboard')."'</script>";
-
-            } else {
-                echo "<script>
-                alert('Login Gagal');
-                window.location='".site_url('auth')."'</script>";
-            }
-        }
-    } else {
+      echo "<script>window.location='".site_url('beranda')."'</script>";
+      } else{
         echo "<script>
             alert('Kode captcha salah');
             window.location='".site_url('auth')."'</script>";
