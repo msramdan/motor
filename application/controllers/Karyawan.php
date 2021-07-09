@@ -194,7 +194,7 @@ class Karyawan extends CI_Controller
 		'pendidikan' => $this->input->post('pendidikan',TRUE),
 		'alamat' => $this->input->post('alamat',TRUE),
 		'unit_id' => $this->input->post('unit_id',TRUE),
-		'photo' => $this->input->post('photo',TRUE),
+		'photo' => $photo,
 	    );
 
             $this->Karyawan_model->update($this->input->post('karyawan_id', TRUE), $record);

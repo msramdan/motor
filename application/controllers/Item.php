@@ -132,6 +132,7 @@ class item extends CI_Controller
         $photo =$data['file_name'];
 
             $data = array(
+                'unit_id' => $this->input->post('unit_id',TRUE),
 		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
 		'agen_id' => $this->input->post('agen_id',TRUE),
         'kategori_id' => $this->input->post('kategori_id',TRUE),
@@ -162,7 +163,7 @@ class item extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('item/update_action'),
-                'jenis' =>$this->Jenis_Item_model->get_all(),
+                'jenis' =>$this->Jenis_item_model->get_all(),
             'type' =>$this->Type_model->get_all(),
             'merek' =>$this->Merek_model->get_all(),
             'kategori' =>$this->Kategori_model->get_all(),
@@ -222,6 +223,7 @@ class item extends CI_Controller
             }
 
             $data = array(
+                'unit_id' => $this->input->post('unit_id',TRUE),
 		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
 		'agen_id' => $this->input->post('agen_id',TRUE),
         'kategori_id' => $this->input->post('kategori_id',TRUE),

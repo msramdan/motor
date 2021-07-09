@@ -11,8 +11,8 @@
         
             <form action="<?php echo $action; ?>" method="post">
             
-<table class='table table-bordered>'        
-
+<table class='table table-bordered'>        
+      <input type="hidden" class="form-control input-validation no-copas-allowed" name="unit_id" id="unit_id" value="<?= $this->session->userdata('unit_id') ?>" placeholder="" />     
 	    <tr><td width='200'>Nama Agen <?php echo form_error('nama_agen') ?></td><td><input type="text" class="form-control" name="nama_agen" id="nama_agen" placeholder="Nama Agen" value="<?php echo $nama_agen; ?>" /></td></tr>
 	    <tr><td width='200'>No Hp Agen <?php echo form_error('no_hp_agen') ?></td><td><input type="text" class="form-control" name="no_hp_agen" id="no_hp_agen" placeholder="No Hp Agen" value="<?php echo $no_hp_agen; ?>" /></td></tr>
 	    

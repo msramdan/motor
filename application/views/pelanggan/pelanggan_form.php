@@ -10,7 +10,8 @@
         <div class="x_panel">
             <div class="box-body">
                 <form action="<?php echo $action; ?>" method="post">            
-                    <table class='table table-bordered'>        
+                    <table class='table table-bordered'>
+                     <input type="hidden" class="form-control input-validation no-copas-allowed" name="unit_id" id="unit_id" value="<?= $this->session->userdata('unit_id') ?>" placeholder="" />           
                 	    <tr>
                             <td width='200' rowspan="2">
                                 No Ktp <?php echo form_error('no_ktp') ?>

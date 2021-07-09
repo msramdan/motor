@@ -43,19 +43,7 @@
 	    
         <tr><td width='200'>Alamat <?php echo form_error('alamat') ?></td><td> <textarea class="form-control" rows="3" name="alamat" id="alamat" placeholder="Alamat"><?php echo $alamat; ?></textarea></td></tr>
 
-      <tr>
-            <td width='200'>Unit <?php echo form_error('unit_id') ?></td>
-            <td><select name="unit_id" class="form-control">
-                <option value="">-- Pilih -- </option>
-                <?php foreach ($unit as $key => $data) { ?>
-                  <?php if ($unit_id == $data->unit_id) { ?>
-                    <option value="<?php echo $data->unit_id ?>" selected><?php echo $data->nama_unit ?></option>
-                  <?php } else { ?>
-                    <option value="<?php echo $data->unit_id ?>"><?php echo $data->nama_unit ?></option>
-                  <?php } ?>
-                <?php } ?>
-              </select></td>
-          </tr>
+        <input type="hidden" class="form-control input-validation no-copas-allowed" name="unit_id" id="unit_id" value="<?= $this->session->userdata('unit_id') ?>" placeholder="" />
 
 
        <?php if ($this->uri->segment(2) == 'create' || $this->uri->segment(2) == 'create_action' ) { ?>

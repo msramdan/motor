@@ -15,6 +15,8 @@ class Dashboard_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('pelanggan');
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
+        
         return $this->db->count_all_results();
     }
 
@@ -22,6 +24,7 @@ class Dashboard_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('item');
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
         return $this->db->count_all_results();
     }
 
@@ -29,13 +32,15 @@ class Dashboard_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('sale');
+        // $this->db->where('unit_id', $this->session->userdata('unit_id'));
         return $this->db->count_all_results();
     }
 
     function count_allusers()
     {
         $this->db->select('*');
-        $this->db->from('user');
+        $this->db->from('karyawan');
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
         return $this->db->count_all_results();
     }
 

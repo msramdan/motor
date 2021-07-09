@@ -99,6 +99,7 @@ class Pelanggan extends CI_Controller
         } else {
             $data = array(
 		'no_ktp' => $this->input->post('no_ktp',TRUE),
+        'unit_id' => $this->input->post('unit_id',TRUE),
 		'no_kk' => $this->input->post('no_kk',TRUE),
 		'nama_pelanggan' => $this->input->post('nama_pelanggan',TRUE),
 		'no_hp_pelanggan' => $this->input->post('no_hp_pelanggan',TRUE),
@@ -127,6 +128,7 @@ class Pelanggan extends CI_Controller
 		'pelanggan_id' => set_value('pelanggan_id', $row->pelanggan_id),
 		'no_ktp' => set_value('no_ktp', $row->no_ktp),
 		'no_kk' => set_value('no_kk', $row->no_kk),
+        'unit_id' => set_value('unit_id', $row->unit_id),
 		'nama_pelanggan' => set_value('nama_pelanggan', $row->nama_pelanggan),
 		'no_hp_pelanggan' => set_value('no_hp_pelanggan', $row->no_hp_pelanggan),
 		'jenis_kelamin' => set_value('jenis_kelamin', $row->jenis_kelamin),
@@ -161,6 +163,7 @@ class Pelanggan extends CI_Controller
 		'nama_saudara' => $this->input->post('nama_saudara',TRUE),
 		'alamat_saudara' => $this->input->post('alamat_saudara',TRUE),
 		'no_hp_saudara' => $this->input->post('no_hp_saudara',TRUE),
+        'unit_id' => $this->input->post('unit_id',TRUE),
 	    );
 
             $this->Pelanggan_model->update($this->input->post('pelanggan_id', TRUE), $data);

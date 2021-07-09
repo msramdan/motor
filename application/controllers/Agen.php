@@ -85,6 +85,7 @@ class Agen extends CI_Controller
             $this->create();
         } else {
             $data = array(
+                'unit_id' => $this->input->post('unit_id',TRUE),
 		'nama_agen' => $this->input->post('nama_agen',TRUE),
 		'no_hp_agen' => $this->input->post('no_hp_agen',TRUE),
 		'alamat' => $this->input->post('alamat',TRUE),
@@ -126,6 +127,7 @@ class Agen extends CI_Controller
             $this->update($this->input->post('agen_id', TRUE));
         } else {
             $data = array(
+                'unit_id' => $this->input->post('unit_id',TRUE),
 		'nama_agen' => $this->input->post('nama_agen',TRUE),
 		'no_hp_agen' => $this->input->post('no_hp_agen',TRUE),
 		'alamat' => $this->input->post('alamat',TRUE),
