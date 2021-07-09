@@ -8,8 +8,9 @@ class Level extends CI_Controller
     function __construct()
     {
         parent::__construct();
-        // is_login();
+        is_login();
         $this->load->model('Level_model');
+        $this->load->model('Menu_model');
         $this->load->library('form_validation');
     }
 
@@ -58,6 +59,13 @@ class Level extends CI_Controller
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('level'));
         }
+    }
+
+     public function role($id)
+    {
+        $data['role'] = $this->db->get_where('level', ['level_id' =>$id])->row_array();
+        $data['row']= $this->Menu_model->get();
+        $this->template->load('template','level/role',$data);
     }
 
     public function create() 
@@ -195,6 +203,25 @@ class Level extends CI_Controller
         );
         
         $this->load->view('level/level_doc',$data);
+    }
+
+    public function changeaccess(){
+        $menu_id = $this->input->post('menuId');
+        $level_id = $this->input->post('roleId');
+
+        $data=[
+            'level_id' =>$level_id,
+            'sub_menu_id' =>$menu_id
+        ];
+
+        $result = $this->db->get_where('user_access_menu', $data);
+
+        if ($result->num_rows() < 1) {
+            $this->db->insert('user_access_menu', $data);
+        }else{
+            $this->db->delete('user_access_menu', $data);
+        }
+
     }
 
 }

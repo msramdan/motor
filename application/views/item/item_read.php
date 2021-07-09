@@ -83,7 +83,7 @@
                 <tr>
                     <td></td>
                     <td><a href="<?php echo site_url('item') ?>" class="btn btn-default">Cancel</a>
-                        <a href="<?php echo site_url() ?>item/cetak/<?php echo $item_id ?>" class="btn btn-warning">Cetak</a>
+                    <a href="<?php echo site_url() ?>item/cetak/<?php echo $item_id ?>" class="btn btn-warning">Cetak</a>
                     </td>
                 </tr>
             </table>

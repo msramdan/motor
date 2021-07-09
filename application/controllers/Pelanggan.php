@@ -136,7 +136,7 @@ class Pelanggan extends CI_Controller
 		'alamat_saudara' => set_value('alamat_saudara', $row->alamat_saudara),
 		'no_hp_saudara' => set_value('no_hp_saudara', $row->no_hp_saudara),
 	    );
-            $this->template->load('template','pelanggan/pelanggan_form', $data);
+            $this->template->load('template','pelanggan/pelanggan_form_update', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('pelanggan'));

@@ -20,9 +20,9 @@ class Sale_model extends CI_Model
     {
         $this->db->join('user', 'user.user_id = sale.user_id');
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
-        $this->db->join('kendaraan', 'kendaraan.kendaraan_id = sale.kendaraan_id','left');
-        $this->db->join('merek', 'merek.merek_id = kendaraan.merek_id','left');
-        $this->db->join('type', 'type.type_id = kendaraan.type_id','left');
+        $this->db->join('item', 'item.item_id = sale.item_id','left');
+        $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
+        $this->db->join('type', 'type.type_id = item.type_id','left');
         
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
@@ -32,7 +32,7 @@ class Sale_model extends CI_Model
     function get_by_id($id)
     {
         $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
-        $this->db->join('kendaraan','kendaraan.kendaraan_id = sale.kendaraan_id');
+        $this->db->join('item','item.item_id = sale.item_id');
         $this->db->join('user','user.user_id = sale.user_id');
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
@@ -43,7 +43,7 @@ class Sale_model extends CI_Model
         $this->db->like('sale_id', $q);
 	$this->db->or_like('invoice', $q);
 	$this->db->or_like('pelanggan_id', $q);
-	$this->db->or_like('kendaraan_id', $q);
+	$this->db->or_like('item_id', $q);
 	$this->db->or_like('total_price_sale', $q);
 	$this->db->or_like('type_sale', $q);
 	$this->db->or_like('tanggal_sale', $q);
@@ -56,13 +56,13 @@ class Sale_model extends CI_Model
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->join('user', 'user.user_id = sale.user_id', 'left');
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id', 'left');
-        $this->db->join('kendaraan', 'kendaraan.kendaraan_id = sale.kendaraan_id', 'left');
+        $this->db->join('item', 'item.item_id = sale.item_id', 'left');
         $this->db->order_by($this->id, $this->order);
         $this->db->group_start();
         $this->db->like('sale_id', $q);
 	$this->db->or_like('invoice', $q);
 	$this->db->or_like('pelanggan.nama_pelanggan', $q);
-	$this->db->or_like('kendaraan.nama_kendaraan', $q);
+	$this->db->or_like('item.nama_item', $q);
 	$this->db->or_like('total_price_sale', $q);
 	$this->db->or_like('type_sale', $q);
 	$this->db->or_like('tanggal_sale', $q);

@@ -65,7 +65,7 @@
 			<td width="10px"><?php echo ++$start ?></td>
 			<td><?php echo $sale->invoice ?></td>
 			<td><?php echo $sale->nama_pelanggan ?></td>
-			<td><?php echo $sale->nama_kendaraan ?></td>
+			<td><?php echo $sale->nama_item ?></td>
 			<td><?php echo $sale->total_price_sale ?></td>
             <td><?php echo $sale->biaya_admin ?></td>
 			<td><?php echo $sale->type_sale ?></td>

@@ -56,6 +56,7 @@
         <th>No Hp User</th>
         <th>Alamat User</th>
         <th>Photo</th>
+        <th>Access Unit</th>
         <th>Action</th>
             </tr><?php
             foreach ($user_data as $user)
@@ -69,7 +70,8 @@
             <td><?php echo $user->email ?></td>
             <td><?php echo $user->no_hp_user ?></td>
             <td><?php echo $user->alamat_user ?></td>
-            <td><img style="width: 40%; text-align: center;" src="<?= base_url() ?>assets/img/user/<?= $user->photo ?>"></td>      
+            <td><img style="width: 40%; text-align: center;" src="<?= base_url() ?>assets/img/user/<?= $user->photo ?>"></td>
+            <td><a href="<?=site_url('user/akses_unit/'.$user->user_id)?>" class ="btn btn-success btn-xs"><i class="fa fa-unlock" aria-hidden="true"></i> Access</a></td>      
             <td style="text-align:center" width="200px">
                 <?php 
                 echo anchor(site_url('user/update/'.$user->user_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 

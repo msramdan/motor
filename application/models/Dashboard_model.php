@@ -18,10 +18,10 @@ class Dashboard_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    function count_kendaraan()
+    function count_item()
     {
         $this->db->select('*');
-        $this->db->from('kendaraan');
+        $this->db->from('item');
         return $this->db->count_all_results();
     }
 

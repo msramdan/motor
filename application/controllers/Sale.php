@@ -15,7 +15,7 @@ class Sale extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('Sale_model');
-        $this->load->model('Kendaraan_model');
+        $this->load->model('Item_model');
         $this->load->model('Pelanggan_model');
         $this->load->library('form_validation');
         $this->load->library('pdf');
@@ -62,7 +62,7 @@ class Sale extends CI_Controller
                 'biaya_admin' => $row->biaya_admin,
                 'invoice' => $row->invoice,
                 'pelanggan_id' => $row->nama_pelanggan,
-                'kendaraan_id' => $row->nama_kendaraan,
+                'item_id' => $row->nama_item,
                 'total_price_sale' => $row->total_price_sale,
                 'type_sale' => $row->type_sale,
                 'tanggal_sale' => $row->tanggal_sale,
@@ -80,14 +80,14 @@ class Sale extends CI_Controller
         $data = array(
             'button' => 'Create',
             'pelanggan' =>$this->Pelanggan_model->get_all(),
-            'kendaraan' =>$this->Kendaraan_model->get_all('Ready'),
+            'item' =>$this->Item_model->get_all('Ready'),
             'kodeunik' =>$this->Sale_model->buat_kode(),
             'action' => site_url('sale/create_action'),
             'sale_id' => set_value('sale_id'),
             'invoice' => set_value('invoice'),
             'biaya_admin' => set_value('biaya_admin'),
             'pelanggan_id' => set_value('pelanggan_id'),
-            'kendaraan_id' => set_value('kendaraan_id'),
+            'item_id' => set_value('item_id'),
             'total_price_sale' => set_value('total_price_sale'),
             'type_sale' => set_value('type_sale'),
             'tanggal_sale' => set_value('tanggal_sale'),
@@ -108,7 +108,7 @@ class Sale extends CI_Controller
         'biaya_admin' => $this->input->post('biaya_admin',TRUE),
         'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
 		'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-		'kendaraan_id' => $this->input->post('kendaraan_id',TRUE),
+		'item_id' => $this->input->post('item_id',TRUE),
 		'total_price_sale' => $this->input->post('total_price_sale',TRUE),
 		'type_sale' => $this->input->post('type_sale',TRUE),
 		'tanggal_sale' => $this->input->post('tanggal_sale',TRUE),
@@ -132,7 +132,7 @@ class Sale extends CI_Controller
 		'sale_id' => set_value('sale_id', $row->sale_id),
 		'invoice' => set_value('invoice', $row->invoice),
 		'pelanggan_id' => set_value('pelanggan_id', $row->pelanggan_id),
-		'kendaraan_id' => set_value('kendaraan_id', $row->kendaraan_id),
+		'item_id' => set_value('item_id', $row->item_id),
 		'total_price_sale' => set_value('total_price_sale', $row->total_price_sale),
 		'type_sale' => set_value('type_sale', $row->type_sale),
 		'tanggal_sale' => set_value('tanggal_sale', $row->tanggal_sale),
@@ -155,7 +155,7 @@ class Sale extends CI_Controller
             $data = array(
 		'invoice' => $this->input->post('invoice',TRUE),
 		'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-		'kendaraan_id' => $this->input->post('kendaraan_id',TRUE),
+		'item_id' => $this->input->post('item_id',TRUE),
 		'total_price_sale' => $this->input->post('total_price_sale',TRUE),
 		'type_sale' => $this->input->post('type_sale',TRUE),
 		'tanggal_sale' => $this->input->post('tanggal_sale',TRUE),
@@ -186,7 +186,7 @@ class Sale extends CI_Controller
     {
 	$this->form_validation->set_rules('invoice', 'invoice', 'trim|required');
 	$this->form_validation->set_rules('pelanggan_id', 'pelanggan id', 'trim|required');
-	$this->form_validation->set_rules('kendaraan_id', 'kendaraan id', 'trim|required');
+	$this->form_validation->set_rules('item_id', 'item id', 'trim|required');
 	$this->form_validation->set_rules('total_price_sale', 'total price sale', 'trim|required');
 	$this->form_validation->set_rules('type_sale', 'type sale', 'trim|required');
 	$this->form_validation->set_rules('tanggal_sale', 'tanggal sale', 'trim|required');
@@ -204,7 +204,7 @@ class Sale extends CI_Controller
         $sheet->mergeCells('B1:B2'); //invoice
         $sheet->mergeCells('C1:E1'); //item
         $sheet->mergeCells('F1:F2'); //kategori
-        $sheet->mergeCells('G1:G2'); //jenis kendaraan
+        $sheet->mergeCells('G1:G2'); //jenis item
         $sheet->mergeCells('H1:H2'); //nama pelanggan
         $sheet->mergeCells('I1:I2'); //id pelanggan
         $sheet->mergeCells('J1:J2'); //id pembelian
@@ -241,7 +241,7 @@ class Sale extends CI_Controller
         $sheet->mergeCells('B1:B2'); //invoice
         $sheet->mergeCells('C1:C2'); //id pelanggan
         $sheet->mergeCells('D1:D2'); //Nama pelanggan
-        $sheet->mergeCells('E1:F1'); //Kendaraan (meliputi merek dan type)
+        $sheet->mergeCells('E1:F1'); //item (meliputi merek dan type)
         $sheet->mergeCells('G1:G2'); //TOTAL PRICE Sale
         $sheet->mergeCells('H1:H2'); //Type sale
         $sheet->mergeCells('I1:I2'); //TANGGAL Sale
@@ -251,7 +251,7 @@ class Sale extends CI_Controller
         $sheet->setCellVAlue('B1','Invoice');
         $sheet->setCellVAlue('C1','ID Pelanggan');
         $sheet->setCellVAlue('D1','Nama Pelanggan');
-        $sheet->setCellVAlue('E1','Kendaraan');
+        $sheet->setCellVAlue('E1','item');
         $sheet->setCellVAlue('E2','Merek');
         $sheet->setCellVAlue('F2','Type');
         $sheet->setCellVAlue('G1','Total Price Sale');
@@ -349,7 +349,7 @@ class Sale extends CI_Controller
         
         $pdf->SetFont('Arial','',9);
         $pdf->Cell(7,25,'1',1,0);
-        $pdf->Cell(85,25,$data->nama_kendaraan,1,0);
+        $pdf->Cell(85,25,$data->nama_item,1,0);
         $pdf->Cell(25,25,'1',1,0);
         $pdf->Cell(25,25,$data->harga_beli,1,0);
         $pdf->Cell(25,25,floatval($data->harga_beli) * 1,1,0); //harga beli dikali 1
@@ -364,23 +364,6 @@ class Sale extends CI_Controller
         $pdf->setXY(20, 120);
         $pdf->Cell(50,6,'(KASIR)',0,0,'C');
         $pdf->Cell(40,6,'(PENERIMA)',0,0,'R');
-        // Memberikan space kebawah agar tidak terlalu rapat
-        /* $pdf->Cell(10,7,'',0,1);
-        $pdf->SetFont('Arial','B',10);
-        $pdf->Cell(20,6,'NIM',1,0);
-        $pdf->Cell(85,6,'NAMA MAHASISWA',1,0);
-        $pdf->Cell(27,6,'NO HP',1,0);
-        $pdf->Cell(25,6,'TANGGAL LHR',1,1);
-        $pdf->SetFont('Arial','',10);
-        $mahasiswa = $this->db->get('mahasiswa')->result();
-        foreach ($mahasiswa as $row){
-            $pdf->Cell(20,6,$row->nim,1,0);
-            $pdf->Cell(85,6,$row->nama_lengkap,1,0);
-            $pdf->Cell(27,6,$row->no_hp,1,0);
-            $pdf->Cell(25,6,$row->tanggal_lahir,1,1);
-        }*/
-
-        //$pdf->Output();
         $pdf->Output('result.pdf', 'D');
     }
 

@@ -3,13 +3,13 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Jenis_kendaraan extends CI_Controller
+class Grup extends CI_Controller
 {
     function __construct()
     {
         parent::__construct();
         is_login();
-        $this->load->model('Jenis_kendaraan_model');
+        $this->load->model('Grup_model');
         $this->load->library('form_validation');
     }
 
@@ -20,43 +20,43 @@ class Jenis_kendaraan extends CI_Controller
         
         if ($q <> '') {
             $config['base_url'] = base_url() . '.php/c_url/index.html?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'index.php/jenis_kendaraan/index.html?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'index.php/grup/index.html?q=' . urlencode($q);
         } else {
-            $config['base_url'] = base_url() . 'index.php/jenis_kendaraan/index/';
-            $config['first_url'] = base_url() . 'index.php/jenis_kendaraan/index/';
+            $config['base_url'] = base_url() . 'index.php/grup/index/';
+            $config['first_url'] = base_url() . 'index.php/grup/index/';
         }
 
         $config['per_page'] = 10;
         $config['page_query_string'] = FALSE;
-        $config['total_rows'] = $this->Jenis_kendaraan_model->total_rows($q);
-        $jenis_kendaraan = $this->Jenis_kendaraan_model->get_limit_data($config['per_page'], $start, $q);
+        $config['total_rows'] = $this->Grup_model->total_rows($q);
+        $grup = $this->Grup_model->get_limit_data($config['per_page'], $start, $q);
         $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
         $config['full_tag_close'] = '</ul>';
         $this->load->library('pagination');
         $this->pagination->initialize($config);
 
         $data = array(
-            'jenis_kendaraan_data' => $jenis_kendaraan,
+            'grup_data' => $grup,
             'q' => $q,
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        $this->template->load('template','jenis_kendaraan/jenis_kendaraan_list', $data);
+        $this->template->load('template','grup/grup_list', $data);
     }
 
     public function read($id) 
     {
-        $row = $this->Jenis_kendaraan_model->get_by_id($id);
+        $row = $this->Grup_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'jenis_kendaraan_id' => $row->jenis_kendaraan_id,
-		'nama_jenis_kendaraan' => $row->nama_jenis_kendaraan,
+		'grup_id' => $row->grup_id,
+		'nama_grup' => $row->nama_grup,
 	    );
-            $this->template->load('template','jenis_kendaraan/jenis_kendaraan_read', $data);
+            $this->template->load('template','grup/grup_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('jenis_kendaraan'));
+            redirect(site_url('grup'));
         }
     }
 
@@ -64,11 +64,13 @@ class Jenis_kendaraan extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
-            'action' => site_url('jenis_kendaraan/create_action'),
-	    'jenis_kendaraan_id' => set_value('jenis_kendaraan_id'),
-	    'nama_jenis_kendaraan' => set_value('nama_jenis_kendaraan'),
+            'kodeunik' =>$this->Grup_model->buat_kode(),
+            'action' => site_url('grup/create_action'),
+	    'grup_id' => set_value('grup_id'),
+        'kd_grup' => set_value('kd_grup'),
+	    'nama_grup' => set_value('nama_grup'),
 	);
-        $this->template->load('template','jenis_kendaraan/jenis_kendaraan_form', $data);
+        $this->template->load('template','grup/grup_form', $data);
     }
     
     public function create_action() 
@@ -79,30 +81,32 @@ class Jenis_kendaraan extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'nama_jenis_kendaraan' => $this->input->post('nama_jenis_kendaraan',TRUE),
+                'kd_grup' => $this->input->post('kd_grup',TRUE),
+		'nama_grup' => $this->input->post('nama_grup',TRUE),
 	    );
 
-            $this->Jenis_kendaraan_model->insert($data);
+            $this->Grup_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('jenis_kendaraan'));
+            redirect(site_url('grup'));
         }
     }
     
     public function update($id) 
     {
-        $row = $this->Jenis_kendaraan_model->get_by_id($id);
+        $row = $this->Grup_model->get_by_id($id);
 
         if ($row) {
             $data = array(
                 'button' => 'Update',
-                'action' => site_url('jenis_kendaraan/update_action'),
-		'jenis_kendaraan_id' => set_value('jenis_kendaraan_id', $row->jenis_kendaraan_id),
-		'nama_jenis_kendaraan' => set_value('nama_jenis_kendaraan', $row->nama_jenis_kendaraan),
+                'action' => site_url('grup/update_action'),
+		'grup_id' => set_value('grup_id', $row->grup_id),
+        'kd_grup' => set_value('kd_grup', $row->kd_grup),
+		'nama_grup' => set_value('nama_grup', $row->nama_grup),
 	    );
-            $this->template->load('template','jenis_kendaraan/jenis_kendaraan_form', $data);
+            $this->template->load('template','grup/grup_form', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('jenis_kendaraan'));
+            redirect(site_url('grup'));
         }
     }
     
@@ -111,45 +115,46 @@ class Jenis_kendaraan extends CI_Controller
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
-            $this->update($this->input->post('jenis_kendaraan_id', TRUE));
+            $this->update($this->input->post('grup_id', TRUE));
         } else {
             $data = array(
-		'nama_jenis_kendaraan' => $this->input->post('nama_jenis_kendaraan',TRUE),
+                'kd_grup' => $this->input->post('kd_grup',TRUE),
+		'nama_grup' => $this->input->post('nama_grup',TRUE),
 	    );
 
-            $this->Jenis_kendaraan_model->update($this->input->post('jenis_kendaraan_id', TRUE), $data);
+            $this->Grup_model->update($this->input->post('grup_id', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
-            redirect(site_url('jenis_kendaraan'));
+            redirect(site_url('grup'));
         }
     }
     
     public function delete($id) 
     {
-        $row = $this->Jenis_kendaraan_model->get_by_id($id);
+        $row = $this->Grup_model->get_by_id($id);
 
         if ($row) {
-            $this->Jenis_kendaraan_model->delete($id);
+            $this->Grup_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
-            redirect(site_url('jenis_kendaraan'));
+            redirect(site_url('grup'));
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('jenis_kendaraan'));
+            redirect(site_url('grup'));
         }
     }
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('nama_jenis_kendaraan', 'nama jenis kendaraan', 'trim|required');
+	$this->form_validation->set_rules('nama_grup', 'nama grup', 'trim|required');
 
-	$this->form_validation->set_rules('jenis_kendaraan_id', 'jenis_kendaraan_id', 'trim');
+	$this->form_validation->set_rules('grup_id', 'grup_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
     public function excel()
     {
         $this->load->helper('exportexcel');
-        $namaFile = "jenis_kendaraan.xls";
-        $judul = "jenis_kendaraan";
+        $namaFile = "grup.xls";
+        $judul = "grup";
         $tablehead = 0;
         $tablebody = 1;
         $nourut = 1;
@@ -167,14 +172,14 @@ class Jenis_kendaraan extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Nama Jenis Kendaraan");
+	xlsWriteLabel($tablehead, $kolomhead++, "Nama Grup");
 
-	foreach ($this->Jenis_kendaraan_model->get_all() as $data) {
+	foreach ($this->Grup_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_jenis_kendaraan);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_grup);
 
 	    $tablebody++;
             $nourut++;
@@ -184,23 +189,10 @@ class Jenis_kendaraan extends CI_Controller
         exit();
     }
 
-    public function word()
-    {
-        header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=jenis_kendaraan.doc");
-
-        $data = array(
-            'jenis_kendaraan_data' => $this->Jenis_kendaraan_model->get_all(),
-            'start' => 0
-        );
-        
-        $this->load->view('jenis_kendaraan/jenis_kendaraan_doc',$data);
-    }
-
 }
 
-/* End of file Jenis_kendaraan.php */
-/* Location: ./application/controllers/Jenis_kendaraan.php */
+/* End of file Grup.php */
+/* Location: ./application/controllers/Grup.php */
 /* Please DO NOT modify this information : */
-/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-01 08:38:23 */
+/* Generated by Harviacode Codeigniter CRUD Generator 2021-07-06 09:25:51 */
 /* http://harviacode.com */
