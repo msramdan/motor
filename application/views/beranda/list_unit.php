@@ -98,7 +98,7 @@
                               </p>
                             </div>
                             <div class="col-xs-12 col-sm-6 emphasis">
-                              <a href="<?= base_url() ?>beranda/session_unit/<?= $data->unit_id ?>" class="btn btn-success"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</a>
+                              <button data-url="<?= base_url() ?>beranda/session_unit/<?= $data->unit_id ?>" class="btn btn-success btn-enter-unit" data-group-name="<?= $data->nama_grup ?>" data-unit-name="<?= $data->nama_unit ?>"><i class="fa fa-edit m-right-xs"></i> Masuk Unit</button>
                             </div>
                           </div>
                         </div>
@@ -142,6 +142,33 @@
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/sweetalert.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> <!-- untuk sweet alret -->
     <script src="<?php echo base_url();?>assets/js/dataflash.js"></script>
+    <script type="text/javascript">
+        $('.btn-enter-unit').click(function(){
+            let timerInterval;
+            var grup = $(this).attr('data-group-name');
+            var unit = $(this).attr('data-unit-name');
+            var url = $(this).attr('data-url');
+            Swal.fire({
+                imageUrl: '<?php echo base_url().'assets/img/loading.svg' ?>',
+                title: 'Mohon Tunggu',
+                text: 'Sedang menyiapkan menu untuk ' + grup + ' (Unit: ' + unit + ')',
+                timer: 3000,
+                button: false,
+                allowOutsideClick: false,
+                showConfirmButton: false
+            })
+            .then(()=>{
+                window.location.href = url;
+                Swal.fire({
+                    title: 'Sukses',
+                    text: 'Selamat datang <?php ucfirst($this->fungsi->user_login()->nama_user) ?>, Mohon tunggu, sistem sedang mengarahkan anda ke beranda',
+                    icon: 'success',
+                    allowOutsideClick: false,
+                    showConfirmButton: false
+                })
+            });
+        })
+    </script>
 
 </body>
 
