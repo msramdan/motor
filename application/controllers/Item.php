@@ -1,5 +1,7 @@
 <?php
 
+require 'vendor/autoload.php';
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -16,6 +18,7 @@ class item extends CI_Controller
         $this->load->model('Jenis_item_model');
         $this->load->model('Agen_model');
         $this->load->library('form_validation');
+        $this->load->library('pdf');
     }
 
     public function index()
@@ -349,17 +352,65 @@ class item extends CI_Controller
         exit();
     }
 
-    public function word()
+    public function cetak($id)
     {
-        header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=item.doc");
+        $pdf = new FPDF('p','mm','A4');
+        $data = $this->Item_model->get_by_id($id);
+        $dtlharga = $this->Item_model->get_harga($id);
 
-        $data = array(
-            'item_data' => $this->Item_model->get_all(''),
-            'start' => 0
-        );
+        $pdf->AddPage();
+
+        $pdf->setXY(0, 40);
+        $pdf->SetFont('Arial','B',16);$pdf->Cell(0,7,'DATA ITEM',0,0,'C');
+        $pdf->setXY(0, 50);
+        $pdf->SetFont('Arial','',13);$pdf->Cell(0,7,$data->kd_pembelian.'/'.$data->nama_agen,0,0,'C');
         
-        $this->load->view('item/item_doc',$data);
+        $pdf->setY(90);
+        $pdf->SetFont('Arial','',12);
+        $pdf->Cell(10,10,'1.',0,0,'L');
+        $pdf->Cell(50,10,'Nama Item',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->nama_item.'/'.$data->kd_item,0,1,'L');
+        $pdf->Cell(10,10,'2.',0,0,'L');
+        $pdf->Cell(50,10,'Jenis Item',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->nama_jenis_item,0,1,'L');
+        $pdf->Cell(10,10,'3.',0,0,'L');
+        $pdf->Cell(50,10,'Merek',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->nama_merek,0,1,'L');
+        $pdf->Cell(10,10,'4.',0,0,'L');
+        $pdf->Cell(50,10,'No. STNK',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_stnk,0,1,'L');
+        $pdf->Cell(10,10,'5.',0,0,'L');
+        $pdf->Cell(50,10,'No. BPKB',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_bpkb,0,1,'L');
+        $pdf->Cell(10,10,'6.',0,0,'L');
+        $pdf->Cell(50,10,'Harga Perolehan',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,'Rp'.$data->harga_beli,0,1,'L');
+        $pdf->Cell(50,10,'7. Detail Biaya',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,'Rp'.$data->harga_beli,0,1,'L');
+        $pdf->Cell(50,2,'',0,1,'L');
+        foreach($dtlharga->result() as $key => $p) {
+            $pdf->setX(30);
+            $pdf->Cell(50,10,$p->nama_harga,0,0,'L');
+            $pdf->Cell(4,10,':',0,0,'L');
+            $pdf->Cell(100,10,'Rp'.$p->nominal,0,1,'L');
+        }
+        $pdf->Cell(50,10,'8. Deskripsi',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->multiCell(90,10,$data->deskripsi,0,'L',false);
+
+        $pdf->setXY(130, 220);
+        $pdf->Cell(50,10,'Mengetahui',0,2,'C');
+        $pdf->Cell(50,30,'',0,2,'C');
+        $pdf->Cell(50,10,'(_______________________)',0,2,'C');
+
+        $pdf->Output('item'.$data->kd_pembelian.'.pdf', 'D');
     }
 
     public function update_harga($id){
