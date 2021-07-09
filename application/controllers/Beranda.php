@@ -32,7 +32,6 @@ class Beranda extends CI_Controller {
 		$nama_unit = $row->nama_unit;
         $this->session->set_userdata('unit_id', $id);
         $this->session->set_userdata('nama_unit', $nama_unit);
-        $this->session->set_flashdata('message', 'Anda telah berpindah Unit');   
         redirect('dashboard');
     }
 
