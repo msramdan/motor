@@ -16,6 +16,7 @@ class Level extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -48,6 +49,7 @@ class Level extends CI_Controller
 
     public function read($id) 
     {
+        is_allowed($this->uri->segment(1),'read');
         $row = $this->Level_model->get_by_id($id);
         if ($row) {
             $data = array(
@@ -63,6 +65,7 @@ class Level extends CI_Controller
 
      public function role($id)
     {
+        is_allowed($this->uri->segment(1),'create');
         $data['role'] = $this->db->get_where('level', ['level_id' =>$id])->row_array();
         $data['row']= $this->Menu_model->get();
         $this->template->load('template','level/role',$data);
@@ -70,6 +73,7 @@ class Level extends CI_Controller
 
     public function create() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $data = array(
             'button' => 'Create',
             'action' => site_url('level/create_action'),
@@ -81,6 +85,7 @@ class Level extends CI_Controller
     
     public function create_action() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -98,6 +103,7 @@ class Level extends CI_Controller
     
     public function update($id) 
     {
+        is_allowed($this->uri->segment(1),'update');
         $row = $this->Level_model->get_by_id($id);
 
         if ($row) {
@@ -116,6 +122,7 @@ class Level extends CI_Controller
     
     public function update_action() 
     {
+        is_allowed($this->uri->segment(1),'update');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -133,6 +140,7 @@ class Level extends CI_Controller
     
     public function delete($id) 
     {
+        is_allowed($this->uri->segment(1),'delete');
         $row = $this->Level_model->get_by_id($id);
 
         if ($row) {
@@ -155,6 +163,7 @@ class Level extends CI_Controller
 
     public function excel()
     {
+        is_allowed($this->uri->segment(1),'export');
         $this->load->helper('exportexcel');
         $namaFile = "level.xls";
         $judul = "level";
