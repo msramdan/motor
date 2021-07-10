@@ -172,7 +172,7 @@ function is_allowed($nama_menu, $access=null){
         
 }
 
-function show_button($url,$function,$button_style) {
+function show_button($url,$function,$id_data = NULL, $text = NULL) {
     $ci =& get_instance();
     $ci->load->library('fungsi');
     $level = $ci->fungsi->user_login()->level_id;
@@ -190,7 +190,48 @@ function show_button($url,$function,$button_style) {
         if ($function == 'export') {
             $function = 'excel';
         }
-        echo anchor(site_url($url.'/'.$function), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn '.$button_style.' btn-sm"');
+        $icon = '';
+        $class = '';
+        if ($id_data) {
+            if ($function == 'update') {
+                $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+                $class = 'class="btn btn-primary btn-sm"'; 
+                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
+            }
+            if ($function == 'delete') {
+                $icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
+                $class = 'class="btn btn-danger btn-sm"';   
+                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class.' onclick="javascript: return confirm(\'Are You Sure ?\')"'); 
+            }
+            if ($function == 'read') {
+                $icon = '<i class="fa fa-eye" aria-hidden="true"></i>';
+                $class = 'class="btn btn-success btn-sm"';
+                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);   
+            }
+            if ($function == 'upload') {
+                $icon = '<i class="fa fa-upload" aria-hidden="true"></i>';
+                $class = 'class="btn btn-warning btn-sm"';
+                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
+            } 
+            /*else {
+                echo anchor(site_url($url.'/'.$function.'/'.$id_data), '<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
+               
+               can't add this because level settings not yet support this operation, it should be discussed sometimes 
+            }*/
+        }
+
+        if ($id_data == NULL || $id_data == '') {
+            if ($function == 'create') {
+                $icon = $text ? '<i class="fa fa-wpforms" aria-hidden="true"></i> '.$text : '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah data';
+                $class = 'class="btn btn-danger btn-sm"';
+            }
+            if ($function == 'excel') {
+                $icon = '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel';
+                $class = 'class="btn btn-success btn-sm"';
+            }
+            echo anchor(site_url($url.'/'.$function), $icon,$class);
+        }
+        
     } else {
         echo '';
     }

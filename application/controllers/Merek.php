@@ -41,6 +41,7 @@ class Merek extends CI_Controller
             'pagination' => $this->pagination->create_links(),
             'total_rows' => $config['total_rows'],
             'start' => $start,
+            'menu_accessed' => $this->uri->segment(1),
         );
         $this->template->load('template','merek/merek_list', $data);
     }

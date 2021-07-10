@@ -12,8 +12,8 @@
             <div class='row'>
             <div class='col-md-9'>
             <div style="padding-bottom: 10px;">
-                <?php echo show_button($menu_accessed, 'create','btn-danger') ?>
-                <?php echo show_button($menu_accessed, 'export','btn-success') ?>
+                <?php echo show_button($menu_accessed, 'create') ?>
+                <?php echo show_button($menu_accessed, 'export') ?>
             </div>
             </div>
             <div class='col-md-3'>
@@ -74,11 +74,10 @@
 			<td><?php echo $sale->nama_user ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('sale/read/'.$sale->sale_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
+				echo show_button($menu_accessed, 'read', $sale->sale_id);
 				// echo anchor(site_url('sale/update/'.$sale->sale_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				// echo '  '; 
-				echo anchor(site_url('sale/delete/'.$sale->sale_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				// echo '  ';
+                echo show_button($menu_accessed, 'delete', $sale->sale_id);
 				?>
 			</td>
 		</tr>

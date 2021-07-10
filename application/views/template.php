@@ -24,7 +24,7 @@
     <?php endif; ?>
     <div class="container body">
         <div class="main_container">
-            <div class="col-md-3 left_col" style="transition: all 250ms ease-in-out;display: unset;">
+            <div class="col-md-3 left_col" style="transition: all 250ms ease-in-out;">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
                         <a href="" class="site_title"><i class="fa fa-desktop"></i> <span>Apps POS</span></a>
@@ -229,6 +229,179 @@ $(document).ready(function() {
         var button_id = $(this).attr("id");
         $('#row' + button_id + '').remove();
     });
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      $('.form-check-input').on('click', function() {
+        const menuId = $(this).data('menu');
+        const roleId = $(this).data('role');
+        $.ajax({
+          url: "<?= base_url('level/changeaccess'); ?>",
+          type: "post",
+          data: {
+            menuId: menuId,
+            roleId: roleId,
+          },
+          success: function() {
+            Toast.fire({
+              icon: 'success',
+              title: 'Perubahan disimpan'
+            })
+          },
+          error: function(request) {
+            Toast.fire({
+              icon: 'failed',
+              title: 'Gagal menyimpan (' + request.responseText + ')',
+            })
+          }
+
+        });
+
+      })
+
+
+      $('.form-check-input-read').on('click', function() {
+        const menuId = $(this).data('menu');
+        const roleId = $(this).data('role');
+        $.ajax({
+          url: "<?= base_url('level/changeaccess_read'); ?>",
+          type: "post",
+          data: {
+            menuId: menuId,
+            roleId: roleId,
+          },
+          success: function() {
+            Toast.fire({
+              icon: 'success',
+              title: 'Perubahan disimpan'
+            })
+          },
+          error: function(request) {
+            Toast.fire({
+              icon: 'failed',
+              title: 'Gagal menyimpan (' + request.responseText + ')',
+            })
+          }
+
+        });
+
+      })
+
+      $('.form-check-input-create').on('click', function() {
+        const menuId = $(this).data('menu');
+        const roleId = $(this).data('role');
+        $.ajax({
+          url: "<?= base_url('level/changeaccess_create'); ?>",
+          type: "post",
+          data: {
+            menuId: menuId,
+            roleId: roleId,
+          },
+          success: function() {
+            Toast.fire({
+              icon: 'success',
+              title: 'Perubahan disimpan'
+            })
+          },
+          error: function(request) {
+            Toast.fire({
+              icon: 'failed',
+              title: 'Gagal menyimpan (' + request.responseText + ')',
+            })
+          }
+        });
+
+      })
+
+      $('.form-check-input-update').on('click', function() {
+        const menuId = $(this).data('menu');
+        const roleId = $(this).data('role');
+        $.ajax({
+          url: "<?= base_url('level/changeaccess_update'); ?>",
+          type: "post",
+          data: {
+            menuId: menuId,
+            roleId: roleId,
+          },
+          success: function() {
+            Toast.fire({
+              icon: 'success',
+              title: 'Perubahan disimpan'
+            })
+          },
+          error: function(request) {
+            Toast.fire({
+              icon: 'failed',
+              title: 'Gagal menyimpan (' + request.responseText + ')',
+            })
+          }
+
+        });
+
+      })
+
+      $('.form-check-input-delete').on('click', function() {
+        const menuId = $(this).data('menu');
+        const roleId = $(this).data('role');
+        $.ajax({
+          url: "<?= base_url('level/changeaccess_delete'); ?>",
+          type: "post",
+          data: {
+            menuId: menuId,
+            roleId: roleId,
+          },
+          success: function() {
+            Toast.fire({
+              icon: 'success',
+              title: 'Perubahan disimpan'
+            })
+          },
+          error: function(request) {
+            Toast.fire({
+              icon: 'failed',
+              title: 'Gagal menyimpan (' + request.responseText + ')',
+            })
+          }
+
+        });
+
+      })
+
+      $('.form-check-input-export').on('click', function() {
+        const menuId = $(this).data('menu');
+        const roleId = $(this).data('role');
+        $.ajax({
+          url: "<?= base_url('level/changeaccess_export'); ?>",
+          type: "post",
+          data: {
+            menuId: menuId,
+            roleId: roleId,
+          },
+          success: function() {
+            Toast.fire({
+              icon: 'success',
+              title: 'Perubahan disimpan'
+            })
+          },
+          error: function(request) {
+            Toast.fire({
+              icon: 'failed',
+              title: 'Gagal menyimpan (' + request.responseText + ')',
+            })
+          }
+
+        });
+
+      })
 
 
 });
