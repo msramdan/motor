@@ -60,23 +60,6 @@ class Menu_model extends CI_Model
         $this->db->delete($this->table);
     }
 
-    function getDynamicMnu($an)
-    {
-        /*SELECT `user_access_menu`.`user_access_menu_id`,`level_id`,`menu`.`menu`,`menu`.`icon`,`menu`.`menu_id` as menu_id
-            FROM `user_access_menu` JOIN `sub_menu` 
-              ON `user_access_menu`.`sub_menu_id` = `sub_menu`.`sub_menu_id`
-              JOIN `menu` 
-              ON `menu`.`menu_id` = `sub_menu`.`menu_id`
-           WHERE `user_access_menu`.`level_id` = $session_level_id
-           GROUP BY `menu`.`menu_id`
-              ORDER BY `menu`.`urutan` ASC
-           ";*/
-
-        $this->db->select('user_access_menu.user_access_menu_id,level_id,menu.menu,menu.icon,menu.menu_id as menu_id')
-            ->from('user_access_menu')
-            ->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id')
-    }
-
 }
 
 /* End of file menu_model.php */

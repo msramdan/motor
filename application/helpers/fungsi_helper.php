@@ -8,10 +8,6 @@ function check_already_login(){
     }
 }
 
-function check_url_access() {
-    
-}
-
 //akses menu
 function check_access($level_id, $menu_id ){
     $ci = get_instance();

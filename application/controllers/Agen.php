@@ -15,23 +15,6 @@ class Agen extends CI_Controller
 
     public function index()
     {
-        // get last URI
-        $owo = $this->uri->segment_array();
-        echo $owo[1];
-
-        //let's see what this user can see on their menu
-        $queryMenu = "SELECT `user_access_menu`.`user_access_menu_id`,`level_id`,`menu`.`menu`,`menu`.`icon`,`menu`.`menu_id` as menu_id
-            FROM `user_access_menu` JOIN `sub_menu` 
-              ON `user_access_menu`.`sub_menu_id` = `sub_menu`.`sub_menu_id`
-              JOIN `menu` 
-              ON `menu`.`menu_id` = `sub_menu`.`menu_id`
-           WHERE `user_access_menu`.`level_id` = $session_level_id
-           GROUP BY `menu`.`menu_id`
-              ORDER BY `menu`.`urutan` ASC
-           ";
-        $menu = $this->db->query($queryMenu)->result_array();
-        if($owo == )
-        /*
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -59,7 +42,7 @@ class Agen extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
         );
-        $this->template->load('template','agen/agen_list', $data);*/
+        $this->template->load('template','agen/agen_list', $data);
     }
 
     public function read($id) 
