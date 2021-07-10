@@ -9,7 +9,7 @@
       
       <div class="form-group">
         <form action="<?= base_url() ?>Pelanggan/upload_berkas" method="POST" enctype="multipart/form-data">
-          <div class="table-responsive">
+          <div class="table-responsive" style="display: inline;">
             <table class="table table-bordered" id="dynamic_field">
               <tr>
                 <td><input type="text" name="nama_berkas[]" placeholder="Nama Berkas" class="form-control nama_berkas" required="" /></td>

@@ -11,6 +11,7 @@ class Pelanggan extends CI_Controller
         is_login();
         $this->load->model('Pelanggan_model');
         $this->load->library('form_validation');
+        $this->load->library('pdf');
     }
 
     public function index()
@@ -260,17 +261,85 @@ class Pelanggan extends CI_Controller
         exit();
     }
 
-    public function word()
+    public function cetak($id)
     {
-        header("Content-type: application/vnd.ms-word");
-        header("Content-Disposition: attachment;Filename=pelanggan.doc");
+        $berkas = $this->Pelanggan_model->get_berkas($id)->result();
+        $data = $this->Pelanggan_model->get_by_id($id);
+        if ($data) {
+            $pdf = new FPDF('p','mm','A4');
 
-        $data = array(
-            'pelanggan_data' => $this->Pelanggan_model->get_all(),
-            'start' => 0
-        );
-        
-        $this->load->view('pelanggan/pelanggan_doc',$data);
+            $pdf->AddPage();
+
+            $pdf->setXY(0, 40);
+            $pdf->SetFont('Arial','B',16);$pdf->Cell(0,7,'DATA PELANGGAN',0,0,'C');
+            
+            $pdf->setY(60);
+            $pdf->SetFont('Arial','',11);
+            $pdf->Cell(10,8,'1.',0,0,'L');
+            $pdf->Cell(50,8,'No. KTP',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->no_ktp,0,1,'L');
+            $pdf->Cell(10,8,'2.',0,0,'L');
+            $pdf->Cell(50,8,'No. KK',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->no_kk,0,1,'L');
+            $pdf->Cell(10,8,'3.',0,0,'L');
+            $pdf->Cell(50,8,'Nama Pelanggan',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->nama_pelanggan,0,1,'L');
+            $pdf->Cell(10,8,'4.',0,0,'L');
+            $pdf->Cell(50,8,'No. HP Pelanggan',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->no_hp_pelanggan,0,1,'L');
+            $pdf->Cell(10,8,'5.',0,0,'L');
+            $pdf->Cell(50,8,'Jenis Kelamin',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->jenis_kelamin,0,1,'L');
+            $pdf->Cell(10,8,'6.',0,0,'L');
+            $pdf->Cell(50,8,'Alamat KTP',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->alamat_ktp,0,1,'L');
+            $pdf->Cell(10,8,'7.',0,0,'L');
+            $pdf->Cell(50,8,'Alamat Domisili',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->alamat_domisili,0,1,'L');
+            $pdf->Cell(10,8,'8.',0,0,'L');
+            $pdf->Cell(50,8,'Nama Saudara',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->nama_saudara,0,1,'L');
+            $pdf->Cell(10,8,'9.',0,0,'L');
+            $pdf->Cell(50,8,'Alamat Saudara',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->alamat_saudara,0,1,'L');
+            $pdf->Cell(10,8,'10.',0,0,'L');
+            $pdf->Cell(50,8,'No. HP Saudara',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(100,8,$data->no_hp_saudara,0,1,'L');
+            $pdf->Cell(10,8,'11.',0,0,'L');
+            $pdf->Cell(50,8,'Kelengkapan Berkas',0,0,'L');
+            $pdf->Cell(4,8,':',0,0,'L');
+            $pdf->Cell(50,8,'',0,1,'L');
+            if (!empty($berkas)) {
+                foreach($berkas->result() as $key => $p) {
+                    $pdf->setX(30);
+                    $pdf->Cell(50,10,$p->nama_berkas,0,0,'L');
+                    $pdf->Cell(4,10,':',0,0,'L');
+                    $pdf->Cell(100,10,'daah',0,1,'L');
+                }   
+            } else {
+                $pdf->setX(40);
+                $pdf->Cell(50,8,'Belum ada berkas',0,0,'L');
+            }
+
+            $pdf->setXY(130, 220);
+            $pdf->Cell(50,10,'Mengetahui',0,2,'C');
+            $pdf->Cell(50,30,'',0,2,'C');
+            $pdf->Cell(50,10,'(_______________________)',0,2,'C');
+
+            $pdf->Output('pelanggan'.$data->pelanggan_id.'.pdf', 'D');
+        } else {
+            echo 'no data';
+        }
     }
 
     public function download_berkas($gambar){
