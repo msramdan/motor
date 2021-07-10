@@ -61,9 +61,9 @@
             <td><a href="<?=site_url('level/role/'.$level->level_id)?>" class ="btn btn-success btn-xs"><i class="fa fa-unlock" aria-hidden="true"></i> Access</a></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-                echo show_button($menu_accessed, 'read', $level_id);
-                echo show_button($menu_accessed, 'update', $level_id);
-                echo show_button($menu_accessed, 'delete', $level_id);
+                echo show_button($menu_accessed, 'read', $level->level_id);
+                echo show_button($menu_accessed, 'update', $level->level_id);
+                echo show_button($menu_accessed, 'delete', $level->level_id);
 				?>
 			</td>
 		</tr>
