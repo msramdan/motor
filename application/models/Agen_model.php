@@ -18,6 +18,7 @@ class Agen_model extends CI_Model
     // get all
     function get_all()
     {
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
     }
@@ -43,11 +44,14 @@ class Agen_model extends CI_Model
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
+        $this->db->group_start();
         $this->db->like('agen_id', $q);
 	$this->db->or_like('nama_agen', $q);
 	$this->db->or_like('no_hp_agen', $q);
 	$this->db->or_like('alamat', $q);
 	$this->db->or_like('deskripsi', $q);
+    $this->db->group_end();
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
