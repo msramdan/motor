@@ -15,6 +15,7 @@ class Jenis_item extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -48,6 +49,7 @@ class Jenis_item extends CI_Controller
 
     public function read($id) 
     {
+        is_allowed($this->uri->segment(1),'read');
         $row = $this->Jenis_item_model->get_by_id($id);
         if ($row) {
             $data = array(
@@ -63,6 +65,7 @@ class Jenis_item extends CI_Controller
 
     public function create() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $data = array(
             'button' => 'Create',
             'action' => site_url('jenis_item/create_action'),
@@ -74,6 +77,7 @@ class Jenis_item extends CI_Controller
     
     public function create_action() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -91,6 +95,7 @@ class Jenis_item extends CI_Controller
     
     public function update($id) 
     {
+        is_allowed($this->uri->segment(1),'update');
         $row = $this->Jenis_item_model->get_by_id($id);
 
         if ($row) {
@@ -109,6 +114,7 @@ class Jenis_item extends CI_Controller
     
     public function update_action() 
     {
+        is_allowed($this->uri->segment(1),'update');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -126,6 +132,7 @@ class Jenis_item extends CI_Controller
     
     public function delete($id) 
     {
+        is_allowed($this->uri->segment(1),'delete');
         $row = $this->Jenis_item_model->get_by_id($id);
 
         if ($row) {
@@ -148,6 +155,7 @@ class Jenis_item extends CI_Controller
 
     public function excel()
     {
+        is_allowed($this->uri->segment(1),'export');
         $this->load->helper('exportexcel');
         $namaFile = "jenis_item.xls";
         $judul = "jenis_item";

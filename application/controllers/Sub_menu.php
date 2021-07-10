@@ -17,6 +17,7 @@ class Sub_menu extends CI_Controller
 
     public function create() 
     {
+        is_allowed('Menu','create');
         $data = array(
             'button' => 'Create',
             'menu' =>$this->Menu_model->get_all(),
@@ -31,6 +32,7 @@ class Sub_menu extends CI_Controller
     
     public function create_action() 
     {
+        is_allowed('Menu','create');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -50,6 +52,7 @@ class Sub_menu extends CI_Controller
     
     public function update($id) 
     {
+        is_allowed('Menu','update');
         $row = $this->Sub_menu_model->get_by_id($id);
 
         if ($row) {
@@ -71,6 +74,7 @@ class Sub_menu extends CI_Controller
     
     public function update_action() 
     {
+        is_allowed('Menu','update');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -90,6 +94,7 @@ class Sub_menu extends CI_Controller
     
     public function delete($id) 
     {
+        is_allowed('Menu','delete');
         $row = $this->Sub_menu_model->get_by_id($id);
 
         if ($row) {

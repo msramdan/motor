@@ -17,6 +17,7 @@ class User extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -50,6 +51,7 @@ class User extends CI_Controller
 
     public function read($id) 
     {
+        is_allowed($this->uri->segment(1),'read');
         $row = $this->User_model->get_by_id($id);
         if ($row) {
             $data = array(
@@ -72,6 +74,7 @@ class User extends CI_Controller
 
     public function create() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $data = array(
             'level' =>$this->Level_model->get_all(),
             'button' => 'Create',
@@ -91,6 +94,7 @@ class User extends CI_Controller
     
     public function create_action() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -129,6 +133,7 @@ class User extends CI_Controller
     
     public function update($id) 
     {
+        is_allowed($this->uri->segment(1),'update');
         $row = $this->User_model->get_by_id($id);
 
         if ($row) {
@@ -155,6 +160,7 @@ class User extends CI_Controller
     
     public function update_action() 
     {
+        is_allowed($this->uri->segment(1),'update');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -217,6 +223,7 @@ class User extends CI_Controller
     
     public function delete($id) 
     {
+        is_allowed($this->uri->segment(1),'delete');
         $row = $this->User_model->get_by_id($id);
 
         if ($row) {
@@ -252,6 +259,7 @@ class User extends CI_Controller
 
     public function excel()
     {
+        is_allowed($this->uri->segment(1),'export');
         $this->load->helper('exportexcel');
         $namaFile = "user.xls";
         $judul = "user";
