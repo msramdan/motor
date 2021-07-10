@@ -156,18 +156,42 @@ function is_allowed($nama_menu, $access=null){
     $ci =& get_instance();
     $ci->load->library('fungsi');
     $user_session = $ci->fungsi->user_login()->level_id;
-        $ci->db->select('user_access_menu.*,sub_menu.url');
-        $ci->db->from('user_access_menu');
-        $ci->db->join('sub_menu', 'sub_menu.sub_menu_id = user_access_menu.sub_menu_id','left');
-        $ci->db->where('url', $nama_menu);
-        $ci->db->where('level_id', $user_session);
-        if ($access !=null){
-            $ci->db->where($access,1);
-        }
-        $query = $ci->db->get();
-        if ($query->num_rows() < 1 ) {
-         redirect('not_access');
-        }
-
-            
+    $ci->db->select('user_access_menu.*,sub_menu.url');
+    $ci->db->from('user_access_menu');
+    $ci->db->join('sub_menu', 'sub_menu.sub_menu_id = user_access_menu.sub_menu_id','left');
+    $ci->db->where('url', $nama_menu);
+    $ci->db->where('level_id', $user_session);
+    if ($access !=null){
+        $ci->db->where($access,1);
     }
+    $query = $ci->db->get();
+    if ($query->num_rows() < 1 ) {
+     redirect('not_access');
+    }
+
+        
+}
+
+function show_button($url,$function,$button_style) {
+    $ci =& get_instance();
+    $ci->load->library('fungsi');
+    $level = $ci->fungsi->user_login()->level_id;
+    $check = $ci->db->select('level.nama_level, menu.menu as "menu", sub_menu.nama_sub_menu as "Sub Menu", sub_menu.url as "url" ,user_access_menu.'.$function.' as "allow_status"')
+        ->from('level')
+        ->join('user_access_menu','user_access_menu.level_id = level.level_id')
+        ->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id','left')
+        ->join('menu','sub_menu.menu_id = menu.menu_id','left')
+        ->where('level.level_id',$level)
+        ->where('url',$url);
+
+    $result = $check->get()->row();
+
+    if ($result->allow_status == 1) {
+        if ($function == 'export') {
+            $function = 'excel';
+        }
+        echo anchor(site_url($url.'/'.$function), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn '.$button_style.' btn-sm"');
+    } else {
+        echo '';
+    }
+}

@@ -11,9 +11,10 @@
         <div class="box-body">
             <div class='row'>
             <div class='col-md-9'>
-            <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('sale/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('sale/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
+            <div style="padding-bottom: 10px;">
+                <?php echo show_button($menu_accessed, 'create','btn-danger') ?>
+                <?php echo show_button($menu_accessed, 'export','btn-success') ?>
+            </div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('sale/index'); ?>" class="form-inline" method="get">
