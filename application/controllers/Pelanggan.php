@@ -319,11 +319,13 @@ class Pelanggan extends CI_Controller
             $pdf->Cell(50,8,'Kelengkapan Berkas',0,0,'L');
             $pdf->Cell(4,8,':',0,0,'L');
             $pdf->Cell(50,8,'',0,1,'L');
+            
             if (!empty($berkas)) {
                 foreach($berkas as $key => $p) {
                     $pdf->setX(30);
-                    $pdf->Cell(50,10,$p->nama_berkas,0,1,'L');
+                    $pdf->Cell(50,10,$p->nama_berkas,0,0,'L');
                     $pdf->Image(base_url().'/assets/img/checkmark.png',$pdf->GetX()-55, $pdf->GetY()+2.8,4,4);
+                    $pdf->Cell(50,10,'',0,1,'L');
                 }   
             } else {
                 $pdf->setX(40);
