@@ -29,6 +29,7 @@ class item_model extends CI_Model
             $this->db->join('type', 'type.type_id = item.type_id', 'left');
             $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
             $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
+            $this->db->where('item.unit_id', $this->session->userdata('unit_id'));
             $this->db->order_by($this->id, $this->order);
             return $this->db->get($this->table)->result();
         } else {
@@ -39,6 +40,7 @@ class item_model extends CI_Model
             $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
             $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
             $this->db->where('item.status',$status);
+            $this->db->where('item.unit_id', $this->session->userdata('unit_id'));
             $this->db->order_by($this->id, $this->order);
             return $this->db->get($this->table)->result();
         }
@@ -103,6 +105,7 @@ class item_model extends CI_Model
         $this->db->join('type', 'type.type_id = item.type_id', 'left');
         $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
         $this->db->order_by($this->id, $this->order);
+        $this->db->where('item.unit_id', $this->session->userdata('unit_id'));
         $this->db->group_start();
         $this->db->like('item_id', $q);
 	$this->db->or_like('kd_pembelian', $q);

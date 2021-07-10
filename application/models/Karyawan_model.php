@@ -19,6 +19,7 @@ class Karyawan_model extends CI_Model
     function get_all()
     {
         $this->db->join('unit','unit.unit_id = karyawan.unit_id','left');
+        $this->db->where('karyawan.unit_id', $this->session->userdata('unit_id'));
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
     }
@@ -50,6 +51,7 @@ class Karyawan_model extends CI_Model
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->join('unit', 'unit.unit_id = karyawan.unit_id', 'left');
         $this->db->order_by($this->id, $this->order);
+        $this->db->where('karyawan.unit_id', $this->session->userdata('unit_id'));
         $this->db->group_start();
         $this->db->like('karyawan_id', $q);
 	$this->db->or_like('nama_karyawan', $q);
