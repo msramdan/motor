@@ -90,6 +90,8 @@
                                     <td style="text-align:center" width="200px">
                                         <?php 
                                         echo show_button($menu_accessed, 'update_harga', $item->item_id);
+                                        echo anchor(site_url($menu_accessed.'/update_harga/'.$item->item_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+                                        echo '  '; 
                                         echo show_button($menu_accessed, 'read', $item->item_id);
                                         echo show_button($menu_accessed, 'update', $item->item_id);
                                         echo show_button($menu_accessed, 'delete', $item->item_id); ?>

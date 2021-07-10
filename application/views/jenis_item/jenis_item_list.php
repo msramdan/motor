@@ -59,12 +59,11 @@
                                     <td width="10px"><?php echo ++$start ?></td>
                                     <td><?php echo $jenis_item->nama_jenis_item ?></td>
                                     <td style="text-align:center" width="200px">
-                                        <?php 
-				echo anchor(site_url('jenis_item/read/'.$jenis_item->jenis_item_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('jenis_item/update/'.$jenis_item->jenis_item_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('jenis_item/delete/'.$jenis_item->jenis_item_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+
+                                        <?php
+                                        echo show_button($menu_accessed, 'read', $jenis_item->jenis_item_id);
+                                        echo show_button($menu_accessed, 'update', $jenis_item->jenis_item_id);
+                                        echo show_button($menu_accessed, 'delete', $jenis_item->jenis_item_id);
 				?>
                                     </td>
                                 </tr>

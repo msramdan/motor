@@ -73,11 +73,9 @@
                                                 class="ace-icon fa fa-download"></i> Download Photo</td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('karyawan/read/'.$karyawan->karyawan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('karyawan/update/'.$karyawan->karyawan_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('karyawan/delete/'.$karyawan->karyawan_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                echo show_button($menu_accessed, 'read', $karyawan->karyawan_id);
+                echo show_button($menu_accessed, 'update', $karyawan->karyawan_id);
+                echo show_button($menu_accessed, 'delete', $karyawan->karyawan_id);
 				?>
 			</td>
 		</tr>

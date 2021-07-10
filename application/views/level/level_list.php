@@ -61,11 +61,9 @@
             <td><a href="<?=site_url('level/role/'.$level->level_id)?>" class ="btn btn-success btn-xs"><i class="fa fa-unlock" aria-hidden="true"></i> Access</a></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('level/read/'.$level->level_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('level/update/'.$level->level_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('level/delete/'.$level->level_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                echo show_button($menu_accessed, 'read', $level_id);
+                echo show_button($menu_accessed, 'update', $level_id);
+                echo show_button($menu_accessed, 'delete', $level_id);
 				?>
 			</td>
 		</tr>
