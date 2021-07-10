@@ -320,11 +320,10 @@ class Pelanggan extends CI_Controller
             $pdf->Cell(4,8,':',0,0,'L');
             $pdf->Cell(50,8,'',0,1,'L');
             if (!empty($berkas)) {
-                foreach($berkas->result() as $key => $p) {
+                foreach($berkas as $key => $p) {
                     $pdf->setX(30);
-                    $pdf->Cell(50,10,$p->nama_berkas,0,0,'L');
-                    $pdf->Cell(4,10,':',0,0,'L');
-                    $pdf->Cell(100,10,'daah',0,1,'L');
+                    $pdf->Cell(50,10,$p->nama_berkas,0,1,'L');
+                    $pdf->Image(base_url().'/assets/img/checkmark.png',$pdf->GetX()-55, $pdf->GetY()+2.8,4,4);
                 }   
             } else {
                 $pdf->setX(40);
@@ -353,16 +352,18 @@ class Pelanggan extends CI_Controller
     public function upload_berkas(){
         
         
-
-        $config['upload_path']          = './assets/img/berkas'; 
+        $nama               = $_POST['nama_berkas'];
+        $pelanggan_id       = $_POST['pelanggan_id'];
+        $new_name = time().$nama[0].'-'.$pelanggan_id[0];
+        
+        $config['upload_path']          = './assets/img/berkas';        
+        $config['file_name']            = $new_name;
         $config['allowed_types']        = 'jpg|png|pdf|docx|doc';
         $config['max_size']             = 10000;
         // $config['max_width']            = 2048;
         // $config['max_height']           = 1000;
         // $config['encrypt_name']         = true;
         $this->load->library('upload',$config);
-        $nama               = $_POST['nama_berkas'];
-        $pelanggan_id       = $_POST['pelanggan_id'];
         $jumlah_berkas = count($_FILES['berkas']['name']);
 
         for($i = 0; $i < $jumlah_berkas;$i++)
@@ -386,7 +387,6 @@ class Pelanggan extends CI_Controller
         }
 
         redirect(site_url('pelanggan'));
-
     }
 
     public function del_berkas($id,$uri) 
