@@ -1,6 +1,6 @@
 <?php if(check_access($level_id,$sub_menu_id) == "checked='checked'"){
     ?>
-  <table class="table table-bordered table-striped" id="">
+  <table class="table table-bordered table-striped" id="tabel<?php echo $level_id.$sub_menu_id.$namasubmenu ?>">
     <thead>
       <tr>
         <th style="width: 14%;">Status</th>
@@ -140,7 +140,7 @@
 
 
       <?php 
-      $faddaccss = $fetchadditionalaccess->additional_access;
+      $faddaccss = ltrim($fetchadditionalaccess->additional_access,'#');
       if (!$faddaccss == '' || !$faddaccss == NULL) {
 		
 		$splitaccess = explode('#',$faddaccss);
@@ -154,16 +154,16 @@
       			$splitaccessandstatus = explode(';',$as);
       		?>
       		<td>
-      			<?php echo $splitaccessandstatus[1]; ?>
+      			<?php echo $splitaccessandstatus[2]; ?>
       		</td>
       		<td>
 	          	<label class="" for="customCheck1"><?php echo $splitaccessandstatus[0]; ?> <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
 	    padding: 3px;
 	    color: #73879c;
-	    margin-top: 2px;" data-placement="top" title="" data-original-title="<?php echo $splitaccessandstatus[2] ?>"><i class="fa fa-question-circle"></i></button></span></label><br>
+	    margin-top: 2px;" data-placement="top" title="" data-original-title="<?php echo $splitaccessandstatus[1] ?>"><i class="fa fa-question-circle"></i></button></span></label><br>
         	</td>
         	<td style="width: 18%;">
-        		<?php echo anchor(site_url($this->uri->segment(1).'/edit_access/'.$splitaccessandstatus[0]), '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"');?>
+        		
         		<?php echo anchor(site_url($this->uri->segment(1).'/delete_access/'.$splitaccessandstatus[0]), '<i class="fa fa-trash" aria-hidden="true"></i>','class="btn btn-danger btn-sm"');?>
         	</td>
       	</tr>
@@ -190,24 +190,23 @@
         <div class="modal-body">
           	<p>Pastikan nama akses yang diberi tersedia pada sub menu. Akses ini akan diterapkan pada <?php echo $namalevel ?></p>
 			<div class="input-group">
-	            <input type="text" class="form-control" placeholder="Masukan nama akses">
+	            <input type="text" class="form-control" name="access_name" placeholder="Masukan nama akses">
 	            <span class="input-group-btn">
 	                <button type="button" class="btn btn-primary">Go!</button>
 				</span>
 	        </div>
-	        <div>
-	        	<textarea class="form-control" rows="3" placeholder="Deskripsi akses"></textarea>
+	        <div style="margin: 12px 0;">
+	        	<textarea class="form-control" name="access_description" rows="3" placeholder="Deskripsi akses"></textarea>
 	        </div>
 	        <div style="display: grid; grid-template-columns: 0.2fr 1fr;">
-	        	<input class="form-check-input" type="checkbox" data-role="<?= $level_id; ?>" id="allowaccesscheck"
-                data-menu="<?= $sub_menu_id ?>" style="height: 27px;
+	        	<input class="form-check-input" type="checkbox" id="allowaccesscheck" name="allowaccesscheck" style="height: 27px;
     width: 27px;">
                 <p style="word-break: break-word;" for="">Izinkan <?php echo $namalevel ?> untuk melakukan akses tersebut? (jangan lakukan ceklis pada kotak disamping untuk membatasi <?php echo $namalevel ?> melakukan tindakan yang anda tentukan diatas)</p>
 	        </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button type="button" class="btn btn-primary">Simpan</button>
+          <button type="submit" class="btn btn-primary" id="btnsaveAccess" onclick="saveCustomAccess(this,<?php echo $level_id ?>,<?php echo $sub_menu_id; ?>,'<?php echo $this->uri->segment(1) ?>','add_custom_access');">Simpan</button>
         </div>
 
       </div>

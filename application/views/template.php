@@ -230,9 +230,7 @@ $(document).ready(function() {
 
 });
 </script>
-
-<div id="codeoperaationofaccesslist">   
- <script type="text/javascript">
+<script type="text/javascript">
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -280,7 +278,7 @@ $(document).ready(function() {
               },
               error: function(request) {
                 Toast.fire({
-                  icon: 'failed',
+                  icon: 'error',
                   title: 'Gagal menyimpan (' + request.responseText + ')',
                 })
               }
@@ -302,7 +300,7 @@ $(document).ready(function() {
               },
               error: function(request) {
                 Toast.fire({
-                  icon: 'failed',
+                  icon: 'error',
                   title: 'Gagal menyimpan (' + request.responseText + ')',
                 })
               }
@@ -312,4 +310,69 @@ $(document).ready(function() {
 
     }
  </script>
-</div>
+ <script type="text/javascript">
+     function saveCustomAccess(el,level_id,sub_menu_id,controller,method) {
+        // e.preventDefault();
+
+        var gotomodalbody = $(el).parents('div.modal-content').children('div.modal-body');
+
+        var accessname = gotomodalbody.find("input[name='access_name']").val();
+        var accessdescription = gotomodalbody.find("textarea[name='access_description']").val();
+        var allowaccess = 0;
+        if (gotomodalbody.find("input[name='allowaccesscheck']").is(":checked"))
+        {
+          allowaccess = 1;
+        }
+
+        console.log(accessname + ' ' + allowaccess + ' ' + accessdescription + ' ' + sub_menu_id + ' ' + level_id);
+
+        $(el).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
+
+        $.ajax({
+           url: '<?php echo base_url() ?>' + controller + '/' + method,
+           type: 'POST',
+           data: {
+                access_name: accessname, 
+                access_description: accessdescription, 
+                allowaccess: allowaccess,
+                levelid: level_id,
+                submenuid: sub_menu_id
+            },
+            fail: function() {
+                alert('Something is wrong');
+                $(el).html('Tambah');
+            },
+            error: function() {
+                alert('Something is wrong');
+                $(el).html('Tambah');
+            },
+            success: function(data) {
+                var o = JSON.parse(data);
+                if (data == 'no') {
+                    Toast.fire({
+                      icon: 'error',
+                      title: 'Akses sudah ada'
+                    });
+                    $(el).html('Tambah');
+                } else {
+                    Toast.fire({
+                      icon: 'success',
+                      title: 'Akses berhasil ditambahkan'
+                    });
+
+                    var ano = '<?php echo base_url().$this->uri->segment(1) ?>';
+
+                    console.log('#tabel' + level_id + sub_menu_id + o.dataiwant + 'tr:last');
+
+                    $(el).html('Tambah');
+                    $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td>' + allowaccess + '</td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><a class="btn btn-danger btn-sm" href="' + ano + '/delete_access/' + accessname + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>');
+
+                    gotomodalbody.find("input[name='access_name']").val('');
+                    gotomodalbody.find("textarea[name='access_description']").val('');
+                    $('#modalTambahAksesuntuk' + level_id + sub_menu_id + o.dataiwant).modal('toggle');
+                }
+
+            }
+        });        
+     }
+ </script>

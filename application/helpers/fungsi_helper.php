@@ -8,18 +8,6 @@ function check_already_login(){
     }
 }
 
-function fetchalladditionalaccess($level_id, $menu_id ){
-    $ci = get_instance();
-    $ci->db->select('additional_access');
-    $ci->db->where('level_id', $level_id);
-    $ci->db->where('sub_menu_id', $menu_id);
-    $result = $ci->db->get('user_access_menu');
-    
-    return $result->row();
-    
-
-}
-
 //akses menu
 function check_access($level_id, $menu_id ){
     $ci = get_instance();
@@ -249,4 +237,14 @@ function show_button($url,$function,$id_data = NULL, $text = NULL) {
     } else {
         echo '';
     }
+}
+
+function fetchalladditionalaccess($level_id, $menu_id ){
+    $ci = get_instance();
+    $ci->db->select('additional_access');
+    $ci->db->where('level_id', $level_id);
+    $ci->db->where('sub_menu_id', $menu_id);
+    $result = $ci->db->get('user_access_menu');
+    
+    return $result->row();
 }

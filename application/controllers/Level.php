@@ -356,6 +356,52 @@ class Level extends CI_Controller
         $this->db->where('sub_menu_id',$menu_id);
         $this->db->update('user_access_menu',$data);
     }
+
+    public function add_custom_access() {
+        $menu_id = $this->input->post('submenuid');
+        $level_id = $this->input->post('levelid');
+        $nama_access = $this->input->post('access_name');
+        $deskripsi_access = $this->input->post('access_description');
+        $izinkan = $this->input->post('allowaccess');
+
+        $params=[
+            'level_id'      =>  $level_id,
+            'user_access_menu.sub_menu_id'   =>  $menu_id
+        ];
+        $this->db->join('sub_menu','sub_menu.sub_menu_id=user_access_menu.sub_menu_id');
+        $result = $this->db->get_where('user_access_menu', $params)->row();
+        
+        $fetcheddata = $result->additional_access;
+
+        if( strpos( $fetcheddata, $nama_access ) !== false) {
+            echo "no";
+        } else {
+
+            $converted = strval($izinkan);
+            $newdata = "#".$nama_access.";".$deskripsi_access.";".$converted;
+
+            $appendeddata = $fetcheddata.$newdata;
+
+            $data = [
+                'additional_access' => $appendeddata,
+            ];
+
+            $this->db->where('level_id',$level_id);
+            $this->db->where('sub_menu_id',$menu_id);
+            $this->db->update('user_access_menu',$data);   ;
+            
+            $o = ucfirst($result->nama_sub_menu);
+            $bor = ucwords(strtolower($o));
+            $trimmedsubmenuname = preg_replace('/\s+/', '', $bor);
+
+            $resp = array(
+                'statusnya' => 'ok',
+                'dataiwant' => $trimmedsubmenuname,
+            );
+            echo json_encode($resp);
+        }
+
+    }
 }
 
 /* End of file Level.php */
