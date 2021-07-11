@@ -243,7 +243,7 @@ $(document).ready(function() {
         }
     })
 
-    function changeAccessfor(el, operation, submenu = null) {
+    function changeAccessfor(el, operation, submenu = null, level = null) {
         const menu_id = $(el).data('menu');
         const role_id = $(el).data('role');
         const elementcheck = $(el);
@@ -258,7 +258,8 @@ $(document).ready(function() {
               data: {
                 menuId: menu_id,
                 roleId: role_id,
-                namasubmenu: submenu
+                namasubmenu: submenu,
+                namalevel: level
               },
               success: function(data) {
 
@@ -270,7 +271,6 @@ $(document).ready(function() {
                     iconstatus.html("<i class='fa fa-unlock' aria-hidden='true' style='color: #26B99A;'></i>");
                     elementcheck.prop('checked', true);
                     accesslistofmenuelement.html(data);
-                    console.log(data);
                 }
                 Toast.fire({
                   icon: 'success',
@@ -367,6 +367,8 @@ $(document).ready(function() {
 
                     $(el).html('Tambah');
                     $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td>' + allowaccess + '</td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><a class="btn btn-danger btn-sm" href="' + ano + '/delete_access/' + accessname + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>');
+
+                    $("[data-toggle=tooltip]").tooltip();
 
                     gotomodalbody.find("input[name='access_name']").val('');
                     gotomodalbody.find("textarea[name='access_description']").val('');
