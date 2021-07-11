@@ -219,17 +219,26 @@ class Level extends CI_Controller
     public function changeaccess_submenu(){
         $menu_id = $this->input->post('menuId');
         $level_id = $this->input->post('roleId');
+        $namasubmenu = $this->input->post('namasubmenu');
+        $namalevel = $this->input->post('namalevel');
 
         $data=[
             'level_id' =>$level_id,
-            'sub_menu_id' =>$menu_id
+            'sub_menu_id' =>$menu_id,
+        ];
+
+        $data2=[
+            'level_id' =>$level_id,
+            'sub_menu_id' =>$menu_id,
+            'namasubmenu' => $namasubmenu,
+            'namalevel' => $namalevel
         ];
 
         $result = $this->db->get_where('user_access_menu', $data);
 
         if ($result->num_rows() < 1) {
             $this->db->insert('user_access_menu', $data);
-            echo $this->load->view('level/access_list_submenu',$data, TRUE);
+            echo $this->load->view('level/access_list_submenu',$data2, TRUE);
         }else{
             $this->db->delete('user_access_menu', $data);
             echo json_encode('deleted');

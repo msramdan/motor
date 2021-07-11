@@ -55,7 +55,7 @@
                               <a class="panel-heading collapsed" role="tab" id="heading<?php echo $sm['id_sub'].$submenunametrimmed ?>" data-toggle="collapse" data-parent="#accordion<?php echo $sm['id_sub'].$submenunametrimmed ?>" href="#collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" aria-expanded="false" aria-controls="collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>">
                                 <h4 class="panel-title">
 
-                                  <input class="form-check-input" type="checkbox" <?= check_access($role['level_id'],$sm['id_sub']); ?> data-role="<?= $role['level_id']; ?>"data-menu="<?= $sm['id_sub'] ?>" onclick="changeAccessfor(this, 'submenu')">
+                                  <input class="form-check-input" type="checkbox" <?= check_access($role['level_id'],$sm['id_sub']); ?> data-role="<?= $role['level_id']; ?>"data-menu="<?= $sm['id_sub'] ?>" onclick="changeAccessfor(this, 'submenu','<?php echo $submenunametrimmed ?>','<?php echo $role['nama_level'] ?>')">
                                     <label style="font-weight: inherit; font-size: medium;" class="" for="customCheck1"><?= $sm['nama_sub_menu'] ?><?php echo check_access($role['level_id'],$sm['id_sub']) == "checked='checked'" ? "<span id='iconstatussubmenufor".$sm['id_sub'].$submenunametrimmed."' style='margin: 0 7px;'><i class='fa fa-unlock' aria-hidden='true' style='color: #26B99A;'></i></span>" : "<span style='margin: 0 7px;'><i class='fa fa-lock' aria-hidden='true' style='color: red;'></i></span>"; ?></label>
 
                                 </h4>

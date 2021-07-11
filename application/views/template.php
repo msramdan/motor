@@ -243,7 +243,7 @@ $(document).ready(function() {
         }
     })
 
-    function changeAccessfor(el, operation) {
+    function changeAccessfor(el, operation, submenu = null) {
         const menu_id = $(el).data('menu');
         const role_id = $(el).data('role');
         const elementcheck = $(el);
@@ -258,6 +258,7 @@ $(document).ready(function() {
               data: {
                 menuId: menu_id,
                 roleId: role_id,
+                namasubmenu: submenu
               },
               success: function(data) {
 
