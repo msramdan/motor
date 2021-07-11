@@ -8,6 +8,18 @@ function check_already_login(){
     }
 }
 
+function fetchalladditionalaccess($level_id, $menu_id ){
+    $ci = get_instance();
+    $ci->db->select('additional_access');
+    $ci->db->where('level_id', $level_id);
+    $ci->db->where('sub_menu_id', $menu_id);
+    $result = $ci->db->get('user_access_menu');
+    
+    return $result->row();
+    
+
+}
+
 //akses menu
 function check_access($level_id, $menu_id ){
     $ci = get_instance();
@@ -18,7 +30,7 @@ function check_access($level_id, $menu_id ){
          return "checked='checked'";
     }
 
- }
+}
 
  //acces_read
 
@@ -167,9 +179,7 @@ function is_allowed($nama_menu, $access=null){
     $query = $ci->db->get();
     if ($query->num_rows() < 1 ) {
      redirect('not_access');
-    }
-
-        
+    }    
 }
 
 function show_button($url,$function,$id_data = NULL, $text = NULL) {
@@ -215,8 +225,12 @@ function show_button($url,$function,$id_data = NULL, $text = NULL) {
             } 
             /*else {
                 echo anchor(site_url($url.'/'.$function.'/'.$id_data), '<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
-               
-               can't add this because level settings not yet support this operation, it should be discussed sometimes 
+                
+                00.31, 11/07/2021
+                can't add this because level settings not yet support this operation, it should be discussed sometimes 
+                
+                15:31, 11/07/2021
+                nvm, working on it
             }*/
         }
 

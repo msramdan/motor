@@ -38,10 +38,10 @@
               ?>
               <div class="accordion" id="accordion<?php echo $menuId.$menutrimmed ?>" role="tablist" aria-multiselectable="true">
                 <div class="panel">
-                  <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion<?php echo $menuId.$menutrimmed ?>" href="#collapse<?php echo $menuId.$menutrimmed ?>" aria-expanded="false" aria-controls="collapse<?php echo $menuId.$menutrimmed ?>">
+                  <a class="panel-heading collapsed" role="tab" id="heading<?php echo $menuId.$menutrimmed ?>" data-toggle="collapse" data-parent="#accordion<?php echo $menuId.$menutrimmed ?>" href="#collapse<?php echo $menuId.$menutrimmed ?>" aria-expanded="false" aria-controls="collapse<?php echo $menuId.$menutrimmed ?>">
                     <h4 class="panel-title">Menu <?= $value->menu ?></h4>
                   </a>
-                  <div id="collapse<?php echo $menuId.$menutrimmed ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                  <div id="collapse<?php echo $menuId.$menutrimmed ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?php echo $menuId.$menutrimmed ?>">
                     <div class="panel-body">
                       <?php
                         foreach ($subMenu as $sm) :
@@ -52,129 +52,28 @@
                           ?>
                           <div class="accordion" id="accordion<?php echo $sm['id_sub'].$submenunametrimmed ?>" role="tablist" aria-multiselectable="true">
                             <div class="panel">
-                              <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion<?php echo $sm['id_sub'].$submenunametrimmed ?>" href="#collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" aria-expanded="false" aria-controls="collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>">
+                              <a class="panel-heading collapsed" role="tab" id="heading<?php echo $sm['id_sub'].$submenunametrimmed ?>" data-toggle="collapse" data-parent="#accordion<?php echo $sm['id_sub'].$submenunametrimmed ?>" href="#collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" aria-expanded="false" aria-controls="collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>">
                                 <h4 class="panel-title">
 
-                                  <input class="form-check-input" type="checkbox" <?= check_access($role['level_id'],$sm['id_sub']); ?> data-role="<?= $role['level_id']; ?>"data-menu="<?= $sm['id_sub'] ?>">
-                                    <label style="font-weight: inherit; font-size: medium;" class="" for="customCheck1"><?= $sm['nama_sub_menu'] ?></label>
+                                  <input class="form-check-input" type="checkbox" <?= check_access($role['level_id'],$sm['id_sub']); ?> data-role="<?= $role['level_id']; ?>"data-menu="<?= $sm['id_sub'] ?>" onclick="changeAccessfor(this, 'submenu')">
+                                    <label style="font-weight: inherit; font-size: medium;" class="" for="customCheck1"><?= $sm['nama_sub_menu'] ?><?php echo check_access($role['level_id'],$sm['id_sub']) == "checked='checked'" ? "<span id='iconstatussubmenufor".$sm['id_sub'].$submenunametrimmed."' style='margin: 0 7px;'><i class='fa fa-unlock' aria-hidden='true' style='color: #26B99A;'></i></span>" : "<span style='margin: 0 7px;'><i class='fa fa-lock' aria-hidden='true' style='color: red;'></i></span>"; ?></label>
 
                                 </h4>
                               </a>
-                              <div id="collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                              <div id="collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?php echo $sm['id_sub'].$submenunametrimmed ?>">
                                 <div class="panel-body">
-                                  <table class="table table-bordered table-striped" id="">
-                                    <thead>
-                                      <tr>
-                                        <th>Status</th>
-                                        <th>Operation</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <?php
-                                       $coba = check_access($role['level_id'],$sm['id_sub']); ?>
-                                      
+                                  
 
-                                      <tr>
-                                        <td>
-                                          <?php if ($coba=='') { ?>
-                                           <input class="form-check-input-create" type="checkbox" disabled=""
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
+                                  <?php
+                                  $parametera = [
+                                      'level_id'    =>  $role['level_id'],
+                                      'sub_menu_id' =>  $sm['id_sub'],
+                                      'namasubmenu' =>  $submenunametrimmed,
+                                      'namalevel' => $role['nama_level'],
+                                  ];
+                                  $this->view('level/access_list_submenu',$parametera) ?>
+                                  
 
-                                         <?php }else{ ?>
-                                          <input class="form-check-input-create" type="checkbox" <?= check_access_create($role['level_id'],$sm['id_sub']); ?>
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
-                                         <?php } ?>
-                                        </td>
-                                        <td>
-                                          <label class="" for="customCheck1">Create</label><br>
-                                        </td>
-                                      </tr>
-
-                                      <tr>
-                                        <td>
-                                          <?php if ($coba=='') { ?>
-                                           <input class="form-check-input-read" type="checkbox" disabled=""
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
-
-                                         <?php }else{ ?>
-                                          <input class="form-check-input-read" type="checkbox" <?= check_access_read($role['level_id'],$sm['id_sub']); ?>
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
-                                         <?php } ?>   
-                                        </td>
-                                        <td>
-                                          <label class="" for="customCheck1">Read</label><br>    
-                                        </td>
-                                      </tr>
-
-                                      <tr>
-                                        <td>
-                                          <?php if ($coba=='') { ?>
-                                             <input class="form-check-input-update" type="checkbox" disabled=""
-                                                  data-role="<?= $role['level_id']; ?>"
-                                                  data-menu="<?= $sm['id_sub'] ?>"
-                                                >
-
-                                           <?php }else{ ?>
-                                            <input class="form-check-input-update" type="checkbox" <?= check_access_update($role['level_id'],$sm['id_sub']); ?>
-                                                  data-role="<?= $role['level_id']; ?>"
-                                                  data-menu="<?= $sm['id_sub'] ?>"
-                                                >
-                                           <?php } ?>
-                                        </td>
-                                        <td>
-                                          <label class="" for="customCheck1">Update</label><br>
-                                        </td>
-                                      </tr>
-
-                                      <tr>
-                                        <td>
-                                          <?php if ($coba=='') { ?>
-                                           <input class="form-check-input-delete" type="checkbox" disabled=""
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
-
-                                         <?php }else{ ?>
-                                          <input class="form-check-input-delete" type="checkbox" <?= check_access_delete($role['level_id'],$sm['id_sub']); ?>
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
-                                         <?php } ?>
-                                        </td>
-                                        <td>
-                                          <label class="" for="customCheck1">Delete</label><br>
-                                        </td>
-                                      </tr>
-
-                                      <tr>
-                                        <td>
-                                          <?php if ($coba=='') { ?>
-                                           <input class="form-check-input-export" type="checkbox" disabled=""
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
-
-                                         <?php }else{ ?>
-                                          <input class="form-check-input-export" type="checkbox" <?= check_access_export($role['level_id'],$sm['id_sub']); ?>
-                                                data-role="<?= $role['level_id']; ?>"
-                                                data-menu="<?= $sm['id_sub'] ?>"
-                                              >
-                                         <?php } ?>
-                                        </td>
-                                        <td>
-                                          <label class="" for="customCheck1">Export</label><br>
-                                        </td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
                                 </div>
                               </div>
                             </div>

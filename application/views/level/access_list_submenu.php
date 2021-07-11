@@ -3,7 +3,7 @@
   <table class="table table-bordered table-striped" id="">
     <thead>
       <tr>
-        <th>Status</th>
+        <th style="width: 14%;">Status</th>
         <th colspan="2">Operation</th>
       </tr>
     </thead>
@@ -14,14 +14,18 @@
       
 
       <tr>
-        <td>
+        <td style="text-align: center;">
           <?php if ($coba=='') { ?>
            <input class="form-check-input-create" type="checkbox" disabled=""
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'create')">
 
          <?php }else{ ?>
           <input class="form-check-input-create" type="checkbox" <?= check_access_create($level_id,$sub_menu_id); ?>
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'create')">
          <?php } ?>
@@ -35,14 +39,18 @@
       </tr>
 
       <tr>
-        <td>
+        <td style="text-align: center;">
           <?php if ($coba=='') { ?>
            <input class="form-check-input-read" type="checkbox" disabled=""
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'read')">
 
          <?php }else{ ?>
           <input class="form-check-input-read" type="checkbox" <?= check_access_read($level_id,$sub_menu_id); ?>
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'read')">
          <?php } ?>   
@@ -56,14 +64,18 @@
       </tr>
 
       <tr>
-        <td>
+        <td style="text-align: center;">
           <?php if ($coba=='') { ?>
              <input class="form-check-input-update" type="checkbox" disabled=""
+             style="height: 2em;
+    width: 2em;"
                   data-role="<?= $level_id; ?>"
                   data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'update')">
 
            <?php }else{ ?>
             <input class="form-check-input-update" type="checkbox" <?= check_access_update($level_id,$sub_menu_id); ?>
+                  style="height: 2em;
+    width: 2em;"
                   data-role="<?= $level_id; ?>"
                   data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'update')">
            <?php } ?>
@@ -77,14 +89,18 @@
       </tr>
 
       <tr>
-        <td>
+        <td style="text-align: center;">
           <?php if ($coba=='') { ?>
            <input class="form-check-input-delete" type="checkbox" disabled=""
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'delete')">
 
          <?php }else{ ?>
           <input class="form-check-input-delete" type="checkbox" <?= check_access_delete($level_id,$sub_menu_id); ?>
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'delete')">
          <?php } ?>
@@ -98,14 +114,18 @@
       </tr>
 
       <tr>
-        <td>
+        <td style="text-align: center;">
           <?php if ($coba=='') { ?>
            <input class="form-check-input-export" type="checkbox" disabled=""
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'export')">
 
          <?php }else{ ?>
           <input class="form-check-input-export" type="checkbox" <?= check_access_export($level_id,$sub_menu_id); ?>
+                style="height: 2em;
+    width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'export')">
          <?php } ?>
@@ -123,7 +143,7 @@
       $faddaccss = $fetchadditionalaccess->additional_access;
       if (!$faddaccss == '' || !$faddaccss == NULL) {
 		
-		$splitaccess = explode(',',$faddaccss);
+		$splitaccess = explode('#',$faddaccss);
 
 		foreach($splitaccess as $as){
 
@@ -131,7 +151,7 @@
 						
       	<tr>
       		<?php
-      			$splitaccessandstatus = explode(':',$as);
+      			$splitaccessandstatus = explode(';',$as);
       		?>
       		<td>
       			<?php echo $splitaccessandstatus[1]; ?>
@@ -140,10 +160,11 @@
 	          	<label class="" for="customCheck1"><?php echo $splitaccessandstatus[0]; ?> <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
 	    padding: 3px;
 	    color: #73879c;
-	    margin-top: 2px;" data-placement="top" title="" data-original-title="Dapat mengambil list record data dalam bentuk file excel"><i class="fa fa-question-circle"></i></button></span></label><br>
+	    margin-top: 2px;" data-placement="top" title="" data-original-title="<?php echo $splitaccessandstatus[2] ?>"><i class="fa fa-question-circle"></i></button></span></label><br>
         	</td>
-        	<td>
-        		<?php echo anchor(site_url($this->uri->segment(1).'/delete_access/'.$splitaccessandstatus[0]), '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"');?>
+        	<td style="width: 18%;">
+        		<?php echo anchor(site_url($this->uri->segment(1).'/edit_access/'.$splitaccessandstatus[0]), '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"');?>
+        		<?php echo anchor(site_url($this->uri->segment(1).'/delete_access/'.$splitaccessandstatus[0]), '<i class="fa fa-trash" aria-hidden="true"></i>','class="btn btn-danger btn-sm"');?>
         	</td>
       	</tr>
   	<?php 
@@ -173,6 +194,9 @@
 	            <span class="input-group-btn">
 	                <button type="button" class="btn btn-primary">Go!</button>
 				</span>
+	        </div>
+	        <div>
+	        	<textarea class="form-control" rows="3" placeholder="Deskripsi akses"></textarea>
 	        </div>
 	        <div style="display: grid; grid-template-columns: 0.2fr 1fr;">
 	        	<input class="form-check-input" type="checkbox" data-role="<?= $level_id; ?>" id="allowaccesscheck"

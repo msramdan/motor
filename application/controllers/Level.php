@@ -67,6 +67,7 @@ class Level extends CI_Controller
      public function role($id)
     {
         is_allowed($this->uri->segment(1),'create');
+
         $data['role'] = $this->db->get_where('level', ['level_id' =>$id])->row_array();
         $data['row']= $this->Menu_model->get();
         $this->template->load('template','level/role',$data);
@@ -215,7 +216,7 @@ class Level extends CI_Controller
         $this->load->view('level/level_doc',$data);
     }
 
-    public function changeaccess(){
+    public function changeaccess_submenu(){
         $menu_id = $this->input->post('menuId');
         $level_id = $this->input->post('roleId');
 
@@ -228,14 +229,15 @@ class Level extends CI_Controller
 
         if ($result->num_rows() < 1) {
             $this->db->insert('user_access_menu', $data);
+            echo $this->load->view('level/access_list_submenu',$data, TRUE);
         }else{
             $this->db->delete('user_access_menu', $data);
+            echo json_encode('deleted');
         }
 
     }
 
-
-     public function changeaccess_read(){
+    public function changeaccess_read(){
         $menu_id = $this->input->post('menuId');
         $level_id = $this->input->post('roleId');
 
@@ -354,7 +356,6 @@ class Level extends CI_Controller
         $this->db->where('sub_menu_id',$menu_id);
         $this->db->update('user_access_menu',$data);
     }
-
 }
 
 /* End of file Level.php */
