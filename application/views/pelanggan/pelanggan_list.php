@@ -11,9 +11,9 @@
         <div class="box-body">
             <div class='row'>
             <div class='col-md-9'>
-            <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('pelanggan/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('pelanggan/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
+            <div style="padding-bottom: 10px;">
+        <?php echo show_button($menu_accessed, 'create');
+        echo show_button($menu_accessed, 'export'); ?></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('pelanggan/index'); ?>" class="form-inline" method="get">
@@ -77,14 +77,10 @@
 			<td><?php echo $pelanggan->no_hp_saudara ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-                echo anchor(site_url('pelanggan/upload/'.$pelanggan->pelanggan_id),'<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
-                echo '  '; 
-				echo anchor(site_url('pelanggan/read/'.$pelanggan->pelanggan_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('pelanggan/update/'.$pelanggan->pelanggan_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('pelanggan/delete/'.$pelanggan->pelanggan_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
-				?>
+                echo anchor(site_url('pelanggan/upload/'.$pelanggan->pelanggan_id),'<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); //still finding out?> 
+                <?php echo show_button($menu_accessed, 'read',$pelanggan->pelanggan_id); ?>
+                <?php echo show_button($menu_accessed, 'update',$pelanggan->pelanggan_id); ?>
+                <?php echo show_button($menu_accessed, 'delete',$pelanggan->pelanggan_id); ?>
 			</td>
 		</tr>
                 <?php

@@ -11,9 +11,9 @@
         <div class="box-body">
             <div class='row'>
             <div class='col-md-9'>
-            <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('kategori/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('kategori/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
+            <div style="padding-bottom: 10px;">
+        <?php echo show_button($menu_accessed, 'create');
+        echo show_button($menu_accessed, 'export'); ?></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('kategori/index'); ?>" class="form-inline" method="get">
@@ -59,11 +59,9 @@
 			<td><?php echo $kategori->nama_kategori ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('kategori/read/'.$kategori->kategori_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('kategori/update/'.$kategori->kategori_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('kategori/delete/'.$kategori->kategori_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                echo show_button($menu_accessed, 'read', $kategori->kategori_id);
+                echo show_button($menu_accessed, 'update', $kategori->kategori_id);
+                echo show_button($menu_accessed, 'delete', $kategori->kategori_id);
 				?>
 			</td>
 		</tr>
