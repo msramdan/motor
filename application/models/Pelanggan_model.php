@@ -20,6 +20,7 @@ class Pelanggan_model extends CI_Model
     // get all
     function get_all()
     {
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
     }
@@ -65,6 +66,8 @@ class Pelanggan_model extends CI_Model
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
         $this->db->order_by($this->id, $this->order);
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
+        $this->db->group_start();
         $this->db->like('pelanggan_id', $q);
 	$this->db->or_like('no_ktp', $q);
 	$this->db->or_like('no_kk', $q);
@@ -76,6 +79,7 @@ class Pelanggan_model extends CI_Model
 	$this->db->or_like('nama_saudara', $q);
 	$this->db->or_like('alamat_saudara', $q);
 	$this->db->or_like('no_hp_saudara', $q);
+    $this->db->group_end();
 	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }

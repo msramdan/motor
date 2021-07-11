@@ -28,11 +28,11 @@ class Dashboard_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    function count_transaksi()
+    function count_agen()
     {
         $this->db->select('*');
-        $this->db->from('sale');
-        // $this->db->where('unit_id', $this->session->userdata('unit_id'));
+        $this->db->from('agen');
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
         return $this->db->count_all_results();
     }
 

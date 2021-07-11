@@ -13,11 +13,13 @@ date_default_timezone_set('Asia/Jakarta');
 
 		public function index()
 		{	
+			is_allowed($this->uri->segment(1),null);
 			$this->template->load('template','backup/view');
 		}
 
 		public function file()
 		{
+			is_allowed($this->uri->segment(1),'create');
 			date_default_timezone_set("Asia/Jakarta");
 			// Load the DB utility class
 			$this->load->dbutil();

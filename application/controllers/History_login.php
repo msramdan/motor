@@ -15,6 +15,7 @@ class History_login extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -49,6 +50,7 @@ class History_login extends CI_Controller
 
     public function excel()
     {
+        is_allowed($this->uri->segment(1),'export');
         $this->load->helper('exportexcel');
         $namaFile = "history_login.xls";
         $judul = "history_login";

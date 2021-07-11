@@ -16,6 +16,7 @@ class Pelanggan extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -48,6 +49,8 @@ class Pelanggan extends CI_Controller
 
     public function read($id) 
     {
+
+        is_allowed($this->uri->segment(1),'read');
         $row = $this->Pelanggan_model->get_by_id($id);
         if ($row) {
             $data = array(
@@ -73,6 +76,7 @@ class Pelanggan extends CI_Controller
 
     public function create() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $data = array(
             'button' => 'Create',
             'action' => site_url('pelanggan/create_action'),
@@ -93,6 +97,7 @@ class Pelanggan extends CI_Controller
     
     public function create_action() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -120,6 +125,7 @@ class Pelanggan extends CI_Controller
     
     public function update($id) 
     {
+        is_allowed($this->uri->segment(1),'update');
         $row = $this->Pelanggan_model->get_by_id($id);
 
         if ($row) {
@@ -148,6 +154,7 @@ class Pelanggan extends CI_Controller
     
     public function update_action() 
     {
+        is_allowed($this->uri->segment(1),'update');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -175,8 +182,8 @@ class Pelanggan extends CI_Controller
     
     public function delete($id) 
     {
+        is_allowed($this->uri->segment(1),'delete');
         $row = $this->Pelanggan_model->get_by_id($id);
-
         if ($row) {
             $this->Pelanggan_model->delete($id);
             $this->session->set_flashdata('message', 'Delete Record Success');
@@ -206,6 +213,7 @@ class Pelanggan extends CI_Controller
 
     public function excel()
     {
+        is_allowed($this->uri->segment(1),'export');
         $this->load->helper('exportexcel');
         $namaFile = "pelanggan.xls";
         $judul = "pelanggan";
@@ -348,6 +356,7 @@ class Pelanggan extends CI_Controller
     }
 
     public function upload($id){
+        is_allowed($this->uri->segment(1),'create');  
         $this->template->load('template','pelanggan/upload');
     }
 
@@ -362,9 +371,6 @@ class Pelanggan extends CI_Controller
         $config['file_name']            = $new_name;
         $config['allowed_types']        = 'jpg|png|pdf|docx|doc';
         $config['max_size']             = 10000;
-        // $config['max_width']            = 2048;
-        // $config['max_height']           = 1000;
-        // $config['encrypt_name']         = true;
         $this->load->library('upload',$config);
         $jumlah_berkas = count($_FILES['berkas']['name']);
 
@@ -393,6 +399,7 @@ class Pelanggan extends CI_Controller
 
     public function del_berkas($id,$uri) 
     {
+        is_allowed($this->uri->segment(1),'delete');   
         $row = $this->Pelanggan_model->get_berkas_by_id($id);
 
         if ($row) {

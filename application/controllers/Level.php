@@ -16,6 +16,7 @@ class Level extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -48,6 +49,7 @@ class Level extends CI_Controller
 
     public function read($id) 
     {
+        is_allowed($this->uri->segment(1),'read');
         $row = $this->Level_model->get_by_id($id);
         if ($row) {
             $data = array(
@@ -63,6 +65,7 @@ class Level extends CI_Controller
 
      public function role($id)
     {
+        is_allowed($this->uri->segment(1),'create');
         $data['role'] = $this->db->get_where('level', ['level_id' =>$id])->row_array();
         $data['row']= $this->Menu_model->get();
         $this->template->load('template','level/role',$data);
@@ -70,6 +73,7 @@ class Level extends CI_Controller
 
     public function create() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $data = array(
             'button' => 'Create',
             'action' => site_url('level/create_action'),
@@ -81,6 +85,7 @@ class Level extends CI_Controller
     
     public function create_action() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -98,6 +103,7 @@ class Level extends CI_Controller
     
     public function update($id) 
     {
+        is_allowed($this->uri->segment(1),'update');
         $row = $this->Level_model->get_by_id($id);
 
         if ($row) {
@@ -116,6 +122,7 @@ class Level extends CI_Controller
     
     public function update_action() 
     {
+        is_allowed($this->uri->segment(1),'update');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -133,6 +140,7 @@ class Level extends CI_Controller
     
     public function delete($id) 
     {
+        is_allowed($this->uri->segment(1),'delete');
         $row = $this->Level_model->get_by_id($id);
 
         if ($row) {
@@ -155,6 +163,7 @@ class Level extends CI_Controller
 
     public function excel()
     {
+        is_allowed($this->uri->segment(1),'export');
         $this->load->helper('exportexcel');
         $namaFile = "level.xls";
         $judul = "level";
@@ -222,6 +231,127 @@ class Level extends CI_Controller
             $this->db->delete('user_access_menu', $data);
         }
 
+    }
+
+
+     public function changeaccess_read(){
+        $menu_id = $this->input->post('menuId');
+        $level_id = $this->input->post('roleId');
+
+        $params=[
+            'level_id' =>$level_id,
+            'sub_menu_id' =>$menu_id
+        ];
+        $result = $this->db->get_where('user_access_menu', $params);
+        $row = $result->row();
+        if ($row->read == 1) {
+            $data=[
+            'read' =>0
+        ];
+        }else{
+            $data=[
+            'read' =>1
+        ];
+        }
+        $this->db->where('level_id',$level_id);
+        $this->db->where('sub_menu_id',$menu_id);
+        $this->db->update('user_access_menu',$data);
+    }
+
+    public function changeaccess_create(){
+        $menu_id = $this->input->post('menuId');
+        $level_id = $this->input->post('roleId');
+
+        $params=[
+            'level_id' =>$level_id,
+            'sub_menu_id' =>$menu_id
+        ];
+        $result = $this->db->get_where('user_access_menu', $params);
+        $row = $result->row();
+        if ($row->create == 1) {
+            $data=[
+            'create' =>0
+        ];
+        }else{
+            $data=[
+            'create' =>1
+        ];
+        }
+        $this->db->where('level_id',$level_id);
+        $this->db->where('sub_menu_id',$menu_id);
+        $this->db->update('user_access_menu',$data);
+    }
+
+     public function changeaccess_update(){
+        $menu_id = $this->input->post('menuId');
+        $level_id = $this->input->post('roleId');
+
+        $params=[
+            'level_id' =>$level_id,
+            'sub_menu_id' =>$menu_id
+        ];
+        $result = $this->db->get_where('user_access_menu', $params);
+        $row = $result->row();
+        if ($row->update == 1) {
+            $data=[
+            'update' =>0
+        ];
+        }else{
+            $data=[
+            'update' =>1
+        ];
+        }
+        $this->db->where('level_id',$level_id);
+        $this->db->where('sub_menu_id',$menu_id);
+        $this->db->update('user_access_menu',$data);
+    }
+
+    public function changeaccess_delete(){
+        $menu_id = $this->input->post('menuId');
+        $level_id = $this->input->post('roleId');
+
+        $params=[
+            'level_id' =>$level_id,
+            'sub_menu_id' =>$menu_id
+        ];
+        $result = $this->db->get_where('user_access_menu', $params);
+        $row = $result->row();
+        if ($row->delete == 1) {
+            $data=[
+            'delete' =>0
+        ];
+        }else{
+            $data=[
+            'delete' =>1
+        ];
+        }
+        $this->db->where('level_id',$level_id);
+        $this->db->where('sub_menu_id',$menu_id);
+        $this->db->update('user_access_menu',$data);
+    }
+
+    public function changeaccess_export(){
+        $menu_id = $this->input->post('menuId');
+        $level_id = $this->input->post('roleId');
+
+        $params=[
+            'level_id' =>$level_id,
+            'sub_menu_id' =>$menu_id
+        ];
+        $result = $this->db->get_where('user_access_menu', $params);
+        $row = $result->row();
+        if ($row->export == 1) {
+            $data=[
+            'export' =>0
+        ];
+        }else{
+            $data=[
+            'export' =>1
+        ];
+        }
+        $this->db->where('level_id',$level_id);
+        $this->db->where('sub_menu_id',$menu_id);
+        $this->db->update('user_access_menu',$data);
     }
 
 }

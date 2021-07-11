@@ -18,6 +18,7 @@ class Menu extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $data['row']= $this->Menu_model->get();
         $data['row2']= $this->Sub_menu_model->get();
         $this->template->load('template','menu/menu_list', $data);
@@ -25,6 +26,7 @@ class Menu extends CI_Controller
 
     public function create() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $data = array(
             'button' => 'Create',
             'action' => site_url('menu/create_action'),
@@ -38,6 +40,7 @@ class Menu extends CI_Controller
     
     public function create_action() 
     {
+        is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -57,6 +60,7 @@ class Menu extends CI_Controller
     
     public function update($id) 
     {
+        is_allowed($this->uri->segment(1),'update');
         $row = $this->Menu_model->get_by_id($id);
 
         if ($row) {
@@ -77,6 +81,7 @@ class Menu extends CI_Controller
     
     public function update_action() 
     {
+        is_allowed($this->uri->segment(1),'update');
         $this->_rules();
 
         if ($this->form_validation->run() == FALSE) {
@@ -96,6 +101,7 @@ class Menu extends CI_Controller
     
     public function delete($id) 
     {
+        is_allowed($this->uri->segment(1),'delete');
         $row = $this->Menu_model->get_by_id($id);
 
         if ($row) {
