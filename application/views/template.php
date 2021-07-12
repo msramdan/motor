@@ -243,7 +243,6 @@ $(document).ready(function() {
 
         $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i>').prop('disabled',true);
         setTimeout(function(){
-            el.html('<i class="fa fa-trash"></i>').prop('disabled',false);
             $.ajax({
                url: '<?php echo base_url() ?>' + controller + '/custom_access_operation',
                type: 'post',
@@ -264,9 +263,10 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     if (data == 'alreadydeleted') {
-                        alert('asu dah kedelete!');
+                        alert('sudah terhapus');
                     } else {
                         console.log(data);
+                        el.parents('tr').remove();
                     }
                     /*var o = JSON.parse(data);
                     if (data == 'no') {
@@ -281,7 +281,7 @@ $(document).ready(function() {
                           title: 'Akses berhasil ditambahkan'
                         });
 
-                        var ano = '<?php echo base_url().$this->uri->segment(1) ?>';
+                        var ano = '<?php //echo base_url().$this->uri->segment(1) ?>';
 
                         console.log('#tabel' + level_id + sub_menu_id + o.dataiwant + 'tr:last');
 
@@ -296,7 +296,9 @@ $(document).ready(function() {
                     }*/
                     
                 }
-            });  
+            });
+
+            el.html('<i class="fa fa-trash"></i>').prop('disabled',false);
         },2000)
     });
 
@@ -384,8 +386,7 @@ $(document).ready(function() {
         elem.html('Simpan').prop('disabled',false);
 
     }
- </script>
- <script type="text/javascript">
+ 
     function saveCustomAccess(el,level_id,sub_menu_id,controller,method) {
         // e.preventDefault();
 
@@ -426,7 +427,8 @@ $(document).ready(function() {
             },
             success: function(data) {
                 var o = JSON.parse(data);
-                if (data == 'no') {
+                console.log(o.result);
+                if (o.result == 'no') {
                     Toast.fire({
                       icon: 'error',
                       title: 'Akses sudah ada'

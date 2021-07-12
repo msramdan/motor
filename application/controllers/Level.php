@@ -388,7 +388,13 @@ class Level extends CI_Controller
         if ($operation == 'add_custom_access') {
            $this->add_custom_access($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata,$namasubm);
         }
-        // delete?
+        
+        // change status?
+        else if($operation == 'change_custom_access_status') {
+            $this->change_custom_access_status($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata,$namasubm);
+        }
+
+        // delete this operation?
         else
         {
             $this->delete_custom_access($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata,$namasubm);
@@ -397,7 +403,10 @@ class Level extends CI_Controller
 
     public function add_custom_access($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata,$namasubm) {
         if( strpos( $fetcheddata, $nama_access ) !== false) {
-            echo json_encode("no");
+            $resp = array(
+                'result' => 'no',
+            );
+            echo json_encode($resp);
         } else {
 
             $converted = strval($izinkan);
@@ -411,14 +420,14 @@ class Level extends CI_Controller
 
             $this->db->where('level_id',$level_id);
             $this->db->where('sub_menu_id',$menu_id);
-            $this->db->update('user_access_menu',$data);   ;
-            
+            $this->db->update('user_access_menu',$data);
+
             $o = ucfirst($namasubm);
             $bor = ucwords(strtolower($o));
             $trimmedsubmenuname = preg_replace('/\s+/', '', $bor);
 
             $resp = array(
-                'statusnya' => 'ok',
+                'result' => 'ok',
                 'dataiwant' => $trimmedsubmenuname,
             );
             echo json_encode($resp);
@@ -432,16 +441,67 @@ class Level extends CI_Controller
         if(strpos($fetcheddata, $nama_access) !== false) {
             
             $splitaccess = explode('#',$preparedata);
+            
+            //echo $preparedata;
+
+            //put the old data first
+            $arrayofaccess = $splitaccess;
+            
+            //print_r($arrayofaccess);
+            
             //let find the index first
-            $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $splitaccess); // will return index number
+            $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $arrayofaccess); // will return index number
+
+            //lets remove it from the array by index we hef fown
+            unset($arrayofaccess[$accessindex]);
+            
+            //print_r($arrayofaccess);
+
+            $joinnewdata = implode("#", $arrayofaccess);
+
+            //echo $joinnewdata;
+            //put thhe new data into anu
+            /*$newdata = array(
+                'additional_access' => $arrayofaccess,
+            );
+
+            $this->db->where('level_id',$level_id);
+            $this->db->where('sub_menu_id',$menu_id);
+            $this->db->update('user_access_menu',$newdata);
+
+            //print_r($arrayofaccess);
             //print_r($splittedaccesslist);
-            echo $accessindex;
+            echo 'ok';*/
         }
         //no data
         else
         {   
             echo "alreadydeleted";
         }
+    }
+
+    public function change_custom_access_status($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata, $namasubm) {
+        
+        $splitaccess = explode('#',$preparedata);
+            
+        //echo $preparedata;
+
+        //put the old data first
+        $arrayofaccess = $splitaccess;
+        
+        //print_r($arrayofaccess);
+        
+        //let find the index first
+        $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $arrayofaccess); // will return index number
+
+        //lets change the value "explicitly"
+        echo $arrayofaccess[$accessindex];
+        //unset($arrayofaccess[$accessindex]);
+
+       
+        //$this->db->where('level_id',$level_id);
+        //$this->db->where('sub_menu_id',$menu_id);
+        //$this->db->update('user_access_menu',$data);
     }
 }
 

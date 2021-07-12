@@ -43,7 +43,7 @@
           <?php if ($coba=='') { ?>
            <input class="form-check-input-read" type="checkbox" disabled=""
                 style="height: 2em;
-    width: 2em;"
+                width: 2em;"
                 data-role="<?= $level_id; ?>"
                 data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'read')">
 
