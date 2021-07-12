@@ -366,24 +366,38 @@ class Level extends CI_Controller
         $this->db->update('user_access_menu',$data);
     }
 
-    public function add_custom_access() {
+    public function custom_access_operation() {
         $menu_id = $this->input->post('submenuid');
         $level_id = $this->input->post('levelid');
         $nama_access = $this->input->post('access_name');
         $deskripsi_access = $this->input->post('access_description');
-        $izinkan = $this->input->post('allowaccess');
+        $izinkan = trim($this->input->post('allowaccess'));
+        $operation = $this->input->post('operation');
 
-        $params=[
-            'level_id'      =>  $level_id,
-            'user_access_menu.sub_menu_id'   =>  $menu_id
-        ];
-        $this->db->join('sub_menu','sub_menu.sub_menu_id=user_access_menu.sub_menu_id');
-        $result = $this->db->get_where('user_access_menu', $params)->row();
+        //print_r($params);
+        $result = $this->Level_model->getids($level_id,$menu_id);
         
-        $fetcheddata = $result->additional_access;
+        $namasubm = $result->nama_sub_menu;
+        $fetcheddata = trim($result->additional_access);
 
+
+        //echo $fetcheddata."\n";
+        //echo $namasubm;
+        //echo "\n";
+        //print_r($convertfromstdobjecttoassociativearray);
+        if ($operation == 'add_custom_access') {
+           $this->add_custom_access($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata,$namasubm);
+        }
+        // delete?
+        else
+        {
+            $this->delete_custom_access($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata,$namasubm);
+        }
+    }
+
+    public function add_custom_access($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata,$namasubm) {
         if( strpos( $fetcheddata, $nama_access ) !== false) {
-            echo "no";
+            echo json_encode("no");
         } else {
 
             $converted = strval($izinkan);
@@ -399,7 +413,7 @@ class Level extends CI_Controller
             $this->db->where('sub_menu_id',$menu_id);
             $this->db->update('user_access_menu',$data);   ;
             
-            $o = ucfirst($result->nama_sub_menu);
+            $o = ucfirst($namasubm);
             $bor = ucwords(strtolower($o));
             $trimmedsubmenuname = preg_replace('/\s+/', '', $bor);
 
@@ -409,7 +423,25 @@ class Level extends CI_Controller
             );
             echo json_encode($resp);
         }
+    }
 
+    public function delete_custom_access($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata, $namasubm) {
+
+        $preparedata = ltrim($fetcheddata,'#');
+        //run detect
+        if(strpos($fetcheddata, $nama_access) !== false) {
+            
+            $splitaccess = explode('#',$preparedata);
+            //let find the index first
+            $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $splitaccess); // will return index number
+            //print_r($splittedaccesslist);
+            echo $accessindex;
+        }
+        //no data
+        else
+        {   
+            echo "alreadydeleted";
+        }
     }
 }
 

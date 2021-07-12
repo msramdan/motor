@@ -228,6 +228,78 @@ $(document).ready(function() {
         $('#row' + button_id + '').remove();
     });
 
+
+    $(document).on('click','#btndeleteAccess',function(){
+        var el = $(this);
+        var level_id = $(this).data('level');
+        var sub_menu_id = $(this).data('menu');
+        var controller = $(this).data('controller');
+        var method= $(this).data('method');
+        var accessname = $(this).parents('td').prev().text().trim();
+        var accessdescription = $(this).parents('td').prev().children('label').children('span').children().data('original-title');
+        var access_allow = $(this).parents('td').prevAll().eq(1).text();
+
+        console.log(accessname + ' ' + accessdescription + ' ' + access_allow + ' ' + level_id +' ' + sub_menu_id);
+
+        $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i>').prop('disabled',true);
+        setTimeout(function(){
+            el.html('<i class="fa fa-trash"></i>').prop('disabled',false);
+            $.ajax({
+               url: '<?php echo base_url() ?>' + controller + '/custom_access_operation',
+               type: 'post',
+               dataType: 'text',
+               data: {
+                    access_name: accessname, 
+                    access_description: accessdescription,
+                    allowaccess: access_allow,
+                    levelid: level_id,
+                    submenuid: sub_menu_id,
+                    operation: method,
+                },
+                fail: function() {
+                    alert('Something is wrong');
+                },
+                error: function() {
+                    alert('Something is wrong');
+                },
+                success: function(data) {
+                    if (data == 'alreadydeleted') {
+                        alert('asu dah kedelete!');
+                    } else {
+                        console.log(data);
+                    }
+                    /*var o = JSON.parse(data);
+                    if (data == 'no') {
+                        Toast.fire({
+                          icon: 'error',
+                          title: 'Akses sudah ada'
+                        });
+                        $(el).html('Tambah');
+                    } else {
+                        Toast.fire({
+                          icon: 'success',
+                          title: 'Akses berhasil ditambahkan'
+                        });
+
+                        var ano = '<?php echo base_url().$this->uri->segment(1) ?>';
+
+                        console.log('#tabel' + level_id + sub_menu_id + o.dataiwant + 'tr:last');
+
+                        $(el).html('Tambah');
+                        $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td>' + allowaccess + '</td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><a class="btn btn-danger btn-sm" href="' + ano + '/delete_access/' + accessname + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>');
+
+                        $("[data-toggle=tooltip]").tooltip();
+
+                        gotomodalbody.find("input[name='access_name']").val('');
+                        gotomodalbody.find("textarea[name='access_description']").val('');
+                        $('#modalTambahAksesuntuk' + level_id + sub_menu_id + o.dataiwant).modal('toggle');
+                    }*/
+                    
+                }
+            });  
+        },2000)
+    });
+
 });
 </script>
 <script type="text/javascript">
@@ -249,7 +321,8 @@ $(document).ready(function() {
         const elementcheck = $(el);
         const iconstatus = $(el).next().children(0);        
         const accesslistofmenuelement = elementcheck.parents(1).next(0).children('div.panel-body');
-
+        const elem = $(el);
+        elem.html('<i class="fa fa-circle-o-notch fa-spin"></i>').prop('disabled',true);
         if (operation == 'submenu') {
             $.ajax({
               url: "<?= base_url('level/changeaccess_submenu'); ?>",
@@ -308,11 +381,12 @@ $(document).ready(function() {
 
             });
         }
+        elem.html('Simpan').prop('disabled',false);
 
     }
  </script>
  <script type="text/javascript">
-     function saveCustomAccess(el,level_id,sub_menu_id,controller,method) {
+    function saveCustomAccess(el,level_id,sub_menu_id,controller,method) {
         // e.preventDefault();
 
         var gotomodalbody = $(el).parents('div.modal-content').children('div.modal-body');
@@ -325,19 +399,22 @@ $(document).ready(function() {
           allowaccess = 1;
         }
 
+
+        //try check here
         console.log(accessname + ' ' + allowaccess + ' ' + accessdescription + ' ' + sub_menu_id + ' ' + level_id);
 
         $(el).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
         $.ajax({
-           url: '<?php echo base_url() ?>' + controller + '/' + method,
+           url: '<?php echo base_url() ?>' + controller + '/custom_access_operation',
            type: 'POST',
            data: {
                 access_name: accessname, 
                 access_description: accessdescription, 
                 allowaccess: allowaccess,
                 levelid: level_id,
-                submenuid: sub_menu_id
+                submenuid: sub_menu_id,
+                operation: method
             },
             fail: function() {
                 alert('Something is wrong');
@@ -366,7 +443,7 @@ $(document).ready(function() {
                     console.log('#tabel' + level_id + sub_menu_id + o.dataiwant + 'tr:last');
 
                     $(el).html('Tambah');
-                    $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td>' + allowaccess + '</td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><a class="btn btn-danger btn-sm" href="' + ano + '/delete_access/' + accessname + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>');
+                    $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td>' + allowaccess + '</td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><button class="btn btn-danger btn-sm" data-level="' + level_id + '" data-menu="' + sub_menu_id + '" data-controller="<?php echo $this->uri->segment(1) ?>" data-method="delete_custom_access" id="btndeleteAccess"><i class="fa fa-trash" aria-hidden="true"></i></button></td></tr>');
 
                     $("[data-toggle=tooltip]").tooltip();
 

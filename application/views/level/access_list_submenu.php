@@ -164,7 +164,12 @@
         	</td>
         	<td style="width: 18%;">
         		
-        		<?php echo anchor(site_url($this->uri->segment(1).'/delete_access/'.$splitaccessandstatus[0]), '<i class="fa fa-trash" aria-hidden="true"></i>','class="btn btn-danger btn-sm"');?>
+            <button class="btn btn-danger btn-sm" id="btndeleteAccess" 
+            data-level="<?php echo $level_id ?>"
+            data-menu="<?php echo $sub_menu_id; ?>"
+            data-controller="<?php echo $this->uri->segment(1) ?>"
+            data-method="delete_custom_access"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        		
         	</td>
       	</tr>
   	<?php 

@@ -66,6 +66,19 @@ class Level_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+    function getids($idlevel,$idsubmenu) {
+        $params = array(
+            'level_id'                          => $idlevel,
+            'user_access_menu.sub_menu_id'      => $idsubmenu
+        );
+
+        $this->db->select("*")
+            ->from('user_access_menu')
+            ->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id')
+            ->where($params);
+        return $this->db->get()->row();
+    }
+
 }
 
 /* End of file Level_model.php */
