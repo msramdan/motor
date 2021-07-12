@@ -70,6 +70,7 @@
                                       'sub_menu_id' =>  $sm['id_sub'],
                                       'namasubmenu' =>  $submenunametrimmed,
                                       'namalevel' => $role['nama_level'],
+                                      'namamenu' => $value->menu,
                                   ];
                                   $this->view('level/access_list_submenu',$parametera) ?>
                                   

@@ -31,7 +31,7 @@
          <?php } ?>
         </td>
         <td colspan="2">
-          <label class="" for="customCheck1">Create <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
+          <label class="" for="customCheck1">create <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
     padding: 3px;
     color: #73879c;
     margin-top: 2px;" data-placement="top" title="" data-original-title="Dapat menambahkan record data"><i class="fa fa-question-circle"></i></button></span></label><br>
@@ -56,7 +56,7 @@
          <?php } ?>   
         </td>
         <td colspan="2">
-          <label class="" for="customCheck1">Read <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
+          <label class="" for="customCheck1">read <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
     padding: 3px;
     color: #73879c;
     margin-top: 2px;" data-placement="top" title="" data-original-title="Dapat menambahkan melihat record data"><i class="fa fa-question-circle"></i></button></span></label><br>    
@@ -81,7 +81,7 @@
            <?php } ?>
         </td>
         <td colspan="2">
-          <label class="" for="customCheck1">Update <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
+          <label class="" for="customCheck1">update <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
     padding: 3px;
     color: #73879c;
     margin-top: 2px;" data-placement="top" title="" data-original-title="Dapat melakukan edit pada record data"><i class="fa fa-question-circle"></i></button></span></label><br>
@@ -106,7 +106,7 @@
          <?php } ?>
         </td>
         <td colspan="2">
-          <label class="" for="customCheck1">Delete <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
+          <label class="" for="customCheck1">delete <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
     padding: 3px;
     color: #73879c;
     margin-top: 2px;" data-placement="top" title="" data-original-title="Dapat melakukan tindakan hapus pada record data"><i class="fa fa-question-circle"></i></button></span></label><br>
@@ -131,7 +131,7 @@
          <?php } ?>
         </td>
         <td colspan="2">
-          <label class="" for="customCheck1">Export <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
+          <label class="" for="customCheck1">export <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
     padding: 3px;
     color: #73879c;
     margin-top: 2px;" data-placement="top" title="" data-original-title="Dapat mengambil list record data dalam bentuk file excel"><i class="fa fa-question-circle"></i></button></span></label><br>
@@ -153,8 +153,24 @@
       		<?php
       			$splitaccessandstatus = explode(';',$as);
       		?>
-      		<td>
-      			<?php echo $splitaccessandstatus[2]; ?>
+      		<td style="text-align: center;">
+            <?php
+            if ($splitaccessandstatus[2] == 0) {
+              ?>
+              <input class="form-check-input-read" type="checkbox"
+                style="height: 2em;
+                width: 2em;"
+                data-role="<?= $level_id; ?>"
+                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'<?php echo $splitaccessandstatus[0]; ?>','<?= $namasubmenu ?>',null,'<?= $namamenu ?>')">
+              <?php
+            } else {
+            ?>
+            <input class="form-check-input-read" type="checkbox"
+                style="height: 2em;
+                width: 2em;"
+                data-role="<?= $level_id; ?>"
+                data-menu="<?= $sub_menu_id ?>" checked="checked" onchange="changeAccessfor(this,'<?php echo $splitaccessandstatus[0]; ?>','<?= $namasubmenu ?>',null,'<?= $namamenu ?>')">
+            <?php } ?>
       		</td>
       		<td>
 	          	<label class="" for="customCheck1"><?php echo $splitaccessandstatus[0]; ?> <span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;
@@ -182,7 +198,6 @@
       </tr>
     </tbody>
   </table>
-
   <div class="modal fade" id="modalTambahAksesuntuk<?php echo $level_id.$sub_menu_id.$namasubmenu; ?>" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
       <div class="modal-content">

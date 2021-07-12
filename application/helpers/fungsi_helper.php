@@ -172,70 +172,73 @@ function is_allowed($nama_menu, $access=null){
 
 function show_button($url,$function,$id_data = NULL, $text = NULL) {
     $ci =& get_instance();
-    $ci->load->library('fungsi');
-    $level = $ci->fungsi->user_login()->level_id;
-    $check = $ci->db->select('level.nama_level, menu.menu as "menu", sub_menu.nama_sub_menu as "Sub Menu", sub_menu.url as "url" ,user_access_menu.'.$function.' as "allow_status"')
-        ->from('level')
-        ->join('user_access_menu','user_access_menu.level_id = level.level_id')
-        ->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id','left')
-        ->join('menu','sub_menu.menu_id = menu.menu_id','left')
-        ->where('level.level_id',$level)
-        ->where('url',$url);
 
-    $result = $check->get()->row();
+    if($function == 'export' || $function == 'create' || $function == 'read' || $function == 'delete' || $function == 'update') {
+        $ci->load->library('fungsi');
+        $level = $ci->fungsi->user_login()->level_id;
+        $check = $ci->db->select('level.nama_level, menu.menu as "menu", sub_menu.nama_sub_menu as "Sub Menu", sub_menu.url as "url" ,user_access_menu.'.$function.' as "allow_status"')
+            ->from('level')
+            ->join('user_access_menu','user_access_menu.level_id = level.level_id')
+            ->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id','left')
+            ->join('menu','sub_menu.menu_id = menu.menu_id','left')
+            ->where('level.level_id',$level)
+            ->where('url',$url);
 
-    if ($result->allow_status == 1) {
-        if ($function == 'export') {
-            $function = 'excel';
-        }
-        $icon = '';
-        $class = '';
-        if ($id_data) {
-            if ($function == 'update') {
-                $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
-                $class = 'class="btn btn-primary btn-sm"'; 
-                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
-            }
-            if ($function == 'delete') {
-                $icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
-                $class = 'class="btn btn-danger btn-sm"';   
-                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class.' onclick="javascript: return confirm(\'Are You Sure ?\')"'); 
-            }
-            if ($function == 'read') {
-                $icon = '<i class="fa fa-eye" aria-hidden="true"></i>';
-                $class = 'class="btn btn-success btn-sm"';
-                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);   
-            }
-            if ($function == 'upload') {
-                $icon = '<i class="fa fa-upload" aria-hidden="true"></i>';
-                $class = 'class="btn btn-warning btn-sm"';
-                echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
-            } 
-            /*else {
-                echo anchor(site_url($url.'/'.$function.'/'.$id_data), '<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
-                
-                00.31, 11/07/2021
-                can't add this because level settings not yet support this operation, it should be discussed sometimes 
-                
-                15:31, 11/07/2021
-                nvm, working on it
-            }*/
-        }
+        $result = $check->get()->row();
 
-        if ($id_data == NULL || $id_data == '') {
-            if ($function == 'create') {
-                $icon = $text ? '<i class="fa fa-wpforms" aria-hidden="true"></i> '.$text : '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah data';
-                $class = 'class="btn btn-danger btn-sm"';
+        if ($result->allow_status == 1) {
+            if ($function == 'export') {
+                $function = 'excel';
             }
-            if ($function == 'excel') {
-                $icon = '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel';
-                $class = 'class="btn btn-success btn-sm"';
+            $icon = '';
+            $class = '';
+            if ($id_data) {
+                if ($function == 'update') {
+                    $icon = '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>';
+                    $class = 'class="btn btn-primary btn-sm"'; 
+                    echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
+                }
+                if ($function == 'delete') {
+                    $icon = '<i class="fa fa-trash-o" aria-hidden="true"></i>';
+                    $class = 'class="btn btn-danger btn-sm"';   
+                    echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class.' onclick="javascript: return confirm(\'Are You Sure ?\')"'); 
+                }
+                if ($function == 'read') {
+                    $icon = '<i class="fa fa-eye" aria-hidden="true"></i>';
+                    $class = 'class="btn btn-success btn-sm"';
+                    echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);   
+                }
+                if ($function == 'upload') {
+                    $icon = '<i class="fa fa-upload" aria-hidden="true"></i>';
+                    $class = 'class="btn btn-warning btn-sm"';
+                    echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
+                }
+                /*else {
+                    echo anchor(site_url($url.'/'.$function.'/'.$id_data), '<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
+                    
+                    00.31, 11/07/2021
+                    can't add this because level settings not yet support this operation, it should be discussed sometimes 
+                    
+                    15:31, 11/07/2021
+                    nvm, working on it
+                }*/
             }
-            echo anchor(site_url($url.'/'.$function), $icon,$class);
+
+            if ($id_data == NULL || $id_data == '') {
+                if ($function == 'create') {
+                    $icon = $text ? '<i class="fa fa-wpforms" aria-hidden="true"></i> '.$text : '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah data';
+                    $class = 'class="btn btn-danger btn-sm"';
+                }
+                if ($function == 'excel') {
+                    $icon = '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel';
+                    $class = 'class="btn btn-success btn-sm"';
+                }
+                echo anchor(site_url($url.'/'.$function), $icon,$class);
+            }
+            
+        } else {
+            echo '';
         }
-        
-    } else {
-        echo '';
     }
 }
 
@@ -247,4 +250,51 @@ function fetchalladditionalaccess($level_id, $menu_id ){
     $result = $ci->db->get('user_access_menu');
     
     return $result->row();
+}
+
+function fetchallavailableaccessforsubmenu($level_id, $menu_id ){
+    $ci = get_instance();
+    $ci->db->select('url');
+    $ci->db->distinct();
+    $ci->db->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id');
+    $ci->db->where('level_id', $level_id);
+    $ci->db->where('user_access_menu.sub_menu_id', $menu_id);
+    $result = $ci->db->get('user_access_menu')->result();
+
+    $resu = array();
+
+    foreach($result as $o) {
+        $resu = $o->url;
+    }
+
+    return $resu;
+    //$anu = implode('-', $resu);
+
+    //$splitaccess = explode('#', $result->additional_access);
+
+    //$secondaryarray = array();
+
+    /*$tot = count($secondaryarray);
+
+    foreach ($splitaccess as $key => $value) {
+
+        $splitagain = explode(';', $value);
+
+        $secondaryarray[] = $splitagain[0];
+    }*/
+
+    //$joinallaccessintosinglestring = implode('-',$secondaryarray);
+
+    
+    //$thirdarray = array_slice($secondaryarray,5,count($secondaryarray)-5, true);
+
+    //$tot = count($secondaryarray);
+
+
+    //$thirdarray = array();
+    //$getaccessname = array_values(array_slice($splitaccessdetail, 0, 1));
+    /*for ($i=1; $i < $tot; $i++) { 
+        $thirdarray[] = $secondaryarray[$i+3];
+    }*/
+    //return ltrim($anu,'-');
 }

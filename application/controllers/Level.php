@@ -429,6 +429,7 @@ class Level extends CI_Controller
             $resp = array(
                 'result' => 'ok',
                 'dataiwant' => $trimmedsubmenuname,
+                'nama_access' => $nama_access
             );
             echo json_encode($resp);
         }
@@ -482,7 +483,7 @@ class Level extends CI_Controller
 
     public function change_custom_access_status($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata, $namasubm) {
         
-        $splitaccess = explode('#',$preparedata);
+        $splitaccess = explode('#',$fetcheddata);
             
         //echo $preparedata;
 
@@ -495,13 +496,23 @@ class Level extends CI_Controller
         $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $arrayofaccess); // will return index number
 
         //lets change the value "explicitly"
-        echo $arrayofaccess[$accessindex];
+        echo json_encode($arrayofaccess[$accessindex]);
         //unset($arrayofaccess[$accessindex]);
 
        
         //$this->db->where('level_id',$level_id);
         //$this->db->where('sub_menu_id',$menu_id);
         //$this->db->update('user_access_menu',$data);
+    }
+
+    public function getdataaccesslist() {
+        $menu_id = $this->input->post('submenuid');
+        $level_id = $this->input->post('levelid');
+
+        $listofacc = fetchallavailableaccessforsubmenu($level_id, $menu_id);
+
+        echo json_encode($listofacc);
+
     }
 }
 
