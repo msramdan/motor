@@ -25,9 +25,9 @@ class Unit_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
-     function get_all_access()
+    function get_all_access()
     {
-        $user_id=$this->fungsi->user_login()->user_id;
+        $user_id = $this->fungsi->user_login()->user_id;
         $this->db->join('unit', 'unit.unit_id = user_access_unit.unit_id', 'left');
         $this->db->join('grup', 'grup.grup_id = unit.grup_id', 'left');
         $this->db->order_by('kd_unit', 'ASC');
