@@ -11,9 +11,9 @@
         <div class="box-body">
             <div class='row'>
             <div class='col-md-9'>
-            <div style="padding-bottom: 10px;">
-        <?php echo show_button($menu_accessed, 'create');
-        echo show_button($menu_accessed, 'export'); ?></div>
+            <div style="padding-bottom: 10px;"'>
+        <?php echo anchor(site_url('level/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+		<?php echo anchor(site_url('level/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('level/index'); ?>" class="form-inline" method="get">
@@ -61,9 +61,11 @@
             <td><a href="<?=site_url('level/role/'.$level->level_id)?>" class ="btn btn-success btn-xs"><i class="fa fa-unlock" aria-hidden="true"></i> Access</a></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-                echo show_button($menu_accessed, 'read', $level->level_id);
-                echo show_button($menu_accessed, 'update', $level->level_id);
-                echo show_button($menu_accessed, 'delete', $level->level_id);
+				echo anchor(site_url('level/read/'.$level->level_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
+				echo '  '; 
+				echo anchor(site_url('level/update/'.$level->level_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+				echo '  '; 
+				echo anchor(site_url('level/delete/'.$level->level_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
 				?>
 			</td>
 		</tr>
