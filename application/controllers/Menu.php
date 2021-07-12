@@ -21,7 +21,6 @@ class Menu extends CI_Controller
         is_allowed($this->uri->segment(1),null);
         $data['row']= $this->Menu_model->get();
         $data['row2']= $this->Sub_menu_model->get();
-        $data['menu_accessed'] = $this->uri->segment(1);
         $this->template->load('template','menu/menu_list', $data);
     }
 

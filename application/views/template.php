@@ -24,7 +24,7 @@
     <?php endif; ?>
     <div class="container body">
         <div class="main_container">
-            <div class="col-md-3 left_col" style="transition: all 250ms ease-in-out;">
+            <div class="col-md-3 left_col" style="transition: all 250ms ease-in-out;display: unset;">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
                         <a href="" class="site_title"><i class="fa fa-desktop"></i> <span>Apps POS</span></a>
@@ -185,6 +185,8 @@
 
     <!-- Custom Theme Scripts -->
     <script src="<?= base_url()?>assets/build/js/custom.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/sweetalert.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>assets/js/sweetalert.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script> <!-- untuk sweet alret -->
     <script src="<?php echo base_url();?>assets/js/dataflash.js"></script>
 
@@ -228,154 +230,6 @@ $(document).ready(function() {
         $('#row' + button_id + '').remove();
     });
 
+
 });
 </script>
-<script type="text/javascript">
-    const Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-    })
-
-    function changeAccessfor(el, operation, submenu = null, level = null) {
-        const menu_id = $(el).data('menu');
-        const role_id = $(el).data('role');
-        const elementcheck = $(el);
-        const iconstatus = $(el).next().children(0);        
-        const accesslistofmenuelement = elementcheck.parents(1).next(0).children('div.panel-body');
-
-        if (operation == 'submenu') {
-            $.ajax({
-              url: "<?= base_url('level/changeaccess_submenu'); ?>",
-              dataType: 'html',
-              type: "post",
-              data: {
-                menuId: menu_id,
-                roleId: role_id,
-                namasubmenu: submenu,
-                namalevel: level
-              },
-              success: function(data) {
-
-                if (elementcheck.is(':checked')) {
-                    iconstatus.html("<i class='fa fa-lock' aria-hidden='true' style='color: red;'></i>");
-                    elementcheck.prop('checked', false);
-                    accesslistofmenuelement.html('<p class="warn"><span><i class="fa fa-warning fa-fw fa-md"></i> Aktifkan menu untuk mengatur hak akses</span></p>');
-                } else {
-                    iconstatus.html("<i class='fa fa-unlock' aria-hidden='true' style='color: #26B99A;'></i>");
-                    elementcheck.prop('checked', true);
-                    accesslistofmenuelement.html(data);
-                }
-                Toast.fire({
-                  icon: 'success',
-                  title: 'Perubahan disimpan'
-                });
-              },
-              error: function(request) {
-                Toast.fire({
-                  icon: 'error',
-                  title: 'Gagal menyimpan (' + request.responseText + ')',
-                })
-              }
-
-            });
-        } else {
-            $.ajax({
-              url: "<?= base_url('level/changeaccess'); ?>_" + operation,
-              type: "post",
-              data: {
-                menuId: menu_id,
-                roleId: role_id,
-              },
-              success: function() {
-                Toast.fire({
-                  icon: 'success',
-                  title: 'Perubahan disimpan'
-                })
-              },
-              error: function(request) {
-                Toast.fire({
-                  icon: 'error',
-                  title: 'Gagal menyimpan (' + request.responseText + ')',
-                })
-              }
-
-            });
-        }
-
-    }
- </script>
- <script type="text/javascript">
-     function saveCustomAccess(el,level_id,sub_menu_id,controller,method) {
-        // e.preventDefault();
-
-        var gotomodalbody = $(el).parents('div.modal-content').children('div.modal-body');
-
-        var accessname = gotomodalbody.find("input[name='access_name']").val();
-        var accessdescription = gotomodalbody.find("textarea[name='access_description']").val();
-        var allowaccess = 0;
-        if (gotomodalbody.find("input[name='allowaccesscheck']").is(":checked"))
-        {
-          allowaccess = 1;
-        }
-
-        console.log(accessname + ' ' + allowaccess + ' ' + accessdescription + ' ' + sub_menu_id + ' ' + level_id);
-
-        $(el).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
-
-        $.ajax({
-           url: '<?php echo base_url() ?>' + controller + '/' + method,
-           type: 'POST',
-           data: {
-                access_name: accessname, 
-                access_description: accessdescription, 
-                allowaccess: allowaccess,
-                levelid: level_id,
-                submenuid: sub_menu_id
-            },
-            fail: function() {
-                alert('Something is wrong');
-                $(el).html('Tambah');
-            },
-            error: function() {
-                alert('Something is wrong');
-                $(el).html('Tambah');
-            },
-            success: function(data) {
-                var o = JSON.parse(data);
-                if (data == 'no') {
-                    Toast.fire({
-                      icon: 'error',
-                      title: 'Akses sudah ada'
-                    });
-                    $(el).html('Tambah');
-                } else {
-                    Toast.fire({
-                      icon: 'success',
-                      title: 'Akses berhasil ditambahkan'
-                    });
-
-                    var ano = '<?php echo base_url().$this->uri->segment(1) ?>';
-
-                    console.log('#tabel' + level_id + sub_menu_id + o.dataiwant + 'tr:last');
-
-                    $(el).html('Tambah');
-                    $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td>' + allowaccess + '</td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><a class="btn btn-danger btn-sm" href="' + ano + '/delete_access/' + accessname + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td></tr>');
-
-                    $("[data-toggle=tooltip]").tooltip();
-
-                    gotomodalbody.find("input[name='access_name']").val('');
-                    gotomodalbody.find("textarea[name='access_description']").val('');
-                    $('#modalTambahAksesuntuk' + level_id + sub_menu_id + o.dataiwant).modal('toggle');
-                }
-
-            }
-        });        
-     }
- </script>
