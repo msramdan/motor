@@ -16,6 +16,7 @@ class Pelanggan extends CI_Controller
 
     public function index()
     {
+
         is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
@@ -50,8 +51,9 @@ class Pelanggan extends CI_Controller
 
     public function read($id) 
     {
-
+        block();
         is_allowed($this->uri->segment(1),'read');
+        $id = decrypt_url($id);
         $row = $this->Pelanggan_model->get_by_id($id);
         if ($row) {
             $data = array(
@@ -127,6 +129,7 @@ class Pelanggan extends CI_Controller
     public function update($id) 
     {
         is_allowed($this->uri->segment(1),'update');
+        $id = decrypt_url($id);
         $row = $this->Pelanggan_model->get_by_id($id);
 
         if ($row) {
@@ -184,6 +187,7 @@ class Pelanggan extends CI_Controller
     public function delete($id) 
     {
         is_allowed($this->uri->segment(1),'delete');
+        $id = decrypt_url($id);
         $row = $this->Pelanggan_model->get_by_id($id);
         if ($row) {
             $this->Pelanggan_model->delete($id);
@@ -357,23 +361,39 @@ class Pelanggan extends CI_Controller
     }
 
     public function upload($id){
+        $id = decrypt_url($id);
         is_allowed($this->uri->segment(1),'create');  
         $this->template->load('template','pelanggan/upload');
     }
 
-    public function upload_berkas(){         
+
+    // public function action_update_harga(){
+    //     $nama_harga    = $_POST['nama_harga'];
+    //     $nominal       = $_POST['nominal'];
+    //     $item_id       = $_POST['item_id'];
+    //     $jumlah_data = count($nama_harga);
+    // for($i = 0; $i < $jumlah_data;$i++)
+    //     {       
+    //                 $data['nama_harga'] = $nama_harga[$i];
+    //                 $data['nominal'] = $nominal[$i];
+    //                 $data['item_id'] = $item_id[$i];
+    //                 $this->db->insert('harga',$data);
+    //     }
+    //     redirect(site_url('item'));
+    // }
+
+    public function upload_berkas(){
+        $nama               = $_POST['nama_berkas'];
+        $pelanggan_id       = $_POST['pelanggan_id'];         
         $config['upload_path']          = './assets/img/berkas'; 
         $config['allowed_types']        = 'jpg|png|pdf|docx|doc';
         $config['max_size']             = 10000;
-        // $config['max_width']            = 2048;
-        // $config['max_height']           = 1000;
-        // $config['encrypt_name']         = true;
+        $config['encrypt_name']         = true;
         $this->load->library('upload',$config);
-        $nama               = $_POST['nama_berkas'];
-        $pelanggan_id       = $_POST['pelanggan_id'];
-        $jumlah_berkas = count($_FILES['berkas']['name']);
+        
+        $jumlah_data = count($pelanggan_id);
 
-        for($i = 0; $i < $jumlah_berkas;$i++)
+        for($i = 0; $i < $jumlah_data;$i++)
         {
             if(!empty($_FILES['berkas']['name'][$i])){
  

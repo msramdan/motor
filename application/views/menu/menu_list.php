@@ -56,7 +56,8 @@
 
             <div class="col-md-6">
             <div style="padding-bottom: 10px;">
-        <?php echo anchor(site_url('sub_menu/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Sub Menu', 'class="btn btn-danger btn-sm"'); ?>
+        <?php echo anchor(site_url('sub_menu/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Sub Menu', 'class="btn btn-danger btn-sm"'); ?> 
+        <?php echo show_button($menu_accessed, 'create',NULL, 'Sub Menu'); ?>
           
         </div>      
                 <div class="box-body" style="overflow-x: scroll; ">

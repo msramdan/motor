@@ -28,6 +28,21 @@
                     </div>
                   </td>   
                 </tr>
+        <tr>
+                  <td width='200'>Surveyor <?php echo form_error('pelanggan_id') ?></td>
+                  <td>
+                    <div class="form-group input-group">
+                      <input type="hidden" id="pelanggan_id" name="pelanggan_id">
+                      <input type="text" id="nama_pelanggan" name="nama_pelanggan" class="form-control" readonly="">
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-pelanggan">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </span>
+                    </div>
+                    Note : Kosongkan jika pembelian di bayar cash / Onetime Payment
+                  </td>   
+                </tr>
       <tr>
                   <td width='200'>item<?php echo form_error('item_id') ?></td>
                   <td>
@@ -56,6 +71,10 @@
                     <div class="form-group">
                         <input type="text" name="nama_type" class="form-control" id="nama_type" value="-" readonly="">
                     </div>
+                    <label for="nama_item_pro">Harga Pokok</label>
+                    <div class="form-group">
+                        <input type="text" name="harga_pokok" class="form-control" id="harga_pokok" value="-" readonly="">
+                    </div>
         
   
                   </td>   
@@ -63,34 +82,33 @@
                                 
 
 
-	    <tr><td width='200'>Total Price Sale <?php echo form_error('total_price_sale') ?></td><td><input type="text" class="form-control" name="total_price_sale" id="total_price_sale" placeholder="Total Price Sale" value="<?php echo $total_price_sale; ?>" /></td></tr>
-      <tr><td width='200'>Biaya Admin <?php echo form_error('biaya_admin') ?></td><td><input type="text" class="form-control" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $biaya_admin; ?>" /></td></tr>
+	    <tr><td width='200'>Price Sale <?php echo form_error('total_price_sale') ?></td><td><input type="text" class="form-control" name="total_price_sale" id="total_price_sale" placeholder="Price Sale" value="<?php echo $total_price_sale; ?>" /></td></tr>
+      <tr><td width='200'>Biaya Admin <?php echo form_error('biaya_admin') ?></td><td><input type="text" class="form-control" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $admin_fee->nominal ?>" /></td></tr>
 
       <tr>
             <td width='200'>Type Sale <?php echo form_error('type_sale') ?></td>
             <td><select name="type_sale" id="type_sale" class="form-control" >
-                <option value="Cash" >Cash</option>
-                <option value="Kredit" >Kredit</option>
-              </select><br>
-              <div class="form-group">
-                        <input type="text" name="jenis_pembayaran" class="form-control" id="jenis_pembayaran" value="" placeholder="Cth : Tunai, Transfer, Dll">
-                    </div>
-
-                    <div class="form-group">
-                        <input type="number" name="dp" class="form-control" id="dp" value="" placeholder="Uang DP">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" name="lama_cicilan" class="form-control" id="lama_cicilan" value="" placeholder="Lama Cicilan">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" name="bunga_cicilan" class="form-control" id="bunga_cicilan" value="" placeholder="Bunga Cicilan">
-                    </div>
-            </td>
+                <option value="Cash" >Cash / Onetime Payment </option>
+                <option value="Kredit" >Kredit / Cicilan</option>
+              </select>
           </tr>
+      <tr><td width='200'>Jenis Pembayaran <?php echo form_error('jenis_pembayaran') ?></td><td>
+        <input type="text" class="form-control" name="jenis_pembayaran" id="jenis_pembayaran" placeholder="Cth : Cicilan, Tunai, Transfer, Dll"  />
+        <div class="form-group" style="margin-top: 10px">
+                        <input type="text" name="lama_cicilan" class="form-control" id="lama_cicilan" value="" placeholder="Cicilan(x)">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="bunga_cicilan" class="form-control" id="bunga_cicilan" value="" placeholder="Bunga/bulan(%)">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="dp" class="form-control" id="dp" value="" placeholder="Uang DP">
+                    </div>
+      </td></tr>
 
 
 
 	    <tr><td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="date" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>" /></td></tr>
+      <div></div>
 	    <tr><td width='200'>User Penginput <?php echo form_error('user_id') ?></td><td><input type="text" class="form-control" name="nama_user" id="nama_user" placeholder="User Id" readonly="" value="<?= ucfirst($this->fungsi->user_login()->nama_user) ?>" />
 
 	    <input type="hidden" class="form-control" name="user_id" id="user_id" placeholder="User Id" readonly="" value="<?= ucfirst($this->fungsi->user_login()->user_id) ?>" /></td></tr>
@@ -183,7 +201,8 @@
                           data-3="<?php echo $data2->nama_jenis_item ?>"
                           data-4="<?php echo $data2->nama_merek ?>"
                           data-5="<?php echo $data2->nama_type ?>"
-                          data-6="<?php echo $data2->kd_item ?>">
+                          data-6="<?php echo $data2->kd_item ?>"
+                           data-7="<?php echo $data2->harga_pokok ?>">
                           <i class="fa fa-check"></i> Select
                         </button>
                       </td>
@@ -215,6 +234,10 @@
           $('#nama_merek').val($(this).data('4'))
           $('#nama_type').val($(this).data('5'))
           $('#kd_item').val($(this).data('6'))
+          $('#harga_pokok').val($(this).data('7'))
+          $('#total_price_sale').val($(this).data('7')+$(this).data('7')*0.2)
+
+          
           $('#modal-item').modal('hide')
         })
     </script>
@@ -229,15 +252,13 @@
     $(function () {
         $("#type_sale").change(function () {
             if ($(this).val() == "Kredit") {
-                $('#dp').show(); 
+                $('#dp').show();
                 $('#lama_cicilan').show();
                 $('#bunga_cicilan').show();
-                $('#jenis_pembayaran').hide(); 
             } else {
                 $('#dp').hide(); 
                 $('#lama_cicilan').hide();
                 $('#bunga_cicilan').hide();
-                $('#jenis_pembayaran').show(); 
             }
         });
     });     

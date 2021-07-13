@@ -17,6 +17,7 @@ class Sale extends CI_Controller
         $this->load->model('Sale_model');
         $this->load->model('Item_model');
         $this->load->model('Pelanggan_model');
+        $this->load->model('Dashboard_model');
         $this->load->library('form_validation');
         $this->load->library('pdf');
     }
@@ -81,6 +82,7 @@ class Sale extends CI_Controller
     {
         $data = array(
             'button' => 'Create',
+            'admin_fee' => $this->Dashboard_model->admin_fee(),
             'pelanggan' =>$this->Pelanggan_model->get_all(),
             'item' =>$this->Item_model->get_all('Ready'),
             'kodeunik' =>$this->Sale_model->buat_kode(),

@@ -11,12 +11,29 @@ class Dashboard_model extends CI_Model
         parent::__construct();
     }
 
+
+    function admin_fee()
+    {
+        $this->db->from('admin_fee');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
+
+    function update_admin_fee($post){
+        $params =array(
+            'nominal' =>$post['nominal'],
+            
+        );
+        $this->db->update('admin_fee',$params);
+
+    }
+
     function count_pelanggan()
     {
         $this->db->select('*');
         $this->db->from('pelanggan');
         $this->db->where('unit_id', $this->session->userdata('unit_id'));
-        
         return $this->db->count_all_results();
     }
 

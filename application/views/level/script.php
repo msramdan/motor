@@ -21,17 +21,13 @@
         var accessname = $(this).parents('td').prev().text().trim();
         var accessdescription = $(this).parents('td').prev().children('label').children('span').children().data('original-title');
         var access_allow = 0;
-
         var checkelem = $(this).parents('td').prevAll().eq(1).children()
 
         if (checkelem.is(':checked')) {
             access_allow = 1;
         }
-
         checkelem.prop('disabled','disabled');
-
         console.log(accessname + ' ' + accessdescription + ' ' + access_allow + ' ' + level_id +' ' + sub_menu_id);
-
         $(this).html('<i class="fa fa-circle-o-notch fa-spin"></i>').prop('disabled',true);
         setTimeout(function(){
             $.ajax({

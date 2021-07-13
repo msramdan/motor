@@ -153,6 +153,7 @@ class item extends CI_Controller
 		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
 		'harga_beli' => $this->input->post('harga_beli',TRUE),
+        'harga_pokok' => $this->input->post('harga_beli',TRUE),
 		'photo' => $photo,
 		'status' => $this->input->post('status',TRUE),
 	    );
@@ -190,6 +191,7 @@ class item extends CI_Controller
 		'no_bpkb' => set_value('no_bpkb', $row->no_bpkb),
 		'deskripsi' => set_value('deskripsi', $row->deskripsi),
 		'harga_beli' => set_value('harga_beli', $row->harga_beli),
+        'harga_pokok' => set_value('harga_pokok', $row->harga_pokok),
 		'photo' => set_value('photo', $row->photo),
 		'status' => set_value('status', $row->status),
 	    );
@@ -208,6 +210,20 @@ class item extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('item_id', TRUE));
         } else {
+
+            $perolehan_baru = $this->input->post('harga_beli');
+            $perolehan_lama = $this->input->post('harga_old');
+            $harga_pokok_awal = $this->input->post('harga_pokok');
+            if ($perolehan_baru==$perolehan_lama) {
+                $harga_pokok =$harga_pokok_awal;
+            }else if ($perolehan_baru < $perolehan_lama) {
+                $selisih = $perolehan_lama - $perolehan_baru;
+                $harga_pokok = $harga_pokok_awal - $selisih;
+            }else if ($perolehan_baru > $perolehan_lama) {
+                $selisih = $perolehan_baru - $perolehan_lama;
+                $harga_pokok = $harga_pokok_awal + $selisih;
+            }
+            
 
         $config['upload_path']      = './assets/img/item'; 
             $config['allowed_types']    = 'jpg|png|jpeg'; 
@@ -246,7 +262,7 @@ class item extends CI_Controller
 		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
 		'harga_beli' => $this->input->post('harga_beli',TRUE),
-		'photo' => $photo,
+		'harga_pokok' => $harga_pokok,
 		'status' => $this->input->post('status',TRUE),
 	    );
 

@@ -83,10 +83,14 @@
                                     <td><?php echo $item->no_bpkb ?></td>
                                     <td><?php echo $item->deskripsi ?></td>
                                     <td><?php echo $item->harga_beli ?></td>
-                                    <td><?php echo $item->harga_beli ?></td>
+                                    <td><?php echo $item->harga_pokok ?></td>
                                     <td><a href="<?php echo base_url(); ?>item/download/<?php echo $item->photo?>"><i
                                                 class="ace-icon fa fa-download"></i> Download Photo</td>
-                                    <td><?php echo $item->status ?></td>
+                                    <?php if ($item->status=="Ready") { ?>
+                                        <td><span class="label label-success">Ready</span></td>
+                                    <?php }else{ ?>
+                                        <td><span class="label label-danger">Terjual</span></td>
+                                    <?php } ?>
                                     <td style="text-align:center" width="200px">
                                         <?php 
                                         echo show_button($menu_accessed, 'update_harga', $item->item_id);

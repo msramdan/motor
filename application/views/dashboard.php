@@ -32,8 +32,42 @@
                 <h3>Karyawan</h3>
             </div>
         </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" id="update_admin_fee"
+                    data-ramdan="<?=$admin_fee->nominal ?>"
+                    data-toggle="modal" data-target=".bs-example-modal-sm">
+            <div class="tile-stats">
+                <div class="count"><?= rupiah($admin_fee->nominal) ?></div>
+                <h3><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span>Admin Fee</span></h3>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Small modal -->
+
+                  <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel2">Admin Fee</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" name="ramdan2" class="form-control" id="ramdan2" min="0" >
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" id="submit_update">Update</button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                  <!-- /modals -->
 
 <div class="row">
 
@@ -98,3 +132,36 @@
     }]
 });
 </script>
+
+<script type="text/javascript">
+        $(document).on('click','#update_admin_fee',function(){
+          $('#ramdan2').val($(this).data('ramdan'))
+        })
+
+        $(document).on('click','#submit_update', function(){
+          var nominal = $('#ramdan2').val()
+          if (nominal == '') {
+            alert('Minimum Rp.0')
+            $('#ramdan2').focus()
+          }else {
+            $.ajax({
+                type:'POST',
+                url : '<?=site_url('dashboard/update_admin_fee') ?>',
+                data :{'update_nominal' : true,'nominal' : nominal},
+                dataType : 'json',
+                success: function(result){
+                    if (result.success) {
+                    alert('Admin fee berhasil di Update');
+                    $('#update_admin_fee').modal('hide')
+                    }else{
+                        alert('Admin fee gagal di Update')
+                    }
+                    location.href='<?=site_url('Dashboard') ?>'
+
+                }
+            })
+          }
+        })
+
+
+    </script>

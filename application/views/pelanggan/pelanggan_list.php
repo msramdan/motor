@@ -77,10 +77,10 @@
 			<td><?php echo $pelanggan->no_hp_saudara ?></td>
 			<td style="text-align:center" width="200px">
 				<?php 
-                echo anchor(site_url('pelanggan/upload/'.$pelanggan->pelanggan_id),'<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); //still finding out?> 
-                <?php echo show_button($menu_accessed, 'read',$pelanggan->pelanggan_id); ?>
-                <?php echo show_button($menu_accessed, 'update',$pelanggan->pelanggan_id); ?>
-                <?php echo show_button($menu_accessed, 'delete',$pelanggan->pelanggan_id); ?>
+                echo anchor(site_url('pelanggan/upload/'.encrypt_url($pelanggan->pelanggan_id)),'<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); //still finding out?> 
+                <?php echo show_button($menu_accessed, 'read',encrypt_url($pelanggan->pelanggan_id)); ?>
+                <?php echo show_button($menu_accessed, 'update',encrypt_url($pelanggan->pelanggan_id)); ?>
+                <?php echo show_button($menu_accessed, 'delete',encrypt_url($pelanggan->pelanggan_id)); ?>
 			</td>
 		</tr>
                 <?php

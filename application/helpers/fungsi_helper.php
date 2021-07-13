@@ -21,7 +21,6 @@ function check_access($level_id, $menu_id ){
 }
 
  //acces_read
-
   function check_access_read($level_id, $menu_id ){
     $ci = get_instance();
     $ci->db->where('level_id', $level_id);
@@ -37,7 +36,6 @@ function check_access($level_id, $menu_id ){
  }
 
  //acces_create
-
   function check_access_create($level_id, $menu_id ){
     $ci = get_instance();
     $ci->db->where('level_id', $level_id);
@@ -81,7 +79,6 @@ function check_access($level_id, $menu_id ){
     }
 
  }
-
  //acces_export
   function check_access_export($level_id, $menu_id ){
     $ci = get_instance();
@@ -109,7 +106,6 @@ function check_access($level_id, $menu_id ){
 
  }
 
- 
 //untuk semua ctrl cek seesion login dan session unit
 function is_login(){
     $ci =& get_instance();
@@ -123,7 +119,6 @@ function is_login(){
         redirect('auth');
     }
 }
-
 //untuk bagian beranda saja
 function cek_login_aja(){
     $ci =& get_instance();
@@ -132,17 +127,6 @@ function cek_login_aja(){
         redirect('auth');
         }
 }
-
-//cek admin status login
-function check_admin(){
-        $ci =& get_instance();
-        $ci->load->library('fungsi');
-        if($ci->fungsi->user_login()->level !=1 ){
-            redirect('beranda');
-
-        }
-
-    }
 
 //format rupiah
 function rupiah($angka){
@@ -169,6 +153,19 @@ function is_allowed($nama_menu, $access=null){
      redirect('not_access');
     }    
 }
+
+//block injeck url id setiap item
+function block(){
+    $ci =& get_instance();
+    $ci->load->library('fungsi');
+        $user_id = $ci->fungsi->user_login()->user_id;
+        $unit_id = $ci->session->userdata('unit_id');
+        $userAccess = $ci->db->get_where('user_access_unit', ['user_id' =>$user_id, 'unit_id' => $unit_id]);
+        
+            if ($userAccess->num_rows() < 1) {
+                redirect('not_access');
+            }
+    }
 
 function show_button($url,$function,$id_data = NULL, $text = NULL) {
     $ci =& get_instance();

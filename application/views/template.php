@@ -199,7 +199,7 @@ $(document).ready(function() {
     $('#add').click(function() {
         i++;
         $('#dynamic_field').append('<tr id="row' + i +
-            '"><td><input type="text" name="nama_berkas[]" placeholder="Nama Berkas" class="form-control" required="" /></td><input type="hidden" name="pelanggan_id[]" class="form-control" value="<?php echo $this->uri->segment(3) ?>"><td><input type="file" name="berkas[]" class="form-control" required="" /></td><td><button type="button" name="remove" id="' +
+            '"><td><input type="text" name="nama_berkas[]" placeholder="Nama Berkas" class="form-control" required="" /></td><input type="hidden" name="pelanggan_id[]" class="form-control" value="<?php echo decrypt_url($this->uri->segment(3))?>"><td><input type="file" name="berkas[]" class="form-control" required="" /></td><td><button type="button" name="remove" id="' +
             i + '" class="btn btn-danger btn_remove">X</button></td></tr>');
     });
 

@@ -155,7 +155,15 @@
                             <tr>
                                 <td width='200'>Harga Perolehan <?php echo form_error('harga_beli') ?></td>
                                 <td><input type="text" class="form-control" name="harga_beli" id="harga_beli"
-                                        placeholder="Harga Beli" value="<?php echo $harga_beli; ?>" /></td>
+                                        placeholder="Harga Beli" value="<?php echo $harga_beli; ?>" />
+                                        <input type="hidden" class="form-control" name="harga_old" id="harga_old"
+                                        placeholder="Harga Beli" value="<?php echo $harga_beli; ?>" />
+                                        <input type="hidden" class="form-control" name="harga_pokok" id="harga_pokok"
+                                        placeholder="Harga Beli" value="<?php echo $harga_pokok; ?>" />
+
+
+
+                                    </td>
                             </tr>
 
                             <?php if ($this->uri->segment(2) == 'create' || $this->uri->segment(2) == 'create_action' ) { ?>
