@@ -23,3 +23,7 @@
         transform: scale(1.0);
     }
 }
+
+.accordion .panel:hover {
+    background: unset !important;
+}

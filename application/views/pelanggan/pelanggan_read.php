@@ -35,7 +35,7 @@
 	    	
 	    	</td>
 	    </tr>
-	    <tr><td></td><td><a href="<?php echo site_url('pelanggan') ?>" class="btn btn-default">Cancel</a><a href="<?php echo base_url() ?>pelanggan/cetak/<?php echo $pelanggan_id ?>" class="btn btn-warning">Cetak</a></td></tr>
+	    <tr><td></td><td><a href="<?php echo site_url('pelanggan') ?>" class="btn btn-default">Cancel</a></td></tr>
 	</table>
         </body>
     </div>

@@ -10,9 +10,9 @@
                 <div class="box-body">
                     <div class='row'>
                         <div class='col-md-9'>
-                            <div style="padding-bottom: 10px;"'>
-        <?php echo anchor(site_url('jenis_item/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('jenis_item/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
+                            <div style="padding-bottom: 10px;">
+        <?php   echo show_button($menu_accessed, 'create');
+                echo show_button($menu_accessed, 'export'); ?></div>
             </div>
             <div class=' col-md-3'>
                                 <form action="<?php echo site_url('jenis_item/index'); ?>" class="form-inline"
@@ -59,12 +59,11 @@
                                     <td width="10px"><?php echo ++$start ?></td>
                                     <td><?php echo $jenis_item->nama_jenis_item ?></td>
                                     <td style="text-align:center" width="200px">
-                                        <?php 
-				echo anchor(site_url('jenis_item/read/'.$jenis_item->jenis_item_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('jenis_item/update/'.$jenis_item->jenis_item_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('jenis_item/delete/'.$jenis_item->jenis_item_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+
+                                        <?php
+                                        echo show_button($menu_accessed, 'read', $jenis_item->jenis_item_id);
+                                        echo show_button($menu_accessed, 'update', $jenis_item->jenis_item_id);
+                                        echo show_button($menu_accessed, 'delete', $jenis_item->jenis_item_id);
 				?>
                                     </td>
                                 </tr>
