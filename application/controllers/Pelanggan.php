@@ -11,6 +11,7 @@ class Pelanggan extends CI_Controller
         is_login();
         $this->load->model('Pelanggan_model');
         $this->load->library('form_validation');
+
     }
 
     public function index()
@@ -346,7 +347,6 @@ class Pelanggan extends CI_Controller
             redirect(site_url('pelanggan/read/'.$uri));
         }
     }
-
 }
 
 /* End of file Pelanggan.php */

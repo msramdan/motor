@@ -51,12 +51,23 @@
                           $submenunametrimmed = preg_replace('/\s+/', '', $bar);
                           ?>
                           <div class="accordion" id="accordion<?php echo $sm['id_sub'].$submenunametrimmed ?>" role="tablist" aria-multiselectable="true">
-                            <div class="panel">
-                              <a class="panel-heading collapsed" role="tab" id="heading<?php echo $sm['id_sub'].$submenunametrimmed ?>" data-toggle="collapse" data-parent="#accordion<?php echo $sm['id_sub'].$submenunametrimmed ?>" href="#collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" aria-expanded="false" aria-controls="collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>">
+                            <div class="panel" style="position: relative;">
+                              <input class="form-check-input-access-smenu" type="checkbox" <?= check_access($role['level_id'],$sm['id_sub']); ?> 
+                              data-role="<?= $role['level_id']; ?>" 
+                              data-menu="<?= $sm['id_sub'] ?>" 
+                              data-namamenu="<?php echo $menutrimmed ?>"
+                              data-submenu="<?php echo $submenunametrimmed ?>" 
+                              data-operation="submenu" 
+                              data-level="<?php echo $role['nama_level'] ?>"
+                              style="position: absolute;
+                                  top: 10px;
+                                  left: 16px;">
+                              <a class="panel-heading collapsed" role="tab" id="heading<?php echo $sm['id_sub'].$submenunametrimmed ?>" data-toggle="collapse" data-parent="#accordion<?php echo $sm['id_sub'].$submenunametrimmed ?>" href="#collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" aria-expanded="false" aria-controls="collapse<?php echo $sm['id_sub'].$submenunametrimmed ?>" style="padding: 13px 13px 13px 6vh;">
                                 <h4 class="panel-title">
 
-                                  <input class="form-check-input" type="checkbox" <?= check_access($role['level_id'],$sm['id_sub']); ?> data-role="<?= $role['level_id']; ?>"data-menu="<?= $sm['id_sub'] ?>" onclick="changeAccessfor(this, 'submenu','<?php echo $submenunametrimmed ?>','<?php echo $role['nama_level'] ?>')">
-                                    <label style="font-weight: inherit; font-size: medium;" class="" for="customCheck1"><?= $sm['nama_sub_menu'] ?><?php echo check_access($role['level_id'],$sm['id_sub']) == "checked='checked'" ? "<span id='iconstatussubmenufor".$sm['id_sub'].$submenunametrimmed."' style='margin: 0 7px;'><i class='fa fa-unlock' aria-hidden='true' style='color: #26B99A;'></i></span>" : "<span style='margin: 0 7px;'><i class='fa fa-lock' aria-hidden='true' style='color: red;'></i></span>"; ?></label>
+
+                                    <label style="font-weight: inherit; font-size: medium;" class="" for="customCheck1">
+                                      <?= $sm['nama_sub_menu'] ?> <?php echo check_access($role['level_id'],$sm['id_sub']) == "checked='checked'" ? "<span id='iconstatussubmenufor".$sm['id_sub'].$submenunametrimmed."' style='margin: 0 7px;'><i class='fa fa-unlock' aria-hidden='true' style='color: #26B99A;'></i></span>" : "<span style='margin: 0 7px;'><i class='fa fa-lock' aria-hidden='true' style='color: red;'></i></span>"; ?></label>
 
                                 </h4>
                               </a>

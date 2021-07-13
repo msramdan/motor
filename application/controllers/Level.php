@@ -231,7 +231,8 @@ class Level extends CI_Controller
             'level_id' =>$level_id,
             'sub_menu_id' =>$menu_id,
             'namasubmenu' => $namasubmenu,
-            'namalevel' => $namalevel
+            'namalevel' => $namalevel,
+            'namamenu' => $this->input->post('namamenu')
         ];
 
         $result = $this->db->get_where('user_access_menu', $data);
@@ -371,7 +372,7 @@ class Level extends CI_Controller
         $level_id = $this->input->post('levelid');
         $nama_access = $this->input->post('access_name');
         $deskripsi_access = $this->input->post('access_description');
-        $izinkan = trim($this->input->post('allowaccess'));
+        $izinkan = $this->input->post('allowaccess');
         $operation = $this->input->post('operation');
 
         //print_r($params);
@@ -448,22 +449,29 @@ class Level extends CI_Controller
             //put the old data first
             $arrayofaccess = $splitaccess;
             
-            //print_r($arrayofaccess);
-            
             //let find the index first
-            $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $arrayofaccess); // will return index number
-
+            //echo $nama_access.';'.$deskripsi_access.';'.$izinkan; // will return index number
+            $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $arrayofaccess);
             //lets remove it from the array by index we hef fown
             unset($arrayofaccess[$accessindex]);
-            
-            //print_r($arrayofaccess);
 
-            $joinnewdata = implode("#", $arrayofaccess);
+            $p = $arrayofaccess;
+            $joinnewdata = implode("#", $p);
+
+            $b = '#'.$joinnewdata;
+
+            $c = $b;
+
+            if(strlen($c) < 3) {
+                $c = '';
+            }
+
+            //echo $c;
 
             //echo $joinnewdata;
             //put thhe new data into anu
-            /*$newdata = array(
-                'additional_access' => $arrayofaccess,
+            $newdata = array(
+                'additional_access' => $c,
             );
 
             $this->db->where('level_id',$level_id);
@@ -472,7 +480,7 @@ class Level extends CI_Controller
 
             //print_r($arrayofaccess);
             //print_r($splittedaccesslist);
-            echo 'ok';*/
+            echo 'delete_succes';
         }
         //no data
         else
@@ -483,26 +491,41 @@ class Level extends CI_Controller
 
     public function change_custom_access_status($menu_id, $level_id, $nama_access, $deskripsi_access, $izinkan, $operation, $fetcheddata, $namasubm) {
         
-        $splitaccess = explode('#',$fetcheddata);
-            
-        //echo $preparedata;
+        $a = ltrim($fetcheddata,'#');
 
-        //put the old data first
-        $arrayofaccess = $splitaccess;
+        $splitaccess = explode('#',$a);
         
-        //print_r($arrayofaccess);
-        
-        //let find the index first
-        $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $arrayofaccess); // will return index number
+        $arrayaccess = $splitaccess;
 
-        //lets change the value "explicitly"
-        echo json_encode($arrayofaccess[$accessindex]);
+        //find the data
+        $accessindex = array_search($nama_access.';'.$deskripsi_access.';'.trim($izinkan), $arrayaccess); 
+
+        //echo 'before: '.$fetcheddata;
+        //replace
+        $updatestatusaccess = array(
+            $accessindex => $nama_access.';'.$deskripsi_access.';'.trim($izinkan),
+        );
+
+        $arrayaccess = array_replace($arrayaccess, $updatestatusaccess);
+
+        //echo 'after: '.$arrayaccess[$accessindex];
+        
+
+        //echo 'after: '.$arrayaccess[0].';'.$arrayaccess[1].';'.$arrayaccess[2];
+        //echo json_encode($arrayofaccess[$accessindex]);
         //unset($arrayofaccess[$accessindex]);
+        $joinnewdata = implode('#',$arrayaccess);
+        //echo "\n";
+        //echo 'after :'.$joinnewdata;
 
-       
-        //$this->db->where('level_id',$level_id);
-        //$this->db->where('sub_menu_id',$menu_id);
-        //$this->db->update('user_access_menu',$data);
+        $dta = array(
+            'additional_access' => '#'.$joinnewdata
+        );
+        
+        $this->db->where('level_id',$level_id);
+        $this->db->where('sub_menu_id',$menu_id);
+        $this->db->update('user_access_menu',$dta);
+        echo json_encode('ok');
     }
 
     public function getdataaccesslist() {
@@ -513,6 +536,40 @@ class Level extends CI_Controller
 
         echo json_encode($listofacc);
 
+    }
+
+    public function checklink() {
+        //$namamenu = $this->input->post('namamenu');
+        $level_id = $this->input->post('levelid');
+        $menu_id = $this->input->post('submenuid');
+        $method = $this->input->post('operation'); 
+
+        //let's find out what the URL is
+
+        $controllerName = fetchallurl($level_id, $menu_id);
+
+
+        //change it to uppercase first
+        $changetouppercase = ucfirst($controllerName->url);
+
+        // let's go to controller path using the URL we got!
+        $controllerPath = APPPATH . "controllers/".$changetouppercase.".php";
+
+        //check if the controller is exists
+        if(file_exists($controllerPath)){
+
+            //let's dive in and check if the controller has those method/operation u call it?
+            require_once $controllerPath;
+            if(method_exists($changetouppercase, $method)){
+                echo json_encode('ok');
+            } else {
+                echo json_encode('nomethod');
+            }
+        }
+        else
+        {
+            echo 'nocontroller';
+        }
     }
 }
 

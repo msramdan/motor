@@ -16,18 +16,24 @@
       <tr>
         <td style="text-align: center;">
           <?php if ($coba=='') { ?>
-           <input class="form-check-input-create" type="checkbox" disabled=""
+           <input class="form-check-input-access" type="checkbox" disabled=""
                 style="height: 2em;
     width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'create')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="create"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
 
          <?php }else{ ?>
-          <input class="form-check-input-create" type="checkbox" <?= check_access_create($level_id,$sub_menu_id); ?>
+          <input class="form-check-input-access" type="checkbox" <?= check_access_create($level_id,$sub_menu_id); ?>
                 style="height: 2em;
     width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'create')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="create"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
          <?php } ?>
         </td>
         <td colspan="2">
@@ -41,18 +47,24 @@
       <tr>
         <td style="text-align: center;">
           <?php if ($coba=='') { ?>
-           <input class="form-check-input-read" type="checkbox" disabled=""
+           <input class="form-check-input-access" type="checkbox" disabled=""
                 style="height: 2em;
                 width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'read')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="read"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>" onchange="changeAccessfor(this,'read')">
 
          <?php }else{ ?>
-          <input class="form-check-input-read" type="checkbox" <?= check_access_read($level_id,$sub_menu_id); ?>
+          <input class="form-check-input-access" type="checkbox" <?= check_access_read($level_id,$sub_menu_id); ?>
                 style="height: 2em;
     width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'read')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="read"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
          <?php } ?>   
         </td>
         <td colspan="2">
@@ -66,18 +78,24 @@
       <tr>
         <td style="text-align: center;">
           <?php if ($coba=='') { ?>
-             <input class="form-check-input-update" type="checkbox" disabled=""
+             <input class="form-check-input-access" type="checkbox" disabled=""
              style="height: 2em;
     width: 2em;"
                   data-role="<?= $level_id; ?>"
-                  data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'update')">
+                  data-menu="<?= $sub_menu_id ?>" 
+                  data-operation="update"
+                  data-level="<?= $namamenu ?>",
+                  data-submenu="<?= $namasubmenu ?>">
 
            <?php }else{ ?>
-            <input class="form-check-input-update" type="checkbox" <?= check_access_update($level_id,$sub_menu_id); ?>
+            <input class="form-check-input-access" type="checkbox" <?= check_access_update($level_id,$sub_menu_id); ?>
                   style="height: 2em;
     width: 2em;"
                   data-role="<?= $level_id; ?>"
-                  data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'update')">
+                  data-menu="<?= $sub_menu_id ?>" 
+                  data-operation="update"
+                  data-level="<?= $namamenu ?>",
+                  data-submenu="<?= $namasubmenu ?>">
            <?php } ?>
         </td>
         <td colspan="2">
@@ -91,18 +109,24 @@
       <tr>
         <td style="text-align: center;">
           <?php if ($coba=='') { ?>
-           <input class="form-check-input-delete" type="checkbox" disabled=""
+           <input class="form-check-input-access" type="checkbox" disabled=""
                 style="height: 2em;
     width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'delete')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="delete"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
 
          <?php }else{ ?>
-          <input class="form-check-input-delete" type="checkbox" <?= check_access_delete($level_id,$sub_menu_id); ?>
+          <input class="form-check-input-access" type="checkbox" <?= check_access_delete($level_id,$sub_menu_id); ?>
                 style="height: 2em;
     width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'delete')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="delete"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
          <?php } ?>
         </td>
         <td colspan="2">
@@ -116,18 +140,24 @@
       <tr>
         <td style="text-align: center;">
           <?php if ($coba=='') { ?>
-           <input class="form-check-input-export" type="checkbox" disabled=""
+           <input class="form-check-input-access" type="checkbox" disabled=""
                 style="height: 2em;
     width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'export')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="export"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
 
          <?php }else{ ?>
-          <input class="form-check-input-export" type="checkbox" <?= check_access_export($level_id,$sub_menu_id); ?>
+          <input class="form-check-input-access" type="checkbox" <?= check_access_export($level_id,$sub_menu_id); ?>
                 style="height: 2em;
     width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'export')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="export"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
          <?php } ?>
         </td>
         <td colspan="2">
@@ -157,19 +187,26 @@
             <?php
             if ($splitaccessandstatus[2] == 0) {
               ?>
-              <input class="form-check-input-read" type="checkbox"
+              <input class="form-check-input-access" type="checkbox"
                 style="height: 2em;
                 width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" onchange="changeAccessfor(this,'<?php echo $splitaccessandstatus[0]; ?>','<?= $namasubmenu ?>',null,'<?= $namamenu ?>')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="<?php echo $splitaccessandstatus[0]; ?>"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>">
               <?php
             } else {
             ?>
-            <input class="form-check-input-read" type="checkbox"
+            <input class="form-check-input-access" type="checkbox"
                 style="height: 2em;
                 width: 2em;"
                 data-role="<?= $level_id; ?>"
-                data-menu="<?= $sub_menu_id ?>" checked="checked" onchange="changeAccessfor(this,'<?php echo $splitaccessandstatus[0]; ?>','<?= $namasubmenu ?>',null,'<?= $namamenu ?>')">
+                data-menu="<?= $sub_menu_id ?>" 
+                data-operation="<?php echo $splitaccessandstatus[0]; ?>"
+                data-level="<?= $namamenu ?>",
+                data-submenu="<?= $namasubmenu ?>"
+                checked="checked">
             <?php } ?>
       		</td>
       		<td>
@@ -226,6 +263,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <input type="hidden" name="nama_sub_menu" id="nama_sub_menu" value="<?php echo $namasubmenu ?>">
+          <input type="hidden" name="nama_menu" id="nama_menu" value="<?php echo $namamenu ?>">
+
           <button type="submit" class="btn btn-primary" id="btnsaveAccess" onclick="saveCustomAccess(this,<?php echo $level_id ?>,<?php echo $sub_menu_id; ?>,'<?php echo $this->uri->segment(1) ?>','add_custom_access');">Simpan</button>
         </div>
 

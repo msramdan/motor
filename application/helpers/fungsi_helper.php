@@ -252,38 +252,50 @@ function fetchalladditionalaccess($level_id, $menu_id ){
     return $result->row();
 }
 
+function fetchallurl($level_id, $menu_id ){
+    $ci = get_instance();
+    $ci->db->select('url')
+        ->from('user_access_menu')
+        ->join('sub_menu','sub_menu.sub_menu_id=user_access_menu.sub_menu_id')
+        ->where('level_id', $level_id)
+        ->where('sub_menu.sub_menu_id', $menu_id);
+    $result = $ci->db->get();
+    
+    return $result->row();
+}
+
 function fetchallavailableaccessforsubmenu($level_id, $menu_id ){
     $ci = get_instance();
-    $ci->db->select('url');
+    $ci->db->select('additional_access');
     $ci->db->distinct();
     $ci->db->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id');
     $ci->db->where('level_id', $level_id);
     $ci->db->where('user_access_menu.sub_menu_id', $menu_id);
-    $result = $ci->db->get('user_access_menu')->result();
+    $result = $ci->db->get('user_access_menu')->row();
 
-    $resu = array();
+    //$resu = array();
 
-    foreach($result as $o) {
+    /*foreach($result as $o) {
         $resu = $o->url;
-    }
+    }*/
 
-    return $resu;
+    //return $resu;
     //$anu = implode('-', $resu);
 
-    //$splitaccess = explode('#', $result->additional_access);
+    $splitaccess = explode('#', $result->additional_access);
 
-    //$secondaryarray = array();
+    $secondaryarray = array();
 
-    /*$tot = count($secondaryarray);
+    //$tot = count($secondaryarray);
 
     foreach ($splitaccess as $key => $value) {
 
         $splitagain = explode(';', $value);
 
         $secondaryarray[] = $splitagain[0];
-    }*/
+    }
 
-    //$joinallaccessintosinglestring = implode('-',$secondaryarray);
+    $joinallaccessintosinglestring = implode('-',$secondaryarray);
 
     
     //$thirdarray = array_slice($secondaryarray,5,count($secondaryarray)-5, true);
@@ -296,5 +308,5 @@ function fetchallavailableaccessforsubmenu($level_id, $menu_id ){
     /*for ($i=1; $i < $tot; $i++) { 
         $thirdarray[] = $secondaryarray[$i+3];
     }*/
-    //return ltrim($anu,'-');
+    return ltrim($joinallaccessintosinglestring,'-');
 }
