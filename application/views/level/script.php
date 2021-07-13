@@ -22,9 +22,13 @@
         var accessdescription = $(this).parents('td').prev().children('label').children('span').children().data('original-title');
         var access_allow = 0;
 
-        if ($(this).parents('td').prevAll().eq(1).children().is(':checked')) {
+        var checkelem = $(this).parents('td').prevAll().eq(1).children()
+
+        if (checkelem.is(':checked')) {
             access_allow = 1;
         }
+
+        checkelem.prop('disabled','disabled');
 
         console.log(accessname + ' ' + accessdescription + ' ' + access_allow + ' ' + level_id +' ' + sub_menu_id);
 
@@ -239,9 +243,9 @@
           allowAccess = 1;
         }
 
-
+        $(el).html('Tambah').prop('disabled',false);
         //try check here
-        console.log(accessname + ' ' + allowAccess + ' ' + accessdescription + ' ' + sub_menu_id + ' ' + level_id);
+        //console.log(accessname + ' ' + allowAccess + ' ' + accessdescription + ' ' + sub_menu_id + ' ' + level_id);
 
         $(el).html('<i class="fa fa-circle-o-notch fa-spin"></i>');
 
@@ -286,9 +290,9 @@
                     $(el).html('Tambah');
 
                     if (allowAccess == 0) {
-                        $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td style="text-align: center;"><input class="form-check-input-custom" type="checkbox" style="height: 2em;width: 2em;" data-role="<?= $level_id; ?>" data-menu="<?=  $sub_menu_id ?>" data-operation="'+ accessname + '" data-level="' + level_id + '" data-submenu="' + namasubmenu.val() + '" ></td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><button class="btn btn-danger btn-sm" data-level="' + level_id + '" data-menu="' + sub_menu_id + '" data-controller="<?php echo $this->uri->segment(1) ?>" data-method="delete_custom_access" id="btndeleteAccess"><i class="fa fa-trash" aria-hidden="true"></i></button></td></tr>');
+                        $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td style="text-align: center;"><input class="form-check-input-access" type="checkbox" style="height: 2em;width: 2em;" data-role="<?= $level_id; ?>" data-menu="<?=  $sub_menu_id ?>" data-operation="'+ accessname + '" data-level="' + level_id + '" data-submenu="' + namasubmenu.val() + '" ></td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><button class="btn btn-danger btn-sm" data-level="' + level_id + '" data-menu="' + sub_menu_id + '" data-controller="<?php echo $this->uri->segment(1) ?>" data-method="delete_custom_access" id="btndeleteAccess"><i class="fa fa-trash" aria-hidden="true"></i></button></td></tr>');
                     } else {
-                        $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td style="text-align: center;"><input class="form-check-input-custom" type="checkbox" style="height: 2em;width: 2em;" data-role="<?= $level_id; ?>" data-menu="<?=  $sub_menu_id ?>" data-operation="'+ accessname + '" data-level="' + level_id + '" data-submenu="' + namasubmenu.val() + '" checked="checked"></td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><button class="btn btn-danger btn-sm" data-level="' + level_id + '" data-menu="' + sub_menu_id + '" data-controller="<?php echo $this->uri->segment(1) ?>" data-method="delete_custom_access" id="btndeleteAccess"><i class="fa fa-trash" aria-hidden="true"></i></button></td></tr>');
+                        $('#tabel' + level_id + sub_menu_id + o.dataiwant + ' tr:last').before('<tr><td style="text-align: center;"><input class="form-check-input-access" type="checkbox" style="height: 2em;width: 2em;" data-role="<?= $level_id; ?>" data-menu="<?=  $sub_menu_id ?>" data-operation="'+ accessname + '" data-level="' + level_id + '" data-submenu="' + namasubmenu.val() + '" checked="checked"></td><td><label class="" for="customCheck1">' + accessname +'<span><button type="button" class="btn btn-default" data-toggle="tooltip" style="border: none;padding: 3px;color: #73879c;margin-top: 2px;" data-placement="top" title="" data-original-title="' + accessdescription + '"><i class="fa fa-question-circle"></i></button></span></label><br></td><td><button class="btn btn-danger btn-sm" data-level="' + level_id + '" data-menu="' + sub_menu_id + '" data-controller="<?php echo $this->uri->segment(1) ?>" data-method="delete_custom_access" id="btndeleteAccess"><i class="fa fa-trash" aria-hidden="true"></i></button></td></tr>');
                     }
 
 
@@ -301,6 +305,6 @@
 
             }
         });        
-    	$(el).html('Simpan').prop('disabled',false);
+    	$(el).html('Tambah').prop('disabled',false);
      }
  </script>
