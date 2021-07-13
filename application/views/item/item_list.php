@@ -10,9 +10,9 @@
                 <div class="box-body">
                     <div class='row'>
                         <div class='col-md-9'>
-                            <div style="padding-bottom: 10px;">
-        <?php echo show_button($menu_accessed, 'create');
-        echo show_button($menu_accessed, 'export'); ?></div>
+                            <div style="padding-bottom: 10px;"'>
+        <?php echo anchor(site_url('item/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+		<?php echo anchor(site_url('item/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class=' col-md-3'>
                                 <form action="<?php echo site_url('item/index'); ?>" class="form-inline" method="get">
@@ -88,13 +88,15 @@
                                                 class="ace-icon fa fa-download"></i> Download Photo</td>
                                     <td><?php echo $item->status ?></td>
                                     <td style="text-align:center" width="200px">
-                                        <?php 
-                                        echo show_button($menu_accessed, 'update_harga', $item->item_id);
-                                        echo anchor(site_url($menu_accessed.'/update_harga/'.$item->item_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-                                        echo '  '; 
-                                        echo show_button($menu_accessed, 'read', $item->item_id);
-                                        echo show_button($menu_accessed, 'update', $item->item_id);
-                                        echo show_button($menu_accessed, 'delete', $item->item_id); ?>
+                                        <?php
+                echo anchor(site_url('item/update_harga/'.$item->item_id),'<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
+                echo '  ';
+				echo anchor(site_url('item/read/'.$item->item_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
+				echo '  '; 
+				echo anchor(site_url('item/update/'.$item->item_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+				echo '  '; 
+				echo anchor(site_url('item/delete/'.$item->item_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				?>
                                     </td>
                                 </tr>
                                 <?php

@@ -11,9 +11,9 @@
         <div class="box-body">
             <div class='row'>
             <div class='col-md-9'>
-            <div style="padding-bottom: 10px;">
-        <?php echo show_button($menu_accessed, 'create');
-        echo show_button($menu_accessed, 'export'); ?></div>
+            <div style="padding-bottom: 10px;"'>
+        <?php echo anchor(site_url('sub_unit/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
+		<?php echo anchor(site_url('sub_unit/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('sub_unit/index'); ?>" class="form-inline" method="get">
@@ -61,9 +61,13 @@
             <td><?php echo $sub_unit->kd_sub_unit ?></td>
 			<td><?php echo $sub_unit->nama_sub_unit ?></td>
 			<td style="text-align:center" width="200px">
-                <?php echo show_button($menu_accessed, 'read',$sub_unit->sub_unit_id); ?>
-                <?php echo show_button($menu_accessed, 'update',$sub_unit->sub_unit_id); ?>
-                <?php echo show_button($menu_accessed, 'delete',$sub_unit->sub_unit_id); ?>
+				<?php 
+				echo anchor(site_url('sub_unit/read/'.$sub_unit->sub_unit_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
+				echo '  '; 
+				echo anchor(site_url('sub_unit/update/'.$sub_unit->sub_unit_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+				echo '  '; 
+				echo anchor(site_url('sub_unit/delete/'.$sub_unit->sub_unit_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				?>
 			</td>
 		</tr>
                 <?php

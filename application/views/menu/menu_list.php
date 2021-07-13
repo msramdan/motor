@@ -15,7 +15,7 @@
             </div>
               <div class="col-md-6">
                <div style="padding-bottom: 10px;">
-        <?php echo show_button($menu_accessed, 'create',NULL, 'Menu Parent'); ?>
+        <?php echo anchor(site_url('menu/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Menu Parent', 'class="btn btn-danger btn-sm"'); ?>
           
         </div>
                 <div class="box-body" style="overflow-x: scroll; ">
@@ -38,8 +38,11 @@
                           <td><?= $value->icon ?></td>
                           <td><?= $value->urutan ?></td>
                           <td style="text-align:center" width="200px">
-                            <?php echo show_button($menu_accessed, 'update',$value->menu_id); ?>
-                            <?php echo show_button($menu_accessed, 'delete',$value->menu_id); ?>
+                <?php 
+                echo anchor(site_url('menu/update/'.$value->menu_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+                echo '  '; 
+                echo anchor(site_url('menu/delete/'.$value->menu_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                ?>
               </td>
                         </tr>
                       <?php
@@ -79,8 +82,11 @@
                   <td><?= $value->nama_sub_menu ?></td>
                   <td><?= $value->url ?></td>
                   <td style="text-align:center" width="200px">
-                    <?php echo show_button($menu_accessed, 'update',$value->sub_menu_id); ?>
-                    <?php echo show_button($menu_accessed, 'delete',$value->sub_menu_id); ?>
+        <?php 
+        echo anchor(site_url('sub_menu/update/'.$value->sub_menu_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+        echo '  '; 
+        echo anchor(site_url('sub_menu/delete/'.$value->sub_menu_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+        ?>
       </td>
 
                 </tr>
