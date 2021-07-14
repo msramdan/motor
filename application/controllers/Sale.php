@@ -109,6 +109,16 @@ class Sale extends CI_Controller
     public function create_action() 
     {
         $this->_rules();
+        if ($this->input->post('type_sale')=="Cash") {
+            $status_sale="Selesai";
+        }
+        if ($this->input->post('sales_referral')=="Karyawan") {
+            $contact_id = $this->input->post('karyawan_id');
+        }else if ($this->input->post('sales_referral')=="Mitra Sales") {
+            $contact_id = $this->input->post('mitra_id');
+        }
+        
+
 
         if ($this->form_validation->run() == FALSE) {
             $this->create();
@@ -123,6 +133,10 @@ class Sale extends CI_Controller
 		'type_sale' => $this->input->post('type_sale',TRUE),
 		'tanggal_sale' => $this->input->post('tanggal_sale',TRUE),
 		'user_id' => $this->input->post('user_id',TRUE),
+        'surveyor_id' => $this->input->post('surveyor_id',TRUE),
+        'sales_referral' => $this->input->post('sales_referral',TRUE),
+        'contact_id' => $contact_id,
+        'status_sale' => $status_sale,
 	    );
 
             $this->Sale_model->insert($data);
@@ -134,7 +148,7 @@ class Sale extends CI_Controller
     public function update($id) 
     {
         $row = $this->Sale_model->get_by_id($id);
-
+        
         if ($row) {
             $data = array(
                 'button' => 'Update',

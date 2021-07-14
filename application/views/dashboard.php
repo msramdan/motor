@@ -79,33 +79,41 @@
                   </div>
                   <!-- /modals -->
 
-<div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="x_panel tile">
-                <div class="x_content">
-                    <script src="https://code.highcharts.com/highcharts.js"></script>
-                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-                    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-                    <figure class="highcharts-figure">
-                    <div id="container"></div>
-                    </figure>
+                  <div class="x_panel" style="">
+                  <div class="x_content">
+                    <div class="well" style="overflow: auto">
+                      <div class="col-md-12">
+                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                          <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                          <span>July 13, 2021 - July 13, 2021</span> <b class="caret"></b>
+                        </div>
+                      </div>
+                    </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                              <div class="x_panel tile">
+                                <div class="x_content">
+                                    <script src="https://code.highcharts.com/highcharts.js"></script>
+                                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                                    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+                                    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+                                    <figure class="highcharts-figure">
+                                    <div id="container"></div>
+                                    </figure>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                              <div class="x_panel tile">
+                                <div class="x_content">
+                                    <figure class="highcharts-figure">
+                                        <div id="container2"></div>
+                                    </figure>
 
-            </div>
-          </div>
-      </div>
-
-      <div class="col-md-6 col-sm-6 col-xs-12">
-              <div class="x_panel tile">
-                <div class="x_content">
-                    <figure class="highcharts-figure">
-                        <div id="container2"></div>
-                    </figure>
-
-            </div>
-          </div>
-      </div>
-  </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
 
 <script type="text/javascript">
