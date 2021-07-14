@@ -247,13 +247,17 @@
         <div class="modal-body">
           	<p>Pastikan nama akses yang diberi tersedia pada sub menu. Akses ini akan diterapkan pada <?php echo $namalevel ?></p>
 			<div class="input-group">
-	            <input type="text" class="form-control" name="access_name" placeholder="Masukan nama akses">
+	           <input type="text" class="form-control tb-custom-access-name"
+              data-submenuid="<?php echo $sub_menu_id ?>"
+              data-role="<?php echo $level_id ?>"
+              name="access_name" placeholder="Masukan nama akses" style="text-transform: lowercase;" value='' onpaste="return false">
 	            <span class="input-group-btn">
-	                <button type="button" class="btn btn-primary">Go!</button>
+	                <button type="button" class="btn btn-warning" style="pointer-events: none;"><i class="fa fa-warning"></i></button>
 				</span>
 	        </div>
+          <div id="warning-name-access"></div>
 	        <div style="margin: 12px 0;">
-	        	<textarea class="form-control" name="access_description" rows="3" placeholder="Deskripsi akses"></textarea>
+	        	<textarea class="form-control tb-custom-access-description" name="access_description" rows="3" placeholder="Deskripsi akses"></textarea>
 	        </div>
 	        <div style="display: grid; grid-template-columns: 0.2fr 1fr;">
 	        	<input class="form-check-input" type="checkbox" id="allowaccesscheck" name="allowaccesscheck" style="height: 27px;
@@ -266,7 +270,7 @@
           <input type="hidden" name="nama_sub_menu" id="nama_sub_menu" value="<?php echo $namasubmenu ?>">
           <input type="hidden" name="nama_menu" id="nama_menu" value="<?php echo $namamenu ?>">
 
-          <button type="submit" class="btn btn-primary" id="btnsaveAccess" onclick="saveCustomAccess(this,<?php echo $level_id ?>,<?php echo $sub_menu_id; ?>,'<?php echo $this->uri->segment(1) ?>','add_custom_access');">Simpan</button>
+          <button type="submit" class="btn btn-primary btnsaveAccess" id="btnsaveAccess" onclick="saveCustomAccess(this,<?php echo $level_id ?>,<?php echo $sub_menu_id; ?>,'<?php echo $this->uri->segment(1) ?>','add_custom_access');">Simpan</button>
         </div>
 
       </div>
