@@ -103,6 +103,7 @@ class item extends CI_Controller
             'agen' =>$this->Agen_model->get_all(),
             'item_id' => set_value('item_id'),
             'kd_pembelian' => set_value('kd_pembelian'),
+            'harga_pokok' => set_value('harga_pokok'),
             'agen_id' => set_value('agen_id'),
             'kd_item' => set_value('kd_item'),
             'nama_item' => set_value('nama_item'),
@@ -111,6 +112,12 @@ class item extends CI_Controller
             'type_id' => set_value('type_id'),
             'no_stnk' => set_value('no_stnk'),
             'no_bpkb' => set_value('no_bpkb'),
+            'tahun_buat' => set_value('tahun_buat'),
+            'warna1' => set_value('warna1'),
+            'warna2' => set_value('warna2'),
+            'kondisi' => set_value('kondisi'),
+            'no_mesin' => set_value('no_mesin'),
+            'no_rangka' => set_value('no_rangka'),
             'kategori_id' => set_value('kategori_id'),
             'deskripsi' => set_value('deskripsi'),
             'harga_beli' => set_value('harga_beli'),
@@ -151,6 +158,12 @@ class item extends CI_Controller
         'type_id' => $this->input->post('type_id',TRUE),
 		'no_stnk' => $this->input->post('no_stnk',TRUE),
 		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
+        'tahun_buat' => $this->input->post('tahun_buat',TRUE),
+        'warna1' => $this->input->post('warna1',TRUE),
+        'warna2' => $this->input->post('warna2',TRUE),
+        'kondisi' => $this->input->post('kondisi',TRUE),
+        'no_mesin' => $this->input->post('no_mesin',TRUE),
+        'no_rangka' => $this->input->post('no_rangka',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
 		'harga_beli' => $this->input->post('harga_beli',TRUE),
         'harga_pokok' => $this->input->post('harga_beli',TRUE),
@@ -189,6 +202,12 @@ class item extends CI_Controller
         'type_id' => set_value('type_id', $row->type_id),
 		'no_stnk' => set_value('no_stnk', $row->no_stnk),
 		'no_bpkb' => set_value('no_bpkb', $row->no_bpkb),
+        'tahun_buat' => set_value('tahun_buat', $row->tahun_buat),
+        'warna1' => set_value('warna1', $row->warna1),
+        'warna2' => set_value('warna2', $row->warna2),
+        'kondisi' => set_value('kondisi', $row->kondisi),
+        'no_mesin' => set_value('no_mesin', $row->no_mesin),
+        'no_rangka' => set_value('no_rangka', $row->no_rangka),
 		'deskripsi' => set_value('deskripsi', $row->deskripsi),
 		'harga_beli' => set_value('harga_beli', $row->harga_beli),
         'harga_pokok' => set_value('harga_pokok', $row->harga_pokok),
@@ -260,6 +279,12 @@ class item extends CI_Controller
         'type_id' => $this->input->post('type_id',TRUE),
 		'no_stnk' => $this->input->post('no_stnk',TRUE),
 		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
+         'tahun_buat' => $this->input->post('tahun_buat',TRUE),
+        'warna1' => $this->input->post('warna1',TRUE),
+        'warna2' => $this->input->post('warna2',TRUE),
+        'kondisi' => $this->input->post('kondisi',TRUE),
+        'no_mesin' => $this->input->post('no_mesin',TRUE),
+        'no_rangka' => $this->input->post('no_rangka',TRUE),
 		'deskripsi' => $this->input->post('deskripsi',TRUE),
 		'harga_beli' => $this->input->post('harga_beli',TRUE),
 		'harga_pokok' => $harga_pokok,
@@ -304,9 +329,9 @@ class item extends CI_Controller
     $this->form_validation->set_rules('type_id', 'type id', 'trim|required');
 	$this->form_validation->set_rules('no_stnk', 'no stnk', 'trim|required');
 	$this->form_validation->set_rules('no_bpkb', 'no bpkb', 'trim|required');
-	$this->form_validation->set_rules('deskripsi', 'deskripsi', 'trim|required');
+	// $this->form_validation->set_rules('deskripsi', 'deskripsi', 'trim|required');
 	$this->form_validation->set_rules('harga_beli', 'harga beli', 'trim|required');
-	// $this->form_validation->set_rules('photo', 'photo', 'trim|required');
+	$this->form_validation->set_rules('kategori_id', 'Kategori', 'trim|required');
 	$this->form_validation->set_rules('status', 'status', 'trim|required');
 
 	$this->form_validation->set_rules('item_id', 'item_id', 'trim');

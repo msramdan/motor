@@ -70,8 +70,6 @@
                   <!-- /modals -->
 
 <div class="row">
-
-
             <div class="col-md-6 col-sm-6 col-xs-12">
               <div class="x_panel tile">
                 <div class="x_content">
@@ -86,6 +84,18 @@
             </div>
           </div>
       </div>
+
+      <div class="col-md-6 col-sm-6 col-xs-12">
+              <div class="x_panel tile">
+                <div class="x_content">
+                    <figure class="highcharts-figure">
+                        <div id="container2"></div>
+                    </figure>
+
+            </div>
+          </div>
+      </div>
+  </div>
 
 
 <script type="text/javascript">
@@ -164,4 +174,56 @@
         })
 
 
+    </script>
+    <script type="text/javascript">
+        Highcharts.chart('container2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Sales Referral'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Jumlah Transaksi Sale'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: 'Jumlah Transaksi Sale: <b>{point.y:f} Transaksi Sale</b>'
+    },
+    series: [{
+        name: 'Population',
+        data: [
+            ['Datang Langsung', 10],
+            ['Karyawan', 8],
+            ['Mitra Sales', 12]
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y:f}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    }]
+});
     </script>

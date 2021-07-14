@@ -57,7 +57,6 @@
             <div class="col-md-6">
             <div style="padding-bottom: 10px;">
         <?php echo anchor(site_url('sub_menu/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Sub Menu', 'class="btn btn-danger btn-sm"'); ?> 
-        <?php echo show_button($menu_accessed, 'create',NULL, 'Sub Menu'); ?>
           
         </div>      
                 <div class="box-body" style="overflow-x: scroll; ">
@@ -80,8 +79,8 @@
                   <td><?= $value->nama_sub_menu ?></td>
                   <td><?= $value->url ?></td>
                   <td style="text-align:center" width="200px">
-                    <?php echo show_button($menu_accessed, 'update',$value->sub_menu_id); ?>
-                    <?php echo show_button($menu_accessed, 'delete',$value->sub_menu_id); ?>
+                    <?php echo anchor(site_url('sub_menu/update/'.$value->sub_menu_id), '<i class="fa fa-pencil-square-o" aria-hidden="true"></i>', 'class="btn btn-primary btn-sm"'); ?> 
+                    <?php echo anchor(site_url('sub_menu/delete/'.$value->sub_menu_id), '<i class="fa fa-trash" aria-hidden="true"></i>', 'class="btn btn-danger btn-sm"'); ?> 
       </td>
 
                 </tr>

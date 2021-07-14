@@ -43,7 +43,28 @@
                     Note : Kosongkan jika pembelian di bayar cash / Onetime Payment
                   </td>   
                 </tr>
-      <tr>
+          <tr>
+                  <td width='200'>Sales Referral<?php echo form_error('sales_referral') ?></td>
+                  <td>
+                    <select name="sales_referral" id="sales_referral" class="form-control" >
+                    <option value="" >-- Pilih --</option>
+                    <option value="Datang Langsung" >Datang Langsung</option>
+                    <option value="Karyawan" >Karyawan</option>
+                    <option value="Mitra Sales" >Mitra Sales</option>
+              </select>
+                    <div class="form-group" style="margin-top: 10px">
+                        <select name="mitra_id" id="mitra_id" class="form-control" >
+                              <option value="" >-- Pilih --</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px">
+                        <select name="karyawan_id" id="karyawan_id" class="form-control" >
+                              <option value="Cash" >-- Pilih --</option>
+                        </select>
+                    </div>
+                  </td>   
+                </tr>
+              <tr>
                   <td width='200'>item<?php echo form_error('item_id') ?></td>
                   <td>
                     <div class="form-group input-group">
@@ -245,9 +266,11 @@
     <script type="text/javascript">
  //Inisiasi awal penggunaan jQuery
  $(document).ready(function(){
-  $('#dp').hide(); 
+                $('#dp').hide(); 
                 $('#lama_cicilan').hide();
                 $('#bunga_cicilan').hide();
+                $('#mitra_id').hide();
+                $('#karyawan_id').hide();
 
     $(function () {
         $("#type_sale").change(function () {
@@ -259,6 +282,21 @@
                 $('#dp').hide(); 
                 $('#lama_cicilan').hide();
                 $('#bunga_cicilan').hide();
+            }
+        });
+    });
+
+    $(function () {
+        $("#sales_referral").change(function () {
+            if ($(this).val() == "" || $(this).val() == "Datang Langsung" ) {
+                $('#mitra_id').hide();
+                $('#karyawan_id').hide();
+            } else if ($(this).val() == "Karyawan"){
+                $('#karyawan_id').show();
+                $('#mitra_id').hide();
+            }else{
+                $('#mitra_id').show();
+                $('#karyawan_id').hide();
             }
         });
     });     

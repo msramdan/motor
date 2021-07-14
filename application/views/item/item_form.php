@@ -146,6 +146,36 @@
                                 <td><input type="text" class="form-control" name="no_bpkb" id="no_bpkb"
                                         placeholder="No Bpkb" value="<?php echo $no_bpkb; ?>" /></td>
                             </tr>
+                            <tr>
+                                <td width='200'>Tahun Buat <?php echo form_error('tahun_buat') ?></td>
+                                <td><input type="number" class="form-control" name="tahun_buat" id="tahun_buat"
+                                        placeholder="Tahun Buat" value="<?php echo $tahun_buat; ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td width='200'>Warna Satu <?php echo form_error('warna1') ?></td>
+                                <td><input type="text" class="form-control" name="warna1" id="warna1"
+                                        placeholder="Warna Satu" value="<?php echo $warna1; ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td width='200'>Warna Dua <?php echo form_error('warna2') ?></td>
+                                <td><input type="text" class="form-control" name="warna2" id="warna2"
+                                        placeholder="warna Dua" value="<?php echo $warna2; ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td width='200'>Kondisi (0-100 %) <?php echo form_error('kondisi') ?></td>
+                                <td><input type="number" class="form-control" name="kondisi" id="kondisi"
+                                        placeholder="Kondisi" value="<?php echo $kondisi; ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td width='200'>No Mesin <?php echo form_error('no_mesin') ?></td>
+                                <td><input type="text" class="form-control" name="no_mesin" id="no_mesin"
+                                        placeholder="No Mesin" value="<?php echo $no_mesin; ?>" /></td>
+                            </tr>
+                            <tr>
+                                <td width='200'>No Rangka <?php echo form_error('no_rangka') ?></td>
+                                <td><input type="text" class="form-control" name="no_rangka" id="no_rangka"
+                                        placeholder="No Rangka" value="<?php echo $no_rangka; ?>" /></td>
+                            </tr>
 
                             <tr>
                                 <td width='200'>Deskripsi <?php echo form_error('deskripsi') ?></td>
