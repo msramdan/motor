@@ -40,6 +40,16 @@
                 <h3><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span>Admin Fee</span></h3>
             </div>
         </div>
+
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12" id="update_admin_fee"
+                    data-ramdan="<?=$admin_fee->nominal ?>"
+                    data-toggle="modal" data-target=".bs-example-modal-sm">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-money"></i></div>
+                <div class="count"><?php echo $countjenispembayaran; ?></div>
+                <h3><i class="fa fa-pencil-square-o" aria-hidden="true"></i> <span>Jenis Pembayaran</span></h3>
+            </div>
+        </div>
     </div>
 </div>
 

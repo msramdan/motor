@@ -16,6 +16,7 @@ class Dashboard extends CI_Controller {
 		$data['countitem'] = $this->Dashboard_model->count_item();
 		$data['countagen'] = $this->Dashboard_model->count_agen();
 		$data['countkaryawan'] = $this->Dashboard_model->count_allusers();
+        $data['countjenispembayaran'] = $this->Dashboard_model->count_jenis_pembayaran();
 		$data['admin_fee'] = $this->Dashboard_model->admin_fee();
 		$this->template->load('template','dashboard',$data);
 	}

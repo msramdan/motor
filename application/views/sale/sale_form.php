@@ -29,13 +29,13 @@
                   </td>   
                 </tr>
         <tr>
-                  <td width='200'>Surveyor <?php echo form_error('pelanggan_id') ?></td>
+                  <td width='200'>Surveyor <?php echo form_error('surveyor_id') ?></td>
                   <td>
                     <div class="form-group input-group">
-                      <input type="hidden" id="pelanggan_id" name="pelanggan_id">
-                      <input type="text" id="nama_pelanggan" name="nama_pelanggan" class="form-control" readonly="">
+                      <input type="hidden" id="surveyor_id" name="surveyor_id">
+                      <input type="text" id="nama_surveyor" name="nama_surveyor" class="form-control" readonly="">
                       <span class="input-group-btn">
-                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-pelanggan">
+                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-surveyor">
                           <i class="fa fa-search"></i>
                         </button>
                       </span>
@@ -55,11 +55,17 @@
                     <div class="form-group" style="margin-top: 10px">
                         <select name="mitra_id" id="mitra_id" class="form-control" >
                               <option value="" >-- Pilih --</option>
+                                <?php foreach ($mitra as $key => $data) { ?>
+                                    <option value="<?= $data->mitra_id ?>" ><?= $data->nama_mitra ?></option>
+                                <?php } ?>
                         </select>
                     </div>
                     <div class="form-group" style="margin-top: 10px">
                         <select name="karyawan_id" id="karyawan_id" class="form-control" >
-                              <option value="Cash" >-- Pilih --</option>
+                            <option value="" >-- Pilih --</option>
+                              <?php foreach ($karyawan as $key => $data) { ?>
+                                    <option value="<?= $data->karyawan_id ?>" ><?= $data->nama_karyawan ?></option>
+                                <?php } ?>
                         </select>
                     </div>
                   </td>   
@@ -76,26 +82,37 @@
                         </button>
                       </span>
                     </div>
+                    <div class="col-md-4">
                     <label for="nama_item_pro">Nama item</label>
                     <div class="form-group">
                         <input type="text" name="nama_item" class="form-control" id="nama_item" value="-" readonly="">
                     </div>
+                  </div>
+                  <div class="col-md-4">
+
                     <label for="nama_item_pro">Jenis item</label>
                     <div class="form-group">
                         <input type="text" name="nama_jenis" class="form-control" id="nama_jenis" value="-" readonly="">
                     </div>
+                  </div>
+                  <div class="col-md-4">
                     <label for="nama_item_pro">Merk</label>
                     <div class="form-group">
                         <input type="text" name="nama_merek" class="form-control" id="nama_merek" value="-" readonly="">
                     </div>
+                  </div>
+                  <div class="col-md-4">
                     <label for="nama_item_pro">Type</label>
                     <div class="form-group">
                         <input type="text" name="nama_type" class="form-control" id="nama_type" value="-" readonly="">
                     </div>
+                  </div>
+                  <div class="col-md-4">
                     <label for="nama_item_pro">Harga Pokok</label>
                     <div class="form-group">
                         <input type="text" name="harga_pokok" class="form-control" id="harga_pokok" value="-" readonly="">
                     </div>
+                  </div>
         
   
                   </td>   
@@ -109,21 +126,35 @@
       <tr>
             <td width='200'>Type Sale <?php echo form_error('type_sale') ?></td>
             <td><select name="type_sale" id="type_sale" class="form-control" >
+              <option value="" >-- Pilih --</option>
                 <option value="Cash" >Cash / Onetime Payment </option>
                 <option value="Kredit" >Kredit / Cicilan</option>
               </select>
           </tr>
       <tr><td width='200'>Jenis Pembayaran <?php echo form_error('jenis_pembayaran') ?></td><td>
-        <input type="text" class="form-control" name="jenis_pembayaran" id="jenis_pembayaran" placeholder="Cth : Cicilan, Tunai, Transfer, Dll"  />
+        <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control" >
+                <option value="" >-- Pilih --</option>
+                <?php foreach ($jenis_pembayaran as $key => $data) { ?>
+                  <option value="<?= $data->jenis_pembayaran_id ?>" ><?= $data->nama_jenis_pembayaran ?></option>
+
+                <?php } ?>
+              </select>
+
+              <div class="col-md-4">
         <div class="form-group" style="margin-top: 10px">
                         <input type="text" name="lama_cicilan" class="form-control" id="lama_cicilan" value="" placeholder="Cicilan(x)">
                     </div>
-                    <div class="form-group">
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group" style="margin-top: 10px">
                         <input type="text" name="bunga_cicilan" class="form-control" id="bunga_cicilan" value="" placeholder="Bunga/bulan(%)">
                     </div>
-                    <div class="form-group">
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group" style="margin-top: 10px">
                         <input type="text" name="dp" class="form-control" id="dp" value="" placeholder="Uang DP">
                     </div>
+                  </div>
       </td></tr>
 
 
@@ -185,6 +216,53 @@
       </div>
       
     </div>
+
+    <!-- surveyor -->
+     <div class="modal fade" id="modal-surveyor">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" arial-label="close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add Surveyor</h4>
+          </div>
+          <div class="modal-body table-responsive">
+            <table class="table table-bordered table-striped" id="table1">
+                <thead>
+                    <tr>
+                        <th>Nama Surveyor</th>
+                        <th>No HP</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($karyawan as $key => $data) { ?>
+                    <tr>
+                      <td><?= $data->nama_karyawan ?></td>
+                      <td><?= $data->no_hp_karyawan ?></td>
+                      <td>
+                        <button class="btn btn-xs btn-info" id="pilih2"
+                          data-surveyor_id="<?php echo $data->karyawan_id ?>"
+                          data-nama_surveyor="<?php echo $data->nama_karyawan ?>">
+                          <i class="fa fa-check"></i> Select
+                        </button>
+                      </td>
+                    </tr>
+                  <?php } ?>
+
+                </tbody>
+
+            </table>
+            
+          </div>
+          
+        </div>
+      </div>
+      
+    </div>
+
+
 
      <div class="modal fade" id="modal-item">
       <div class="modal-dialog">E
@@ -248,6 +326,12 @@
           $('#modal-pelanggan').modal('hide')
         })
 
+        $(document).on('click','#pilih2',function(){
+          $('#surveyor_id').val($(this).data('surveyor_id'))
+          $('#nama_surveyor').val($(this).data('nama_surveyor'))
+          $('#modal-surveyor').modal('hide')
+        })
+
         $(document).on('click','#pilih',function(){
           $('#item_id').val($(this).data('1'))
           $('#nama_item').val($(this).data('2'))
@@ -256,9 +340,7 @@
           $('#nama_type').val($(this).data('5'))
           $('#kd_item').val($(this).data('6'))
           $('#harga_pokok').val($(this).data('7'))
-          $('#total_price_sale').val($(this).data('7')+$(this).data('7')*0.2)
-
-          
+          $('#total_price_sale').val($(this).data('7')+$(this).data('7')*0.2)          
           $('#modal-item').modal('hide')
         })
     </script>

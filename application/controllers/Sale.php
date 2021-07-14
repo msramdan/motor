@@ -15,9 +15,12 @@ class Sale extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('Sale_model');
+        $this->load->model('karyawan_model');
+        $this->load->model('Mitra_model');
         $this->load->model('Item_model');
         $this->load->model('Pelanggan_model');
         $this->load->model('Dashboard_model');
+        $this->load->model('Jenis_pembayaran_model');
         $this->load->library('form_validation');
         $this->load->library('pdf');
     }
@@ -85,6 +88,9 @@ class Sale extends CI_Controller
             'admin_fee' => $this->Dashboard_model->admin_fee(),
             'pelanggan' =>$this->Pelanggan_model->get_all(),
             'item' =>$this->Item_model->get_all('Ready'),
+            'karyawan' =>$this->karyawan_model->get_all(),
+            'jenis_pembayaran' =>$this->Jenis_pembayaran_model->get_all(),
+            'mitra' =>$this->Mitra_model->get_all(),
             'kodeunik' =>$this->Sale_model->buat_kode(),
             'action' => site_url('sale/create_action'),
             'sale_id' => set_value('sale_id'),
@@ -195,6 +201,9 @@ class Sale extends CI_Controller
 	$this->form_validation->set_rules('type_sale', 'type sale', 'trim|required');
 	$this->form_validation->set_rules('tanggal_sale', 'tanggal sale', 'trim|required');
 	$this->form_validation->set_rules('user_id', 'user id', 'trim|required');
+    $this->form_validation->set_rules('sales_referral', 'Sales Referral', 'trim|required');
+    $this->form_validation->set_rules('jenis_pembayaran', 'Jenis Pembayaran', 'trim|required');
+    $this->form_validation->set_rules('biaya_admin', 'Biaya Admin', 'trim|required');
 
 	$this->form_validation->set_rules('sale_id', 'sale_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
