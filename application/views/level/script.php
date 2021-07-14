@@ -12,6 +12,78 @@
         }
     })
 
+    $(document).on('input','.tb-custom-access-name', function(e){
+
+        var menu_id = $(this).data('submenuid');
+        var role_id = $(this).data('role');
+        let operation = $(this).val();
+
+        var el = $(this);
+
+        var c = this.selectionStart,
+            r = /[^a-z0-9]/gi,
+            v = $(this).val();
+        if(r.test(v)) {
+            $(this).val(v.replace(r, ''));
+            c--;
+        }
+        this.setSelectionRange(c, c);
+
+        el.next().html('<button class="btn btn-primary" style="pointer-events: none;"><i class="fa fa-circle-o-notch fa-spin"></i></button>');
+
+
+        $.ajax({
+            url: '<?php echo base_url().$this->uri->segment(1)?>/checklink',
+            type: 'post',
+            data: {
+                levelid: role_id,
+                submenuid: menu_id,
+                operation: operation
+            },
+            error: function(request) {
+                el.next().html('<button class="btn btn-danger" style="pointer-events: none;"><i class="fa fa-close"></i></button>');
+                parents('div.modal-body > div.input-group').after('');
+                el.parents('div.modal-body').find('div#warning-name-access').html(`<div class="alert alert-warning alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Akses Tidak Tersedia</strong> tetapi anda dapat tetap menyimpannya.
+                    <strong>Gagal terhubung ke server</strong> cek koneksi anda.
+                  </div>`);
+            },
+            fail: function() {
+                el.next().html('<button class="btn btn-danger" style="pointer-events: none;"><i class="fa fa-close"></i></button>');  
+                el.parents('div.modal-body').find('div#warning-name-access').html(`<div class="alert alert-warning alert-dismissible fade in" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                    <strong>Gagal terhubung ke server</strong> cek koneksi anda.
+                  </div>`);
+            },
+            success: function(data) {
+                var o = JSON.parse(data);
+
+                if (o == 'ok') {
+                    el.next().html('<button class="btn btn-success" style="pointer-events: none;"><i class="fa fa-check"></i></button>');
+                    el.parents('div.modal-body').find('div#warning-name-access').html(``);
+                } else {
+                    el.next().html('<button class="btn btn-danger" style="pointer-events: none;"><i class="fa fa-close"></i></button>');
+                    if (!el.val()) {
+                        el.parents('div.modal-body').find('div#warning-name-access').html(`<div class="alert alert-danger alert-dismissible fade in" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                                </button>
+                                Tidak bisa kosong.
+                              </div>`);
+                    } else {
+                        el.parents('div.modal-body').find('div#warning-name-access').html(`<div class="alert alert-warning alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                        </button>
+                        <strong>Akses Tidak Tersedia</strong> tetapi anda dapat tetap menyimpannya.
+                      </div>`);
+                    }
+                }
+            }
+        }) 
+    })
+
     $(document).on('click','#btndeleteAccess',function(){
         var el = $(this);
         var level_id = $(this).data('level');
@@ -237,6 +309,15 @@
         if (gotomodalbody.find("input[name='allowaccesscheck']").is(":checked"))
         {
           allowAccess = 1;
+        }
+
+        if (accessname === '' || accessdescription === '') {
+            Toast.fire({
+                icon: 'error',
+                title: 'Harap isi semua inputan'
+            });
+
+            return;
         }
 
         $(el).html('Tambah').prop('disabled',false);
