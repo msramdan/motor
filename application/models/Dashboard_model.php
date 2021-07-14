@@ -19,6 +19,13 @@ class Dashboard_model extends CI_Model
         return $query->row();
     }
 
+    function bunga()
+    {
+        $this->db->from('bunga');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
 
     function update_admin_fee($post){
         $params =array(
@@ -26,6 +33,15 @@ class Dashboard_model extends CI_Model
             
         );
         $this->db->update('admin_fee',$params);
+
+    }
+
+    function update_bunga($post){
+        $params =array(
+            'nominal' =>$post['nominal'],
+            
+        );
+        $this->db->update('bunga',$params);
 
     }
 

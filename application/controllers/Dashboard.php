@@ -18,6 +18,7 @@ class Dashboard extends CI_Controller {
 		$data['countkaryawan'] = $this->Dashboard_model->count_allusers();
         $data['countjenispembayaran'] = $this->Dashboard_model->count_jenis_pembayaran();
 		$data['admin_fee'] = $this->Dashboard_model->admin_fee();
+        $data['bunga'] = $this->Dashboard_model->bunga();
 		$this->template->load('template','dashboard',$data);
 	}
 
@@ -26,6 +27,22 @@ class Dashboard extends CI_Controller {
         if (isset($_POST['update_nominal'])) {
             $this->Dashboard_model->update_admin_fee($data); 
 
+            if($this->db->affected_rows() > 0){
+
+            $params = array("success" => true);
+            }else{
+                $params = array("success" => false);
+            }
+            echo json_encode($params);
+        }
+      
+    }
+
+
+public function update_bunga(){
+        $data = $this->input->post(null, TRUE);
+        if (isset($_POST['update_bunga'])) {
+            $this->Dashboard_model->update_bunga($data); 
             if($this->db->affected_rows() > 0){
 
             $params = array("success" => true);
