@@ -167,12 +167,13 @@ function block(){
             }
     }
 
-function show_button($url,$function,$id_data = NULL, $text = NULL) {
+function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL) {
     $ci =& get_instance();
+    
+    $ci->load->library('fungsi');
+    $level = $ci->fungsi->user_login()->level_id;
 
     if($function == 'export' || $function == 'create' || $function == 'read' || $function == 'delete' || $function == 'update') {
-        $ci->load->library('fungsi');
-        $level = $ci->fungsi->user_login()->level_id;
         $check = $ci->db->select('level.nama_level, menu.menu as "menu", sub_menu.nama_sub_menu as "Sub Menu", sub_menu.url as "url" ,user_access_menu.'.$function.' as "allow_status"')
             ->from('level')
             ->join('user_access_menu','user_access_menu.level_id = level.level_id')
@@ -210,15 +211,6 @@ function show_button($url,$function,$id_data = NULL, $text = NULL) {
                     $class = 'class="btn btn-warning btn-sm"';
                     echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
                 }
-                /*else {
-                    echo anchor(site_url($url.'/'.$function.'/'.$id_data), '<i class="fa fa-upload" aria-hidden="true"></i>','class="btn btn-warning btn-sm"'); 
-                    
-                    00.31, 11/07/2021
-                    can't add this because level settings not yet support this operation, it should be discussed sometimes 
-                    
-                    15:31, 11/07/2021
-                    nvm, working on it
-                }*/
             }
 
             if ($id_data == NULL || $id_data == '') {
@@ -236,6 +228,51 @@ function show_button($url,$function,$id_data = NULL, $text = NULL) {
         } else {
             echo '';
         }
+    }
+    //other than having function above, soo using customized function name would be like this
+    else
+    {
+        $arraywhere = array(
+            'level.level_id'    => $level,
+            'sub_menu.url'      => $url
+        );
+
+        $check = $ci->db->select('user_access_menu.additional_access as "additional_access"')
+        ->from('level')
+        ->join('user_access_menu','user_access_menu.level_id = level.level_id')
+        ->join('sub_menu','sub_menu.sub_menu_id = user_access_menu.sub_menu_id')
+        ->join('menu','sub_menu.menu_id = menu.menu_id')
+        ->where($arraywhere);
+
+        $result = $check->get()->row();
+
+        $trim = ltrim($result->additional_access,'#');
+
+        $splitaccess = explode('#',$trim);
+
+        if ($id_data) {
+            foreach($splitaccess as $v) {
+                $e = explode(';',$v);
+                if ($e[0] === $function) {
+                    if ($e[2] == 1) {
+                        return anchor(site_url($url.'/'.$function.'/'.$id_data), '<i class="fa '.$icon.'" aria-hidden="true"></i>','class="btn btn-warning btn-sm"');
+                    }
+                }
+            }
+        }
+
+        if ($id_data === '' || $id_data === NULL) {
+            foreach($splitaccess as $v) {
+                $e = explode(';',$v);
+                if ($e[0] === $function) {
+                    if($e[2] == 1) {
+                        return anchor(site_url($url.'/'.$function), '<i class="fa '.$icon.'" aria-hidden="true"></i>','class="btn btn-warning btn-sm"');
+                    }
+                }
+            }
+        }
+
+        return '';
     }
 }
 
