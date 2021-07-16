@@ -237,6 +237,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                      <td colspan="3">
+                        <button class="btn btn-md btn-info" id="pilih2"
+                          data-surveyor_id=""
+                          data-nama_surveyor=""
+                          style="width: 100%;">
+                          <i class="fa fa-check"></i> Kosongkan
+                        </button>
+                      </td>
+                    </tr>
                     <?php foreach ($karyawan as $key => $data) { ?>
                     <tr>
                       <td><?= $data->nama_karyawan ?></td>
