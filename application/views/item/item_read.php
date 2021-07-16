@@ -1,8 +1,7 @@
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="x_panel">
-
-        <body>
-            <h2 style="margin-top:0px">item Read</h2>
+<div class="container">
+    <div class="col-sm-6">
+        <div class="x_panel">
+            <h2 style="margin-top:0px">Item Detail</h2>
             <table class="table">
                 <tr>
                     <td>Kode Pembelian</td>
@@ -37,57 +36,96 @@
                     <td><?php echo $no_bpkb; ?></td>
                 </tr>
                 <tr>
+                    <td>Tahun Buat</td>
+                    <td><?php echo $tahun_buat; ?></td>
+                </tr>
+                <tr>
+                    <td>Warna 1</td>
+                    <td><?php echo $warna1; ?></td>
+                </tr>
+                <tr>
+                    <td>Warna 2</td>
+                    <td><?php echo $warna2; ?></td>
+                </tr>
+                <tr>
+                    <td>No. Mesin</td>
+                    <td><?php echo $no_mesin; ?></td>
+                </tr>
+                <tr>
+                    <td>No. Rangka</td>
+                    <td><?php echo $no_rangka; ?></td>
+                </tr>
+                <tr>
                     <td>Deskripsi</td>
                     <td><?php echo $deskripsi; ?></td>
                 </tr>
-                <tr>
-                    <td>Harga Perolehan</td>
-                    <td><?php echo $harga_beli; ?></td>
-                </tr>
-                <tr>
-                    <td>Photo</td>
-                    <td><a class="hover-on-pic" data-toggle="modal" data-target=".bs-example-modal-lg"><img
-                                src="<?php echo base_url().'/assets/img/item/'.$photo ?>" width="300" /></a></td>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td><?php echo $status; ?></td>
-                </tr>
-
-                <tr>
-                    <td>Detail Biaya</td>
-                    <td>
-                        <table class="table table-sm table-bordered">
-
-                            <tr>
-                                <th>Nama Biaya</th>
-                                <th>Nominal</th>
-                                <th>Hapus</th>
-                            </tr>
-      
-                      <?php foreach ($harga->result() as $key => $data) { ?>
-                            <tr>
-                                <td> <?php echo $data->nama_harga ?></td>
-                                <td> <?php echo $data->nominal ?></td>
-                                <td><a href="<?=site_url('item/del_harga/'.$data->harga_id.'/' .$this->uri->segment(3))?>"
-                                        onclick="return confirm('Yakin Akan Hapus ?')" class="btn btn-danger btn-xs"
-                                        title="Delete"><i class="fa fa-trash"></i></a></td>
-                            </tr>
-                            <?php } ?>
-                        </table>
-
-
-                    </td>
-                </tr>
-
                 <tr>
                     <td></td>
                     <td><a href="<?php echo site_url('item') ?>" class="btn btn-default">Cancel</a>
                     <a href="<?php echo site_url() ?>item/cetak/<?php echo $item_id ?>" class="btn btn-warning">Cetak</a>
                     </td>
                 </tr>
-            </table>
-        </body>
+            </table>  
+        </div>
+    </div>
+    <div class="col-sm-6">
+          <div class="x_panel">
+                <div class="x_panel">
+                    <a class="hover-on-pic" data-toggle="modal" data-target=".bs-example-modal-lg"><img src="<?php echo base_url().'/assets/img/item/'.$photo ?>" width="100%" /></a>
+                </div>
+                <div class="row" style="margin-top: 17px;">
+                    <div class="progress_title">
+                      <span class="left">Kondisi</span>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="col-xs-10" style="padding-top: 5px;">
+                      <div class="progress progress_sm">
+                        <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="100" aria-valuenow="100" style="width: <?php echo $kondisi ?>%;"></div>
+                      </div>
+                    </div>
+                    <div class="col-xs-2 more_info">
+                      <span><?php echo $kondisi ?>%</span>
+                    </div>
+                </div>
+
+                <table class="table">
+                    <tr>
+                        <td>Harga Perolehan</td>
+                        <td><?php echo $harga_beli; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Harga Pokok</td>
+                        <td><?php echo $harga_pokok; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td><?php echo $status; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Detail Biaya</td>
+                        <td>
+                            <table class="table table-sm table-bordered">
+
+                                <tr>
+                                    <th>Nama Biaya</th>
+                                    <th>Nominal</th>
+                                    <th>Hapus</th>
+                                </tr>
+          
+                          <?php foreach ($harga->result() as $key => $data) { ?>
+                                <tr>
+                                    <td> <?php echo $data->nama_harga ?></td>
+                                    <td> <?php echo $data->nominal ?></td>
+                                    <td><a href="<?=site_url('item/del_harga/'.$data->harga_id.'/' .$this->uri->segment(3))?>"
+                                            onclick="return confirm('Yakin Akan Hapus ?')" class="btn btn-danger btn-xs"
+                                            title="Delete"><i class="fa fa-trash"></i></a></td>
+                                </tr>
+                                <?php } ?>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+          </div>  
     </div>
 </div>
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">

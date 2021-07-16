@@ -71,6 +71,13 @@ class item extends CI_Controller
                 'merek_id' => $row->nama_merek,
                 'no_stnk' => $row->no_stnk,
                 'no_bpkb' => $row->no_bpkb,
+                'tahun_buat' => $row->tahun_buat,
+                'warna1' => $row->warna1,
+                'warna2' => $row->warna2,
+                'kondisi' => $row->kondisi,
+                'no_mesin' => $row->no_mesin,
+                'no_rangka' => $row->no_rangka,
+                'harga_pokok' => $row->harga_pokok,
                 'deskripsi' => $row->deskripsi,
                 'harga_beli' => $row->harga_beli,
                 'photo' => $row->photo,
@@ -132,44 +139,46 @@ class item extends CI_Controller
         is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
+        $filename = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10);
+
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
             $config['upload_path']      = './assets/img/item'; 
-        $config['allowed_types']    = 'jpg|png|jpeg'; 
-        $config['max_size']         = 10048; 
-        $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
-        $this->load->library('upload',$config);
-        $this->upload->initialize($config);
-        $this->upload->do_upload("photo");
-        $data = $this->upload->data();
-        
-        $photo =$data['file_name'];
+            $config['allowed_types']    = 'jpg|png|jpeg'; 
+            $config['max_size']         = 10048; 
+            $config['file_name']        = $filename; 
+            $this->load->library('upload',$config);
+            $this->upload->initialize($config);
+            $this->upload->do_upload("photo");
+            $data = $this->upload->data();
+            
+            $photo = $filename.$data['file_ext'];
 
             $data = array(
                 'unit_id' => $this->input->post('unit_id',TRUE),
-		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
-		'agen_id' => $this->input->post('agen_id',TRUE),
-        'kategori_id' => $this->input->post('kategori_id',TRUE),
-		'kd_item' => $this->input->post('kd_item',TRUE),
-		'nama_item' => $this->input->post('nama_item',TRUE),
-		'jenis_item_id' => $this->input->post('jenis_item_id',TRUE),
-		'merek_id' => $this->input->post('merek_id',TRUE),
-        'type_id' => $this->input->post('type_id',TRUE),
-		'no_stnk' => $this->input->post('no_stnk',TRUE),
-		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
-        'tahun_buat' => $this->input->post('tahun_buat',TRUE),
-        'warna1' => $this->input->post('warna1',TRUE),
-        'warna2' => $this->input->post('warna2',TRUE),
-        'kondisi' => $this->input->post('kondisi',TRUE),
-        'no_mesin' => $this->input->post('no_mesin',TRUE),
-        'no_rangka' => $this->input->post('no_rangka',TRUE),
-		'deskripsi' => $this->input->post('deskripsi',TRUE),
-		'harga_beli' => $this->input->post('harga_beli',TRUE),
-        'harga_pokok' => $this->input->post('harga_beli',TRUE),
-		'photo' => $photo,
-		'status' => $this->input->post('status',TRUE),
-	    );
+        		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
+        		'agen_id' => $this->input->post('agen_id',TRUE),
+                'kategori_id' => $this->input->post('kategori_id',TRUE),
+        		'kd_item' => $this->input->post('kd_item',TRUE),
+        		'nama_item' => $this->input->post('nama_item',TRUE),
+        		'jenis_item_id' => $this->input->post('jenis_item_id',TRUE),
+        		'merek_id' => $this->input->post('merek_id',TRUE),
+                'type_id' => $this->input->post('type_id',TRUE),
+        		'no_stnk' => $this->input->post('no_stnk',TRUE),
+        		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
+                'tahun_buat' => $this->input->post('tahun_buat',TRUE),
+                'warna1' => $this->input->post('warna1',TRUE),
+                'warna2' => $this->input->post('warna2',TRUE),
+                'kondisi' => $this->input->post('kondisi',TRUE),
+                'no_mesin' => $this->input->post('no_mesin',TRUE),
+                'no_rangka' => $this->input->post('no_rangka',TRUE),
+        		'deskripsi' => $this->input->post('deskripsi',TRUE),
+        		'harga_beli' => $this->input->post('harga_beli',TRUE),
+                'harga_pokok' => $this->input->post('harga_beli',TRUE),
+        		'photo' => $photo,
+        		'status' => $this->input->post('status',TRUE),
+	        );
 
             $this->Item_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -244,10 +253,12 @@ class item extends CI_Controller
             }
             
 
-        $config['upload_path']      = './assets/img/item'; 
+            $filename = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10);
+
+            $config['upload_path']      = './assets/img/item'; 
             $config['allowed_types']    = 'jpg|png|jpeg'; 
             $config['max_size']         = 10048; 
-            $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
+            $config['file_name']        = $filename; 
             $this->load->library('upload',$config);
             $this->upload->initialize($config);
 
@@ -255,7 +266,7 @@ class item extends CI_Controller
             $id = $this->input->post('item_id');
             $row = $this->Item_model->get_by_id($id);
             $data = $this->upload->data();
-            $photo =$data['file_name'];
+            $photo =$filename.$data['file_ext'];
             if($row->photo==null || $row->photo=='' ){
             }else{
 
@@ -411,7 +422,7 @@ class item extends CI_Controller
         $pdf->AddPage();
 
         $pdf->setXY(0, 40);
-        $pdf->SetFont('Arial','B',16);$pdf->Cell(0,7,'DATA ITEM',0,0,'C');
+        $pdf->SetFont('Arial','B',16);$pdf->Cell(0,7,'FAKTUR KENDARAAN',0,0,'C');
         $pdf->setXY(0, 50);
         $pdf->SetFont('Arial','',13);$pdf->Cell(0,7,$data->kd_pembelian.'/'.$data->nama_agen,0,0,'C');
         
