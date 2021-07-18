@@ -114,14 +114,11 @@
                   <div class="x_content">
                     <div class="well" style="overflow: auto">
                       <div class="col-md-12">
-                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                          <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                          <span>July 13, 2021 - July 13, 2021</span> <b class="caret"></b>
-                        </div>
+                            <input type="text" id="datepickerreport" class="form-control">
                       </div>
                     </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                              <div class="x_panel tile">
+                            <div class="x_panel tile">
                                 <div class="x_content">
                                     <script src="https://code.highcharts.com/highcharts.js"></script>
                                     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -130,9 +127,9 @@
                                     <figure class="highcharts-figure">
                                     <div id="container"></div>
                                     </figure>
+                                </div>
                             </div>
-                          </div>
-                      </div>
+                        </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                               <div class="x_panel tile">
                                 <div class="x_content">
@@ -150,9 +147,48 @@
              
 
 
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="<?= base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript">
+
+const today = moment().format('MM-DD-YYYY');
+const yesterday = moment().day(-1);
+
+$('#datepickerreport').daterangepicker({
+    "autoApply": true,
+    "ranges": {
+        "Today": [
+            "07/10/2021",
+            "07/10/2021"
+        ],
+        "Yesterday": [
+            today,
+            yesterday
+        ],
+        "Last 7 Days": [
+            "07/10/2021",
+            "07/17/2021"
+        ],
+        "Last 30 Days": [
+            "2021-06-19T13:19:03.802Z",
+            "2021-07-18T13:19:03.802Z"
+        ],
+        "This Month": [
+            "2021-06-30T17:00:00.000Z",
+            "2021-07-31T16:59:59.999Z"
+        ],
+        "Last Month": [
+            "2021-05-31T17:00:00.000Z",
+            "2021-06-30T16:59:59.999Z"
+        ]
+    },
+    "startDate": "07/12/2021",
+    "endDate": "07/18/2021",
+    "applyClass": "btn-primary"
+    }, function(start, end, label) {
+        console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+});
+
     Highcharts.chart('container', {
     chart: {
         plotBackgroundColor: null,
