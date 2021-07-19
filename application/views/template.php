@@ -10,8 +10,6 @@
     <title>Aplikasi POS</title>
     <link href="<?= base_url()?>assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- bootstrap-progressbar -->
-    <link href="<?= base_url()?>assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/vendors/nprogress/nprogress.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/build/css/custom.min.css" rel="stylesheet">
     <link href="<?= base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
@@ -183,10 +181,10 @@
     <script src="<?= base_url()?>assets/vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="<?= base_url()?>assets/vendors/nprogress/nprogress.js"></script>
-    <script src="<?= base_url()?>assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- Validator -->
     <script src="<?= base_url()?>assets/vendors/validator/validator.js"></script>
     <script src="<?= base_url()?>assets/vendors/moment/min/moment.min.js"></script>
+    <script src="<?= base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="<?= base_url()?>assets/build/js/custom.min.js"></script>

@@ -35,7 +35,7 @@
 	    	
 	    	</td>
 	    </tr>
-	    <tr><td></td><td><a href="<?php echo site_url('pelanggan') ?>" class="btn btn-default">Cancel</a><a href="<?php echo site_url('pelanggan/cetak').'/'.$this->uri->segment(3) ?>" class="btn btn-warning">Cetak</a></td></tr>
+	    <tr><td></td><td><a href="<?php echo site_url('pelanggan') ?>" class="btn btn-default">Cancel</a></td></tr>
 	</table>
         </body>
     </div>
