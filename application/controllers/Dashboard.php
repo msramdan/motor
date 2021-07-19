@@ -12,14 +12,18 @@ class Dashboard extends CI_Controller {
 
 	public function index()
 	{
-		$data['countpelanggan'] = $this->Dashboard_model->count_pelanggan();
-		$data['countitem'] = $this->Dashboard_model->count_item();
-		$data['countagen'] = $this->Dashboard_model->count_agen();
-		$data['countkaryawan'] = $this->Dashboard_model->count_allusers();
-        $data['countjenispembayaran'] = $this->Dashboard_model->count_jenis_pembayaran();
-		$data['admin_fee'] = $this->Dashboard_model->admin_fee();
-        $data['bunga'] = $this->Dashboard_model->bunga();
-		$data['sales_referal_chart']= $this->Dashboard_model->sales_referal_chart('2021-07-01','2021-07-31',$this->session->userdata('unit_id'));
+        $data = array(
+    		'countpelanggan' => $this->Dashboard_model->count_pelanggan(),
+    		'countitem' => $this->Dashboard_model->count_item(),
+    		'countagen' => $this->Dashboard_model->count_agen(),
+    		'countkaryawan' => $this->Dashboard_model->count_allusers(),
+            'countjenispembayaran' => $this->Dashboard_model->count_jenis_pembayaran(),
+    		'admin_fee' => $this->Dashboard_model->admin_fee(),
+            'bunga' => $this->Dashboard_model->bunga(),
+    		'sales_referal_chart'=>$this->Dashboard_model->sales_referal_chart(date('Y-m-d 00:00:00'),date('Y-m-d 23:59:00'),$this->session->userdata('unit_id')),
+            'uang_masup' => $this->Dashboard_model->umuk_chart(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:00'), $this->session->userdata('unit_id'), 'uang_masuk', 'Terjual'),
+            'uang_kuwar' => $this->Dashboard_model->umuk_chart(date('Y-m-d 00:00:00'), date('Y-m-d 23:59:00'), $this->session->userdata('unit_id'), 'uang_keluar', 'Ready'),
+        );
         $this->template->load('template','dashboard',$data);
 	}
 
@@ -56,10 +60,21 @@ class Dashboard extends CI_Controller {
     }
 
     public function update_report() {
+        $type = $this->input->post('type');
         $startdate = date('Y-m-d H:i:s', strtotime($this->input->post('startdate')));
         $enddate = date('Y-m-d H:i:s', strtotime($this->input->post('enddate')));
 
-        $anu = $this->Dashboard_model->sales_referal_chart($startdate,$enddate,$this->session->userdata('unit_id'));
+        if ($type === 'sales_referal') {
+            $anu = $this->Dashboard_model->sales_referal_chart($startdate,$enddate,$this->session->userdata('unit_id'));
+        }
+
+        if ($type === 'umuk') {
+            $anu = array(
+                'uang_masup' => $this->Dashboard_model->umuk_chart($startdate, $enddate, $this->session->userdata('unit_id'), 'uang_masuk', 'Terjual'),
+                'uang_kuwar' => $this->Dashboard_model->umuk_chart($startdate, $enddate, $this->session->userdata('unit_id'), 'uang_keluar', 'Ready'),
+            );
+        }
+        
 
         echo json_encode($anu);
     }

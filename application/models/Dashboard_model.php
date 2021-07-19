@@ -108,4 +108,15 @@ class Dashboard_model extends CI_Model
         return $res;
     }
 
+    function umuk_chart($startdate, $enddate, $idunit, $what, $status) {
+        $query = "SELECT SUM(`harga_pokok`) as '".$what."' FROM item WHERE `unit_id` = '".$idunit."' AND `status` = '".$status."' tanggal_sale BETWEEN '".$startdate."' AND '".$enddate."'";
+        $res = $this->db->query($query)->row();
+
+        if ($res->$what === NULL) {
+            return 0;
+        }
+
+        return $res;
+    }
+
 }

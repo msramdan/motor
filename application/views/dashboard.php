@@ -201,9 +201,9 @@ var chartsalesreferal = Highcharts.chart('container2', {
     series: [{
         name: 'Population',
         data: [
-            ['Datang Langsung', <?php echo $sales_referal_chart->datang_langsung ?>],
-            ['Karyawan', <?php echo $sales_referal_chart->karyawan ?>],
-            ['Mitra Sales', <?php echo $sales_referal_chart->mitra_sales ?>]
+            ['Datang Langsung', <?php echo $sales_referal_chart ? $sales_referal_chart->datang_langsung : 0 ?>],
+            ['Karyawan', <?php echo $sales_referal_chart ? $sales_referal_chart->karyawan : 0 ?>],
+            ['Mitra Sales', <?php echo $sales_referal_chart ? $sales_referal_chart->mitra_sales : 0 ?>]
         ],
         dataLabels: {
             enabled: true,
@@ -231,7 +231,7 @@ var umukchart = Highcharts.chart('container', {
         text: 'Uang masuk Vs Uang Keluar'
     },
     tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br>total: <b>Rp.{point.y}</b>'
     },
     accessibility: {
         point: {
@@ -252,13 +252,11 @@ var umukchart = Highcharts.chart('container', {
         name: 'Brands',
         colorByPoint: true,
         data: [{
-            name: 'Chrome',
-            y: 61.41,
-            sliced: true,
-            selected: true
+            name: 'Uang Masuk',
+            y: <?php echo $uang_masup->uang_masuk === NULL ? 0 : $uang_masup->uang_masuk ?>
         }, {
-            name: 'Other',
-            y: 2.61
+            name: 'Uang Keluar',
+            y: <?php echo $uang_kuwar->uang_keluar === NULL ? 0 : $uang_kuwar->uang_keluar ?>
         }]
     }]
 });
@@ -304,6 +302,7 @@ $('#datepickerreport').daterangepicker({
             type:'POST',
             url : '<?=site_url('dashboard/update_report') ?>',
             data : {
+                type: 'sales_referal',
                 startdate: start.format('YYYY-MM-DD HH:mm:ss'),
                 enddate: end.format('YYYY-MM-DD HH:mm:ss')
             },
@@ -325,6 +324,35 @@ $('#datepickerreport').daterangepicker({
                 return
             }
         })
+
+        $.ajax({
+            type:'POST',
+            url : '<?=site_url('dashboard/update_report') ?>',
+            data : {
+                type: 'umuk',
+                startdate: start.format('YYYY-MM-DD HH:mm:ss'),
+                enddate: end.format('YYYY-MM-DD HH:mm:ss')
+            },
+            dataType : 'json',
+            success: function(result){
+                if (!result) {
+                    umuk.series[0].setData([
+                        ['Datang Langsung',0],
+                        ['Karyawan',0],
+                        ['Mitra Sales',0]
+                    ])
+                    return
+                }
+                chartsalesreferal.series[0].setData([
+                    ['Datang Langsung',parseFloat(result.datang_langsung)],
+                    ['Karyawan',parseFloat(result.karyawan)],
+                    ['Mitra Sales',parseFloat(result.mitra_sales)]
+                ])
+                return
+            }
+        })
+
+       
 });
 
 $(document).on('click','#update_admin_fee',function(){
