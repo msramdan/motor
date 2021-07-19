@@ -239,34 +239,34 @@ class Pelanggan extends CI_Controller
 
         $kolomhead = 0;
         xlsWriteLabel($tablehead, $kolomhead++, "No");
-    	xlsWriteLabel($tablehead, $kolomhead++, "No Ktp");
-    	xlsWriteLabel($tablehead, $kolomhead++, "No Kk");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pelanggan");
-    	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Pelanggan");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kelamin");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Ktp");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Domisili");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Nama Saudara");
-    	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Saudara");
-    	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Saudara");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Ktp");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Kk");
+	xlsWriteLabel($tablehead, $kolomhead++, "Nama Pelanggan");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Pelanggan");
+	xlsWriteLabel($tablehead, $kolomhead++, "Jenis Kelamin");
+	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Ktp");
+	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Domisili");
+	xlsWriteLabel($tablehead, $kolomhead++, "Nama Saudara");
+	xlsWriteLabel($tablehead, $kolomhead++, "Alamat Saudara");
+	xlsWriteLabel($tablehead, $kolomhead++, "No Hp Saudara");
 
-    	foreach ($this->Pelanggan_model->get_all() as $data) {
+	foreach ($this->Pelanggan_model->get_all() as $data) {
             $kolombody = 0;
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_ktp);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_kk);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_pelanggan);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_pelanggan);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->jenis_kelamin);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_ktp);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_domisili);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_saudara);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_saudara);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_saudara);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_ktp);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_kk);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_pelanggan);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_pelanggan);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->jenis_kelamin);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_ktp);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_domisili);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->nama_saudara);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->alamat_saudara);
+	    xlsWriteLabel($tablebody, $kolombody++, $data->no_hp_saudara);
 
-    	    $tablebody++;
+	    $tablebody++;
             $nourut++;
         }
 
@@ -276,8 +276,8 @@ class Pelanggan extends CI_Controller
 
     public function cetak($id)
     {
-        $berkas = $this->Pelanggan_model->get_berkas(decrypt_url($id))->result();
-        $data = $this->Pelanggan_model->get_by_id(decrypt_url($id));
+        $berkas = $this->Pelanggan_model->get_berkas($id)->result();
+        $data = $this->Pelanggan_model->get_by_id($id);
         if ($data) {
             $pdf = new FPDF('p','mm','A4');
 

@@ -200,7 +200,7 @@
                             <tr>
                                 <td width='200'>photo <?php echo form_error('photo') ?></td>
                                 <td><input type="file" class="form-control" name="photo" id="photo" placeholder="photo"
-                                        required="" value="" onchange="return validasiEkstensi()">
+                                        required="" value="" onchange="return validasiEkstensi()" />
                                     <!-- <div id="preview"></div> -->
                                 </td>
                             </tr>

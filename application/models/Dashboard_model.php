@@ -77,7 +77,7 @@ class Dashboard_model extends CI_Model
         return $this->db->count_all_results();
     }
 
-    function count_jenis_pembayaran()
+     function count_jenis_pembayaran()
     {
         $this->db->select('*');
         $this->db->from('jenis_pembayaran');
