@@ -176,9 +176,12 @@ class item extends CI_Controller
         		'deskripsi' => $this->input->post('deskripsi',TRUE),
         		'harga_beli' => $this->input->post('harga_beli',TRUE),
                 'harga_pokok' => $this->input->post('harga_beli',TRUE),
+                'tgl_terdata' => date('Y-m-d H:m:s'),
         		'photo' => $photo,
         		'status' => $this->input->post('status',TRUE),
 	        );
+
+            //print_r($data);
 
             $this->Item_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');

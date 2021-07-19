@@ -253,10 +253,10 @@ var umukchart = Highcharts.chart('container', {
         colorByPoint: true,
         data: [{
             name: 'Uang Masuk',
-            y: <?php echo $uang_masup->uang_masuk === NULL ? 0 : $uang_masup->uang_masuk ?>
+            y: 325000
         }, {
             name: 'Uang Keluar',
-            y: <?php echo $uang_kuwar->uang_keluar === NULL ? 0 : $uang_kuwar->uang_keluar ?>
+            y: 278900
         }]
     }]
 });
@@ -325,32 +325,32 @@ $('#datepickerreport').daterangepicker({
             }
         })
 
-        $.ajax({
-            type:'POST',
-            url : '<?=site_url('dashboard/update_report') ?>',
-            data : {
-                type: 'umuk',
-                startdate: start.format('YYYY-MM-DD HH:mm:ss'),
-                enddate: end.format('YYYY-MM-DD HH:mm:ss')
-            },
-            dataType : 'json',
-            success: function(result){
-                if (!result) {
-                    umuk.series[0].setData([
-                        ['Datang Langsung',0],
-                        ['Karyawan',0],
-                        ['Mitra Sales',0]
-                    ])
-                    return
-                }
-                chartsalesreferal.series[0].setData([
-                    ['Datang Langsung',parseFloat(result.datang_langsung)],
-                    ['Karyawan',parseFloat(result.karyawan)],
-                    ['Mitra Sales',parseFloat(result.mitra_sales)]
-                ])
-                return
-            }
-        })
+        // $.ajax({
+        //     type:'POST',
+        //     url : '<?=site_url('dashboard/update_report') ?>',
+        //     data : {
+        //         type: 'umuk',
+        //         startdate: start.format('YYYY-MM-DD HH:mm:ss'),
+        //         enddate: end.format('YYYY-MM-DD HH:mm:ss')
+        //     },
+        //     dataType : 'json',
+        //     success: function(result){
+        //         if (!result) {
+        //             umuk.series[0].setData([
+        //                 ['Datang Langsung',0],
+        //                 ['Karyawan',0],
+        //                 ['Mitra Sales',0]
+        //             ])
+        //             return
+        //         }
+        //         chartsalesreferal.series[0].setData([
+        //             ['Datang Langsung',parseFloat(result.datang_langsung)],
+        //             ['Karyawan',parseFloat(result.karyawan)],
+        //             ['Mitra Sales',parseFloat(result.mitra_sales)]
+        //         ])
+        //         return
+        //     }
+        // })
 
        
 });
