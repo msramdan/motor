@@ -114,14 +114,18 @@
                   <div class="x_content">
                     <div class="well" style="overflow: auto">
                       <div class="col-md-12">
-                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                          <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                          <span>July 13, 2021 - July 13, 2021</span> <b class="caret"></b>
+                        <div class="control-group">
+                              <div class="controls">
+                                <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
+                                    <input type="text" name="datepickerreport" id="datepickerreport" class="form-control" value="01/01/2016 - 01/25/2016" />
+                                </div>
+                            </div>
                         </div>
                       </div>
                     </div>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                              <div class="x_panel tile">
+                            <div class="x_panel tile">
                                 <div class="x_content">
                                     <script src="https://code.highcharts.com/highcharts.js"></script>
                                     <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -130,9 +134,9 @@
                                     <figure class="highcharts-figure">
                                     <div id="container"></div>
                                     </figure>
+                                </div>
                             </div>
-                          </div>
-                      </div>
+                        </div>
                       <div class="col-md-6 col-sm-6 col-xs-12">
                               <div class="x_panel tile">
                                 <div class="x_content">
@@ -150,169 +154,232 @@
              
 
 
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="<?= base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript">
-    Highcharts.chart('container', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: 'Uang masuk Vs Uang Keluar'
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    accessibility: {
-        point: {
-            valueSuffix: '%'
-        }
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
+
+const today = moment().format('MM-DD-YYYY');
+const yesterday = moment().day(-1);
+const sevendays = moment().day(-7);
+const thirtydays = moment().day(-30);
+
+const startOfMonth = moment().startOf('month');
+const endOfMonth = moment().endOf('month');
+
+const prevMonthFirstDay = moment().subtract(1, 'months').startOf('month')
+const nextMonthLastDay = moment().subtract(1, 'months').endOf('month')
+
+function getChart() {
+    Highcharts.chart('container2', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Sales Referral'
+        },
+        xAxis: {
+            type: 'category',
+            labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Jumlah Transaksi Sale'
+            }
+        },
+        legend: {
+            enabled: false
+        },
+        tooltip: {
+            pointFormat: 'Jumlah Transaksi Sale: <b>{point.y:f} Transaksi Sale</b>'
+        },
+        series: [{
+            name: 'Population',
+            data: [
+                ['Datang Langsung', 10],
+                ['Karyawan', 8],
+                ['Mitra Sales', 12]
+            ],
             dataLabels: {
                 enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                rotation: -90,
+                color: '#FFFFFF',
+                align: 'right',
+                format: '{point.y:f}', // one decimal
+                y: 10, // 10 pixels down from the top
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                }
             }
-        }
-    },
-    series: [{
-        name: 'Brands',
-        colorByPoint: true,
-        data: [{
-            name: 'Chrome',
-            y: 61.41,
-            sliced: true,
-            selected: true
-        }, {
-            name: 'Other',
-            y: 2.61
         }]
-    }]
-});
-</script>
+    });
 
-<script type="text/javascript">
-        $(document).on('click','#update_admin_fee',function(){
-          $('#ramdan2').val($(this).data('ramdan'))
-        })
-
-        $(document).on('click','#submit_update', function(){
-          var nominal = $('#ramdan2').val()
-          if (nominal == '') {
-            alert('Minimum Rp.0')
-            $('#ramdan2').focus()
-          }else {
-            $.ajax({
-                type:'POST',
-                url : '<?=site_url('dashboard/update_admin_fee') ?>',
-                data :{'update_nominal' : true,'nominal' : nominal},
-                dataType : 'json',
-                success: function(result){
-                    if (result.success) {
-                    alert('Admin fee berhasil di Update');
-                    $('#update_admin_fee').modal('hide')
-                    }else{
-                        alert('Admin fee gagal di Update')
-                    }
-                    location.href='<?=site_url('Dashboard') ?>'
-
-                }
-            })
-          }
-        })
-
-
-    </script>
-
-    <script type="text/javascript">
-        $(document).on('click','#update_bunga',function(){
-          $('#bunga_cicilan').val($(this).data('bunga'))
-        })
-
-        $(document).on('click','#submit_update_bunga', function(){
-          var nominal = $('#bunga_cicilan').val()
-          if (nominal == '') {
-            alert('Minimum 0 %')
-            $('#bunga_cicilan').focus()
-          }else {
-            $.ajax({
-                type:'POST',
-                url : '<?=site_url('dashboard/update_bunga') ?>',
-                data :{'update_bunga' : true,'nominal' : nominal},
-                dataType : 'json',
-                success: function(result){
-                    if (result.success) {
-                    alert('Bunga Cicilan berhasil di Update');
-                    $('#update_bunga').modal('hide')
-                    }else{
-                        alert('Bunga Cicilan gagal di Update')
-                    }
-                    location.href='<?=site_url('Dashboard') ?>'
-
-                }
-            })
-          }
-        })
-
-
-    </script>
-
-
-    <script type="text/javascript">
-        Highcharts.chart('container2', {
-    chart: {
-        type: 'column'
-    },
-    title: {
-        text: 'Sales Referral'
-    },
-    xAxis: {
-        type: 'category',
-        labels: {
-            rotation: -45,
-            style: {
-                fontSize: '13px',
-                fontFamily: 'Verdana, sans-serif'
-            }
-        }
-    },
-    yAxis: {
-        min: 0,
+    Highcharts.chart('container', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
         title: {
-            text: 'Jumlah Transaksi Sale'
-        }
-    },
-    legend: {
-        enabled: false
-    },
-    tooltip: {
-        pointFormat: 'Jumlah Transaksi Sale: <b>{point.y:f} Transaksi Sale</b>'
-    },
-    series: [{
-        name: 'Population',
-        data: [
-            ['Datang Langsung', 10],
-            ['Karyawan', 8],
-            ['Mitra Sales', 12]
-        ],
-        dataLabels: {
-            enabled: true,
-            rotation: -90,
-            color: '#FFFFFF',
-            align: 'right',
-            format: '{point.y:f}', // one decimal
-            y: 10, // 10 pixels down from the top
-            style: {
-                fontSize: '13px',
-                fontFamily: 'Verdana, sans-serif'
+            text: 'Uang masuk Vs Uang Keluar'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
             }
-        }
-    }]
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            name: 'Brands',
+            colorByPoint: true,
+            data: [{
+                name: 'Chrome',
+                y: 61.41,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Other',
+                y: 2.61
+            }]
+        }]
+    });
+}
+
+$('#datepickerreport').daterangepicker({
+    "autoApply": true,
+    "timePicker": true,
+    "timePicker": true,
+    "timePicker24Hour": true,
+    "timePickerSeconds": true,
+    "ranges": {
+        "Today": [
+            today,
+            today
+        ],
+        "Yesterday": [
+            today,
+            yesterday
+        ],
+        "Last 7 Days": [
+            today,
+            sevendays
+        ],
+        "Last 30 Days": [
+            today,
+            thirtydays
+        ],
+        "This Month": [
+            startOfMonth,
+            endOfMonth
+        ],
+        "Last Month": [
+            prevMonthFirstDay,
+            nextMonthLastDay
+        ]
+    },
+    "startDate": today,
+    "endDate": today,
+    "applyClass": "btn-primary"
+    }, function(start, end, label) {
+        console.log('New date range selected: ' + start.format('YYYY-MM-DD HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD HH:mm:ss') + ' (predefined range: ' + label + ')');
+        // $.ajax({
+        //     type:'POST',
+        //     url : '<?=site_url('dashboard/update_chart') ?>',
+        //     data :{'update_bunga' : true,'nominal' : nominal},
+        //     dataType : 'json',
+        //     success: function(result){
+        //         if (result.success) {
+        //         alert('Bunga Cicilan berhasil di Update');
+        //         $('#update_bunga').modal('hide')
+        //         }else{
+        //             alert('Bunga Cicilan gagal di Update')
+        //         }
+        //         location.href='<?=site_url('Dashboard') ?>'
+
+        //     }
+        // })
 });
-    </script>
+
+$(document).ready(function(){
+    getChart()
+})
+
+
+$(document).on('click','#update_admin_fee',function(){
+  $('#ramdan2').val($(this).data('ramdan'))
+})
+
+$(document).on('click','#submit_update', function(){
+  var nominal = $('#ramdan2').val()
+  if (nominal == '') {
+    alert('Minimum Rp.0')
+    $('#ramdan2').focus()
+  }else {
+    $.ajax({
+        type:'POST',
+        url : '<?=site_url('dashboard/update_admin_fee') ?>',
+        data :{'update_nominal' : true,'nominal' : nominal},
+        dataType : 'json',
+        success: function(result){
+            if (result.success) {
+            alert('Admin fee berhasil di Update');
+            $('#update_admin_fee').modal('hide')
+            }else{
+                alert('Admin fee gagal di Update')
+            }
+            location.href='<?=site_url('Dashboard') ?>'
+
+        }
+    })
+  }
+})
+
+$(document).on('click','#update_bunga',function(){
+  $('#bunga_cicilan').val($(this).data('bunga'))
+})
+
+$(document).on('click','#submit_update_bunga', function(){
+  var nominal = $('#bunga_cicilan').val()
+  if (nominal == '') {
+    alert('Minimum 0 %')
+    $('#bunga_cicilan').focus()
+  }else {
+    $.ajax({
+        type:'POST',
+        url : '<?=site_url('dashboard/update_bunga') ?>',
+        data :{'update_bunga' : true,'nominal' : nominal},
+        dataType : 'json',
+        success: function(result){
+            if (result.success) {
+            alert('Bunga Cicilan berhasil di Update');
+            $('#update_bunga').modal('hide')
+            }else{
+                alert('Bunga Cicilan gagal di Update')
+            }
+            location.href='<?=site_url('Dashboard') ?>'
+
+        }
+    })
+  }
+})
+</script>

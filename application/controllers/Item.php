@@ -71,6 +71,13 @@ class item extends CI_Controller
                 'merek_id' => $row->nama_merek,
                 'no_stnk' => $row->no_stnk,
                 'no_bpkb' => $row->no_bpkb,
+                'tahun_buat' => $row->tahun_buat,
+                'warna1' => $row->warna1,
+                'warna2' => $row->warna2,
+                'kondisi' => $row->kondisi,
+                'no_mesin' => $row->no_mesin,
+                'no_rangka' => $row->no_rangka,
+                'harga_pokok' => $row->harga_pokok,
                 'deskripsi' => $row->deskripsi,
                 'harga_beli' => $row->harga_beli,
                 'photo' => $row->photo,
@@ -132,44 +139,46 @@ class item extends CI_Controller
         is_allowed($this->uri->segment(1),'create');
         $this->_rules();
 
+        $filename = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10);
+
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
             $config['upload_path']      = './assets/img/item'; 
-        $config['allowed_types']    = 'jpg|png|jpeg'; 
-        $config['max_size']         = 10048; 
-        $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
-        $this->load->library('upload',$config);
-        $this->upload->initialize($config);
-        $this->upload->do_upload("photo");
-        $data = $this->upload->data();
-        
-        $photo =$data['file_name'];
+            $config['allowed_types']    = 'jpg|png|jpeg'; 
+            $config['max_size']         = 10048; 
+            $config['file_name']        = ''.$filename.''; 
+            $this->load->library('upload',$config);
+            $this->upload->initialize($config);
+            $this->upload->do_upload("photo");
+            $data = $this->upload->data();
+            
+            $photo = $filename.$data['file_ext'];
 
             $data = array(
                 'unit_id' => $this->input->post('unit_id',TRUE),
-		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
-		'agen_id' => $this->input->post('agen_id',TRUE),
-        'kategori_id' => $this->input->post('kategori_id',TRUE),
-		'kd_item' => $this->input->post('kd_item',TRUE),
-		'nama_item' => $this->input->post('nama_item',TRUE),
-		'jenis_item_id' => $this->input->post('jenis_item_id',TRUE),
-		'merek_id' => $this->input->post('merek_id',TRUE),
-        'type_id' => $this->input->post('type_id',TRUE),
-		'no_stnk' => $this->input->post('no_stnk',TRUE),
-		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
-        'tahun_buat' => $this->input->post('tahun_buat',TRUE),
-        'warna1' => $this->input->post('warna1',TRUE),
-        'warna2' => $this->input->post('warna2',TRUE),
-        'kondisi' => $this->input->post('kondisi',TRUE),
-        'no_mesin' => $this->input->post('no_mesin',TRUE),
-        'no_rangka' => $this->input->post('no_rangka',TRUE),
-		'deskripsi' => $this->input->post('deskripsi',TRUE),
-		'harga_beli' => $this->input->post('harga_beli',TRUE),
-        'harga_pokok' => $this->input->post('harga_beli',TRUE),
-		'photo' => $photo,
-		'status' => $this->input->post('status',TRUE),
-	    );
+        		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
+        		'agen_id' => $this->input->post('agen_id',TRUE),
+                'kategori_id' => $this->input->post('kategori_id',TRUE),
+        		'kd_item' => $this->input->post('kd_item',TRUE),
+        		'nama_item' => $this->input->post('nama_item',TRUE),
+        		'jenis_item_id' => $this->input->post('jenis_item_id',TRUE),
+        		'merek_id' => $this->input->post('merek_id',TRUE),
+                'type_id' => $this->input->post('type_id',TRUE),
+        		'no_stnk' => $this->input->post('no_stnk',TRUE),
+        		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
+                'tahun_buat' => $this->input->post('tahun_buat',TRUE),
+                'warna1' => $this->input->post('warna1',TRUE),
+                'warna2' => $this->input->post('warna2',TRUE),
+                'kondisi' => $this->input->post('kondisi',TRUE),
+                'no_mesin' => $this->input->post('no_mesin',TRUE),
+                'no_rangka' => $this->input->post('no_rangka',TRUE),
+        		'deskripsi' => $this->input->post('deskripsi',TRUE),
+        		'harga_beli' => $this->input->post('harga_beli',TRUE),
+                'harga_pokok' => $this->input->post('harga_beli',TRUE),
+        		'photo' => $photo,
+        		'status' => $this->input->post('status',TRUE),
+	        );
 
             $this->Item_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -226,6 +235,8 @@ class item extends CI_Controller
         is_allowed($this->uri->segment(1),'update');
         $this->_rules();
 
+        $filename = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10);
+
         if ($this->form_validation->run() == FALSE) {
             $this->update($this->input->post('item_id', TRUE));
         } else {
@@ -242,54 +253,51 @@ class item extends CI_Controller
                 $selisih = $perolehan_baru - $perolehan_lama;
                 $harga_pokok = $harga_pokok_awal + $selisih;
             }
-            
 
-        $config['upload_path']      = './assets/img/item'; 
+            $config['upload_path']      = './assets/img/item'; 
             $config['allowed_types']    = 'jpg|png|jpeg'; 
             $config['max_size']         = 10048; 
-            $config['file_name']        = 'File-'.date('ymd').'-'.substr(sha1(rand()),0,10); 
+            $config['file_name']        = $filename;
             $this->load->library('upload',$config);
-            $this->upload->initialize($config);
+            //this->upload->initialize($config);
 
             if ($this->upload->do_upload("photo")) {
-            $id = $this->input->post('item_id');
-            $row = $this->Item_model->get_by_id($id);
-            $data = $this->upload->data();
-            $photo =$data['file_name'];
-            if($row->photo==null || $row->photo=='' ){
-            }else{
-
-            $target_file = './assets/img/item/'.$row->photo;
-            unlink($target_file);
-            
-            }
-                }else{
+                $id = $this->input->post('item_id');
+                $row = $this->Item_model->get_by_id($id);
+                $data = $this->upload->data();
+                $photo = $filename.$data['file_ext'];
+                if($row->photo !==null){
+                    $target_file = './assets/img/item/'.$row->photo;
+                    unlink($target_file);
+                }
+            } else {
                 $photo = $this->input->post('photo_lama');
             }
 
             $data = array(
                 'unit_id' => $this->input->post('unit_id',TRUE),
-		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
-		'agen_id' => $this->input->post('agen_id',TRUE),
-        'kategori_id' => $this->input->post('kategori_id',TRUE),
-		'kd_item' => $this->input->post('kd_item',TRUE),
-		'nama_item' => $this->input->post('nama_item',TRUE),
-		'jenis_item_id' => $this->input->post('jenis_item_id',TRUE),
-		'merek_id' => $this->input->post('merek_id',TRUE),
-        'type_id' => $this->input->post('type_id',TRUE),
-		'no_stnk' => $this->input->post('no_stnk',TRUE),
-		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
-         'tahun_buat' => $this->input->post('tahun_buat',TRUE),
-        'warna1' => $this->input->post('warna1',TRUE),
-        'warna2' => $this->input->post('warna2',TRUE),
-        'kondisi' => $this->input->post('kondisi',TRUE),
-        'no_mesin' => $this->input->post('no_mesin',TRUE),
-        'no_rangka' => $this->input->post('no_rangka',TRUE),
-		'deskripsi' => $this->input->post('deskripsi',TRUE),
-		'harga_beli' => $this->input->post('harga_beli',TRUE),
-		'harga_pokok' => $harga_pokok,
-		'status' => $this->input->post('status',TRUE),
-	    );
+        		'kd_pembelian' => $this->input->post('kd_pembelian',TRUE),
+        		'agen_id' => $this->input->post('agen_id',TRUE),
+                'kategori_id' => $this->input->post('kategori_id',TRUE),
+        		'kd_item' => $this->input->post('kd_item',TRUE),
+        		'nama_item' => $this->input->post('nama_item',TRUE),
+        		'jenis_item_id' => $this->input->post('jenis_item_id',TRUE),
+        		'merek_id' => $this->input->post('merek_id',TRUE),
+                'type_id' => $this->input->post('type_id',TRUE),
+        		'no_stnk' => $this->input->post('no_stnk',TRUE),
+        		'no_bpkb' => $this->input->post('no_bpkb',TRUE),
+                'tahun_buat' => $this->input->post('tahun_buat',TRUE),
+                'warna1' => $this->input->post('warna1',TRUE),
+                'warna2' => $this->input->post('warna2',TRUE),
+                'kondisi' => $this->input->post('kondisi',TRUE),
+                'no_mesin' => $this->input->post('no_mesin',TRUE),
+                'no_rangka' => $this->input->post('no_rangka',TRUE),
+        		'deskripsi' => $this->input->post('deskripsi',TRUE),
+        		'harga_beli' => $this->input->post('harga_beli',TRUE),
+        		'harga_pokok' => $harga_pokok,
+                'photo' => $photo,
+        		'status' => $this->input->post('status',TRUE),
+            );
 
             $this->Item_model->update($this->input->post('item_id', TRUE), $data);
             $this->session->set_flashdata('message', 'Update Record Success');
@@ -410,12 +418,13 @@ class item extends CI_Controller
 
         $pdf->AddPage();
 
-        $pdf->setXY(0, 40);
+        $pdf->setXY(0, 20);
         $pdf->SetFont('Arial','B',16);$pdf->Cell(0,7,'DATA ITEM',0,0,'C');
-        $pdf->setXY(0, 50);
+        $pdf->setXY(0, 30);
         $pdf->SetFont('Arial','',13);$pdf->Cell(0,7,$data->kd_pembelian.'/'.$data->nama_agen,0,0,'C');
         
-        $pdf->setY(90);
+
+        $pdf->setY(50);
         $pdf->SetFont('Arial','',12);
         $pdf->Cell(10,10,'1.',0,0,'L');
         $pdf->Cell(50,10,'Nama Item',0,0,'L');
@@ -430,28 +439,59 @@ class item extends CI_Controller
         $pdf->Cell(4,10,':',0,0,'L');
         $pdf->Cell(100,10,$data->nama_merek,0,1,'L');
         $pdf->Cell(10,10,'4.',0,0,'L');
+        $pdf->Cell(50,10,'Type',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->nama_type,0,1,'L');
+        $pdf->Cell(10,10,'5.',0,0,'L');
+        $pdf->Cell(50,10,'Kategori',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->nama_kategori,0,1,'L');
+        $pdf->Cell(10,10,'6.',0,0,'L');
         $pdf->Cell(50,10,'No. STNK',0,0,'L');
         $pdf->Cell(4,10,':',0,0,'L');
         $pdf->Cell(100,10,$data->no_stnk,0,1,'L');
-        $pdf->Cell(10,10,'5.',0,0,'L');
+        $pdf->Cell(10,10,'7.',0,0,'L');
         $pdf->Cell(50,10,'No. BPKB',0,0,'L');
         $pdf->Cell(4,10,':',0,0,'L');
         $pdf->Cell(100,10,$data->no_bpkb,0,1,'L');
-        $pdf->Cell(10,10,'6.',0,0,'L');
-        $pdf->Cell(50,10,'Harga Perolehan',0,0,'L');
+        $pdf->Cell(10,10,'8.',0,0,'L');
+        $pdf->Cell(50,10,'Tahun Buat',0,0,'L');
         $pdf->Cell(4,10,':',0,0,'L');
-        $pdf->Cell(100,10,'Rp'.$data->harga_beli,0,1,'L');
-        $pdf->Cell(50,10,'7. Detail Biaya',0,0,'L');
+        $pdf->Cell(100,10,$data->tahun_buat,0,1,'L');
+        $pdf->Cell(10,10,'9.',0,0,'L');
+        $pdf->Cell(50,10,'Warna',0,0,'L');
         $pdf->Cell(4,10,':',0,0,'L');
-        $pdf->Cell(100,10,'Rp'.$data->harga_beli,0,1,'L');
+        $pdf->Cell(100,10,$data->warna1.'/'.$data->warna2,0,1,'L');
+        $pdf->Cell(10,10,'10.',0,0,'L');
+        $pdf->Cell(50,10,'No. Mesin',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_mesin,0,1,'L');
+        $pdf->Cell(10,10,'11.',0,0,'L');
+        $pdf->Cell(50,10,'No. Rangka',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_rangka,0,1,'L');
         $pdf->Cell(50,2,'',0,1,'L');
+        $pdf->Cell(10,10,'Detail Harga.',0,1,'L');
         foreach($dtlharga->result() as $key => $p) {
             $pdf->setX(30);
             $pdf->Cell(50,10,$p->nama_harga,0,0,'L');
             $pdf->Cell(4,10,':',0,0,'L');
             $pdf->Cell(100,10,'Rp'.$p->nominal,0,1,'L');
         }
-        $pdf->Cell(50,10,'8. Deskripsi',0,0,'L');
+        $pdf->Cell(10,10,'10.',0,0,'L');
+        $pdf->Cell(50,10,'Harga Perolehan_baru',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->harga_beli,0,1,'L');
+        $pdf->Cell(10,10,'11.',0,0,'L');
+        $pdf->Cell(50,10,'Harga Pokok',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->harga_beli,0,1,'L');
+        $pdf->Cell(10,10,'12.',0,0,'L');
+        $pdf->Cell(50,10,'Status',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->status,0,1,'L');
+        $pdf->Cell(10,10,'13.',0,0,'L');
+        $pdf->Cell(50,10,'Deskripsi',0,0,'L');
         $pdf->Cell(4,10,':',0,0,'L');
         $pdf->multiCell(90,10,$data->deskripsi,0,'L',false);
 
@@ -463,6 +503,72 @@ class item extends CI_Controller
         $pdf->Output('item'.$data->kd_pembelian.'.pdf', 'D');
     }
 
+    public function faktur($id)
+    {
+        $pdf = new FPDF('p','mm','A4');
+        $data = $this->Item_model->get_by_id($id);
+        $dtlharga = $this->Item_model->get_harga($id);
+
+        $daerah = explode('-', $data->nama_unit);
+
+
+        $pdf->AddPage();
+
+        $pdf->setXY(13,15);
+        $pdf->SetFont('Arial','B',15);$pdf->Cell(0,7,$data->nama_grup,0,1,'L');
+        $pdf->SetFont('Arial','',12);$pdf->Cell(0,7,$data->alamat_unit,0,1,'L');
+
+        $pdf->setXY(0, 40);
+        $pdf->SetFont('Arial','B',16);$pdf->Cell(0,7,'FAKTUR KENDARAAN',0,0,'C');
+        $pdf->setXY(0, 50);
+        $pdf->SetFont('Arial','',13);$pdf->Cell(0,7,$data->kd_pembelian.'/'.$data->nama_agen,0,0,'C');
+        
+        $pdf->setY(80);
+        $pdf->write(5,'1 ( SATU ) UNIT '.$data->nama_jenis_item.' "'.$data->nama_merek.'"');
+        $pdf->setY(90);
+        $pdf->SetFont('Arial','',12);
+        $pdf->Cell(10,10,'1.',0,0,'L');
+        $pdf->Cell(50,10,'Nama Item',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->nama_item.'/'.$data->nama_type,0,1,'L');
+        $pdf->Cell(10,10,'2.',0,0,'L');
+        $pdf->Cell(50,10,'Warna',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->warna1.'/'.$data->warna2,0,1,'L');
+        $pdf->Cell(10,10,'3.',0,0,'L');
+        $pdf->Cell(50,10,'No. Mesin',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_mesin,0,1,'L');
+        $pdf->Cell(10,10,'4.',0,0,'L');
+        $pdf->Cell(50,10,'No. Rangka',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_rangka,0,1,'L');
+        $pdf->Cell(10,10,'5.',0,0,'L');
+        $pdf->Cell(50,10,'NIK',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,$data->no_ktp,0,1,'L');
+        $pdf->Cell(10,10,'6.',0,0,'L');
+        $pdf->Cell(50,10,'Harga',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,'Rp'.$data->harga_beli,0,1,'L');
+        $pdf->Cell(10,10,'7.',0,0,'L');
+        $pdf->Cell(50,10,'Terbilang',0,0,'L');
+        $pdf->Cell(4,10,':',0,0,'L');
+        $pdf->Cell(100,10,terbilang(intval($data->harga_beli)).' Rupiah',0,1,'L');
+        $pdf->Cell(50,4,'',0,1,'L');
+        $pdf->Cell(4,10,'(Harga tidak termasuk PPN dan PPn Barang Mewah)',0,1,'L');
+
+
+        $pdf->setXY(130, 220);
+        $pdf->Cell(50,10,$daerah[0].' '.mediumdate_indo(date("Y-m-d")),0,2,'C');
+        $pdf->SetTextColor(196, 196, 196);
+        $pdf->Cell(50,30,$data->nama_grup,0,2,'C');
+        $pdf->SetTextColor(0,0,0);
+        $pdf->Cell(50,10,'(_______________________)',0,2,'C');
+
+        $pdf->Output('faktur'.$data->kd_pembelian.'.pdf', 'D');
+    }
+
     public function update_harga($id){
         $this->template->load('template','item/update_harga');
     }
@@ -472,11 +578,11 @@ class item extends CI_Controller
         $nominal       = $_POST['nominal'];
         $item_id       = $_POST['item_id'];
         $jumlah_data = count($nama_harga);
-    for($i = 0; $i < $jumlah_data;$i++)
+        for($i = 0; $i < $jumlah_data;$i++)
         {       
                     $data['nama_harga'] = $nama_harga[$i];
                     $data['nominal'] = $nominal[$i];
-                    $data['item_id'] = $item_id[$i];
+                    $data['item_id'] = decrypt_url($item_id[$i]);
                     $this->db->insert('harga',$data);
         }
         redirect(site_url('item'));
