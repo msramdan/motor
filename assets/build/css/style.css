@@ -27,10 +27,3 @@
 .accordion .panel:hover {
     background: unset !important;
 }
-
-
-@media (min-width: 768px) {
-    .modal-sm {
-        width: 390px !important;
-    }
-}
