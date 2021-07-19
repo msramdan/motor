@@ -124,20 +124,20 @@ class Sale extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'invoice' => $this->input->post('invoice',TRUE),
-        'biaya_admin' => $this->input->post('biaya_admin',TRUE),
-        'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-		'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-		'item_id' => $this->input->post('item_id',TRUE),
-		'total_price_sale' => $this->input->post('total_price_sale',TRUE),
-		'type_sale' => $this->input->post('type_sale',TRUE),
-		'tanggal_sale' => $this->input->post('tanggal_sale',TRUE),
-		'user_id' => $this->input->post('user_id',TRUE),
-        'surveyor_id' => $this->input->post('surveyor_id',TRUE),
-        'sales_referral' => $this->input->post('sales_referral',TRUE),
-        'contact_id' => $contact_id,
-        'status_sale' => $status_sale,
-	    );
+        		'invoice' => $this->input->post('invoice',TRUE),
+                'biaya_admin' => $this->input->post('biaya_admin',TRUE),
+                'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
+        		'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
+        		'item_id' => $this->input->post('item_id',TRUE),
+        		'total_price_sale' => $this->input->post('total_price_sale',TRUE),
+        		'type_sale' => $this->input->post('type_sale',TRUE),
+        		'tanggal_sale' => date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale',TRUE))),
+        		'user_id' => $this->input->post('user_id',TRUE),
+                'surveyor_id' => $this->input->post('surveyor_id',TRUE),
+                'sales_referral' => $this->input->post('sales_referral',TRUE),
+                'contact_id' => $contact_id,
+                'status_sale' => $status_sale,
+    	    );
 
             $this->Sale_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
