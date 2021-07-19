@@ -169,101 +169,99 @@ const endOfMonth = moment().endOf('month');
 const prevMonthFirstDay = moment().subtract(1, 'months').startOf('month')
 const nextMonthLastDay = moment().subtract(1, 'months').endOf('month')
 
-function getChart() {
-    Highcharts.chart('container2', {
-        chart: {
-            type: 'column'
-        },
+var chartsalesreferal = Highcharts.chart('container2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Sales Referral'
+    },
+    xAxis: {
+        type: 'category',
+        labels: {
+            rotation: -45,
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
+            }
+        }
+    },
+    yAxis: {
+        min: 0,
         title: {
-            text: 'Sales Referral'
-        },
-        xAxis: {
-            type: 'category',
-            labels: {
-                rotation: -45,
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
+            text: 'Jumlah Transaksi Sale'
+        }
+    },
+    legend: {
+        enabled: false
+    },
+    tooltip: {
+        pointFormat: 'Jumlah Transaksi Sale: <b>{point.y:f} Transaksi Sale</b>'
+    },
+    series: [{
+        name: 'Population',
+        data: [
+            ['Datang Langsung', <?php echo $sales_referal_chart->datang_langsung ?>],
+            ['Karyawan', <?php echo $sales_referal_chart->karyawan ?>],
+            ['Mitra Sales', <?php echo $sales_referal_chart->mitra_sales ?>]
+        ],
+        dataLabels: {
+            enabled: true,
+            rotation: -90,
+            color: '#FFFFFF',
+            align: 'right',
+            format: '{point.y:f}', // one decimal
+            y: 10, // 10 pixels down from the top
+            style: {
+                fontSize: '13px',
+                fontFamily: 'Verdana, sans-serif'
             }
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Jumlah Transaksi Sale'
-            }
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            pointFormat: 'Jumlah Transaksi Sale: <b>{point.y:f} Transaksi Sale</b>'
-        },
-        series: [{
-            name: 'Population',
-            data: [
-                ['Datang Langsung', 10],
-                ['Karyawan', 8],
-                ['Mitra Sales', 12]
-            ],
+        }
+    }]
+});
+
+var umukchart = Highcharts.chart('container', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Uang masuk Vs Uang Keluar'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    accessibility: {
+        point: {
+            valueSuffix: '%'
+        }
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
             dataLabels: {
                 enabled: true,
-                rotation: -90,
-                color: '#FFFFFF',
-                align: 'right',
-                format: '{point.y:f}', // one decimal
-                y: 10, // 10 pixels down from the top
-                style: {
-                    fontSize: '13px',
-                    fontFamily: 'Verdana, sans-serif'
-                }
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
             }
+        }
+    },
+    series: [{
+        name: 'Brands',
+        colorByPoint: true,
+        data: [{
+            name: 'Chrome',
+            y: 61.41,
+            sliced: true,
+            selected: true
+        }, {
+            name: 'Other',
+            y: 2.61
         }]
-    });
-
-    Highcharts.chart('container', {
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Uang masuk Vs Uang Keluar'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        accessibility: {
-            point: {
-                valueSuffix: '%'
-            }
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                }
-            }
-        },
-        series: [{
-            name: 'Brands',
-            colorByPoint: true,
-            data: [{
-                name: 'Chrome',
-                y: 61.41,
-                sliced: true,
-                selected: true
-            }, {
-                name: 'Other',
-                y: 2.61
-            }]
-        }]
-    });
-}
+    }]
+});
 
 $('#datepickerreport').daterangepicker({
     "autoApply": true,
@@ -302,28 +300,32 @@ $('#datepickerreport').daterangepicker({
     "applyClass": "btn-primary"
     }, function(start, end, label) {
         console.log('New date range selected: ' + start.format('YYYY-MM-DD HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD HH:mm:ss') + ' (predefined range: ' + label + ')');
-        // $.ajax({
-        //     type:'POST',
-        //     url : '<?=site_url('dashboard/update_chart') ?>',
-        //     data :{'update_bunga' : true,'nominal' : nominal},
-        //     dataType : 'json',
-        //     success: function(result){
-        //         if (result.success) {
-        //         alert('Bunga Cicilan berhasil di Update');
-        //         $('#update_bunga').modal('hide')
-        //         }else{
-        //             alert('Bunga Cicilan gagal di Update')
-        //         }
-        //         location.href='<?=site_url('Dashboard') ?>'
-
-        //     }
-        // })
+        $.ajax({
+            type:'POST',
+            url : '<?=site_url('dashboard/update_report') ?>',
+            data : {
+                startdate: start.format('YYYY-MM-DD HH:mm:ss'),
+                enddate: end.format('YYYY-MM-DD HH:mm:ss')
+            },
+            dataType : 'json',
+            success: function(result){
+                if (!result) {
+                    chartsalesreferal.series[0].setData([
+                        ['Datang Langsung',0],
+                        ['Karyawan',0],
+                        ['Mitra Sales',0]
+                    ])
+                    return
+                }
+                chartsalesreferal.series[0].setData([
+                    ['Datang Langsung',parseFloat(result.datang_langsung)],
+                    ['Karyawan',parseFloat(result.karyawan)],
+                    ['Mitra Sales',parseFloat(result.mitra_sales)]
+                ])
+                return
+            }
+        })
 });
-
-$(document).ready(function(){
-    getChart()
-})
-
 
 $(document).on('click','#update_admin_fee',function(){
   $('#ramdan2').val($(this).data('ramdan'))

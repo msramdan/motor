@@ -19,7 +19,8 @@ class Dashboard extends CI_Controller {
         $data['countjenispembayaran'] = $this->Dashboard_model->count_jenis_pembayaran();
 		$data['admin_fee'] = $this->Dashboard_model->admin_fee();
         $data['bunga'] = $this->Dashboard_model->bunga();
-		$this->template->load('template','dashboard',$data);
+		$data['sales_referal_chart']= $this->Dashboard_model->sales_referal_chart('2021-07-01','2021-07-31',$this->session->userdata('unit_id'));
+        $this->template->load('template','dashboard',$data);
 	}
 
 	public function update_admin_fee(){
@@ -39,7 +40,7 @@ class Dashboard extends CI_Controller {
     }
 
 
-public function update_bunga(){
+    public function update_bunga(){
         $data = $this->input->post(null, TRUE);
         if (isset($_POST['update_bunga'])) {
             $this->Dashboard_model->update_bunga($data); 
@@ -52,6 +53,15 @@ public function update_bunga(){
             echo json_encode($params);
         }
       
+    }
+
+    public function update_report() {
+        $startdate = date('Y-m-d H:i:s', strtotime($this->input->post('startdate')));
+        $enddate = date('Y-m-d H:i:s', strtotime($this->input->post('enddate')));
+
+        $anu = $this->Dashboard_model->sales_referal_chart($startdate,$enddate,$this->session->userdata('unit_id'));
+
+        echo json_encode($anu);
     }
 
 
