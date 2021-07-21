@@ -60,7 +60,14 @@ class item_model extends CI_Model
         $this->db->select('*')
             ->join('agen','agen.agen_id = item.agen_id')
             ->join('jenis_item','jenis_item.jenis_item_id = item.jenis_item_id')
-            ->join('merek','merek.merek_id = item.merek_id');
+            ->join('merek','merek.merek_id = item.merek_id')
+            ->join('pelanggan','pelanggan.unit_id = item.unit_id')
+            ->join('unit','unit.unit_id = item.unit_id')
+            ->join('type','type.type_id = item.type_id')
+            ->join('kategori','kategori.kategori_id = item.kategori_id')
+            ->join('grup','grup.grup_id = unit.grup_id','left');
+
+
 
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
