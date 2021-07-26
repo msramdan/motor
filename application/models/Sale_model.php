@@ -60,22 +60,29 @@ class Sale_model extends CI_Model
         $this->db->order_by($this->id, $this->order);
         $this->db->group_start();
         $this->db->like('sale_id', $q);
-	$this->db->or_like('invoice', $q);
-	$this->db->or_like('pelanggan.nama_pelanggan', $q);
-	$this->db->or_like('item.nama_item', $q);
-	$this->db->or_like('total_price_sale', $q);
-	$this->db->or_like('type_sale', $q);
-	$this->db->or_like('tanggal_sale', $q);
-	$this->db->or_like('user.nama_user', $q);
-    $this->db->group_end();
-	$this->db->limit($limit, $start);
+    	$this->db->or_like('invoice', $q);
+    	$this->db->or_like('pelanggan.nama_pelanggan', $q);
+    	$this->db->or_like('item.nama_item', $q);
+    	$this->db->or_like('total_price_sale', $q);
+    	$this->db->or_like('type_sale', $q);
+    	$this->db->or_like('tanggal_sale', $q);
+    	$this->db->or_like('user.nama_user', $q);
+        $this->db->group_end();
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 
     // insert data
-    function insert($data)
+    function insert($tipesale, $data, $datacicilan = NULL)
     {
+        if ($tipesale == 'Kredit') {
+            $this->db->insert($this->table, $data);
+            $this->db->insert('sale_detail', $cicilan);
+            return;
+        }
+
         $this->db->insert($this->table, $data);
+        return;
     }
 
     // update data

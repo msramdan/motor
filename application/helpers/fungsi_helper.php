@@ -563,4 +563,3 @@ function longdate_indo($tanggal)
     else if($nama=="Saturday") {$nama_hari="Sabtu";}
     return $nama_hari.','.$tgl.' '.$bulan.' '.$thn;
 }
-    

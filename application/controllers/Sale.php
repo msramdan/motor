@@ -109,39 +109,74 @@ class Sale extends CI_Controller
     public function create_action() 
     {
         $this->_rules();
-        if ($this->input->post('type_sale')=="Cash") {
-            $status_sale="Selesai";
-        }
+        $contact_id = '';
         if ($this->input->post('sales_referral')=="Karyawan") {
             $contact_id = $this->input->post('karyawan_id');
-        }else if ($this->input->post('sales_referral')=="Mitra Sales") {
+        }
+        if ($this->input->post('sales_referral')=="Mitra Sales") {
             $contact_id = $this->input->post('mitra_id');
         }
         
 
+        $id = $this->input->post('invoice',TRUE);
 
         if ($this->form_validation->run() == FALSE) {
             $this->create();
         } else {
+            $typeSale = $this->input->post('type_sale');
+            $tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale',TRUE)));
+            
+            $status_sale = "Belum Selesai";
+            if ($this->input->post('type_sale')=="Cash") {
+                $status_sale="Selesai";
+            }
+
+
             $data = array(
-        		'invoice' => $this->input->post('invoice',TRUE),
+                'invoice' => $id,
                 'biaya_admin' => $this->input->post('biaya_admin',TRUE),
                 'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-        		'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-        		'item_id' => $this->input->post('item_id',TRUE),
-        		'total_price_sale' => $this->input->post('total_price_sale',TRUE),
-        		'type_sale' => $this->input->post('type_sale',TRUE),
-        		'tanggal_sale' => date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale',TRUE))),
-        		'user_id' => $this->input->post('user_id',TRUE),
+                'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
+                'item_id' => $this->input->post('item_id',TRUE),
+                'total_price_sale' => $this->input->post('total_price_sale',TRUE),
+                'type_sale' => $typeSale,
+                'tanggal_sale' => $tanggalsale,
+                'user_id' => $this->input->post('user_id',TRUE),
                 'surveyor_id' => $this->input->post('surveyor_id',TRUE),
                 'sales_referral' => $this->input->post('sales_referral',TRUE),
                 'contact_id' => $contact_id,
                 'status_sale' => $status_sale,
-    	    );
+            );
 
-            $this->Sale_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('sale'));
+            if($typeSale == 'Kredit') {
+                
+                $lamacicilan = $this->input->post('lama_cicilan');
+
+                $dataCicilan = [];
+
+                $start = $month = strtotime($tanggalsale);
+                for($i = 1; $i <= intval($lamacicilan); $i++) {
+                    $dataCicilan[] = array(
+                        'sale_id' => $id,
+                        'pembayaran_ke' => $i,
+                        'status' => 'belum dibayar',
+                        'total_bayar' => 0,
+                        'jatuh_tempo' =>date('d-m-Y', $month), 
+                    );
+                    //echo "Tanggal Jatuh tempo bulan : ".date('d-m-Y', $month), PHP_EOL;
+                    $month = strtotime("+1 month", $month);
+                }
+                echo '<pre>';
+                print_r($dataCicilan);
+                echo '</pre>';
+                //$this->Sale_model->insert($typeSAle, $data);
+            } else {
+                $typeSAle = 'Cash';
+
+                //$this->Sale_model->insert($typeSAle, $data);
+            }
+            // $this->session->set_flashdata('message', 'Create Record Success');
+            // redirect(site_url('sale'));
         }
     }
     
