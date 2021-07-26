@@ -91,19 +91,18 @@ class Dashboard_model extends CI_Model
                         FROM sale
                         JOIN item ON `item`.`item_id` = `sale`.`item_id`
                         LEFT JOIN unit ON `unit`.`unit_id` = `item`.`unit_id`
-                        WHERE `sales_referral` = 'Datang Langsung' AND `unit`.`unit_id` = '".$idunit."') as 'datang_langsung',
+                        WHERE `sales_referral` = 'Datang Langsung' AND `unit`.`unit_id` = '".$idunit."' AND `tanggal_sale` BETWEEN '".$startdate."' AND '".$enddate."') as 'datang_langsung',
                     (SELECT COUNT(`sale`.`sales_referral`) 
                         FROM sale
                         JOIN item ON `item`.`item_id` = `sale`.`item_id` 
                         LEFT JOIN unit ON `unit`.`unit_id` = `item`.`unit_id`
-                        WHERE `sales_referral` = 'Karyawan' AND `unit`.`unit_id` = '".$idunit."') as 'karyawan',
+                        WHERE `sales_referral` = 'Karyawan' AND `unit`.`unit_id` = '".$idunit."' AND `tanggal_sale` BETWEEN '".$startdate."' AND '".$enddate."') as 'karyawan',
                     (SELECT COUNT(`sale`.`sales_referral`) 
                         FROM sale 
                         JOIN item ON `item`.`item_id` = `sale`.`item_id` 
                         LEFT JOIN unit ON `unit`.`unit_id` = `item`.`unit_id`
-                        WHERE `sales_referral` = 'Mitra Sales' AND `unit`.`unit_id` = '".$idunit."') as 'mitra_sales'
-                  FROM sale
-                  WHERE `tanggal_sale` BETWEEN '".$startdate."' AND '".$enddate."'";
+                        WHERE `sales_referral` = 'Mitra Sales' AND `unit`.`unit_id` = '".$idunit."' AND `tanggal_sale` BETWEEN '".$startdate."' AND '".$enddate."') as 'mitra_sales'
+                  FROM sale";
         $res = $this->db->query($query)->row();
         return $res;
     }
