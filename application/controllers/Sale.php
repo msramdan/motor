@@ -155,28 +155,26 @@ class Sale extends CI_Controller
                 $dataCicilan = [];
 
                 $start = $month = strtotime($tanggalsale);
-                for($i = 1; $i <= intval($lamacicilan); $i++) {
+                for($i = 1; $i < intval($lamacicilan); $i++) {
                     $dataCicilan[] = array(
                         'sale_id' => $id,
                         'pembayaran_ke' => $i,
                         'status' => 'belum dibayar',
                         'total_bayar' => 0,
-                        'jatuh_tempo' =>date('d-m-Y', $month), 
+                        'jatuh_tempo' =>date('Y-m-d', $month), 
                     );
-                    //echo "Tanggal Jatuh tempo bulan : ".date('d-m-Y', $month), PHP_EOL;
                     $month = strtotime("+1 month", $month);
                 }
-                echo '<pre>';
-                print_r($dataCicilan);
-                echo '</pre>';
-                //$this->Sale_model->insert($typeSAle, $data);
+                
+
+                $this->Sale_model->insert($typeSale, $data, $dataCicilan);
             } else {
                 $typeSAle = 'Cash';
 
-                //$this->Sale_model->insert($typeSAle, $data);
+                $this->Sale_model->insert($typeSale, $data);
             }
-            // $this->session->set_flashdata('message', 'Create Record Success');
-            // redirect(site_url('sale'));
+            $this->session->set_flashdata('message', 'Create Record Success');
+            redirect(site_url('sale'));
         }
     }
     

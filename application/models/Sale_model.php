@@ -41,14 +41,14 @@ class Sale_model extends CI_Model
     // get total rows
     function total_rows($q = NULL) {
         $this->db->like('sale_id', $q);
-	$this->db->or_like('invoice', $q);
-	$this->db->or_like('pelanggan_id', $q);
-	$this->db->or_like('item_id', $q);
-	$this->db->or_like('total_price_sale', $q);
-	$this->db->or_like('type_sale', $q);
-	$this->db->or_like('tanggal_sale', $q);
-	$this->db->or_like('user_id', $q);
-	$this->db->from($this->table);
+    	$this->db->or_like('invoice', $q);
+    	$this->db->or_like('pelanggan_id', $q);
+    	$this->db->or_like('item_id', $q);
+    	$this->db->or_like('total_price_sale', $q);
+    	$this->db->or_like('type_sale', $q);
+    	$this->db->or_like('tanggal_sale', $q);
+    	$this->db->or_like('user_id', $q);
+    	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
@@ -77,7 +77,9 @@ class Sale_model extends CI_Model
     {
         if ($tipesale == 'Kredit') {
             $this->db->insert($this->table, $data);
-            $this->db->insert('sale_detail', $cicilan);
+            foreach($datacicilan as $k) {
+                $this->db->insert('sale_detail', $k);
+            }
             return;
         }
 
