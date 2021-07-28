@@ -181,6 +181,7 @@
     <script src="<?= base_url()?>assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
     <script src="<?= base_url()?>assets/vendors/fastclick/lib/fastclick.js"></script>
+    <script src="<?= base_url() ?>assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <!-- NProgress -->
     <script src="<?= base_url()?>assets/vendors/nprogress/nprogress.js"></script>
     <script src="<?= base_url()?>assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>

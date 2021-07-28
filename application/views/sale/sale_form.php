@@ -1,20 +1,17 @@
 <div class="page-title">
-                          <div class="title_left">
-                          <h3>KELOLA DATA SALE</h3>
-              </div>
-              <div class="clearfix"></div>
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-        
-        <div class="box-body">
-        
+  <div class="title_left">
+    <h3>DATA SALE</h3>
+  </div>
+  <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+          <div class="box-body">
             <form action="<?php echo $action; ?>" method="post">
-            
-<table class='table table-bordered'>       
+              <table class='table table-bordered'>       
 
-	    <tr><td width='200'>Invoice <?php echo form_error('invoice') ?></td><td><input type="text" readonly="" class="form-control" name="invoice" id="invoice" placeholder="Invoice" value="<?= $kodeunik ?>" /></td></tr>
-      <tr>
+                <tr><td width='200'>Invoice <?php echo form_error('invoice') ?></td><td><input type="text" readonly="" class="form-control" name="invoice" id="invoice" placeholder="Invoice" value="<?= $kodeunik ?>" /></td></tr>
+                <tr>
                   <td width='200'>pelanggan <?php echo form_error('pelanggan_id') ?></td>
                   <td>
                     <div class="form-group input-group">
@@ -28,7 +25,7 @@
                     </div>
                   </td>   
                 </tr>
-        <tr>
+                <tr>
                   <td width='200'>Surveyor <?php echo form_error('surveyor_id') ?></td>
                   <td>
                     <div class="form-group input-group">
@@ -43,34 +40,34 @@
                     Note : Kosongkan jika pembelian di bayar cash / Onetime Payment
                   </td>   
                 </tr>
-          <tr>
+                <tr>
                   <td width='200'>Sales Referral<?php echo form_error('sales_referral') ?></td>
                   <td>
                     <select name="sales_referral" id="sales_referral" class="form-control" >
-                    <option value="" >-- Pilih --</option>
-                    <option value="Datang Langsung" >Datang Langsung</option>
-                    <option value="Karyawan" >Karyawan</option>
-                    <option value="Mitra Sales" >Mitra Sales</option>
-              </select>
+                      <option value="" >-- Pilih --</option>
+                      <option value="Datang Langsung" >Datang Langsung</option>
+                      <option value="Karyawan" >Karyawan</option>
+                      <option value="Mitra Sales" >Mitra Sales</option>
+                    </select>
                     <div class="form-group" style="margin-top: 10px">
-                        <select name="mitra_id" id="mitra_id" class="form-control" >
-                              <option value="" >-- Pilih --</option>
-                                <?php foreach ($mitra as $key => $data) { ?>
-                                    <option value="<?= $data->mitra_id ?>" ><?= $data->nama_mitra ?></option>
-                                <?php } ?>
-                        </select>
+                      <select name="mitra_id" id="mitra_id" class="form-control" >
+                            <option value="" >-- Pilih --</option>
+                              <?php foreach ($mitra as $key => $data) { ?>
+                                  <option value="<?= $data->mitra_id ?>" ><?= $data->nama_mitra ?></option>
+                              <?php } ?>
+                      </select>
                     </div>
                     <div class="form-group" style="margin-top: 10px">
-                        <select name="karyawan_id" id="karyawan_id" class="form-control" >
-                            <option value="" >-- Pilih --</option>
-                              <?php foreach ($karyawan as $key => $data) { ?>
-                                    <option value="<?= $data->karyawan_id ?>" ><?= $data->nama_karyawan ?></option>
-                                <?php } ?>
-                        </select>
+                      <select name="karyawan_id" id="karyawan_id" class="form-control" >
+                          <option value="" >-- Pilih --</option>
+                            <?php foreach ($karyawan as $key => $data) { ?>
+                                  <option value="<?= $data->karyawan_id ?>" ><?= $data->nama_karyawan ?></option>
+                              <?php } ?>
+                      </select>
                     </div>
                   </td>   
                 </tr>
-              <tr>
+                <tr>
                   <td width='200'>item<?php echo form_error('item_id') ?></td>
                   <td>
                     <div class="form-group input-group">
@@ -83,95 +80,101 @@
                       </span>
                     </div>
                     <div class="col-md-4">
-                    <label for="nama_item_pro">Nama item</label>
-                    <div class="form-group">
+                      <label for="nama_item_pro">Nama item</label>
+                      <div class="form-group">
                         <input type="text" name="nama_item" class="form-control" id="nama_item" value="-" readonly="">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-
-                    <label for="nama_item_pro">Jenis item</label>
-                    <div class="form-group">
+                    <div class="col-md-4">
+                      <label for="nama_item_pro">Jenis item</label>
+                      <div class="form-group">
                         <input type="text" name="nama_jenis" class="form-control" id="nama_jenis" value="-" readonly="">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="nama_item_pro">Merk</label>
-                    <div class="form-group">
-                        <input type="text" name="nama_merek" class="form-control" id="nama_merek" value="-" readonly="">
+                    <div class="col-md-4">
+                      <label for="nama_item_pro">Merk</label>
+                      <div class="form-group">
+                          <input type="text" name="nama_merek" class="form-control" id="nama_merek" value="-" readonly="">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="nama_item_pro">Type</label>
-                    <div class="form-group">
+                    <div class="col-md-4">
+                      <label for="nama_item_pro">Type</label>
+                      <div class="form-group">
                         <input type="text" name="nama_type" class="form-control" id="nama_type" value="-" readonly="">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <label for="nama_item_pro">Harga Pokok</label>
-                    <div class="form-group">
-                        <input type="text" name="harga_pokok" class="form-control" id="harga_pokok" value="-" readonly="">
+                    <div class="col-md-4">
+                      <label for="nama_item_pro">Harga Pokok</label>
+                      <div class="form-group">
+                          <input type="text" name="harga_pokok" class="form-control" id="harga_pokok" value="-" readonly="">
+                      </div>
                     </div>
-                  </div>
-        
-  
                   </td>   
                 </tr>
-                                
-
-
-	    <tr><td width='200'>Price Sale <?php echo form_error('total_price_sale') ?></td><td><input type="text" class="form-control" name="total_price_sale" id="total_price_sale" placeholder="Price Sale" value="<?php echo $total_price_sale; ?>" /></td></tr>
-      <tr><td width='200'>Biaya Admin <?php echo form_error('biaya_admin') ?></td><td><input type="text" class="form-control" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $admin_fee->nominal ?>" /></td></tr>
-
-      <tr>
-            <td width='200'>Type Sale <?php echo form_error('type_sale') ?></td>
-            <td><select name="type_sale" id="type_sale" class="form-control" >
-              <option value="" >-- Pilih --</option>
-                <option value="Cash" >Cash / Onetime Payment </option>
-                <option value="Kredit" >Kredit / Cicilan</option>
-              </select>
-          </tr>
-      <tr><td width='200'>Jenis Pembayaran <?php echo form_error('jenis_pembayaran') ?></td><td>
-        <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control" >
-                <option value="" >-- Pilih --</option>
-                <?php foreach ($jenis_pembayaran as $key => $data) { ?>
-                  <option value="<?= $data->jenis_pembayaran_id ?>" ><?= $data->nama_jenis_pembayaran ?></option>
-
-                <?php } ?>
-              </select>
-
-              <div class="col-md-4">
-        <div class="form-group" style="margin-top: 10px">
+                <tr><td width='200'>Price Sale <?php echo form_error('total_price_sale') ?></td><td><input type="text" class="form-control" name="total_price_sale" id="total_price_sale" placeholder="Price Sale" value="<?php echo $total_price_sale; ?>" /></td></tr>
+                <tr><td width='200'>Biaya Admin <?php echo form_error('biaya_admin') ?></td><td><input type="text" class="form-control" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $admin_fee->nominal ?>" /></td></tr>
+                <tr>
+                  <td width='200'>Type Sale <?php echo form_error('type_sale') ?></td>
+                  <td>
+                    <select name="type_sale" id="type_sale" class="form-control" >
+                      <option value="" >-- Pilih --</option>
+                      <option value="Cash" >Cash / Onetime Payment </option>
+                      <option value="Kredit" >Kredit / Cicilan</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td width='200'>Jenis Pembayaran <?php echo form_error('jenis_pembayaran') ?></td>
+                  <td>
+                    <select name="jenis_pembayaran" id="jenis_pembayaran" class="form-control" >
+                      <option value="" >-- Pilih --</option>
+                      <?php foreach ($jenis_pembayaran as $key => $data) { ?>
+                      <option value="<?= $data->jenis_pembayaran_id ?>" ><?= $data->nama_jenis_pembayaran ?></option>
+                      <?php } ?>
+                    </select>
+                    <div class="col-md-4">
+                      <div class="form-group" style="margin-top: 10px">
                         <input type="text" name="lama_cicilan" class="form-control" id="lama_cicilan" value="" placeholder="Cicilan(x)">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group" style="margin-top: 10px">
+                    <div class="col-md-4">
+                      <div class="form-group" style="margin-top: 10px">
                         <input type="text" name="bunga_cicilan" class="form-control" id="bunga_cicilan" value="" placeholder="Bunga/bulan(%)">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group" style="margin-top: 10px">
+                    <div class="col-md-4">
+                      <div class="form-group" style="margin-top: 10px">
                         <input type="text" name="dp" class="form-control" id="dp" value="" placeholder="Uang DP">
+                      </div>
                     </div>
-                  </div>
-      </td></tr>
+                  </td>
+                </tr>
+                <tr><td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>" /></td></tr>
+                <div>
+                  
+                </div>
+                <tr>
+                  <td width='200'>User Penginput <?php echo form_error('user_id') ?></td>
+                  <td>
+                    <input type="text" class="form-control" name="nama_user" id="nama_user" placeholder="User Id" readonly="" value="<?= ucfirst($this->fungsi->user_login()->nama_user) ?>" />
+                    <input type="hidden" class="form-control" name="user_id" id="user_id" placeholder="User Id" readonly="" value="<?= ucfirst($this->fungsi->user_login()->user_id) ?>" />
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td>
+                    <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>" />
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
+                    <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a>
+                  </td>
+                </tr>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
 
-
-
-	    <tr><td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>" /></td></tr>
-      <div></div>
-	    <tr><td width='200'>User Penginput <?php echo form_error('user_id') ?></td><td><input type="text" class="form-control" name="nama_user" id="nama_user" placeholder="User Id" readonly="" value="<?= ucfirst($this->fungsi->user_login()->nama_user) ?>" />
-
-	    <input type="hidden" class="form-control" name="user_id" id="user_id" placeholder="User Id" readonly="" value="<?= ucfirst($this->fungsi->user_login()->user_id) ?>" /></td></tr>
-	    <tr><td></td><td><input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>" /> 
-	    <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i> <?php echo $button ?></button> 
-	    <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a></td></tr>
-	</table></form>        </div>
-</div>
-</div>
-
- <div class="modal fade" id="modal-pelanggan">
+    <div class="modal fade" id="modal-pelanggan">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -328,7 +331,8 @@
       </div>
       
     </div>
-
+<script src="<?= base_url() ?>assets/vendors/fastclick/lib/fastclick.js"></script>
+<script src="<?= base_url() ?>assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?= base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
@@ -414,8 +418,7 @@
                 $('#mitra_id').hide();
                 $('#karyawan_id').hide();
 
-    $(function () {
-        $("#type_sale").change(function () {
+    $("#type_sale").change(function () {
             if ($(this).val() == "Kredit") {
                 $('#dp').show();
                 $('#lama_cicilan').show();
@@ -426,9 +429,8 @@
                 $('#bunga_cicilan').hide();
             }
         });
-    });
 
-    $(function () {
+
         $("#sales_referral").change(function () {
             if ($(this).val() == "" || $(this).val() == "Datang Langsung" ) {
                 $('#mitra_id').hide();
@@ -441,7 +443,6 @@
                 $('#karyawan_id').hide();
             }
         });
-    });     
 
  });
 </script>

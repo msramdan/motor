@@ -71,7 +71,12 @@ class Sale extends CI_Controller
                 'item_id' => $row->nama_item,
                 'total_price_sale' => $row->total_price_sale,
                 'type_sale' => $row->type_sale,
+                'biaya_admin' => $row->biaya_admin,
+                'total_bayar' => $row->total_bayar,
+                'dibayar' => $row->dibayar,
+                'status_sale' => $row->status_sale,
                 'tanggal_sale' => $row->tanggal_sale,
+                'last_updated' => $row->last_updated,
                 'user_id' => $row->nama_user,
             );
             $this->template->load('template','sale/sale_read', $data);
@@ -116,7 +121,6 @@ class Sale extends CI_Controller
         if ($this->input->post('sales_referral')=="Mitra Sales") {
             $contact_id = $this->input->post('mitra_id');
         }
-        
 
         $id = $this->input->post('invoice',TRUE);
 
@@ -131,26 +135,25 @@ class Sale extends CI_Controller
                 $status_sale="Selesai";
             }
 
-
-            $data = array(
-                'invoice' => $id,
-                'biaya_admin' => $this->input->post('biaya_admin',TRUE),
-                'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-                'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-                'item_id' => $this->input->post('item_id',TRUE),
-                'total_price_sale' => $this->input->post('total_price_sale',TRUE),
-                'type_sale' => $typeSale,
-                'tanggal_sale' => $tanggalsale,
-                'user_id' => $this->input->post('user_id',TRUE),
-                'surveyor_id' => $this->input->post('surveyor_id',TRUE),
-                'sales_referral' => $this->input->post('sales_referral',TRUE),
-                'contact_id' => $contact_id,
-                'status_sale' => $status_sale,
-            );
-
             if($typeSale == 'Kredit') {
                 
                 $lamacicilan = $this->input->post('lama_cicilan');
+
+                $data = array(
+                    'invoice' => $id,
+                    'biaya_admin' => $this->input->post('biaya_admin',TRUE),
+                    'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
+                    'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
+                    'item_id' => $this->input->post('item_id',TRUE),
+                    'total_price_sale' => $this->input->post('total_price_sale',TRUE),
+                    'type_sale' => $typeSale,
+                    'tanggal_sale' => $tanggalsale,
+                    'user_id' => $this->input->post('user_id',TRUE),
+                    'surveyor_id' => $this->input->post('surveyor_id',TRUE),
+                    'sales_referral' => $this->input->post('sales_referral',TRUE),
+                    'contact_id' => $contact_id,
+                    'status_sale' => $status_sale,
+                );
 
                 $dataCicilan = [];
 
@@ -163,13 +166,29 @@ class Sale extends CI_Controller
                         'total_bayar' => 0,
                         'jatuh_tempo' =>date('Y-m-d', $month), 
                     );
+                    //this code should be optimized
                     $month = strtotime("+1 month", $month);
                 }
                 
 
                 $this->Sale_model->insert($typeSale, $data, $dataCicilan);
             } else {
-                $typeSAle = 'Cash';
+                $typeSale = 'Cash';
+                $data = array(
+                    'invoice' => $id,
+                    'biaya_admin' => $this->input->post('biaya_admin',TRUE),
+                    'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
+                    'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
+                    'item_id' => $this->input->post('item_id',TRUE),
+                    'total_price_sale' => $this->input->post('total_price_sale',TRUE),
+                    'type_sale' => $typeSale,
+                    'tanggal_sale' => $tanggalsale,
+                    'user_id' => $this->input->post('user_id',TRUE),
+                    'surveyor_id' => $this->input->post('surveyor_id',TRUE),
+                    'sales_referral' => $this->input->post('sales_referral',TRUE),
+                    'contact_id' => $contact_id,
+                    'status_sale' => $status_sale,
+                );
 
                 $this->Sale_model->insert($typeSale, $data);
             }
