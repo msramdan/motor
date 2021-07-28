@@ -61,7 +61,7 @@
                <div class="progress">
                   <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
                   aria-valuenow="<?php echo $sale_detail->total_dibayar; ?>" aria-valuemin="0" aria-valuemax="<?php echo $sale_detail->total_angsuran; ?>" style="width:<?php echo intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100; ?>%">
-                    <?php echo intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100; ?>%
+                    <?php echo round(intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100, 2); ?>%
                   </div>
                 </div>
                 <small><?php echo $sale_detail->total_dibayar; ?>/<?php echo $sale_detail->total_angsuran; ?> Terbayar</small>
