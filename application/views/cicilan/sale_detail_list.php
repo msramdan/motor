@@ -47,9 +47,9 @@
         <table class="table table-bordered" style="margin-bottom: 10px">
             <tr>
                 <th>No</th>
-		<th>Invoice</th>
-		<th>Status Angsuran</th>
-        <th>Action</th>
+        		<th>Invoice</th>
+        		<th>Status Angsuran</th>
+                <th>Action</th>
             </tr><?php
             foreach ($sale_detail_data as $sale_detail)
             {
@@ -68,11 +68,7 @@
             </td>
 			<td style="text-align:center" width="200px">
 				<?php 
-				echo anchor(site_url('cicilan/read/'.$sale_detail->saleid),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('cicilan/update/'.$sale_detail->saleid),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				echo '  '; 
-				echo anchor(site_url('cicilan/delete/'.$sale_detail->saleid),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+				echo anchor(site_url('cicilan/detail/'.$sale_detail->saleid),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
 				?>
 			</td>
 		</tr>

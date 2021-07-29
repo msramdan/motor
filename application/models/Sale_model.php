@@ -115,7 +115,8 @@ class Sale_model extends CI_Model
         }
         date_default_timezone_set('Asia/Jakarta');
         return 'S'.date('dmy').$kd;
-    }}
+    }
+}
 
 /* End of file Sale_model.php */
 /* Location: ./application/models/Sale_model.php */

@@ -25,8 +25,8 @@ class Sale_detail_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->where($this->id, $id);
-        return $this->db->get($this->table)->row();
+        $this->db->where('sale_id', $id);
+        return $this->db->get($this->table)->result();
     }
     
     // get total rows

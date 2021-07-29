@@ -45,18 +45,11 @@ class Cicilan extends CI_Controller
         $this->template->load('template','cicilan/sale_detail_list', $data);
     }
 
-    public function read($id) 
+    public function detail($id) 
     {
-        $row = $this->Sale_detail_model->get_by_id($id);
-        if ($row) {
-            $data = array(
-		'sale_detail_id' => $row->sale_detail_id,
-		'sale_id' => $row->sale_id,
-		'pembayaran_ke' => $row->pembayaran_ke,
-		'status' => $row->status,
-		'total_bayar' => $row->total_bayar,
-		'jatuh_tempo' => $row->jatuh_tempo,
-	    );
+        $listcicilan = $this->Sale_detail_model->get_by_id($id);
+        if ($listcicilan) {
+            $data['list_cicilan'] = $listcicilan;
             $this->template->load('template','cicilan/sale_detail_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
