@@ -94,6 +94,12 @@ class Sale_model extends CI_Model
         $this->db->update($this->table, $data);
     }
 
+    function update_data_dibayar($id,$data)
+    {
+        $this->db->where('invoice', $id);
+        $this->db->update('sale', $data);
+    }
+
     // delete data
     function delete($id)
     {

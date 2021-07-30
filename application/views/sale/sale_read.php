@@ -20,6 +20,7 @@
         if (intval($dibayar) < intval($total_bayar)) {
         	?>
         	<label class="label label-warning" style="font-size: 1em;">Sedang dalam Cicilan</label>
+        	<a class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
         	<?php
         } else {
         	?>

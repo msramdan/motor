@@ -86,6 +86,14 @@ class Sale_detail_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+    function getpaiddetail($id)
+    {
+        $this->db->select('sale_id, sum(total_bayar) as "telah_dibayar", sum(harus_dibayar) as "wajib_dibayar"')
+            ->from('sale_detail')
+            ->where('sale_id', $id);
+        return $this->db->get()->row();
+    }
+
 }
 
 /* End of file Sale_detail_model.php */

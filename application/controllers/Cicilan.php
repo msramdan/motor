@@ -10,6 +10,7 @@ class Cicilan extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('Sale_detail_model');
+        $this->load->model('Sale_model');
         $this->load->library('form_validation');
     }
 
@@ -50,6 +51,7 @@ class Cicilan extends CI_Controller
         $listcicilan = $this->Sale_detail_model->get_by_id($id);
         if ($listcicilan) {
             $data['list_cicilan'] = $listcicilan;
+            $data['invoicenya'] = $id;
             $this->template->load('template','cicilan/sale_detail_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
@@ -83,6 +85,7 @@ class Cicilan extends CI_Controller
     {
         $sale_detail_id = $this->input->post('idcicilan');
         $total_bayar = $this->input->post('valuecicilan');
+        $invoice_id = $this->input->post('idinvoice');
 
         //check
         $cek = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
@@ -115,10 +118,24 @@ class Cicilan extends CI_Controller
             );
 
             $this->Sale_detail_model->update($sale_detail_id,$dttotalcicilan);
-            
+
             echo json_encode('<button type="button" class="btn btn-secondary btn-xs">Pembayaran Berlebih (dibayar = '.$total_bayar.')</button>');
         }
 
+        $this->update_sale_dibayar($invoice_id);
+
+    }
+
+    public function update_sale_dibayar($id) {
+        $dibayar = $this->Sale_detail_model->getpaiddetail($id);
+        
+        $gettotaldibayarsekarang = $dibayar->telah_dibayar;
+        
+        $data = array(
+            'dibayar' => $gettotaldibayarsekarang
+        );
+
+        $this->Sale_model->update_data_dibayar($id,$data);
     }
     
     public function update_action() 

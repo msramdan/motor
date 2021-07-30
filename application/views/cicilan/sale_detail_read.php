@@ -2,6 +2,7 @@
     <div class="x_panel">
     <body>
         <h2 style="margin-top:0px">Kelola Data Cicilan</h2>
+        <input type="hidden" name="id_sale" class="id_sale" value="<?php echo $invoicenya ?>">
         <table class="table">
         	<tr>
         		<th>Pembayaran ke</th>
@@ -108,12 +109,14 @@
 
 			const id_cicilan = $(this).next().val()
 			const bayar = $(this).parents('.container-submit-cicilan-action').prev().val()
+			const invoice = $('.id_sale').val()
 			$.ajax({
 	            type : "POST",
 	            url  : "<?php echo base_url() ?>/Cicilan/update_cicilan",
 	            data : {
 	            	idcicilan:id_cicilan,
-	            	valuecicilan:bayar
+	            	valuecicilan:bayar,
+	            	idinvoice: invoice
 	            },
 	            success: function(data){
 	            	const dt = JSON.parse(data)
