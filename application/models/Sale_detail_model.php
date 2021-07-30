@@ -28,6 +28,13 @@ class Sale_detail_model extends CI_Model
         $this->db->where('sale_id', $id);
         return $this->db->get($this->table)->result();
     }
+
+    //get anu
+    function get_data_cicilan($id)
+    {
+        $this->db->where('sale_detail_id', $id);
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {
