@@ -37,6 +37,17 @@ class Sale_model extends CI_Model
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
+
+    function get_by_invoice($id)
+    {
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('user','user.user_id = sale.user_id');
+        $this->db->join('item','item.item_id = sale.item_id');
+        $this->db->join('type','item.type_id = type.type_id','left');
+        $this->db->join('merek','item.merek_id = merek.merek_id','left');
+        $this->db->where('invoice', $id);
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {
