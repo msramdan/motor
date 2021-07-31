@@ -1,6 +1,6 @@
 <div class="page-title">
   <div class="title_left">
-    <h3>FORM PEMBAYARAN - <?php echo $invoice ?></h3>
+    <h3>FORM PEMBAYARAN - <?php echo $invoice ?> (CASH)</h3>
   </div>
   <div class="clearfix"></div>
     <div class="row">
