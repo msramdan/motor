@@ -85,6 +85,13 @@
                 <?
                 }?></td>
 			<td style="text-align:center" width="200px">
+                <?php
+                if ($sale->type_sale === 'Kredit') {
+                    ?>
+				    <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/paymentform?invoice='.$sale->invoice ?>"><i class="fa fa-money"></i></a>
+                    <?php
+                }
+                ?>
                 <?php 
 				echo show_button($menu_accessed, 'read', $sale->sale_id);
                 echo show_button($menu_accessed, 'delete', $sale->sale_id);

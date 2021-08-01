@@ -128,7 +128,7 @@ class Onetimep extends CI_Controller
     	$pelanggan_id = $this->input->get('idp');
     	$itemid = $this->input->get('buy');
     	$typeSale = $this->input->get('st');
-    	$tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->get('d'))); 
+    	$tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->get('d')));
     	$userid = $this->input->get('user_id');
     	$total_price_sale = $this->input->get('pc');
 
@@ -240,28 +240,54 @@ class Onetimep extends CI_Controller
     
     public function update_payment() 
     {
-        // $data = array(
-        //     'invoice' => $id,
-        //     'biaya_admin' => $biaya_admin,
-        //     'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-        //     'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-        //     'item_id' => $itemid,
-        //     'total_price_sale' => $total_price_sale,
-        //     'biaya_admin' => $biaya_admin,
-        //     'total_bayar' => $total_kewajiban_bayar,
-        //     'dibayar' => $total_kewajiban_bayar,
-        //     'type_sale' => $typeSale,
-        //     'tanggal_sale' => $tanggalsale,
-        //     'user_id' => $this->input->post('user_id',TRUE),
-        //     'surveyor_id' => $this->input->post('surveyor_id',TRUE),
-        //     'sales_referral' => $this->input->post('sales_referral',TRUE),
-        //     'contact_id' => $contact_id,
-        //     'status_sale' => $status_sale,
-        // );
 
-        // $this->Sale_model->update($id $data);
-        // $this->session->set_flashdata('message', 'Data berhasil diupdate');
-        // redirect(site_url('onetimep'));
+    	$id = $this->input->post('invoicehidden');
+
+    	$contact_id = 'N/A';
+        if ($this->input->post('sales_referral')=="Karyawan") {
+            $contact_id = $this->input->post('karyawan_id');
+        }
+        if ($this->input->post('sales_referral')=="Mitra Sales") {
+            $contact_id = $this->input->post('mitra_id');
+		}
+
+		$tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggalsalehidden')));
+
+        $datatoupdate = array(
+            'invoice' => $id,
+            'sales_referral' => $this->input->post('sales_referral'),
+            'contact_id' => $contact_id,
+            'total_price_sale' => $this->input->post('total_price_sale'),
+            'biaya_admin' => $this->input->post('biaya_admin'),
+
+            
+            'total_bayar' => $this->input->post('wajibdibayar'),     
+            'dibayar' => $this->input->post('wajibdibayar'),
+            
+            'jenis_bayar' => $this->input->post('jenis_pembayaran'),
+            
+            'tanggal_sale' => $tanggalsale,
+            
+
+            // 'pelanggan_id' => $this->input->post('pelanggan_id'),
+            // 'item_id' => $itemid,
+            // 'type_sale' => $typeSale,
+            // 'user_id' => $this->input->post('user_id'),
+            // 'surveyor_id' => $this->input->post('surveyor_id'),
+            'status_sale' => 'Selesai',
+        );
+        
+        $item_id = $this->input->post('iditem');
+        
+
+        $statustoupdate = array(
+            'status' => 'Terjual'
+        );
+        $this->Item_model->update($item_id, $statustoupdate);
+
+        $this->Sale_model->update_data_dibayar($id, $datatoupdate);
+        $this->session->set_flashdata('message', 'Data berhasil diupdate');
+        redirect(site_url('onetimep'));
     }
     
     public function delete($id) 

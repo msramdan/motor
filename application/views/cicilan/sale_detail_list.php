@@ -1,7 +1,7 @@
 
             <div class="page-title">
                           <div class="title_left">
-                          <h3>DATA CICILAN</h3>
+                          <h3>LIST CICILAN</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
@@ -51,28 +51,35 @@
         		<th>Status Angsuran</th>
                 <th>Action</th>
             </tr><?php
-            foreach ($sale_detail_data as $sale_detail)
-            {
+
+            if ($sale_detail_data) {
+                foreach ($sale_detail_data as $sale_detail)
+                {
+                    ?>
+                    <tr>
+                <td width="10px"><?php echo ++$start ?></td>
+                <td><?php echo $sale_detail->saleid ?></td>
+                <td class="project_progress">
+                   <div class="progress">
+                      <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
+                      aria-valuenow="<?php echo $sale_detail->total_dibayar; ?>" aria-valuemin="0" aria-valuemax="<?php echo $sale_detail->total_angsuran; ?>" style="width:<?php echo intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100; ?>%">
+                        <?php echo round(intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100, 2); ?>%
+                      </div>
+                    </div>
+                    <small><?php echo $sale_detail->total_dibayar; ?>/<?php echo $sale_detail->total_angsuran; ?> Terbayar</small>
+                </td>
+                <td style="text-align:center" width="200px">
+                    <?php 
+                    echo anchor(site_url('cicilan/detail/'.$sale_detail->saleid),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
+                    ?>
+                </td>
+            </tr>
+                    <?php
+                }
+            } else {
                 ?>
-                <tr>
-			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $sale_detail->saleid ?></td>
-            <td class="project_progress">
-               <div class="progress">
-                  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
-                  aria-valuenow="<?php echo $sale_detail->total_dibayar; ?>" aria-valuemin="0" aria-valuemax="<?php echo $sale_detail->total_angsuran; ?>" style="width:<?php echo intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100; ?>%">
-                    <?php echo round(intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100, 2); ?>%
-                  </div>
-                </div>
-                <small><?php echo $sale_detail->total_dibayar; ?>/<?php echo $sale_detail->total_angsuran; ?> Terbayar</small>
-            </td>
-			<td style="text-align:center" width="200px">
-				<?php 
-				echo anchor(site_url('cicilan/detail/'.$sale_detail->saleid),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				?>
-			</td>
-		</tr>
-                <?php
+                    <tr><td colspan="4" align="center" style="padding: 2em 0">Tidak ada data cicilan, mulai dengan menambahkan data penjualan</td></tr>
+                <?php   
             }
             ?>
         </table>

@@ -79,7 +79,17 @@
                 }
                 ?></td>
 			<td style="text-align:center" width="200px">
-				<a href="<?php echo base_url().'Onetimep/paymentformfor?inv='.$otp->invoice ?>" class="btn btn-warning btn-sm">Bayar</a>
+                <?php
+
+                if ($otp->status_sale === 'Selesai') {
+                    ?> 
+                    <a href="<?php echo base_url().'Sale/read/'.$otp->sale_id ?>" class="btn btn-primary btn-sm">Detail</a>
+                    <?php
+                } else {
+                ?>
+                    <a href="<?php echo base_url().'Onetimep/paymentformfor?inv='.$otp->invoice ?>" class="btn btn-warning btn-sm">Bayar</a>
+                <?php
+            }?>
 				<?php
 				// echo show_button($menu_accessed, 'read', $otp->sale_id);
     //             echo show_button($menu_accessed, 'delete', $otp->sale_id);

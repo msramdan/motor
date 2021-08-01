@@ -7,7 +7,7 @@
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="box-body">
-            <form action="save_payment" method="post">
+            <form action="update_payment" method="post">
               <table class='table table-bordered'>       
 
                 <tr>
@@ -22,6 +22,7 @@
                         </button>
                       </span>
                     </div>
+                    <input type="hidden" name="iditem" id="iditem" value="<?php echo $item_id ?>">
                   </td>   
                 </tr>
                 <tr id="step1">
@@ -73,7 +74,7 @@
                 				</td>
                 			</tr>
                 			<tr>
-                				<td>2</td>
+                				<td></td>
                 				<td></td>
                 				<td>
                 					Biaya admin
@@ -83,10 +84,10 @@
                 				</td>
                 			</tr>
                 			<tr>
-                				<td>3</td>
+                				<td></td>
                 				<td></td>
                 				<td><b>Total</b></td>
-                				<td><p id="txttotalbayarnya"></p></td>
+                				<td><p id="txttotalbayarnya"></p><input type="hidden" name="wajibdibayar" id="wajibdibayar" value=""></td>
                 			</tr>
                 		</table>
                 		<span id="icon-oke"></span>
@@ -106,7 +107,7 @@
                   </td>
                 </tr>
                 <tr id="step4" hidden>
-                  <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>" /></td>
+                  <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>"><input type="hidden" name="tanggalsalehidden" id="tanggalsalehidden" value=""></td>
                 </tr>
                 <tr>
                   <td colspan="2" align="center" id="notes">Selesaikan isian diatas terlebih dahulu untuk tahap selanjutnya</td>
@@ -298,10 +299,12 @@
         $('#karyawan_id').hide();
 
         var sum = 0;
-	    $(".input-nilai").each(function(){
-	        sum += +$(this).val();
-	    });
-	    $("#txttotalbayarnya").text('Rp.' + sum);
+  	    $(".input-nilai").each(function(){
+  	        sum += +$(this).val();
+  	    });
+        $("#txttotalbayarnya").text('Rp.' + sum);
+        $("#wajibdibayar").val(sum);
+        $('#tanggalsalehidden').val(moment().toISOString())
       });
 
       $('#tanggal_sale').daterangepicker({
@@ -343,11 +346,12 @@
             ],
             "firstDay": 1
         },
-        "startDate": "07/13/2021",
+        "startDate": moment().format('MM/DD/YYYY HH:mm:ss'),
         "opens": "center",
         "applyClass": "btn-primary"
     }, function(start, end, label) {
       console.log('New date range selected: ' + start.format('MM/DD/YYYY HH:mm:ss') + ' to ' + end.format('MM/DD/YYYY HH:mm:ss') + ' (predefined range: ' + label + ')');
+      $('#tanggalsalehidden').val(start.toISOString())
     });
 
 	$("#sales_referral").change(function () {
@@ -365,7 +369,7 @@
 	});
 
 	function disableeditinfohargakah(answer){
-		$('.tabel-payment-detail').children('tbody').children('tr').find('input').prop('disabled', answer);
+		$('.tabel-payment-detail').children('tbody').children('tr').find('input').prop('readonly', answer);
 	}
 
 	$(document).on('click', '.btn-konfirmasi-payment', function (e) {
@@ -380,6 +384,7 @@
 	$(document).on('click','#edit-payment-detail', function (e) {
 		e.preventDefault()
 		disableeditinfohargakah(false)
+    $('#icon-oke').html('')
 		$('#payment-info-action').html('<button class="btn btn-primary btn-konfirmasi-payment">Konfirmasi</button>')
 	})
 
@@ -390,6 +395,7 @@
 	        sum += +$(this).val();
 	    });
 	    $("#txttotalbayarnya").text('Rp.' + sum);
+      $("#wajibdibayar").val(sum);
 	});
 
 
