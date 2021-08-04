@@ -88,19 +88,19 @@ class item_model extends CI_Model
     // get total rows
     function total_rows($q = NULL) {
         $this->db->like('item_id', $q);
-	$this->db->or_like('kd_pembelian', $q);
-	$this->db->or_like('agen_id', $q);
-	$this->db->or_like('kd_item', $q);
-	$this->db->or_like('nama_item', $q);
-	$this->db->or_like('jenis_item_id', $q);
-	$this->db->or_like('merek_id', $q);
-	$this->db->or_like('no_stnk', $q);
-	$this->db->or_like('no_bpkb', $q);
-	$this->db->or_like('deskripsi', $q);
-	$this->db->or_like('harga_beli', $q);
-	$this->db->or_like('photo', $q);
-	$this->db->or_like('status', $q);
-	$this->db->from($this->table);
+    	$this->db->or_like('kd_pembelian', $q);
+    	$this->db->or_like('agen_id', $q);
+    	$this->db->or_like('kd_item', $q);
+    	$this->db->or_like('nama_item', $q);
+    	$this->db->or_like('jenis_item_id', $q);
+    	$this->db->or_like('merek_id', $q);
+    	$this->db->or_like('no_stnk', $q);
+    	$this->db->or_like('no_bpkb', $q);
+    	$this->db->or_like('deskripsi', $q);
+    	$this->db->or_like('harga_beli', $q);
+    	$this->db->or_like('photo', $q);
+    	$this->db->or_like('status', $q);
+    	$this->db->from($this->table);
         return $this->db->count_all_results();
     }
 
@@ -115,21 +115,21 @@ class item_model extends CI_Model
         $this->db->where('item.unit_id', $this->session->userdata('unit_id'));
         $this->db->group_start();
         $this->db->like('item_id', $q);
-	$this->db->or_like('kd_pembelian', $q);
-	$this->db->or_like('agen.nama_agen', $q);
-	$this->db->or_like('kd_item', $q);
-	$this->db->or_like('nama_item', $q);
-    $this->db->or_like('kategori.nama_kategori', $q);
-	$this->db->or_like('jenis_item.nama_jenis_item', $q);
-	$this->db->or_like('merek.nama_merek', $q);
-	$this->db->or_like('no_stnk', $q);
-	$this->db->or_like('no_bpkb', $q);
-	$this->db->or_like('item.deskripsi', $q);
-	$this->db->or_like('harga_beli', $q);
-	$this->db->or_like('photo', $q);
-	$this->db->or_like('status', $q);
-    $this->db->group_end();
-	$this->db->limit($limit, $start);
+    	$this->db->or_like('kd_pembelian', $q);
+    	$this->db->or_like('agen.nama_agen', $q);
+    	$this->db->or_like('kd_item', $q);
+    	$this->db->or_like('nama_item', $q);
+        $this->db->or_like('kategori.nama_kategori', $q);
+    	$this->db->or_like('jenis_item.nama_jenis_item', $q);
+    	$this->db->or_like('merek.nama_merek', $q);
+    	$this->db->or_like('no_stnk', $q);
+    	$this->db->or_like('no_bpkb', $q);
+    	$this->db->or_like('item.deskripsi', $q);
+    	$this->db->or_like('harga_beli', $q);
+    	$this->db->or_like('photo', $q);
+    	$this->db->or_like('status', $q);
+        $this->db->group_end();
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

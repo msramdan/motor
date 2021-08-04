@@ -176,6 +176,21 @@ class Sale_model extends CI_Model
         date_default_timezone_set('Asia/Jakarta');
         return 'S'.date('dmy').$kd;
     }
+
+    function get_kartupiutang_data($inv) {
+        $this->db->select('*');
+        $this->db->from('item');
+        $this->db->join('agen', 'agen.agen_id = item.agen_id', 'left');
+        $this->db->join('merek', 'merek.merek_id = item.merek_id', 'left');
+        $this->db->join('type', 'type.type_id = item.type_id', 'left');
+        $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
+        $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
+        $this->db->join('sale', 'sale.item_id = item.item_id');
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = item.item_id','left');
+        $this->db->join('user','user.user_id = item.item_id','left');
+        $this->db->where('invoice', $inv);
+        return $this->db->get()->row();
+    }
 }
 
 /* End of file Sale_model.php */

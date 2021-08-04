@@ -55,16 +55,5 @@
 	        </table>
         <?
         }?>
-        <?php
-        if (intval($dibayar) < intval($total_bayar)) {
-        	?>
-        	
-        	<?php
-        } else {
-        	?>
-        	
-        	<?php
-        }
-		?>
     </div>
 </div>
