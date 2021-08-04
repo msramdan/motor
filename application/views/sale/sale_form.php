@@ -282,7 +282,7 @@
 
           console.log(durasicicilan)
           $('#step4').attr('hidden','true')
-          if (durasicicilan > 0) {
+          if (durasicicilan > 2) {
             stepstatus('4','Mencari histori data pelanggan')
             setTimeout(function(){
               $('.btn-check-durasicicilan').html('<i class="fa fa-check"></i>')  
@@ -295,7 +295,7 @@
                   </div>
                 </td>
               `)
-          } else {
+          } else if(durasicicilan == 0) {
             stepstatus('notes','Memproses')
             setTimeout(function(){
               $('.btn-check-durasicicilan').html('<i class="fa fa-check"></i>')  
@@ -309,7 +309,17 @@
                   <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a>
                 </td>
               `)
-          }
+          } else {
+            stepstatus('4','Mencari histori data pelanggan')
+            setTimeout(function(){
+              $('.btn-check-durasicicilan').html('<i class="fa fa-warning"></i>')  
+            },2000)
+            $('#step4').html(`
+                <td colspan="2" align="center">
+                  Cicilan terlalu sedikit
+                </td>
+              `)
+            }
         })
 
         $(document).on('click', '.btn-konfirmasi-cek-infopelanggaan', function() {

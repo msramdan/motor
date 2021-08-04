@@ -37,7 +37,6 @@
                         </button>
                       </span>
                     </div>
-                    Note : Kosongkan jika pembelian di bayar cash / Onetime Payment
                   </td>
                 </tr>
                 <tr id="step1">
