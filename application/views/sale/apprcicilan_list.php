@@ -1,7 +1,7 @@
 
             <div class="page-title">
                           <div class="title_left">
-                          <h3>KELOLA DATA SALE</h3>
+                          <h3>PENGAJUAN CICILAN</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
@@ -87,9 +87,11 @@
 			<td style="text-align:center" width="200px">
                 <?php
                 if ($sale->type_sale === 'Kredit') {
-                    ?>
-				    <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/paymentform?invoice='.$sale->invoice ?>"><i class="fa fa-money"></i></a>
-                    <?php
+                    if ($sale->status_sale === 'Belum Dibayar') {
+                        ?>
+                        <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/paymentform?invoice='.$sale->invoice ?>"><i class="fa fa-money"></i></a>
+                        <?php
+                    }
                 }
                 ?>
                 <?php 
