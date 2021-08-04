@@ -575,6 +575,7 @@ class Cicilan extends CI_Controller
             'karyawan' =>$this->karyawan_model->get_all(),
             'jenis_pembayaran' =>$this->Jenis_pembayaran_model->get_all(),
             'mitra' =>$this->Mitra_model->get_all(),
+            'data_cicilan' =>$this->Sale_detail_model->get_by_id($invoice)
         );
 
         $this->template->load('template','cicilan/kartu_piutang', $fetched);
