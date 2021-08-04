@@ -177,7 +177,8 @@ class Sale_model extends CI_Model
         return 'S'.date('dmy').$kd;
     }
 
-    function get_kartupiutang_data($inv) {
+    function get_kartupiutang_data($inv) 
+    {
         $this->db->select('*');
         $this->db->from('item');
         $this->db->join('agen', 'agen.agen_id = item.agen_id', 'left');
@@ -189,6 +190,15 @@ class Sale_model extends CI_Model
         $this->db->join('pelanggan','pelanggan.pelanggan_id = item.item_id','left');
         $this->db->join('user','user.user_id = item.item_id','left');
         $this->db->where('invoice', $inv);
+        return $this->db->get()->row();
+    }
+
+    function get_bungapercicilan($inv)
+    {
+        $this->db->select("harus_dibayar, nilai_bunga_percicilan, COUNT(harus_dibayar) as 'brapaxcicilan'")
+            ->distinct()
+            ->from('sale_detail');
+        $this->db->where('sale_id',$inv);
         return $this->db->get()->row();
     }
 }

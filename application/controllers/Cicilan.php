@@ -301,6 +301,8 @@ class Cicilan extends CI_Controller
 
         $total_cicilan_brpa_x = $this->input->post('lama_cicilan');
 
+        $total_bayar_pbulan_pokok = $this->input->post('bayaranpbulantb');
+
         $total_bayar_pbulan_w_bunga = $this->input->post('bayaranpbulanb');
 
         $bungacicilan = $this->input->post('bunga_cicilan');
@@ -334,6 +336,7 @@ class Cicilan extends CI_Controller
                 'pembayaran_ke' => $i,
                 'status' => 'belum dibayar',
                 'total_bayar' => 0,
+                'pokok_cicilan' => $total_bayar_pbulan_pokok,
                 'harus_dibayar' => $targetbayarcicilan,
                 'nilai_bunga_percicilan' => $bungacicilan,
                 'jatuh_tempo' =>date('Y-m-d', $month), 
@@ -512,6 +515,7 @@ class Cicilan extends CI_Controller
             'admin_fee' => $this->Dashboard_model->admin_fee(),
             'sale_id' => $row->sale_id,
             'invoice' => $row->invoice,
+            'bunga_cicilan' => $this->Sale_model->get_bungapercicilan($invoice),
             'pelanggan_id' => $row->pelanggan_id,
             'sales_referral' => $row->sales_referral,
             'contact_id' => $row->contact_id,

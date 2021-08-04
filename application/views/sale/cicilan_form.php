@@ -110,7 +110,7 @@
                         <td></td>
                         <td><b>Bayaran Per-bulan (Tanpa Bunga)</b></td>
                         <td>
-                          <p><b><span id="bayaranpbulantb">0</span>/Bulan</b></p>
+                          <p><b><span id="bayaranpbulantb">0</span>/Bulan</b><input type="hidden" name="bayaranpbulantb" class="bayaranpbulantb"></p>
                         </td>
                       </tr>
                       <tr>
@@ -389,10 +389,10 @@
 
       if (!divided || divided == Infinity) {
         $('#warning1').html('<i class="fa fa-warning" style="color: #e2c227;"></i>')
-        $('#bayaranpbulantb').text(0);
+        $('.bayaranpbulantb').text(0);
       } else {
         $('#warning1').html('')
-        $("#bayaranpbulantb").text(divided.toFixed(2));
+        $(".bayaranpbulantb").text(divided.toFixed(2));
       }
 
       var bunga = $('#bunga_cicilan').val()
