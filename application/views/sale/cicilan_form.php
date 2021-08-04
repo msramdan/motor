@@ -352,10 +352,12 @@
   $(document).on('click', '.btn-konfirmasi-payment', function (e) {
     e.preventDefault()
     disableeditinfohargakah(true)
-    $('.tabel-payment-detail tr td input').attr('disabled');
+    if ($('.btn-danger').length < 1) {
+      $('.tabel-payment-detail tr td input').attr('disabled');
+      stepstatus('3','Memproses')
+    }
     $('#icon-oke').html('<i class="fa fa-check" style="font-size: 2em;"></i>')
     $('#payment-info-action').html('<button class="btn btn-info" id="edit-payment-detail">Edit</button>')
-    stepstatus('3','Memproses')
   });
 
   $(document).on('click','#edit-payment-detail', function (e) {
