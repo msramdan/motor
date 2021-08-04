@@ -548,6 +548,7 @@ class Cicilan extends CI_Controller
             'nama_item' => $row->nama_item,
             'kategori_id' => $row->kategori_id,
             'jenis_item_id' => $row->jenis_item_id,
+            'nama_jenis_item' => $row->nama_jenis_item,
             'type_id' => $row->type_id,
             'merek_id' => $row->merek_id,
             'no_stnk' => $row->no_stnk,

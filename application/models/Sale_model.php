@@ -187,7 +187,7 @@ class Sale_model extends CI_Model
         $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
         $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
         $this->db->join('sale', 'sale.item_id = item.item_id');
-        $this->db->join('pelanggan','pelanggan.pelanggan_id = item.item_id','left');
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id','left');
         $this->db->join('user','user.user_id = item.item_id','left');
         $this->db->where('invoice', $inv);
         return $this->db->get()->row();
@@ -195,7 +195,7 @@ class Sale_model extends CI_Model
 
     function get_bungapercicilan($inv)
     {
-        $this->db->select("harus_dibayar, nilai_bunga_percicilan, COUNT(harus_dibayar) as 'brapaxcicilan'")
+        $this->db->select("pokok_cicilan, harus_dibayar, nilai_bunga_percicilan, COUNT(harus_dibayar) as 'brapaxcicilan', left(jatuh_tempo,2) as 'tiap_tanggal'")
             ->distinct()
             ->from('sale_detail');
         $this->db->where('sale_id',$inv);
