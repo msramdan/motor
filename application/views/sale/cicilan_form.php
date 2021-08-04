@@ -161,7 +161,7 @@
                   </td>
                 </tr>
                 <tr id="step4" hidden>
-                  <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="number" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>"><input type="hidden" name="tanggalsalehidden" id="tanggalsalehidden" value=""></td>
+                  <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>"><input type="hidden" name="tanggalsalehidden" id="tanggalsalehidden" value=""></td>
                 </tr>
                 <tr>
                   <td colspan="2" align="center" id="notes">Selesaikan isian diatas terlebih dahulu untuk tahap selanjutnya</td>
