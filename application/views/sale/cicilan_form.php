@@ -398,7 +398,7 @@
       }
 
       var bunga = $('#bunga_cicilan').val()
-      var resultnya = parseInt(divided) + (parseInt(divided) * (parseFloat(bunga)/100)).toFixed(2)
+      var resultnya = parseInt(divided) + (parseInt(divided) * (parseFloat(bunga)/100))
 
       $('.bayaranpbulanb').text(resultnya)
       $('.bayaranpbulanb').val(resultnya)
