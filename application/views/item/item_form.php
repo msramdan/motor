@@ -148,8 +148,7 @@
                             </tr>
                             <tr>
                                 <td width='200'>Tahun Buat <?php echo form_error('tahun_buat') ?></td>
-                                <td><input type="number" class="form-control" name="tahun_buat" id="tahun_buat"
-                                        placeholder="Tahun Buat" value="<?php echo $tahun_buat; ?>" /></td>
+                                <td><input type="text" class="form-control" name="tahun_buat" id="tahun_buat" placeholder="Tahun Buat" value="<?php echo $tahun_buat; ?>"/>
                             </tr>
                             <tr>
                                 <td width='200'>Warna Satu <?php echo form_error('warna1') ?></td>
@@ -163,8 +162,14 @@
                             </tr>
                             <tr>
                                 <td width='200'>Kondisi (0-100 %) <?php echo form_error('kondisi') ?></td>
-                                <td><input type="number" class="form-control" name="kondisi" id="kondisi"
-                                        placeholder="Kondisi" value="<?php echo $kondisi; ?>" /></td>
+                                <td style="
+                                    display: grid;
+                                    grid-template-columns: 0.6fr 1fr;"><input type="number" class="form-control" name="kondisi" id="kondisi" placeholder="Kondisi" value="<?php echo $kondisi; ?>" /><div class="progress" style="margin: 1vh;">
+                      <div class="progress-bar progress-bar-primary progress-bar-striped active" role="progressbar"
+                      aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                        0%
+                      </div>
+                    </div></td>
                             </tr>
                             <tr>
                                 <td width='200'>No Mesin <?php echo form_error('no_mesin') ?></td>
@@ -226,8 +231,7 @@
                             </div>
                             <?php } ?>
 
-                            <input type="hidden" class="form-control" name="status" value="Ready" id="status"
-                                placeholder="Status" value="<?php echo $status; ?>" <tr>
+                            <input type="hidden" class="form-control" name="status" value="Ready" id="status" placeholder="Status" value="<?php echo $status; ?>" <tr>
                             <td></td>
                             <td><input type="hidden" name="item_id" value="<?php echo $item_id; ?>" />
                                 <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i>
@@ -241,3 +245,23 @@
                 </div>
             </div>
         </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="<?= base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
+<script type="text/javascript">
+    $("#tahun_buat").datepicker({
+        format: "yyyy",
+        viewMode: "years", 
+        minViewMode: "years"
+    });
+
+
+    let statusnew = ''
+    $('#kondisi').on('change input', function() {
+        const condition = parseInt($(this).val())    
+
+        $(this).next().children('.progress-bar').attr('aria-valuenow',condition).css('width', `${condition}%`).html(`${condition}%`)
+    })
+</script>
