@@ -84,7 +84,7 @@
                           Rp.<?php echo $harga_pokok ?>
                         </td>
                         <td>
-                          <input type="text" class="form-control input-nilai" name="total_price_sale" id="total_price_sale" placeholder="Price Sale" value="<?php echo $total_price_sale; ?>">
+                          <input type="number" class="form-control input-nilai" name="total_price_sale" id="total_price_sale" placeholder="Price Sale" value="<?php echo $total_price_sale; ?>">
                         </td>
                       </tr>
                       <tr>
@@ -94,7 +94,7 @@
                           Biaya admin
                         </td>
                         <td>
-                          <input type="text" class="form-control input-nilai-khusus" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $admin_fee->nominal ?>">
+                          <input type="number" class="form-control input-nilai-khusus" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $admin_fee->nominal ?>">
                         </td>
                       </tr>
                       <tr>
@@ -102,7 +102,7 @@
                         <td></td>
                         <td>Lama Cicilan<span id="warning1" style="margin: 0 10px;"></span></td>
                         <td>
-                          <input type="text" name="lama_cicilan" class="form-control input-nilai" id="lama_cicilan" value="" placeholder="Cicilan(x)">                          
+                          <input type="number" name="lama_cicilan" class="form-control input-nilai" id="lama_cicilan" value="" placeholder="Cicilan(x)">                          
                         </td>
                       </tr>
                       <tr>
@@ -110,7 +110,7 @@
                         <td></td>
                         <td><b>Bayaran Per-bulan (Tanpa Bunga)</b></td>
                         <td>
-                          <p><b><span id="bayaranpbulantb">0</span>/Bulan</b><input type="hidden" name="bayaranpbulantb" class="bayaranpbulantb"></p>
+                          <p><b><span id="bayaranpbulantb" class="bayaranpbulantb">0</span>/Bulan</b><input type="hidden" name="bayaranpbulantb" class="bayaranpbulantb"></p>
                         </td>
                       </tr>
                       <tr>
@@ -118,7 +118,7 @@
                         <td></td>
                         <td>Bunga %</td>
                         <td>
-                          <input type="text" name="bunga_cicilan" class="form-control input-nilai" id="bunga_cicilan" value="" placeholder="Bunga/bulan(%)">
+                          <input type="number" name="bunga_cicilan" class="form-control input-nilai" id="bunga_cicilan" value="" placeholder="Bunga/bulan(%)">
                         </td>
                       </tr>
                       <tr>
@@ -161,7 +161,7 @@
                   </td>
                 </tr>
                 <tr id="step4" hidden>
-                  <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>"><input type="hidden" name="tanggalsalehidden" id="tanggalsalehidden" value=""></td>
+                  <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="number" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>"><input type="hidden" name="tanggalsalehidden" id="tanggalsalehidden" value=""></td>
                 </tr>
                 <tr>
                   <td colspan="2" align="center" id="notes">Selesaikan isian diatas terlebih dahulu untuk tahap selanjutnya</td>
@@ -384,22 +384,21 @@
 
       var cicilan = $('#lama_cicilan').val()
 
-      var divided = sum/parseInt(cicilan)
+      var divided = parseInt(sum)/parseInt(cicilan)
 
 
       if (!divided || divided == Infinity) {
         $('#warning1').html('<i class="fa fa-warning" style="color: #e2c227;"></i>')
         $('.bayaranpbulantb').text(0);
+        $('.bayaranpbulantb').val(0);
       } else {
         $('#warning1').html('')
         $(".bayaranpbulantb").text(divided.toFixed(2));
+        $(".bayaranpbulantb").val(divided.toFixed(2));
       }
 
       var bunga = $('#bunga_cicilan').val()
-      var dividedwithbunga = divided + (divided * bunga)
-
-      var interestRate = ((bunga/100) + 1);
-      var resultnya = (divided * Math.pow(interestRate, cicilan)).toFixed(2);
+      var resultnya = parseInt(divided) + (parseInt(divided) * (parseFloat(bunga)/100)).toFixed(2)
 
       $('.bayaranpbulanb').text(resultnya)
       $('.bayaranpbulanb').val(resultnya)
