@@ -28,7 +28,7 @@
 	    </div>
 	</div>
 </div>
-<a href="<?php echo base_url() ?>sale/cetak_faktur/<?php echo $sale_id ?>" class="btn btn-warning">Cetak</a>
+<a href="<?php echo base_url() ?>Sale/cetak_kartupiutang/<?php echo $invoice ?>" class="btn btn-warning">Cetak</a>
 <div>
 	<table class="table table-striped table-bordered">
 		<tr>

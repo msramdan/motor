@@ -17,6 +17,7 @@ class Sale extends CI_Controller
         $this->load->model('Sale_model');
         $this->load->model('karyawan_model');
         $this->load->model('Mitra_model');
+        $this->load->model('Sale_detail_model');
         $this->load->model('Item_model');
         $this->load->model('Pelanggan_model');
         $this->load->model('Dashboard_model');
@@ -618,6 +619,133 @@ class Sale extends CI_Controller
 
 
         $pdf->setXY(20, 120);
+        $pdf->Cell(50,6,'(KASIR)',0,0,'C');
+        $pdf->Cell(40,6,'(PENERIMA)',0,0,'R');
+        $pdf->Output('result.pdf', 'D');
+    }
+
+    public function cetak_kartupiutang($id)
+    {
+        $pdf = new FPDF('P','mm','A4');
+        $row = $this->Sale_model->get_kartupiutang_data($id);
+        $bunga_cicilan = $this->Sale_model->get_bungapercicilan($id);
+        $data_cicilan = $this->Sale_detail_model->get_by_id($id);
+    
+        $pdf->AddPage();
+
+        $pdf->setxY(15, 10);$pdf->SetFont('Arial','B',16);$pdf->Cell(100,7,'KARTU PIUTANG',0,0,'L');
+
+        $pdf->setXY(15, 35);
+        $pdf->SetFont('Arial','B',11);
+        $pdf->Cell(35,6,'Invoice',0,2,'L');
+        $pdf->Cell(35,6,'Pelanggan',0,2,'L');
+        $pdf->Cell(35,6,'Alamat',0,2,'L');
+        $pdf->Cell(35,6,'Jenis Barang',0,2,'L');
+        $pdf->Cell(35,6,'Merek',0,2,'L');
+        $pdf->Cell(35,6,'Type',0,2,'L');
+        $pdf->Cell(35,6,'No. BPKB',0,2,'L');
+        $pdf->Cell(35,6,'Warna',0,2,'L');
+
+        $pdf->setXY(40, 35);
+        $pdf->SetFont('Arial','B',11);
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+
+        $pdf->setXY(45, 35);
+        $pdf->SetFont('Arial','',11);
+
+        $pdf->Cell(65,6,$row->invoice,0,2,'L');
+        $pdf->Cell(65,6,$row->nama_pelanggan,0,2,'L');
+        $pdf->Cell(65,6,$row->alamat_domisili,0,2,'L');
+        $pdf->Cell(65,6,$row->nama_jenis_item,0,2,'L');
+        $pdf->Cell(65,6,$row->nama_merek,0,2,'L');
+        $pdf->Cell(65,6,$row->nama_type,0,2,'L');
+        $pdf->Cell(65,6,$row->no_bpkb,0,2,'L');
+        $pdf->Cell(65,6,$row->warna1.'/'.$row->warna2,0,2,'L');
+
+        
+        // SET X itu dari pojok kiri atas ke kanan
+        // SET Y itu dari pojok kiri atas ke bawah
+        // setXY() DUAA DUANYA
+        
+        $pdf->setXY(110, 35);
+        $pdf->SetFont('Arial','B',11);
+        $pdf->Cell(20,6,'Harga Nominal',0,2,'L');
+        $pdf->Cell(20,6,'Pokok Kredit',0,2,'L');
+        $pdf->Cell(20,6,'Angsuran/bulan',0,2,'L');
+        $pdf->Cell(20,6,'Jangka Waktu',0,2,'L');
+        $pdf->Cell(20,6,'Tanggal Pembayaran',0,2,'L');
+
+        $pdf->setXY(150, 35);
+        $pdf->Cell(20,6,':',0,2,'L');
+        $pdf->Cell(20,6,':',0,2,'L');
+        $pdf->Cell(20,6,':',0,2,'L');
+        $pdf->Cell(20,6,':',0,2,'L');
+        $pdf->Cell(20,6,':',0,2,'L');
+
+        $pdf->setXY(155, 35);
+        $pdf->SetFont('Arial','',11);
+        $pdf->Cell(65,6,$row->total_price_sale,0,2,'L');
+        $pdf->Cell(65,6,$bunga_cicilan->pokok_cicilan.' + '.$bunga_cicilan->nilai_bunga_percicilan.'%',0,2,'L');
+        $pdf->Cell(65,6,$bunga_cicilan->harus_dibayar,0,2,'L');
+        $pdf->Cell(65,6,$bunga_cicilan->brapaxcicilan.' Bulan',0,2,'L');
+        $pdf->Cell(65,6,'Setiap tanggal '. $bunga_cicilan->tiap_tanggal,0,2,'L');
+        
+
+        $pdf->setXY(10, 90);
+        $pdf->SetFont('Arial','B',10);
+        $pdf->Cell(7,12,'No',1,0);
+        $pdf->Cell(28,12,'Jatuh Tempo',1,0);
+        $pdf->Cell(75,6,'Angsuran',1,0);
+        $pdf->Cell(50,6,'Saldo Piutang',1,1);
+        $pdf->setX(45);
+        $pdf->Cell(25,6,'Nominal',1,0);
+        $pdf->Cell(25,6,'Pokok',1,0);
+        $pdf->Cell(25,6,'Bunga',1,0);
+        $pdf->Cell(25,6,'Pokok',1,0);
+        $pdf->Cell(25,6,'Bruto',1,0);
+        $pdf->setXY(170, 90);
+        $pdf->Cell(25,12,'Keterangan',1,1);
+
+        $pdf->setXY(10, 102);
+        $pdf->SetFont('Arial','',10);
+        $pokok =  $data_cicilan[0]->pokok_cicilan * sizeof($data_cicilan);
+        $bruto =  $data_cicilan[0]->harus_dibayar * sizeof($data_cicilan);
+
+        $no = 1;
+        foreach ($data_cicilan as $v) {
+            
+                $pdf->Cell(7,8, $no++, 1, 0);
+                $pdf->Cell(28,8, date("d/m/Y", strtotime($v->jatuh_tempo)), 1, 0);
+                $pdf->Cell(25,8, $v->harus_dibayar, 1, 0);
+                $pdf->Cell(25,8, $v->pokok_cicilan, 1, 0);
+                $pdf->Cell(25,8, $v->harus_dibayar - $v->pokok_cicilan, 1, 0);
+                $pdf->Cell(25,8, $pokok -= $v->pokok_cicilan, 1, 0);
+                $pdf->Cell(25,8, $bruto -= $v->harus_dibayar, 1, 0);
+                $pdf->Cell(25,8, 'Bayar', 1,1);
+        }
+        
+        // $pdf->SetFont('Arial','',9);
+        // $pdf->Cell(7,25,'1',1,0);
+        // $pdf->Cell(85,25,$data->nama_item,1,0);
+        // $pdf->Cell(25,25,'1',1,0);
+        // $pdf->Cell(25,25,$data->harga_beli,1,0);
+        // $pdf->Cell(25,25,floatval($data->harga_beli) * 1,1,0); //harga beli dikali 1
+        // $pdf->setXY(127, 101);
+        // $pdf->Cell(25,6,'Biaya Admin',0,0);
+        // $pdf->Cell(25,6,$data->biaya_admin,1,0);
+        // $pdf->setXY(127, 107);
+        // $pdf->Cell(25,6,'Grand Total',0,0);
+        // $pdf->Cell(25,6,$data->total_price_sale,1,0);
+
+
+        $pdf->setXY(20, 260);
         $pdf->Cell(50,6,'(KASIR)',0,0,'C');
         $pdf->Cell(40,6,'(PENERIMA)',0,0,'R');
         $pdf->Output('result.pdf', 'D');
