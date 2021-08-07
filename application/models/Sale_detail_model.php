@@ -39,9 +39,10 @@ class Sale_detail_model extends CI_Model
     // get total rows
     function total_rows($q = NULL) {
         $this->db->distinct();
-        $this->db->select("sale_id as 'saleid', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'belum dibayar') as 'total_belum_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'dibayar') as 'total_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid) as 'total_angsuran'");
+        $this->db->select("sale_detail.sale_id as 'saleid', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'belum dibayar') as 'total_belum_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'dibayar') as 'total_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid) as 'total_angsuran', sale.status_sale as 'status_sale'");
+        $this->db->join('sale','sale.invoice = sale_detail.sale_id');
         $this->db->like('sale_detail_id', $q);
-        $this->db->or_like('sale_id', $q);
+        $this->db->or_like('sale_detail.sale_id', $q);
     	// $this->db->or_like('pembayaran_ke', $q);
     	// $this->db->or_like('status', $q);
     	// $this->db->or_like('total_bayar', $q);
@@ -54,10 +55,11 @@ class Sale_detail_model extends CI_Model
         $this->db->distinct();
         //asdaasaadsasd
 
-        $this->db->select("sale_id as 'saleid', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'belum dibayar') as 'total_belum_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'dibayar') as 'total_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid) as 'total_angsuran'");
+        $this->db->select("sale_detail.sale_id as 'saleid', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'belum dibayar') as 'total_belum_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'dibayar') as 'total_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid) as 'total_angsuran', sale.status_sale as 'status_sale'");
+        $this->db->join('sale','sale.invoice = sale_detail.sale_id');
         $this->db->order_by($this->id, $this->order);
         $this->db->like('sale_detail_id', $q);
-    	$this->db->or_like('sale_id', $q);
+    	$this->db->or_like('sale_detail.sale_id', $q);
     	// $this->db->or_like('pembayaran_ke', $q);
     	// $this->db->or_like('status', $q);
     	// $this->db->or_like('total_bayar', $q);

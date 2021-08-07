@@ -358,7 +358,7 @@ class Cicilan extends CI_Controller
         // $this->Item_model->update($item_id, $statustoupdate);
 
         $this->session->set_flashdata('message', 'Data berhasil diupdate');
-        redirect(site_url('apprcicilan'));
+        redirect(site_url('R_cicilan'));
     }
 
     public function update_cicilan()

@@ -119,6 +119,52 @@ class Sale_model extends CI_Model
         return $this->db->get($this->table)->result();
     }
 
+    function total_rowsapprccl($q = NULL) {
+
+        $where = array(
+            'type_sale' => 'Kredit',
+            'status_sale' => 'Dalam Review'
+        );
+
+        $this->db->like('sale_id', $q);
+        $this->db->or_like('invoice', $q);
+        $this->db->or_like('pelanggan_id', $q);
+        $this->db->or_like('item_id', $q);
+        $this->db->or_like('total_price_sale', $q);
+        $this->db->or_like('type_sale', $q);
+        $this->db->or_like('tanggal_sale', $q);
+        $this->db->or_like('user_id', $q);
+        $this->db->where($where);
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+
+    // get data with limit and search
+    function get_limit_dataapprccl($limit, $start = 0, $q = NULL) {
+        $where = array(
+            'type_sale' => 'Kredit',
+            'status_sale' => 'Dalam Review'
+        );
+
+        $this->db->join('user', 'user.user_id = sale.user_id', 'left');
+        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id', 'left');
+        $this->db->join('item', 'item.item_id = sale.item_id', 'left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->group_start();
+        $this->db->like('sale_id', $q);
+        $this->db->or_like('invoice', $q);
+        $this->db->or_like('pelanggan.nama_pelanggan', $q);
+        $this->db->or_like('item.nama_item', $q);
+        $this->db->or_like('total_price_sale', $q);
+        $this->db->or_like('type_sale', $q);
+        $this->db->or_like('tanggal_sale', $q);
+        $this->db->or_like('user.nama_user', $q);
+        $this->db->group_end();
+        $this->db->where($where);
+        $this->db->limit($limit, $start);
+        return $this->db->get($this->table)->result();
+    }
+
     //insert data
     function insert($tipesale, $data)
     {
@@ -199,6 +245,22 @@ class Sale_model extends CI_Model
             ->distinct()
             ->from('sale_detail');
         $this->db->where('sale_id',$inv);
+        return $this->db->get()->row();
+    }
+
+    function get_detail_pengajuancicilan($id)
+    {
+        $this->db->select('*');
+        $this->db->from('item');
+        $this->db->join('agen', 'agen.agen_id = item.agen_id', 'left');
+        $this->db->join('merek', 'merek.merek_id = item.merek_id', 'left');
+        $this->db->join('type', 'type.type_id = item.type_id', 'left');
+        $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
+        $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
+        $this->db->join('sale', 'sale.item_id = item.item_id');
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id','left');
+        $this->db->join('user','user.user_id = item.item_id','left');
+        $this->db->where('invoice', $id);
         return $this->db->get()->row();
     }
 }

@@ -1,7 +1,7 @@
 
             <div class="page-title">
                           <div class="title_left">
-                          <h3>CICILAN READY LIST</h3>
+                          <h3>APPROVAL CICILAN</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
@@ -58,64 +58,50 @@
         <th>Status</th>
 		<th>Action</th>
             </tr><?php
-            foreach ($sale_data as $sale)
+
+            if ($sale_data) {
+            	foreach ($sale_data as $sale)
             {
                 ?>
                 <tr>
-			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $sale->invoice ?></td>
-			<td><?php echo $sale->nama_pelanggan ?></td>
-			<td><?php echo $sale->nama_item ?></td>
-			<td><?php echo $sale->type_sale ?></td>
-			<td><?php echo $sale->tanggal_sale ?></td>
-			<td><?php echo $sale->nama_user ?></td>
-            <td><?php
-                if($sale->status_sale === 'Selesai')
-                {?>
-                    <label class="label label-success">Selesai</label>
-                <?php }
-                if ($sale->status_sale === 'Belum Dibayar') {
-                    ?>
-                    <label class="label label-danger">Belum Dibayar</label>
-                <?php
-                }
-                if ($sale->status_sale === 'Dalam Cicilan') {
-                    ?>
-                    <label class="label label-warning">Dalam Cicilan</label>
-                <?php
-                }
-
-                if ($sale->status_sale === 'Dalam Review') {
-                    ?>
-                    <label class="label label-primary">Dalam Review</label>
-                <?php
-                }
-                ?></td>
-			<td style="text-align:center" width="200px">
-                <?php
-                if ($sale->type_sale === 'Kredit') {
-                    if ($sale->status_sale === 'Belum Dibayar') {
-                        ?>
-                        <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/paymentform?invoice='.$sale->invoice ?>"><i class="fa fa-money"></i></a>
-                        <?php
-                    } else if($sale->status_sale === 'Dalam Review') {
-                        ?>
-                        
-                        <?php
-                    } else {
-                        ?>
-                        <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/kartu_piutang?invoice='.$sale->invoice ?>"><i class="fa fa-shekel"></i></a>
-                        <?php
-                    }
-                }
-                ?>
-                <?php 
-				echo show_button($menu_accessed, 'read', $sale->sale_id);
-                echo show_button($menu_accessed, 'delete', $sale->sale_id);
-				?>
-			</td>
-		</tr>
-                <?php
+					<td width="10px"><?php echo ++$start ?></td>
+					<td><?php echo $sale->invoice ?></td>
+					<td><?php echo $sale->nama_pelanggan ?></td>
+					<td><?php echo $sale->nama_item ?></td>
+					<td><?php echo $sale->type_sale ?></td>
+					<td><?php echo $sale->tanggal_sale ?></td>
+					<td><?php echo $sale->nama_user ?></td>
+		            <td><?php
+		                if ($sale->status_sale === 'Dalam Review') {
+		                    ?>
+		                    <label class="label label-primary">Menunggu Approval</label>
+		                <?php
+		                }
+		                ?></td>
+					<td style="text-align:center" width="200px">
+		                <?php
+		                
+		                    if($sale->status_sale === 'Dalam Review') {
+		                        ?>
+		                        <a class="btn btn-info btn-sm" href="<?php echo base_url().'Approval_cicilan/detail/'.$sale->invoice ?>"><i class="fa fa-eye"></i></a>
+		                        
+		                <?php 
+		            	}
+						echo show_button($menu_accessed, 'read', $sale->sale_id);
+		                echo show_button($menu_accessed, 'delete', $sale->sale_id);
+						?>
+					</td>
+				</tr>
+		                <?php
+		        }
+            } else {
+            	?>
+            	<tr>
+            		<td align="center" colspan="9">
+            			Tidak ada pengajuan cicilan yang pending disini
+            		</td>
+            	</tr>
+            	<?php
             }
             ?>
         </table>
