@@ -1,7 +1,7 @@
 
             <div class="page-title">
                           <div class="title_left">
-                          <h3>PENGAJUAN CICILAN</h3>
+                          <h3>CICILAN READY LIST</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
@@ -90,6 +90,10 @@
                     if ($sale->status_sale === 'Belum Dibayar') {
                         ?>
                         <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/paymentform?invoice='.$sale->invoice ?>"><i class="fa fa-money"></i></a>
+                        <?php
+                    } else if($sale->status_sale === 'Dalam Review') {
+                        ?>
+                        
                         <?php
                     } else {
                         ?>

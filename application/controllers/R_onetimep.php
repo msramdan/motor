@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Onetimep extends CI_Controller
+class R_onetimep extends CI_Controller
 {
     function __construct()
     {

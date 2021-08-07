@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Apprcicilan extends CI_Controller
+class R_cicilan extends CI_Controller
 {
     function __construct()
     {
@@ -51,7 +51,7 @@ class Apprcicilan extends CI_Controller
             'level_id' => $this->session->userdata('level_id'),
             'menu_accessed' => $this->uri->segment(1),
         );
-        $this->template->load('template','sale/apprcicilan_list', $data);
+        $this->template->load('template','sale/ready_cicilan_list', $data);
     }
 
 }

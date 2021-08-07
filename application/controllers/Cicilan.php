@@ -322,7 +322,7 @@ class Cicilan extends CI_Controller
             'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
             'tanggal_sale' => $tanggalsale,
 
-            'status_sale' => 'Dalam Cicilan',
+            'status_sale' => 'Dalam Review',
         );
 
         $dataCicilan = [];
@@ -349,16 +349,16 @@ class Cicilan extends CI_Controller
 
         $this->Sale_model->update_data_dibayar($id, $datatoupdate);
 
-        $item_id = $this->input->post('iditem');
+        // $item_id = $this->input->post('iditem');
         
 
-        $statustoupdate = array(
-            'status' => 'Terjual'
-        );
-        $this->Item_model->update($item_id, $statustoupdate);
+        // $statustoupdate = array(
+        //     'status' => 'Terjual'
+        // );
+        // $this->Item_model->update($item_id, $statustoupdate);
 
         $this->session->set_flashdata('message', 'Data berhasil diupdate');
-        redirect(site_url('cicilan'));
+        redirect(site_url('apprcicilan'));
     }
 
     public function update_cicilan()

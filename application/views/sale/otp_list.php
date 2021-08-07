@@ -1,6 +1,6 @@
 <div class="page-title">
                           <div class="title_left">
-                          <h3>LIST PEMBAYARAN CASH</h3>
+                          <h3>READY CASH LIST</h3>
               </div>
               <div class="clearfix"></div>
         <div class="row">
