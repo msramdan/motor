@@ -37,6 +37,8 @@
 			<th colspan="3">Angsuran</th>
 			<th colspan="2">Saldo Piutang</th>
 			<th rowspan="2" style="vertical-align: inherit;">Keterangan</th>
+			<th rowspan="2" style="vertical-align: inherit;">Waktu Bayar</th>
+			<th rowspan="2" style="vertical-align: inherit;">Penginput</th>
 		</tr>
 		<tr>
 			<th>Nominal</th>
@@ -64,6 +66,8 @@
 					<td><?php echo $pokok -= $v->pokok_cicilan ?></td>
 					<td><?php echo $bruto -= $v->harus_dibayar ?></td>
 					<td><?php echo $v->status ?></td>
+					<td><?php echo $v->tanggal_dibayar ?></td>
+					<td><?php echo $v->penginput ?></td>
 				</tr>
 				<?php
 			}

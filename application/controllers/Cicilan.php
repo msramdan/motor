@@ -363,9 +363,14 @@ class Cicilan extends CI_Controller
 
     public function update_cicilan()
     {
+        $this->load->library('Fungsi');
         $sale_detail_id = $this->input->post('idcicilan');
         $total_bayar = $this->input->post('valuecicilan');
         $invoice_id = $this->input->post('idinvoice');
+
+        $tglinput = date("d-m-Y h:m:s"); 
+        $penginput = $this->fungsi->user_login()->username;
+        $label = '';
 
         //check
         $cek = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
@@ -374,35 +379,50 @@ class Cicilan extends CI_Controller
         {
             $dttotalcicilan = array(
                 'total_bayar' => $total_bayar,
-                'status' => 'dibayar'
+                'status' => 'dibayar',
+                'tanggal_dibayar' => $tglinput,
+                'penginput' => $penginput
             );
 
             $this->Sale_detail_model->update($sale_detail_id,$dttotalcicilan);
-            echo json_encode('<button type="button" class="btn btn-success btn-xs">Lunas</button>');
+            $label = '<button type="button" class="btn btn-success btn-xs">Lunas</button>';
         }
 
         if(intval($total_bayar) < intval($cek->harus_dibayar)) {
             $dttotalcicilan = array(
                 'total_bayar' => $total_bayar,
-                'status' => 'belum dibayar'
+                'status' => 'belum dibayar',
+                'tanggal_dibayar' => $tglinput,
+                'penginput' => $penginput
             );
 
             $this->Sale_detail_model->update($sale_detail_id,$dttotalcicilan);
-            echo json_encode('<button type="button" class="btn btn-warning btn-xs">Pembayaran Kurang (dibayar = '.$total_bayar.')</button>');
+            $label = '<button type="button" class="btn btn-warning btn-xs">Pembayaran Kurang (dibayar = '.$total_bayar.')</button>';
         }
 
         if(intval($total_bayar) > intval($cek->harus_dibayar)) {
+        
             $dttotalcicilan = array(
                 'total_bayar' => $total_bayar,
-                'status' => 'dibayar'
+                'status' => 'dibayar',
+                'tanggal_dibayar' => $tglinput,
+                'penginput' => $penginput
             );
 
             $this->Sale_detail_model->update($sale_detail_id,$dttotalcicilan);
 
-            echo json_encode('<button type="button" class="btn btn-secondary btn-xs">Pembayaran Berlebih (dibayar = '.$total_bayar.')</button>');
+            $label = '<button type="button" class="btn btn-secondary btn-xs">Pembayaran Berlebih (dibayar = '.$total_bayar.')</button>';
         }
 
         $this->update_sale_dibayar($invoice_id);
+
+        $datatoechoed = array(
+            'tglinput' => $tglinput,
+            'penginput' => $penginput,
+            'label' => $label
+        );
+
+        echo json_encode($datatoechoed);
 
     }
 

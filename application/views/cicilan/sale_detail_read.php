@@ -8,6 +8,8 @@
         		<th>Pembayaran ke</th>
         		<th>Status</th>
         		<th>Nominal Bayar</th>
+        		<th>Tanggal Dibayar</th>
+        		<th>Penginput</th>
         	</tr>
 	    	<?php
 	    	foreach($list_cicilan as $lc) {
@@ -73,6 +75,28 @@
 								</span>
 	                        </div>
 	    				</td>
+	    				<td>
+	    					<span class="txttgldibayar">
+		    					<?php
+		    						if ($lc->tanggal_dibayar === NULL) {
+		    							echo '-';
+		    						} else {
+		    							echo $lc->tanggal_dibayar;	
+		    						}
+		    					?>
+	    					</span>
+	    				</td>
+	    				<td>
+	    					<span class="txtpenginput">
+		    					<?php
+		    						if ($lc->penginput) {	    							
+	    								echo $lc->penginput;
+		    						} else {
+		    							echo '-';
+		    						}
+		    					?>
+	    					</span>
+	    				</td>
 	    			</tr>
 	    		<?php
 	    	}
@@ -110,6 +134,8 @@
 			const id_cicilan = $(this).next().val()
 			const bayar = $(this).parents('.container-submit-cicilan-action').prev().val()
 			const invoice = $('.id_sale').val()
+			const elemtxtdibayar = $(this).parents('td').next().children('span')
+			const elempenginput = $(this).parents('td').next().next().children('span')
 			$.ajax({
 	            type : "POST",
 	            url  : "<?php echo base_url() ?>/Cicilan/update_cicilan",
@@ -121,8 +147,10 @@
 	            success: function(data){
 	            	const dt = JSON.parse(data)
 	            	thisel.parents('.input-group').prev('.bton-action').children('.btn-show-input').css('display','unset')
-	            	thisel.parents('.input-group').prev('.bton-action').children('span').html(dt)
+	            	thisel.parents('.input-group').prev('.bton-action').children('span').html(dt.label)
 					thisel.parents('.input-group').css('margin-top','-6vh')
+					elemtxtdibayar.text(dt.tglinput)
+					elempenginput.text(dt.penginput)
 
 					thisel.html('<i class="fa fa-check"></i>')
 	        		thisel.removeAttr('disabled')
