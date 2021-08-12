@@ -23,6 +23,7 @@ class Approval_cicilan extends CI_Controller
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
