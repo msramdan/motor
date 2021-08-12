@@ -96,6 +96,11 @@ class Sale_detail_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    function cekstatuslunas($invoice) {
+        $this->db->distinct()->select("(SELECT COUNT(*) FROM sale_detail WHERE sale_id = '".$invoice."' AND status = 'dibayar') AS 'telah_bayar', (SELECT COUNT(*) FROM sale_detail WHERE sale_id = '".$invoice."') AS 'total_bayar'")->from('sale_detail');
+        return $this->db->get()->row();
+    }
+
 }
 
 /* End of file Sale_detail_model.php */

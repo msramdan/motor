@@ -373,6 +373,8 @@ class Cicilan extends CI_Controller
         $penginput = $this->fungsi->user_login()->username;
         $label = '';
 
+        $lunaskah = 'belum';
+
         //check
         $cek = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
 
@@ -417,10 +419,30 @@ class Cicilan extends CI_Controller
 
         $this->update_sale_dibayar($invoice_id);
 
+        $cekstatuslunas = $this->Sale_detail_model->cekstatuslunas($invoice_id);
+
+        if ($cekstatuslunas->telah_bayar == $cekstatuslunas->total_bayar) {
+
+            $lunaskah = 'Lunas';
+            $datatoupdate = array(
+                'status_sale' => 'Selesai',
+            );
+
+            $this->Sale_model->update_data_dibayar($invoice_id, $datatoupdate);
+
+        } else {
+            $datatoupdate = array(
+                'status_sale' => 'Dalam Cicilan',
+            );
+
+            $this->Sale_model->update_data_dibayar($invoice_id, $datatoupdate);            
+        }
+
         $datatoechoed = array(
             'tglinput' => $tglinput,
             'penginput' => $penginput,
-            'label' => $label
+            'label' => $label,
+            'lunaskah' => $lunaskah
         );
 
         echo json_encode($datatoechoed);

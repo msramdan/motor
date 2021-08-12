@@ -102,6 +102,9 @@
 	    	}
 	    	?>
 		</table>
+		<span class="wrapper-confirmation-lunas-action">
+			
+		</span>
         </body>
     </div>
 </div>
@@ -154,6 +157,13 @@
 
 					thisel.html('<i class="fa fa-check"></i>')
 	        		thisel.removeAttr('disabled')
+
+	        		if (dt.lunaskah == 'Lunas') {
+	        			Swal.fire({
+		                  icon: 'success',
+		                  title: "Cicilan Lunas"
+		                })
+	        		}
 	            }
 	        });
 		})
