@@ -73,6 +73,7 @@
                             <?php 
                             echo anchor(site_url('cicilan/detail/'.$sale_detail->saleid),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
                             ?>
+                            <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/kartu_piutang?invoice='.$sale_detail->saleid ?>"><i class="fa fa-print"></i></a>
                         </td>
                     </tr>
                     <?php

@@ -104,7 +104,7 @@
                         <?php
                     } else {
                         ?>
-                        <a class="btn btn-info btn-sm" href="<?php echo base_url().'cicilan/kartu_piutang?invoice='.$sale->invoice ?>"><i class="fa fa-shekel"></i></a>
+                        
                         <?php
                     }
                 }
