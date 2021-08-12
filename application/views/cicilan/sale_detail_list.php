@@ -62,7 +62,7 @@
                         <td><?php echo $sale_detail->saleid ?></td>
                         <td class="project_progress">
                            <div class="progress">
-                              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
+                              <div class="progress-bar <?php echo $sale_detail->total_dibayar == $sale_detail->total_angsuran ? 'progress-bar-success progress-bar-striped' : 'progress-bar-warning progress-bar-striped'; ?> active" role="progressbar"
                               aria-valuenow="<?php echo $sale_detail->total_dibayar; ?>" aria-valuemin="0" aria-valuemax="<?php echo $sale_detail->total_angsuran; ?>" style="width:<?php echo intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100; ?>%">
                                 <?php echo round(intval($sale_detail->total_dibayar)/ intval($sale_detail->total_angsuran) * 100, 2); ?>%
                               </div>
