@@ -260,6 +260,7 @@ class Sale_model extends CI_Model
         $this->db->join('sale', 'sale.item_id = item.item_id');
         $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id','left');
         $this->db->join('user','user.user_id = item.item_id','left');
+        $this->db->join('level','level.level_id = user.level_id','left');
         $this->db->where('invoice', $id);
         return $this->db->get()->row();
     }

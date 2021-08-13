@@ -73,7 +73,8 @@
                 if($sale->status_sale === 'Selesai')
                 {?>
                     <label class="label label-success">Selesai</label>
-                <?php }
+                <?php
+                }
                 if ($sale->status_sale === 'Belum Dibayar') {
                     ?>
                     <label class="label label-danger">Belum Dibayar</label>
@@ -82,8 +83,14 @@
                 if ($sale->status_sale === 'Dalam Cicilan') {
                     ?>
                     <label class="label label-warning">Dalam Cicilan</label>
-                <?
-                }?></td>
+                <?php
+                }
+                if ($sale->status_sale === 'Dalam Review') {
+                    ?>
+                    <label class="label label-warning">Menunggu Persetujuan</label>
+                <?php
+                }?>
+            </td>
 			<td style="text-align:center" width="200px">
                 <?php 
 				echo show_button($menu_accessed, 'read', $sale->sale_id);

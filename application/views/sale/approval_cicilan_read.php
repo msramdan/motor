@@ -11,6 +11,17 @@
 			    <tr><td>Type</td><td><?php echo $nama_type; ?></td></tr>
 			    <tr><td>No. BPKB</td><td><?php echo $no_bpkb; ?></td></tr>
 			    <tr><td>Warna</td><td><?php echo $warna1.'/'.$warna2; ?></td></tr>
+			    <tr><td>Status Approval</td><td>
+			    	<ul>
+				    	<?php
+					    $app = json_decode($approval, true);
+					    
+						foreach ($app as $k => $v) {
+							echo '<li>.'.$k.': '.$v.'</li>';
+						}
+					    ?>
+			    	</ul>
+			    	</td></tr>
 			</table>
 	    </div>
 	</div>
@@ -72,4 +83,13 @@
 	</table>
 </div>
 <a href="<?php echo base_url() ?>Approval_cicilan" class="btn btn-secondary">Kembali</a>
-<a href="<?php echo base_url() ?>Approval_cicilan/yes/<?php echo $invoice ?>" class="btn btn-warning">Approve</a>
+<?php
+	// echo $result;
+
+	if ($result == 'no') {
+		?>
+		<a href="<?php echo base_url() ?>Approval_cicilan/yes/<?php echo $invoice ?>" class="btn btn-warning">Setujui</a>
+		<a href="<?php echo base_url() ?>Approval_cicilan/no/<?php echo $invoice ?>" class="btn btn-warning">Tolak</a>
+		<?php
+	}
+?>

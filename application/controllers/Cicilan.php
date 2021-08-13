@@ -18,6 +18,7 @@ class Cicilan extends CI_Controller
         $this->load->model('Mitra_model');
         $this->load->model('Onetimep_model');
         $this->load->library('form_validation');
+        $this->load->library('Custom_authorization');
     }
 
     public function index()
@@ -310,6 +311,11 @@ class Cicilan extends CI_Controller
 
         $targetbayarcicilan = $this->input->post('bayaranpbulanb');
 
+        $approval_stage = '';
+        $totaltransaksi = intval($total_price_sale) + intval($biaya_admin);
+
+        $approval_stage = $this->custom_authorization->addApprovalby($totaltransaksi);
+
         $datatoupdate = array(
             'invoice' => $id,
             'sales_referral' => $sales_referral,
@@ -324,6 +330,7 @@ class Cicilan extends CI_Controller
             'tanggal_sale' => $tanggalsale,
 
             'status_sale' => 'Dalam Review',
+            'approval_stage' => $approval_stage
         );
 
         $dataCicilan = [];

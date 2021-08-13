@@ -82,13 +82,8 @@
 		                <?php
 		                
 		                    if($sale->status_sale === 'Dalam Review') {
-		                        ?>
-		                        <a class="btn btn-info btn-sm" href="<?php echo base_url().'Approval_cicilan/detail/'.$sale->invoice ?>"><i class="fa fa-eye"></i></a>
-		                        
-		                <?php 
-		            	}
-						echo show_button($menu_accessed, 'read', $sale->sale_id);
-		                echo show_button($menu_accessed, 'delete', $sale->sale_id);
+		                      echo show_button($menu_accessed, 'read', $sale->invoice);  
+                            }
 						?>
 					</td>
 				</tr>
