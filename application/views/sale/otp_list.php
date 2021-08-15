@@ -87,7 +87,7 @@
                     <?php
                 } else {
                 ?>
-                    <a href="<?php echo base_url().'Onetimep/paymentformfor?inv='.$otp->invoice ?>" class="btn btn-warning btn-sm">Bayar</a>
+                    <a href="<?php echo base_url().'r_onetimep/paymentformfor?inv='.$otp->invoice ?>" class="btn btn-warning btn-sm">Bayar</a>
                 <?php
             }?>
 				<?php

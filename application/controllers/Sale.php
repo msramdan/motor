@@ -22,6 +22,7 @@ class Sale extends CI_Controller
         $this->load->model('Pelanggan_model');
         $this->load->model('Dashboard_model');
         $this->load->model('Jenis_pembayaran_model');
+        $this->load->model('Approval_lists_model');
         $this->load->library('form_validation');
         $this->load->library('pdf');
     }
@@ -79,6 +80,7 @@ class Sale extends CI_Controller
                 'status_sale' => $row->status_sale,
                 'tanggal_sale' => $row->tanggal_sale,
                 'last_updated' => $row->last_updated,
+                'komentar' => $row->komentar,
                 'user_id' => $row->nama_user,
             );
             $this->template->load('template','sale/sale_read', $data);
@@ -191,189 +193,6 @@ class Sale extends CI_Controller
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('sale'));
         }
-
-
-
-        // if ($this->form_validation->run() == FALSE) {
-        //     $this->create();
-        // } else {
-        //     $typeSale = '';
-        //     if (intval($durasi_cicilan) > 0) {
-        //         $typeSale = 'Kredit';
-        //     } else {
-        //         $typeSale = 'Cash';
-        //     }
-            
-        //     //$tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale',TRUE))); 
-            
-        //     if($typeSale == 'Kredit') {
-        //         $lamacicilan = $this->input->post('lama_cicilan');
-        //         $bungacicilan = $this->input->post('bunga_cicilan');
-        //         $total_kewajiban_bayar = intval($total_price_sale) + intval($biaya_admin);
-        //         $dpnya = $this->input->post('dp');
-
-        //         $data = array(
-        //             'invoice' => $id,
-        //             'jenis_bayar' => 'N/A',
-        //             'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-        //             'item_id' => $itemid,
-        //             'total_price_sale' => 0,
-        //             'biaya_admin' => 0,
-        //             'total_bayar' => 0,
-        //             'dibayar' => 0,
-        //             'type_sale' => $typeSale,
-        //             'tanggal_sale' => $tanggalsale,
-        //             'user_id' => $this->input->post('user_id',TRUE),
-        //             'surveyor_id' => 'N/A',
-        //             'sales_referral' => 'N/A',
-        //             'contact_id' => 'N/A',
-        //             'status_sale' => 'Belum Selesai',
-        //         );
-
-        //         $dataCicilan = [];
-
-        //         $targetbayarcicilan = ((intval($total_price_sale) + intval($biaya_admin))/$bungacicilan + intval($total_price_sale) + intval($biaya_admin))/$lamacicilan;
-
-        //         $start = $month = strtotime($tanggalsale);
-        //         for($i = 1; $i <= intval($lamacicilan); $i++) {
-        //             $dataCicilan[] = array(
-        //                 'sale_id' => $id,
-        //                 'pembayaran_ke' => $i,
-        //                 'status' => 'belum dibayar',
-        //                 'total_bayar' => 0,
-        //                 'harus_dibayar' => $targetbayarcicilan,
-        //                 'jatuh_tempo' =>date('Y-m-d', $month), 
-        //             );
-        //             //this code should be optimized later for 'performance' impact purpose
-        //             $month = strtotime("+1 month", $month);
-        //         }
-
-        //         $this->Sale_model->insert($typeSale, $data, $dataCicilan);
-        //     } else {
-        //         $total_kewajiban_bayar = intval($total_price_sale) + intval($biaya_admin);
-        //         $data = array(
-        //             'invoice' => $id,
-        //             'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-        //             'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-        //             'item_id' => $itemid,
-        //             'total_price_sale' => $total_price_sale,
-        //             'biaya_admin' => $biaya_admin,
-        //             'total_bayar' => $total_kewajiban_bayar,
-        //             'dibayar' => $total_kewajiban_bayar,
-        //             'type_sale' => $typeSale,
-        //             'tanggal_sale' => $tanggalsale,
-        //             'user_id' => $this->input->post('user_id',TRUE),
-        //             'surveyor_id' => $this->input->post('surveyor_id',TRUE),
-        //             'sales_referral' => $this->input->post('sales_referral',TRUE),
-        //             'contact_id' => $contact_id,
-        //             'status_sale' => 'Belum Dibayar',
-        //         );
-
-        //         $this->Sale_model->insert($typeSale, $data);
-        //     }
-        //     $whereitem = array(
-        //         'item_id' => $itemid
-        //     );
-
-        //     $statustoupdate = array(
-        //         'status' => 'Terjual'
-        //     );
-        //     $this->Item_model->update($itemid, $statustoupdate);
-        //     $this->session->set_flashdata('message', 'Create Record Success');
-        //     redirect(site_url('sale'));
-        // }
-
-
-
-        
-        // if ($this->form_validation->run() == FALSE) {
-        //     $this->create();
-        // } else {
-        //     $typeSale = $this->input->post('type_sale');
-        //     $tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale',TRUE))); 
-            
-
-        //     if($typeSale == 'Kredit') {
-        //         $status_sale = "Belum Selesai";
-        //         $lamacicilan = $this->input->post('lama_cicilan');
-        //         $bungacicilan = $this->input->post('bunga_cicilan');
-        //         $total_kewajiban_bayar = intval($total_price_sale) + intval($biaya_admin);
-        //         $dpnya = $this->input->post('dp');
-
-        //         $data = array(
-        //             'invoice' => $id,
-        //             'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-        //             'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-        //             'item_id' => $itemid,
-        //             'total_price_sale' => $total_price_sale,
-        //             'biaya_admin' => $biaya_admin,
-        //             'total_bayar' => $total_kewajiban_bayar,
-        //             'dibayar' => $dpnya,
-        //             'type_sale' => $typeSale,
-        //             'tanggal_sale' => $tanggalsale,
-        //             'user_id' => $this->input->post('user_id',TRUE),
-        //             'surveyor_id' => $this->input->post('surveyor_id',TRUE),
-        //             'sales_referral' => $this->input->post('sales_referral',TRUE),
-        //             'contact_id' => $contact_id,
-        //             'status_sale' => $status_sale,
-        //         );
-
-        //         $dataCicilan = [];
-
-        //         $targetbayarcicilan = ((intval($total_price_sale) + intval($biaya_admin))/$bungacicilan + intval($total_price_sale) + intval($biaya_admin))/$lamacicilan;
-
-        //         $start = $month = strtotime($tanggalsale);
-        //         for($i = 1; $i <= intval($lamacicilan); $i++) {
-        //             $dataCicilan[] = array(
-        //                 'sale_id' => $id,
-        //                 'pembayaran_ke' => $i,
-        //                 'status' => 'belum dibayar',
-        //                 'total_bayar' => 0,
-        //                 'harus_dibayar' => $targetbayarcicilan,
-        //                 'jatuh_tempo' =>date('Y-m-d', $month), 
-        //             );
-        //             //this code should be optimized
-        //             $month = strtotime("+1 month", $month);
-        //         }
-                
-
-        //         $this->Sale_model->insert($typeSale, $data, $dataCicilan);
-        //     } else {
-        //         $total_kewajiban_bayar = intval($total_price_sale) + intval($biaya_admin);
-        //         $typeSale = 'Cash';
-        //         $status_sale="Selesai";
-        //         $data = array(
-        //             'invoice' => $id,
-        //             'biaya_admin' => $biaya_admin,
-        //             'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-        //             'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-        //             'item_id' => $itemid,
-        //             'total_price_sale' => $total_price_sale,
-        //             'biaya_admin' => $biaya_admin,
-        //             'total_bayar' => $total_kewajiban_bayar,
-        //             'dibayar' => $total_kewajiban_bayar,
-        //             'type_sale' => $typeSale,
-        //             'tanggal_sale' => $tanggalsale,
-        //             'user_id' => $this->input->post('user_id',TRUE),
-        //             'surveyor_id' => $this->input->post('surveyor_id',TRUE),
-        //             'sales_referral' => $this->input->post('sales_referral',TRUE),
-        //             'contact_id' => $contact_id,
-        //             'status_sale' => $status_sale,
-        //         );
-
-        //         $this->Sale_model->insert($typeSale, $data);
-        //     }
-        //     $whereitem = array(
-        //         'item_id' => $itemid
-        //     );
-
-        //     $statustoupdate = array(
-        //         'status' => 'Terjual'
-        //     );
-        //     $this->Item_model->update($itemid, $statustoupdate);
-        //     $this->session->set_flashdata('message', 'Create Record Success');
-        //     redirect(site_url('sale'));
-        // }
     }
     
     public function update($id) 

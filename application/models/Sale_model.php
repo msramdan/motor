@@ -34,6 +34,7 @@ class Sale_model extends CI_Model
         $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
         $this->db->join('item','item.item_id = sale.item_id');
         $this->db->join('user','user.user_id = sale.user_id');
+        $this->db->join('approval_lists','approval_lists.invoice_id = sale.invoice');
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }
@@ -258,6 +259,7 @@ class Sale_model extends CI_Model
         $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id', 'left');
         $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id', 'left');
         $this->db->join('sale', 'sale.item_id = item.item_id');
+        $this->db->join('approval_lists','approval_lists.invoice_id = sale.invoice','right');
         $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id','left');
         $this->db->join('user','user.user_id = item.item_id','left');
         $this->db->join('level','level.level_id = user.level_id','left');

@@ -17,7 +17,12 @@
 					    $app = json_decode($approval, true);
 					    
 						foreach ($app as $k => $v) {
-							echo '<li>.'.$k.': '.$v.'</li>';
+							if ($v == 'true') {
+								echo '<li>'.$k.': <label class="label label-success">'.$v.'</label></li>';
+							}
+							if ($v == 'false') {
+								echo '<li>'.$k.': <label class="label label-danger">'.$v.'</label></li>';
+							}
 						}
 					    ?>
 			    	</ul>
@@ -81,15 +86,27 @@
 			}
 		?>
 	</table>
+
+	<div class="alert alert-danger alert-dismissible">
+    	<p><b>Catatan:</b> <?php echo $catatan ?></p>
+    </div>
 </div>
-<a href="<?php echo base_url() ?>Approval_cicilan" class="btn btn-secondary">Kembali</a>
+<a href="<?php echo base_url() ?>Approval_lists" class="btn btn-secondary">Kembali</a>
 <?php
 	// echo $result;
 
 	if ($result == 'no') {
 		?>
-		<a href="<?php echo base_url() ?>Approval_cicilan/yes/<?php echo $invoice ?>" class="btn btn-warning">Setujui</a>
-		<a href="<?php echo base_url() ?>Approval_cicilan/no/<?php echo $invoice ?>" class="btn btn-warning">Tolak</a>
+		<form action="yes" method="post">
+			<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
+			<button type="submit" class="btn btn-warning">Setujui</button>
+		</form>
+		
+		<form action="no" method="post">
+			<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
+			<input type="text" placeholder="alasan tolak" name="komentar" id="komentar">
+			<button type="submit" class="btn btn-danger">Tolak</button>	
+		</form>
 		<?php
 	}
 ?>

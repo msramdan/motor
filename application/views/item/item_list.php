@@ -88,16 +88,23 @@
                                                 class="ace-icon fa fa-download"></i> Download Photo</td>
                                     <?php if ($item->status=="Ready") { ?>
                                         <td><span class="label label-success">Ready</span></td>
-                                    <?php }else{ ?>
+                                    <?php } if ($item->status=="Proses Jual") { ?>
+                                        <td><span class="label label-warning">Proses Jual</span></td>
+                                    <?php } if ($item->status == 'Terjual') { ?>
                                         <td><span class="label label-danger">Terjual</span></td>
                                     <?php } ?>
                                     <td style="text-align:center" width="200px">
                                         
                                         <?php 
-                                        echo show_button($menu_accessed,'update_harga',encrypt_url($item->item_id), NULL, 'fa-pencil-square-o');
+
                                         echo show_button($menu_accessed, 'read', $item->item_id);
-                                        echo show_button($menu_accessed, 'update', $item->item_id);
-                                        echo show_button($menu_accessed, 'delete', $item->item_id); ?>
+
+                                        if ($item->status !== 'Proses Jual') {
+                                            echo show_button($menu_accessed,'update_harga',encrypt_url($item->item_id), NULL, 'fa-pencil-square-o');
+                                            echo show_button($menu_accessed, 'update', $item->item_id);
+                                            echo show_button($menu_accessed, 'delete', $item->item_id);
+                                        }
+                                        ?>
                                     </td>
                                 </tr>
                                 <?php

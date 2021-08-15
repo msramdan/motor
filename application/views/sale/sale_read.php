@@ -54,6 +54,44 @@
 	        	<tr><td>Pembayaran Terakhir</td><td>: </td><td><?php echo $last_updated; ?></td></tr>
 	        </table>
         <?
+        }
+        if ($status_sale === 'Dalam Review') {
+            ?>
+            <label class="label label-primary" style="font-size: 1em;">Sedang dalam Review</label>
+        	<a class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
+        	<table class="table" style="margin-top: 10px;">
+	        	<tr><td>Harga Beli Item</td><td>: </td><td><?php echo $total_price_sale; ?></td></tr>
+	        	<tr><td>Biaya Admin</td><td>: </td><td><?php echo $biaya_admin; ?></td></tr>
+	        	<tr><td>Total</td><td>: </td><td><?php echo $total_bayar; ?></td></tr>
+	        	<tr><td>Dibayar</td><td>: </td><td><?php echo $dibayar; ?></td></tr>
+	        	<tr><td>Sisa</td><td>: </td><td><?php echo intval($total_bayar) - intval($dibayar); ?></td></tr>
+	        	<tr><td>Pembayaran Terakhir</td><td>: </td><td><?php echo $last_updated; ?></td></tr>
+	        </table>
+        <?
+        }
+        if ($status_sale === 'Ditolak') {
+            ?>
+            <label class="label label-danger" style="font-size: 1em;">Tidak Disetujui</label>
+        	<a class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
+        	<table class="table" style="margin-top: 10px;">
+	        	<tr><td>Harga Beli Item</td><td>: </td><td><?php echo $total_price_sale; ?></td></tr>
+	        	<tr><td>Biaya Admin</td><td>: </td><td><?php echo $biaya_admin; ?></td></tr>
+	        	<tr><td>Total</td><td>: </td><td><?php echo $total_bayar; ?></td></tr>
+	        	<tr><td>Dibayar</td><td>: </td><td><?php echo $dibayar; ?></td></tr>
+	        	<tr><td>Sisa</td><td>: </td><td><?php echo intval($total_bayar) - intval($dibayar); ?></td></tr>
+	        	<tr><td>Pembayaran Terakhir</td><td>: </td><td><?php echo $last_updated; ?></td></tr>
+	        </table>
+        <?
         }?>
+
+        <?php
+        if ($status_sale === 'Ditolak') {
+        	?>
+        	<div class="alert alert-danger alert-dismissible">
+		    	<p><b>Alasan Tolak :</b> <?php echo $komentar ?></p>
+		    </div>
+        	<?php
+        }
+        ?>
     </div>
 </div>

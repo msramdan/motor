@@ -55,7 +55,7 @@
             if ($sale_detail_data) {
                 foreach ($sale_detail_data as $sale_detail)
                 {
-                    if ($sale_detail->status_sale !== 'Dalam Review') {
+                    if ($sale_detail->status_sale === 'Dalam Cicilan') {
                         ?>
                     <tr>
                         <td width="10px"><?php echo ++$start ?></td>

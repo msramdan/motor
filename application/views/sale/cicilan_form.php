@@ -163,6 +163,10 @@
                 <tr id="step4" hidden>
                   <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>"><input type="hidden" name="tanggalsalehidden" id="tanggalsalehidden" value=""></td>
                 </tr>
+                <tr id="step5" hidden>
+                  <td width='200'>Komentar</td>
+                  <td><textarea class="form-control" name="komentar" id="komentar" placeholder="Masukan Keterangan"></textarea></td>
+                </tr>
                 <tr>
                   <td colspan="2" align="center" id="notes">Selesaikan isian diatas terlebih dahulu untuk tahap selanjutnya</td>
                 </tr>
@@ -410,6 +414,10 @@
   })
   
   $("#tanggal_sale").change(function () {
+    stepstatus('5','Memproses')    
+  });
+
+  $('#komentar').change(function() {
     $('#notes').html(`
                 <td colspan="2" align="center">
                   <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>" />
@@ -417,7 +425,7 @@
                   <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Batal</a>
                 </td>
               `)
-  });
+  })
 
         $(document).on('click','#pilih',function(){
           $('#item_id').val($(this).data('1'))

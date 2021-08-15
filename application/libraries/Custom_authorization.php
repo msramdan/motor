@@ -50,28 +50,48 @@ Class Custom_authorization{
     }
 
     public function signtheApproval($level, $data_required)
-    {	
-    	// Jika transaksi kurang dari sama dengan 5 jete
-        $howmuchtransaction = $data_required['howmuchtransaction'];
-        $invoice = $data_required['invoice'];
+    {
+    	
+        $checkdata = $this->ci->Approval_lists_model->get_by_invoice($data_required['invoice']);
 
-        $checkdata = $this->ci->Sale_model->get_by_invoice($invoice);
+        $leveldisale = json_decode($checkdata->approve_by, true);
 
-        $leveldisale = json_decode($checkdata->approval_stage, true);
+        if ($leveldisale[$level] == '-') {
+            $invoice = $data_required['invoice'];
 
-        $leveldisale[$level] = "true";
-        
-        $checkeverythingisapproved = $this->checkToMakeSureEverythingisApproved($leveldisale);
+            $leveldisale[$level] = $data_required['approvestatus'];
 
-        if ($checkeverythingisapproved == 'no') {
-            $dataapprovalupdate = json_encode($leveldisale);
-            return $dataapprovalupdate;
+            $checkeverythingisapproved = $this->checkToMakeSureEverythingisApproved($leveldisale);
+
+            if ($checkeverythingisapproved == 'belumlengkap') {
+                $arr = array(
+                    'dataapprovalupdate' => json_encode($leveldisale),
+                    'status' => 'belumlengkap'
+                );
+                return $arr;
+            }
+
+            if ($checkeverythingisapproved == 'cicilanApproved') {
+                $arr = array(
+                    'dataapprovalupdate' => json_encode($leveldisale),
+                    'status' => 'cicilanApproved'
+                );
+                return $arr;
+            }
+
+            if ($checkeverythingisapproved == 'cicilanDisapproved') {
+                $arr = array(
+                    'dataapprovalupdate' => json_encode($leveldisale),
+                    'status' => 'Cicilandisapproved'
+                );
+                return $arr;
+            }
+        } else {
+            $arr = array(
+                'status' => 'alreadyapprove'
+            );
+            return $arr;
         }
-
-        if ($checkeverythingisapproved == 'ok') {
-            return 'cicilanApproved';
-        }
-        
     }
 
     public function checkToMakeSureEverythingisApproved($approvaldata)
@@ -80,38 +100,50 @@ Class Custom_authorization{
 
         $approvedrequirement = count($ass_array);
 
-        $c = 0;
+        $sudahtandatangan = 0;
+        $tandatangantrue = 0;
+        $tandatanganfalse = 0;
+
         foreach($ass_array as $v) {
-            if ($v === 'true') { 
-                $c++;
+            if ($v != '-') { 
+                $sudahtandatangan++;
+            }
+            if ($v === 'true') {
+                $tandatangantrue++;
+            }
+            if ($v === 'false') {
+                $tandatanganfalse++;
             }
         }
         
-        if ($c < $approvedrequirement) {
-            return 'no';
+        if ($sudahtandatangan == $approvedrequirement) {
+            if ($tandatanganfalse == $sudahtandatangan) {
+                return 'cicilanDisapproved';
+            } else {
+                return 'cicilanApproved';
+            }
         }
 
-        return 'ok';
+        return 'belumlengkap';
     }
 
     public function apaAkuSudahApprove($level, $invoice)
     {
-        $checkdata = $this->ci->Sale_model->get_by_invoice($invoice);
+        $checkdata = $this->ci->Approval_lists_model->get_by_invoice($invoice);
 
-        $leveldisale = json_decode($checkdata->approval_stage, true);
+        $leveldisale = json_decode($checkdata->approve_by, true);
 
-        if($level == 'Manager Unit' || $level == 'Owner')
-        {
-            if ($leveldisale[$level] == "true") {
-            return 'yes';
-            }
-
-            if ($leveldisale[$level] == "-") {
+        if (array_key_exists($level, $leveldisale) || $level === 'Admin Aplikasi') {
+            if($level == 'Manager Unit' || $level == 'Owner')
+            {
+                if ($leveldisale[$level] != "-") {
+                    return 'yes';
+                }
                 return 'no';
             }
+            return 'no';
         }
-        
+        return 'yes';
 
-        return 'aah youre an admin? ok';
     }
 }

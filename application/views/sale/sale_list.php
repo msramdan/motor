@@ -85,6 +85,12 @@
                     <label class="label label-warning">Dalam Cicilan</label>
                 <?php
                 }
+                if ($sale->status_sale === 'Ditolak') {
+                    ?>
+                    <label class="label label-danger">Ditolak</label>
+                <?php
+                }?>
+                <?php
                 if ($sale->status_sale === 'Dalam Review') {
                     ?>
                     <label class="label label-warning">Menunggu Persetujuan</label>
@@ -94,7 +100,9 @@
 			<td style="text-align:center" width="200px">
                 <?php 
 				echo show_button($menu_accessed, 'read', $sale->sale_id);
-                echo show_button($menu_accessed, 'delete', $sale->sale_id);
+                if ($sale->status_sale !== 'Dalam Review') {
+                    echo show_button($menu_accessed, 'delete', $sale->sale_id);
+                }
 				?>
 			</td>
 		</tr>

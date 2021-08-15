@@ -17,48 +17,25 @@ class Approval_cicilan extends CI_Controller
         $this->load->model('Dashboard_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Sale_detail_model');
+        $this->load->model('Approval_lists_model');
         $this->load->library('form_validation');
         $this->load->library('pdf');
     }
 
-    public function index()
+    public function index($value='')
     {
-        is_allowed($this->uri->segment(1),null);
-        $q = urldecode($this->input->get('q', TRUE));
-        $start = intval($this->uri->segment(3));
-        
-        if ($q <> '') {
-            $config['base_url'] = base_url() . '.php/c_url/index.html?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'index.php/sale/index.html?q=' . urlencode($q);
-        } else {
-            $config['base_url'] = base_url() . 'index.php/sale/index/';
-            $config['first_url'] = base_url() . 'index.php/sale/index/';
-        }
-
-        $config['per_page'] = 10;
-        $config['page_query_string'] = FALSE;
-        $config['total_rows'] = $this->Sale_model->total_rowsapprccl($q);
-        $sale = $this->Sale_model->get_limit_dataapprccl($config['per_page'], $start, $q);
-        $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
-        $config['full_tag_close'] = '</ul>';
-        $this->load->library('pagination');
-        $this->pagination->initialize($config);
-
-        $data = array(
-            'sale_data' => $sale,
-            'q' => $q,
-            'pagination' => $this->pagination->create_links(),
-            'total_rows' => $config['total_rows'],
-            'start' => $start,
-            'level_id' => $this->session->userdata('level_id'),
-            'menu_accessed' => $this->uri->segment(1),
-        );
-        $this->template->load('template','sale/approval_cicilan_list', $data);
+        echo 'Not Available';
     }
 
     public function read($id) 
     {
         // $invoice = $this->input->get($id);
+        if ($id === 'yes') {
+            $this->yes();
+        }
+        if ($id === 'no') {
+            $this->no();
+        }
 
         $row = $this->Sale_model->get_detail_pengajuancicilan($id);
 
@@ -122,13 +99,14 @@ class Approval_cicilan extends CI_Controller
             'tgl_terdata' => $row->tgl_terdata,
             'photo' => $row->photo,
             'status' => $row->status,
-            'approval' => $row->approval_stage,
+            'approval' => $row->approve_by,
             'nama_user' => $row->nama_user,
             'username' => $row->username,
             'nama_type' => $row->nama_type,
             'nama_merek' => $row->nama_merek,
             'level_id' => $row->level_id,
             'result' => $letscheck,
+            'catatan' => $row->keterangan,
             'nama_level' => $row->nama_level,
             'admin_fee' => $this->Dashboard_model->admin_fee(),
             'karyawan' =>$this->karyawan_model->get_all(),
@@ -140,15 +118,15 @@ class Approval_cicilan extends CI_Controller
         $this->template->load('template','sale/approval_cicilan_read', $fetched);
     }
 
-    public function yes($invoice) {
+    public function yes() {
 
         // init authorization
+        $invoice = $this->input->post('invoicehidden');
         $approvalby = $this->session->userdata('level_id');
-        $howmuchtransaction = $this->input->post('total_transaksi');
 
         $datarequired = array(
-            'howmuchtransaction' => $howmuchtransaction,
             'invoice' => $invoice,
+            'approvestatus' => 'true'
         );
 
         // RUNNING check based on documentation said
@@ -170,7 +148,33 @@ class Approval_cicilan extends CI_Controller
                     'status' => 'Terjual'
                 );
                 $this->Item_model->update($checkdata->item_id, $statustoupdate);
-            } else {
+            }
+            if ($customAuthorizationCheck === 'cicilanDisapproved') {
+                $datatoupdate = array(
+                    'status_sale' => 'Ditolak'
+                );
+
+                $dataapprovaltoupdate = array(
+                    'approval_status' => 'Ditolak',
+                    'komentar' => $this->input->post('komentar')
+                );
+
+                $this->Approval_lists_model->update($invoice, $dataapprovaltoupdate);
+
+                $this->Sale_model->update_data_dibayar($invoice, $datatoupdate);
+
+                $checkdata = $this->Sale_model->get_by_invoice($invoice);
+                $statustoupdate = array(
+                    'status' => 'Ready'
+                );
+                $this->Item_model->update($checkdata->item_id, $statustoupdate);
+            }
+
+            if ($customAuthorizationCheck === 'alreadyapprove') {
+                echo 'Sudah memutuskan';
+            }
+
+            if ($customAuthorizationCheck === 'belumlengkap') {
                 $datatoupdate = array(
                     'status_sale' => 'Dalam Review',
                     'approval_stage' => $customAuthorizationCheck
@@ -182,6 +186,92 @@ class Approval_cicilan extends CI_Controller
 
         $this->session->set_flashdata('message', 'Data berhasil diupdate');
         redirect(site_url('Approval_cicilan'));
+        
+    }
+
+    public function no() {
+
+        // init authorization
+        $invoice = $this->input->post('invoicehidden');
+        $approvalby = $this->session->userdata('level_id');
+
+        $datarequired = array(
+            'invoice' => $invoice,
+            'approvestatus' => 'false'
+        );
+
+        // RUNNING check based on documentation said
+        $this->load->library('Custom_authorization');
+        $customAuthorizationCheck = $this->custom_authorization->authorization_scheme('1', $approvalby, $datarequired);
+
+        $datatoupdate;
+
+        if ($customAuthorizationCheck) {
+            if ($customAuthorizationCheck['status'] === 'cicilanApproved') {
+                $datatoupdate = array(
+                    'status_sale' => 'Dalam Cicilan'
+                );
+
+                $this->Sale_model->update_data_dibayar($invoice, $datatoupdate);
+
+                $checkdata = $this->Sale_model->get_by_invoice($invoice);
+                $statustoupdate = array(
+                    'status' => 'Terjual'
+                );
+
+                $dataapprovaltoupdate = array(
+                    'approval_status' => 'Diterima',
+                    'approve_by' => $customAuthorizationCheck['dataapprovalupdate'],
+                    'komentar' => $this->input->post('komentar')
+                );
+
+                $this->Approval_lists_model->update($invoice, $dataapprovaltoupdate);
+                $this->Item_model->update($checkdata->item_id, $statustoupdate);
+            }
+            if ($customAuthorizationCheck['status'] === 'Cicilandisapproved') {
+                $datatoupdate = array(
+                    'status_sale' => 'Ditolak'
+                );
+
+                $dataapprovaltoupdate = array(
+                    'approval_status' => 'Ditolak',
+                    'approve_by' => $customAuthorizationCheck['dataapprovalupdate'],
+                    'komentar' => $this->input->post('komentar')
+                );
+
+                $this->Approval_lists_model->update($invoice, $dataapprovaltoupdate);
+
+                $this->Sale_model->update_data_dibayar($invoice, $datatoupdate);
+
+                $checkdata = $this->Sale_model->get_by_invoice($invoice);
+                $statustoupdate = array(
+                    'status' => 'Ready'
+                );
+                $this->Item_model->update($checkdata->item_id, $statustoupdate);
+            }
+
+            if ($customAuthorizationCheck['status'] === 'alreadyapprove') {
+                echo 'Sudah memutuskan';
+            }
+
+            if ($customAuthorizationCheck['status'] === 'belumlengkap') {
+                $datatoupdate = array(
+                    'status_sale' => 'Dalam Review'
+                );
+
+                $dataapprovaltoupdate = array(
+                    'approve_by' => $customAuthorizationCheck['dataapprovalupdate'],
+                    'komentar' => $this->input->post('komentar')
+                );
+
+                $this->Approval_lists_model->update($invoice, $dataapprovaltoupdate);
+
+                $this->Sale_model->update_data_dibayar($invoice, $datatoupdate);
+            }
+        }
+
+        $this->session->set_flashdata('message', 'Data berhasil diupdate');
+        redirect(site_url('approval_lists'));
         
     }
 }

@@ -17,6 +17,7 @@ class Cicilan extends CI_Controller
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Mitra_model');
         $this->load->model('Onetimep_model');
+        $this->load->model('Approval_lists_model');
         $this->load->library('form_validation');
         $this->load->library('Custom_authorization');
     }
@@ -56,14 +57,20 @@ class Cicilan extends CI_Controller
 
     public function detail($id) 
     {
+        $cek = $this->Sale_model->get_by_invoice($id);
         $listcicilan = $this->Sale_detail_model->get_by_id($id);
-        if ($listcicilan) {
-            $data['list_cicilan'] = $listcicilan;
-            $data['invoicenya'] = $id;
-            $this->template->load('template','cicilan/sale_detail_read', $data);
+
+        if ($cek->status_sale === 'Dalam Cicilan') {
+            if ($listcicilan) {
+                $data['list_cicilan'] = $listcicilan;
+                $data['invoicenya'] = $id;
+                $this->template->load('template','cicilan/sale_detail_read', $data);
+            } else {
+                $this->session->set_flashdata('message', 'Record Not Found');
+                redirect(site_url('cicilan'));
+            }
         } else {
-            $this->session->set_flashdata('message', 'Record Not Found');
-            redirect(site_url('cicilan'));
+            redirect(site_url('not_access'));
         }
     }
 
@@ -311,10 +318,8 @@ class Cicilan extends CI_Controller
 
         $targetbayarcicilan = $this->input->post('bayaranpbulanb');
 
-        $approval_stage = '';
+        $komentar = $this->input->post('keterangan',TRUE);
         $totaltransaksi = intval($total_price_sale) + intval($biaya_admin);
-
-        $approval_stage = $this->custom_authorization->addApprovalby($totaltransaksi);
 
         $datatoupdate = array(
             'invoice' => $id,
@@ -329,13 +334,10 @@ class Cicilan extends CI_Controller
             'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
             'tanggal_sale' => $tanggalsale,
 
-            'status_sale' => 'Dalam Review',
-            'approval_stage' => $approval_stage
+            'status_sale' => 'Dalam Review'
         );
 
         $dataCicilan = [];
-
-        //$targetbayarcicilan = ((intval($total_price_sale) + intval($biaya_admin))/$bungacicilan + intval($total_price_sale) + intval($biaya_admin))/$total_cicilan_brpa_x;
 
         $start = $month = strtotime($tanggalsale);
         for($i = 1; $i <= intval($total_cicilan_brpa_x); $i++) {
@@ -353,17 +355,21 @@ class Cicilan extends CI_Controller
             $month = strtotime("+1 month", $month);
         }
 
+        $approval_stage = $this->custom_authorization->addApprovalby($totaltransaksi);
+        $data = array(
+            'invoice_id' => $id,
+            'approve_by' => $approval_stage,
+            'approval_status' => 'Dalam Review',
+            'keterangan' => $this->input->post('komentar',TRUE),
+            'jenis_tindakan' => 'Pembayaran Kredit',
+            'komentar' => '',
+        );
+
+        $this->Approval_lists_model->insert($data);
+
         $this->Sale_model->insert_data_cicilan($dataCicilan);
 
         $this->Sale_model->update_data_dibayar($id, $datatoupdate);
-
-        // $item_id = $this->input->post('iditem');
-        
-
-        // $statustoupdate = array(
-        //     'status' => 'Terjual'
-        // );
-        // $this->Item_model->update($item_id, $statustoupdate);
 
         $this->session->set_flashdata('message', 'Data berhasil diupdate');
         redirect(site_url('R_cicilan'));

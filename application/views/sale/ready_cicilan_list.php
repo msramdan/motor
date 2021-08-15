@@ -60,15 +60,16 @@
             </tr><?php
             foreach ($sale_data as $sale)
             {
-                ?>
-                <tr>
-			<td width="10px"><?php echo ++$start ?></td>
-			<td><?php echo $sale->invoice ?></td>
-			<td><?php echo $sale->nama_pelanggan ?></td>
-			<td><?php echo $sale->nama_item ?></td>
-			<td><?php echo $sale->type_sale ?></td>
-			<td><?php echo $sale->tanggal_sale ?></td>
-			<td><?php echo $sale->nama_user ?></td>
+                if ($sale->status_sale == 'Belum Dibayar' || $sale->status_sale == 'Dalam Review') {
+                    ?>
+                    <tr>
+            <td width="10px"><?php echo ++$start ?></td>
+            <td><?php echo $sale->invoice ?></td>
+            <td><?php echo $sale->nama_pelanggan ?></td>
+            <td><?php echo $sale->nama_item ?></td>
+            <td><?php echo $sale->type_sale ?></td>
+            <td><?php echo $sale->tanggal_sale ?></td>
+            <td><?php echo $sale->nama_user ?></td>
             <td><?php
                 if($sale->status_sale === 'Selesai')
                 {?>
@@ -91,7 +92,7 @@
                 <?php
                 }
                 ?></td>
-			<td style="text-align:center" width="200px">
+            <td style="text-align:center" width="200px">
                 <?php
                 if ($sale->type_sale === 'Kredit') {
                     if ($sale->status_sale === 'Belum Dibayar') {
@@ -110,11 +111,16 @@
                 }
                 ?>
                 <?php 
-				echo show_button($menu_accessed, 'read', $sale->sale_id);
+                echo show_button($menu_accessed, 'read', $sale->sale_id);
                 echo show_button($menu_accessed, 'delete', $sale->sale_id);
-				?>
-			</td>
-		</tr>
+                ?>
+            </td>
+        </tr>
+                    
+                    <?php
+                }
+                ?>
+
                 <?php
             }
             ?>
