@@ -22,19 +22,27 @@ class Sale_model extends CI_Model
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
         $this->db->join('item', 'item.item_id = sale.item_id','left');
         $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
-        $this->db->join('type', 'type.type_id = item.type_id','left');
+        $tshis->db->join('type', 'type.type_id = item.type_id','left');
         
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
     }
 
-    // get data by id
-    function get_by_id($id)
+    function get_by_id_w_appr($id)
     {
         $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
         $this->db->join('item','item.item_id = sale.item_id');
         $this->db->join('user','user.user_id = sale.user_id');
         $this->db->join('approval_lists','approval_lists.invoice_id = sale.invoice');
+        $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+    }
+
+    function get_by_id($id)
+    {
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('item','item.item_id = sale.item_id');
+        $this->db->join('user','user.user_id = sale.user_id');
         $this->db->where($this->id, $id);
         return $this->db->get($this->table)->row();
     }

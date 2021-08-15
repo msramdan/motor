@@ -66,24 +66,45 @@ class Sale extends CI_Controller
     {
         $row = $this->Sale_model->get_by_id($id);
         if ($row) {
-            $data = array(
-                'sale_id' => $row->sale_id,
-                'biaya_admin' => $row->biaya_admin,
-                'invoice' => $row->invoice,
-                'pelanggan_id' => $row->nama_pelanggan,
-                'item_id' => $row->nama_item,
-                'total_price_sale' => $row->total_price_sale,
-                'type_sale' => $row->type_sale,
-                'biaya_admin' => $row->biaya_admin,
-                'total_bayar' => $row->total_bayar,
-                'dibayar' => $row->dibayar,
-                'status_sale' => $row->status_sale,
-                'tanggal_sale' => $row->tanggal_sale,
-                'last_updated' => $row->last_updated,
-                'komentar' => $row->komentar,
-                'user_id' => $row->nama_user,
-            );
-            $this->template->load('template','sale/sale_read', $data);
+            if ($row->status_sale === 'Ditolak') {
+                $rowwapp = $this->Sale_model->get_by_id_w_appr($id);
+                $data = array(
+                    'sale_id' => $rowwapp->sale_id,
+                    'biaya_admin' => $rowwapp->biaya_admin,
+                    'invoice' => $rowwapp->invoice,
+                    'pelanggan_id' => $rowwapp->nama_pelanggan,
+                    'item_id' => $rowwapp->nama_item,
+                    'total_price_sale' => $rowwapp->total_price_sale,
+                    'type_sale' => $rowwapp->type_sale,
+                    'biaya_admin' => $rowwapp->biaya_admin,
+                    'total_bayar' => $rowwapp->total_bayar,
+                    'dibayar' => $rowwapp->dibayar,
+                    'status_sale' => $rowwapp->status_sale,
+                    'tanggal_sale' => $rowwapp->tanggal_sale,
+                    'last_updated' => $rowwapp->last_updated,
+                    'komentar' => $rowwapp->komentar,
+                    'user_id' => $rowwapp->nama_user,
+                );
+                $this->template->load('template','sale/sale_read', $data);
+            } else {
+                $data = array(
+                    'sale_id' => $row->sale_id,
+                    'biaya_admin' => $row->biaya_admin,
+                    'invoice' => $row->invoice,
+                    'pelanggan_id' => $row->nama_pelanggan,
+                    'item_id' => $row->nama_item,
+                    'total_price_sale' => $row->total_price_sale,
+                    'type_sale' => $row->type_sale,
+                    'biaya_admin' => $row->biaya_admin,
+                    'total_bayar' => $row->total_bayar,
+                    'dibayar' => $row->dibayar,
+                    'status_sale' => $row->status_sale,
+                    'tanggal_sale' => $row->tanggal_sale,
+                    'last_updated' => $row->last_updated,
+                    'user_id' => $row->nama_user,
+                );
+                $this->template->load('template','sale/sale_read', $data);
+            }
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('sale'));

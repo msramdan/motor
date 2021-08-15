@@ -23,6 +23,9 @@
 							if ($v == 'false') {
 								echo '<li>'.$k.': <label class="label label-danger">'.$v.'</label></li>';
 							}
+							if ($v == '-') {
+								echo '<li>'.$k.': -</li>';
+							}
 						}
 					    ?>
 			    	</ul>
