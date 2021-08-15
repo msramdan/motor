@@ -277,15 +277,6 @@ class R_onetimep extends CI_Controller
             // 'surveyor_id' => $this->input->post('surveyor_id'),
             'status_sale' => 'Selesai',
         );
-        $data = array(
-    		'invoice_id' => $id,
-    		'approve_by' => '{"N/A":"N/A"}',
-    		'approval_status' => 'Diterima',
-    		'keterangan' => 'N/A',
-    		'komentar' => 'N/A',
-        );
-
-        $this->Approval_lists_model->insert($data);
         
         $item_id = $this->input->post('iditem');
         

@@ -117,7 +117,7 @@ Class Custom_authorization{
         }
         
         if ($sudahtandatangan == $approvedrequirement) {
-            if ($tandatanganfalse == $sudahtandatangan) {
+            if ($tandatanganfalse == $sudahtandatangan || $tandatanganfalse > 0) {
                 return 'cicilanDisapproved';
             } else {
                 return 'cicilanApproved';
