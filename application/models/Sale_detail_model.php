@@ -25,8 +25,24 @@ class Sale_detail_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
+        $this->db->where('sale_id', $id)
+            ->group_start()
+                ->where('status', 'siap dibayar')
+                ->or_where('status', 'dibayar')
+            ->group_end();
+        return $this->db->get($this->table)->result();
+    }
+
+    function get_all_by_id($id)
+    {
         $this->db->where('sale_id', $id);
         return $this->db->get($this->table)->result();
+    }
+
+    function count_sisa_pembayaran($id)
+    {
+        $query = $this->db->query('SELECT * FROM sale_detail WHERE sale_id = "'.$id.'" AND status = "belum siap dibayar" OR status = "siap dibayar"');
+        return $query->num_rows();
     }
 
     //get anu
@@ -51,21 +67,12 @@ class Sale_detail_model extends CI_Model
     }
 
     // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL) {
+    function get_progress_jumlah_cicilan($invoice) {
         $this->db->distinct();
-        //asdaasaadsasd
-
         $this->db->select("sale_detail.sale_id as 'saleid', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'belum dibayar') as 'total_belum_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid AND status = 'dibayar') as 'total_dibayar', (SELECT COUNT(status) from `sale_detail` WHERE sale_id = saleid) as 'total_angsuran', sale.status_sale as 'status_sale'");
         $this->db->join('sale','sale.invoice = sale_detail.sale_id');
-        $this->db->order_by($this->id, $this->order);
-        $this->db->like('sale_detail_id', $q);
-    	$this->db->or_like('sale_detail.sale_id', $q);
-    	// $this->db->or_like('pembayaran_ke', $q);
-    	// $this->db->or_like('status', $q);
-    	// $this->db->or_like('total_bayar', $q);
-    	// $this->db->or_like('jatuh_tempo', $q);
-    	$this->db->limit($limit, $start);
-        return $this->db->get($this->table)->result();
+        $this->db->where('sale_detail.sale_id', $invoice);
+        return $this->db->get('sale_detail')->row();
     }
 
     // insert data
@@ -98,6 +105,20 @@ class Sale_detail_model extends CI_Model
 
     function cekstatuslunas($invoice) {
         $this->db->distinct()->select("(SELECT COUNT(*) FROM sale_detail WHERE sale_id = '".$invoice."' AND status = 'dibayar') AS 'telah_bayar', (SELECT COUNT(*) FROM sale_detail WHERE sale_id = '".$invoice."') AS 'total_bayar'")->from('sale_detail');
+        return $this->db->get()->row();
+    }
+
+    function deteksidatacicilan($invoice, $whatstatus)
+    {
+        $where = array(
+            'sale_id' => $invoice,
+            'status' => $whatstatus
+        );
+        $this->db->select("*")
+            ->where($where)
+            ->order_by('pembayaran_ke','ASC')
+            ->limit(1)
+            ->from('sale_detail');
         return $this->db->get()->row();
     }
 

@@ -10,6 +10,8 @@ class Approval_lists extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('Approval_lists_model');
+        $this->load->model('Pelanggan_model');
+        $this->load->model('Sale_model');
         $this->load->library('form_validation');
     }
 
@@ -47,16 +49,18 @@ class Approval_lists extends CI_Controller
 
     public function read($id) 
     {
-        $row = $this->Approval_lists_model->get_by_id($id);
+        $row = $this->Approval_lists_model->get_by_invoice($id);
+
+        $datasale = $this->Sale_model->get_by_invoice($id);
         if ($row) {
             $data = array(
-		'approval_id' => $row->approval_id,
-		'invoice_id' => $row->invoice_id,
-		'approve_by' => $row->approve_by,
-		'approval_status' => $row->approval_status,
-		'keterangan' => $row->keterangan,
-		'komentar' => $row->komentar,
-	    );
+        		'approval_id' => $row->approval_id,
+        		'invoice_id' => $row->invoice_id,
+        		'approve_by' => $row->approve_by,
+        		'approval_status' => $row->approval_status,
+        		'keterangan' => $row->keterangan,
+        		'komentar' => $row->komentar
+            );
             $this->template->load('template','approval_lists/approval_lists_read', $data);
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');

@@ -57,18 +57,18 @@ class Pelanggan extends CI_Controller
         $row = $this->Pelanggan_model->get_by_id($id);
         if ($row) {
             $data = array(
-		'pelanggan_id' => $row->pelanggan_id,
-        'berkas' =>$this->Pelanggan_model->get_berkas($id),
-		'no_ktp' => $row->no_ktp,
-		'no_kk' => $row->no_kk,
-		'nama_pelanggan' => $row->nama_pelanggan,
-		'no_hp_pelanggan' => $row->no_hp_pelanggan,
-		'jenis_kelamin' => $row->jenis_kelamin,
-		'alamat_ktp' => $row->alamat_ktp,
-		'alamat_domisili' => $row->alamat_domisili,
-		'nama_saudara' => $row->nama_saudara,
-		'alamat_saudara' => $row->alamat_saudara,
-		'no_hp_saudara' => $row->no_hp_saudara,
+    		'pelanggan_id' => $row->pelanggan_id,
+            'berkas' =>$this->Pelanggan_model->get_berkas($id),
+    		'no_ktp' => $row->no_ktp,
+    		'no_kk' => $row->no_kk,
+    		'nama_pelanggan' => $row->nama_pelanggan,
+    		'no_hp_pelanggan' => $row->no_hp_pelanggan,
+    		'jenis_kelamin' => $row->jenis_kelamin,
+    		'alamat_ktp' => $row->alamat_ktp,
+    		'alamat_domisili' => $row->alamat_domisili,
+    		'nama_saudara' => $row->nama_saudara,
+    		'alamat_saudara' => $row->alamat_saudara,
+    		'no_hp_saudara' => $row->no_hp_saudara,
 	    );
             $this->template->load('template','pelanggan/pelanggan_read', $data);
         } else {

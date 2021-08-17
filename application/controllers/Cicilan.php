@@ -287,93 +287,6 @@ class Cicilan extends CI_Controller
 
     }
 
-    public function update_payment()
-    {
-        $id = $this->input->post('invoicehidden');
-
-        $contact_id = 'N/A';
-        if ($this->input->post('sales_referral')=="Karyawan") {
-            $contact_id = $this->input->post('karyawan_id');
-        }
-        if ($this->input->post('sales_referral')=="Mitra Sales") {
-            $contact_id = $this->input->post('mitra_id');
-        }
-
-        $total_price_sale = $this->input->post('total_price_sale');
-        $biaya_admin = $this->input->post('biaya_admin');
-
-        $tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggalsalehidden')));
-
-        $kudubayar = $this->input->post('wajibdibayar');
-
-        $sales_referral = $this->input->post('sales_referral');
-
-        $total_cicilan_brpa_x = $this->input->post('lama_cicilan');
-
-        $total_bayar_pbulan_pokok = $this->input->post('bayaranpbulantb');
-
-        $total_bayar_pbulan_w_bunga = $this->input->post('bayaranpbulanb');
-
-        $bungacicilan = $this->input->post('bunga_cicilan');
-
-        $targetbayarcicilan = $this->input->post('bayaranpbulanb');
-
-        $komentar = $this->input->post('keterangan',TRUE);
-        $totaltransaksi = intval($total_price_sale) + intval($biaya_admin);
-
-        $datatoupdate = array(
-            'invoice' => $id,
-            'sales_referral' => $sales_referral,
-            'contact_id' => $contact_id,
-            'total_price_sale' => $total_price_sale,
-            'biaya_admin' => $biaya_admin,
-
-            'total_bayar' => intval($total_bayar_pbulan_w_bunga) * intval($total_cicilan_brpa_x),
-            'dibayar' => $kudubayar,
-            
-            'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-            'tanggal_sale' => $tanggalsale,
-
-            'status_sale' => 'Dalam Review'
-        );
-
-        $dataCicilan = [];
-
-        $start = $month = strtotime($tanggalsale);
-        for($i = 1; $i <= intval($total_cicilan_brpa_x); $i++) {
-            $dataCicilan[] = array(
-                'sale_id' => $id,
-                'pembayaran_ke' => $i,
-                'status' => 'belum dibayar',
-                'total_bayar' => 0,
-                'pokok_cicilan' => $total_bayar_pbulan_pokok,
-                'harus_dibayar' => $targetbayarcicilan,
-                'nilai_bunga_percicilan' => $bungacicilan,
-                'jatuh_tempo' =>date('Y-m-d', $month), 
-            );
-            //this code should be optimized later for 'performance' impact purpose
-            $month = strtotime("+1 month", $month);
-        }
-
-        $approval_stage = $this->custom_authorization->addApprovalby($totaltransaksi);
-        $data = array(
-            'invoice_id' => $id,
-            'approve_by' => $approval_stage,
-            'approval_status' => 'Dalam Review',
-            'keterangan' => $this->input->post('komentar',TRUE),
-            'jenis_tindakan' => 'Pembayaran Kredit',
-            'komentar' => '',
-        );
-
-        $this->Approval_lists_model->insert($data);
-
-        $this->Sale_model->insert_data_cicilan($dataCicilan);
-
-        $this->Sale_model->update_data_dibayar($id, $datatoupdate);
-
-        $this->session->set_flashdata('message', 'Data berhasil diupdate');
-        redirect(site_url('R_cicilan'));
-    }
 
     public function update_cicilan()
     {
@@ -460,18 +373,6 @@ class Cicilan extends CI_Controller
 
         echo json_encode($datatoechoed);
 
-    }
-
-    public function update_sale_dibayar($id) {
-        $dibayar = $this->Sale_detail_model->getpaiddetail($id);
-        
-        $gettotaldibayarsekarang = $dibayar->telah_dibayar;
-        
-        $data = array(
-            'dibayar' => $gettotaldibayarsekarang
-        );
-
-        $this->Sale_model->update_data_dibayar($id,$data);
     }
     
     

@@ -22,33 +22,7 @@ class R_onetimep extends CI_Controller
     public function index()
     {
     	is_allowed($this->uri->segment(1),null);
-        $q = urldecode($this->input->get('q', TRUE));
-        $start = intval($this->uri->segment(3));
-        
-        if ($q <> '') {
-            $config['base_url'] = base_url() . '.php/c_url/index.html?q=' . urlencode($q);
-            $config['first_url'] = base_url() . 'index.php/ontimep/index.html?q=' . urlencode($q);
-        } else {
-            $config['base_url'] = base_url() . 'index.php/ontimep/index/';
-            $config['first_url'] = base_url() . 'index.php/ontimep/index/';
-        }
-        $config['per_page'] = 10;
-        $config['page_query_string'] = FALSE;
-        $config['total_rows'] = $this->Onetimep_model->total_rows($q);
-        $ontimep = $this->Onetimep_model->get_limit_data($config['per_page'], $start, $q);
-        $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
-        $config['full_tag_close'] = '</ul>';
-        $this->load->library('pagination');
-        $this->pagination->initialize($config);
-
-        $data = array(
-            'otps' => $ontimep,
-            'q' => $q,
-            'pagination' => $this->pagination->create_links(),
-            'total_rows' => $config['total_rows'],
-            'start' => $start,
-        );
-        $this->template->load('template','sale/otp_list', $data);
+        $this->template->load('template','onetimepayment/onetimepayment_home');
     }
 
     public function paymentformfor() 
@@ -287,9 +261,29 @@ class R_onetimep extends CI_Controller
         $this->Item_model->update($item_id, $statustoupdate);
 
         $this->Sale_model->update_data_dibayar($id, $datatoupdate);
-        $this->session->set_flashdata('message', 'Data berhasil diupdate');
-        redirect(site_url('onetimep'));
+        
+
+        $row = $this->Sale_model->get_by_invoice($id);
+
+        $sajidata = array(
+            'sale_id' => $row->sale_id,
+            'biaya_admin' => $row->biaya_admin,
+            'invoice' => $row->invoice,
+            'pelanggan_id' => $row->nama_pelanggan,
+            'item_id' => $row->nama_item,
+            'total_price_sale' => $row->total_price_sale,
+            'type_sale' => $row->type_sale,
+            'biaya_admin' => $row->biaya_admin,
+            'total_bayar' => $row->total_bayar,
+            'dibayar' => $row->dibayar,
+            'status_sale' => $row->status_sale,
+            'tanggal_sale' => $row->tanggal_sale,
+            'last_updated' => $row->last_updated,
+            'user_id' => $row->nama_user,
+        );
+        $this->load->view('sale/sale_read', $sajidata);
     }
+
     
     public function delete($id) 
     {
@@ -360,6 +354,115 @@ class R_onetimep extends CI_Controller
 
         xlsEOF();
         exit();
+    }
+
+    public function searchInvoice()
+    {
+        $invoice = $this->input->post('idinvoice');
+
+        $row = $this->Sale_model->get_by_invoice($invoice);
+        $admin_fee = $this->Dashboard_model->admin_fee();
+        $karyawan = $this->karyawan_model->get_all();
+        $jenis_pembayaran = $this->Jenis_pembayaran_model->get_all();
+        $mitra = $this->Mitra_model->get_all();
+        if($row)
+        {
+            if ($row->status_sale === 'Belum Dibayar' && $row->type_sale === 'Cash') {
+                $fetched = array(
+                    'admin_fee' => $this->Dashboard_model->admin_fee(),
+                    'sale_id' => $row->sale_id,
+                    'invoice' => $row->invoice,
+                    'pelanggan_id' => $row->pelanggan_id,
+                    'sales_referral' => $row->sales_referral,
+                    'contact_id' => $row->contact_id,
+                    'item_id' => $row->item_id,
+                    'total_price_sale' => $row->total_price_sale,
+                    'biaya_admin' => $row->biaya_admin,
+                    'total_bayar' => $row->total_bayar,
+                    'dibayar' => $row->dibayar,
+                    'type_sale' => $row->type_sale,
+                    'jenis_bayar' => $row->jenis_bayar,
+                    'tanggal_sale' => $row->tanggal_sale,
+                    'last_updated' => $row->last_updated,
+                    'user_id' => $row->user_id,
+                    'surveyor_id' => $row->surveyor_id,
+                    'status_sale' => $row->status_sale,
+                    'no_ktp' => $row->no_ktp,
+                    'no_kk' => $row->no_kk,
+                    'nama_pelanggan' => $row->nama_pelanggan,
+                    'no_hp_pelanggan' => $row->no_hp_pelanggan,
+                    'jenis_kelamin' => $row->jenis_kelamin,
+                    'alamat_ktp' => $row->alamat_ktp,
+                    'alamat_domisili' => $row->alamat_domisili,
+                    'nama_saudara' => $row->nama_saudara,
+                    'alamat_saudara' => $row->alamat_saudara,
+                    'no_hp_saudara' => $row->no_hp_saudara,
+                    'unit_id' => $row->unit_id,
+                    'kd_pembelian' => $row->kd_pembelian,
+                    'agen_id' => $row->agen_id,
+                    'kd_item' => $row->kd_item,
+                    'nama_item' => $row->nama_item,
+                    'kategori_id' => $row->kategori_id,
+                    'jenis_item_id' => $row->jenis_item_id,
+                    'type_id' => $row->type_id,
+                    'merek_id' => $row->merek_id,
+                    'no_stnk' => $row->no_stnk,
+                    'no_bpkb' => $row->no_bpkb,
+                    'tahun_buat' => $row->tahun_buat,
+                    'warna1' => $row->warna1,
+                    'warna2' => $row->warna2,
+                    'kondisi' => $row->kondisi,
+                    'no_mesin' => $row->no_mesin,
+                    'no_rangka' => $row->no_rangka,
+                    'deskripsi' => $row->deskripsi,
+                    'harga_beli' => $row->harga_beli,
+                    'harga_pokok' => $row->harga_pokok,
+                    'tgl_beli' => $row->tgl_beli, 
+                    'tgl_terdata' => $row->tgl_terdata,
+                    'photo' => $row->photo,
+                    'nama_type' => $row->nama_type,
+                    'nama_merek' => $row->nama_merek,
+                    'status' => $row->status,
+                    'nama_user' => $row->nama_user,
+                    'username' => $row->username,
+                    'level_id' => $row->level_id,
+                    'admin_fee' => $this->Dashboard_model->admin_fee(),
+                    'karyawan' =>$this->karyawan_model->get_all(),
+                    'jenis_pembayaran' =>$this->Jenis_pembayaran_model->get_all(),
+                    'mitra' =>$this->Mitra_model->get_all(),
+                );
+                $this->load->view('onetimepayment/onetimepayment_form', $fetched);
+            }
+
+            if ($row->status_sale === 'Selesai' && $row->type_sale === 'Cash') {
+                $row = $this->Sale_model->get_by_invoice($invoice);
+
+                $sajidata = array(
+                    'sale_id' => $row->sale_id,
+                    'biaya_admin' => $row->biaya_admin,
+                    'invoice' => $row->invoice,
+                    'pelanggan_id' => $row->nama_pelanggan,
+                    'item_id' => $row->nama_item,
+                    'total_price_sale' => $row->total_price_sale,
+                    'type_sale' => $row->type_sale,
+                    'biaya_admin' => $row->biaya_admin,
+                    'total_bayar' => $row->total_bayar,
+                    'dibayar' => $row->dibayar,
+                    'status_sale' => $row->status_sale,
+                    'tanggal_sale' => $row->tanggal_sale,
+                    'last_updated' => $row->last_updated,
+                    'user_id' => $row->nama_user,
+                );
+                $this->load->view('onetimepayment/onetimepayment_read', $sajidata);
+            }
+        }
+        else
+        {
+            echo '  <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
+                        <div><i class="fa fa-times" style="font-size: 65px"></i></div>
+                        <h3 style="color: #9d9d9d;s">Data '.$invoice.' Tidak Ditemukan</h3>
+                    <div>';
+        }
     }
 
 }

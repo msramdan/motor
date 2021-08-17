@@ -112,10 +112,11 @@ class Approval_cicilan extends CI_Controller
             'karyawan' =>$this->karyawan_model->get_all(),
             'jenis_pembayaran' =>$this->Jenis_pembayaran_model->get_all(),
             'mitra' =>$this->Mitra_model->get_all(),
-            'data_cicilan' =>$this->Sale_detail_model->get_by_id($id)
+            'data_cicilan' =>$this->Sale_detail_model->get_all_by_id($id),
+            'berkas' => $this->Pelanggan_model->get_berkas($row->pelanggan_id)
         );
 
-        $this->template->load('template','sale/approval_cicilan_read', $fetched);
+        $this->template->load('template','cicilan/approval_cicilan_read', $fetched);
     }
 
     public function yes() {

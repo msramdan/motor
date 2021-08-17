@@ -1,15 +1,17 @@
 <div class="page-title">
   <div class="title_left">
-    <h3>FORM PEMBAYARAN - <?php echo $invoice ?> (CASH)</h3>
+    <h3>FORM PEMBAYARAN - <?php echo $invoice ?> (CICILAN)</h3>
   </div>
   <div class="clearfix"></div>
     <div class="row">
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="box-body">
-            <form action="update_payment" method="post">
-              <table class='table table-bordered'>       
-
+          	<div class="alert alert-danger alert-dismissible">
+    		    	<p><b>Catatan:</b> <?php echo $invoice ?> Belum Melakukan Pembayaran</p>
+    		    </div>
+            <form id="update_cicilan_payment_form" method="post">
+              <table class='table table-bordered'>
                 <tr>
                   <td width='200'>Invoice</td>
                   <td>
@@ -24,6 +26,20 @@
                     </div>
                     <input type="hidden" name="iditem" id="iditem" value="<?php echo $item_id ?>">
                   </td>   
+                </tr>
+                <tr>
+                  <td width='200'>Surveyor <?php echo form_error('surveyor_id') ?></td>
+                  <td>
+                    <div class="form-group input-group">
+                      <input type="hidden" id="surveyor_id" name="surveyor_id">
+                      <input type="text" id="nama_surveyor" name="nama_surveyor" class="form-control" readonly="">
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-surveyor">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </td>
                 </tr>
                 <tr id="step1">
                   <td width='200'>Sales Referral<?php echo form_error('sales_referral') ?></td>
@@ -53,46 +69,86 @@
                   </td>   
                 </tr>
                 <tr id="step2" hidden>
-                	<td colspan="2">
-                		<table class="table table-striped tabel-payment-detail">
-                			<tr>
-                				<th>No</th>
-                				<th>Item</th>
-                				<th>Harga Pokok</th>
-                				<th>Harga Jual</th>
-                			</tr>
-                			<tr>
-                				<td>1</td>
-                				<td>
-                					<?php echo $nama_item.' ('.$nama_type.'-'.$nama_merek.'/'.$tahun_buat.')' ?>
-                				</td>
-                				<td>
-                					Rp.<?php echo $harga_pokok ?>
-                				</td>
-                				<td>
-                					<input type="text" class="form-control input-nilai" name="total_price_sale" id="total_price_sale" placeholder="Price Sale" value="<?php echo $total_price_sale; ?>">
-                				</td>
-                			</tr>
-                			<tr>
-                				<td></td>
-                				<td></td>
-                				<td>
-                					Biaya admin
-                				</td>
-                				<td>
-                					<input type="text" class="form-control input-nilai" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $admin_fee->nominal ?>">
-                				</td>
-                			</tr>
-                			<tr>
-                				<td></td>
-                				<td></td>
-                				<td><b>Total</b></td>
-                				<td><p id="txttotalbayarnya"></p><input type="hidden" name="wajibdibayar" id="wajibdibayar" value=""></td>
-                			</tr>
-                		</table>
-                		<span id="icon-oke"></span>
-                		<span id="payment-info-action"><button class="btn btn-primary btn-konfirmasi-payment">Konfirmasi</button></span>
-                	</td>
+                  <td colspan="2">
+                    <table class="table table-striped tabel-payment-detail">
+                      <tr>
+                        <th>No</th>
+                        <th>Item</th>
+                        <th>Harga Pokok</th>
+                        <th>Harga Jual</th>
+                      </tr>
+                      <tr>
+                        <td>1</td>
+                        <td>
+                          <?php echo $nama_item.' ('.$nama_type.'-'.$nama_merek.'/'.$tahun_buat.')' ?>
+                        </td>
+                        <td>
+                          Rp.<?php echo $harga_pokok ?>
+                        </td>
+                        <td>
+                          <input type="number" class="form-control input-nilai" name="total_price_sale" id="total_price_sale" placeholder="Price Sale" value="<?php echo $total_price_sale; ?>">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          Biaya admin
+                        </td>
+                        <td>
+                          <input type="number" class="form-control input-nilai-khusus" name="biaya_admin" id="biaya_admin" placeholder="Biaya Admin" value="<?php echo $admin_fee->nominal ?>">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Lama Cicilan<span id="warning1" style="margin: 0 10px;"></span></td>
+                        <td>
+                          <input type="number" name="lama_cicilan" class="form-control input-nilai" id="lama_cicilan" value="" placeholder="Cicilan(x)">                          
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td><b>Bayaran Per-bulan (Tanpa Bunga)</b></td>
+                        <td>
+                          <p><b><span id="bayaranpbulantb" class="bayaranpbulantb">0</span>/Bulan</b><input type="hidden" name="bayaranpbulantb" class="bayaranpbulantb"></p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Bunga %</td>
+                        <td>
+                          <input type="number" name="bunga_cicilan" class="form-control input-nilai" id="bunga_cicilan" value="" placeholder="Bunga/bulan(%)">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td><b>Bayaran Per-bulan (Bunga)</b></td>
+                        <td>
+                          <p><b><span class="bayaranpbulanb">0</span>/Bulan<input type="hidden" name="bayaranpbulanb" class="bayaranpbulanb"></b></p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td>DP</td>
+                        <td>
+                          <input type="text" name="dp" class="form-control input-nilai-khusus" id="dp" value="" placeholder="Uang DP">
+                        </td>
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td><p id="txttotalbayarnya">0</p><input type="hidden" name="wajibdibayar" id="wajibdibayar" value=""></td>
+                      </tr>
+                    </table>
+                    <span id="icon-oke"></span>
+                    <span id="payment-info-action"><button class="btn btn-primary btn-konfirmasi-payment">Konfirmasi</button></span>
+                  </td>
                 </tr>
                 
                 <tr id="step3" hidden>
@@ -108,6 +164,10 @@
                 </tr>
                 <tr id="step4" hidden>
                   <td width='200'>Tanggal Sale <?php echo form_error('tanggal_sale') ?></td><td><input type="text" class="form-control" name="tanggal_sale" id="tanggal_sale" placeholder="Tanggal Sale" value="<?php echo $tanggal_sale; ?>"><input type="hidden" name="tanggalsalehidden" id="tanggalsalehidden" value=""></td>
+                </tr>
+                <tr id="step5" hidden>
+                  <td width='200'>Komentar</td>
+                  <td><textarea class="form-control" name="komentar" id="komentar" placeholder="Masukan Keterangan"></textarea></td>
                 </tr>
                 <tr>
                   <td colspan="2" align="center" id="notes">Selesaikan isian diatas terlebih dahulu untuk tahap selanjutnya</td>
@@ -131,20 +191,20 @@
             <table class="table table-bordered table-striped">
                 <tbody>
                     <tr>
-						<td>Nama Pelanggan</td><td><?php echo $nama_pelanggan.' (ID: '.$no_ktp.')' ?></td>
-					</tr>
-					<tr>
-						<td>Item</td><td><?php echo $nama_item ?></td>
-					</tr>
-					<tr>	
-						<td>Tipe Sale</td><td><?php echo $type_sale ?></td>
-					</tr>
-					<tr>	
-						<td>Waktu data masuk</td><td><?php echo $tanggal_sale ?></td>
-					</tr>
-					<tr>	
-						<td>Penginput</td><td><?php echo $nama_user ?></td>
-					</tr>
+            <td>Nama Pelanggan</td><td><?php echo $nama_pelanggan.' (ID: '.$no_ktp.')' ?></td>
+          </tr>
+          <tr>
+            <td>Item</td><td><?php echo $nama_item ?></td>
+          </tr>
+          <tr>  
+            <td>Tipe Sale</td><td><?php echo $type_sale ?></td>
+          </tr>
+          <tr>  
+            <td>Waktu data masuk</td><td><?php echo $tanggal_sale ?></td>
+          </tr>
+          <tr>  
+            <td>Penginput</td><td><?php echo $nama_user ?></td>
+          </tr>
                 </tbody>
             </table>
           </div>
@@ -155,7 +215,7 @@
     </div>
 
     <!-- surveyor -->
-     <!-- <div class="modal fade" id="modal-surveyor">
+     <div class="modal fade" id="modal-surveyor">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -207,75 +267,7 @@
         </div>
       </div>
       
-    </div> -->
-
-
-
-     <!-- <div class="modal fade" id="modal-item">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" arial-label="close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">Add item</h4>
-          </div>
-          <div class="modal-body table-responsive">
-            <table class="table table-bordered table-striped" id="table1">
-                <thead>
-                    <tr>
-                        <th>Kode item</th>
-                        <th>Nama item</th>
-                        <th>Jenis item</th>
-                        <th>Merk</th>
-                        <th>Type</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($item) {
-                      foreach ($item as $key => $data2) { ?>
-                    <tr>
-                      <td><?= $data2->kd_item ?></td>
-                      <td><?= $data2->nama_item ?></td>
-                      <td><?= $data2->nama_jenis_item ?></td>
-                      <td><?= $data2->nama_merek ?></td>
-                      <td><?= $data2->nama_type ?></td>
-                      <td>
-                        <button class="btn btn-xs btn-info" id="pilih"
-                          data-1="<?php echo $data2->item_id ?>"
-                          data-2="<?php echo $data2->nama_item ?>"
-                          data-3="<?php echo $data2->nama_jenis_item ?>"
-                          data-4="<?php echo $data2->nama_merek ?>"
-                          data-5="<?php echo $data2->nama_type ?>"
-                          data-6="<?php echo $data2->kd_item ?>"
-                           data-7="<?php echo $data2->harga_pokok ?>">
-                          <i class="fa fa-check"></i> Select
-                        </button>
-                      </td>
-                    </tr>
-                  <?php }
-                } else {
-                  ?>
-                    <tr>
-                      <td colspan="6" align="center" style="padding: 5em 0;"> Tidak ada item siap jual disini, mulai <span><a class="btn btn-primary btn-xs" href="<?php echo base_url() ?>item/create">tambah item</a></span>
-                      </td>
-                    </tr>
-                  <?php
-                }
-                   ?> 
-
-                </tbody>
-
-            </table>
-            
-          </div>
-          
-        </div>
-      </div>
-      
-    </div> -->
+    </div>
 
 <script src="<?= base_url() ?>assets/vendors/fastclick/lib/fastclick.js"></script>
 <script src="<?= base_url() ?>assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
@@ -292,18 +284,9 @@
       }
 
       $(document).ready(function(){
-        $('#dp').hide(); 
-        $('#lama_cicilan').hide();
-        $('#bunga_cicilan').hide();
         $('#mitra_id').hide();
         $('#karyawan_id').hide();
 
-        var sum = 0;
-  	    $(".input-nilai").each(function(){
-  	        sum += +$(this).val();
-  	    });
-        $("#txttotalbayarnya").text('Rp.' + sum);
-        $("#wajibdibayar").val(sum);
         $('#tanggalsalehidden').val(moment().toISOString())
       });
 
@@ -354,64 +337,97 @@
       $('#tanggalsalehidden').val(start.toISOString())
     });
 
-	$("#sales_referral").change(function () {
-		if ($(this).val() == "" || $(this).val() == "Datang Langsung" ) {
-			$('#mitra_id').hide();
-			$('#karyawan_id').hide();
-		} else if ($(this).val() == "Karyawan"){
-			$('#karyawan_id').show();
-			$('#mitra_id').hide();
-		} else {
-			$('#mitra_id').show();
-			$('#karyawan_id').hide();
-		}
-		stepstatus('2','Memproses')
-	});
+  $("#sales_referral").change(function () {
+    if ($(this).val() == "" || $(this).val() == "Datang Langsung" ) {
+      $('#mitra_id').hide();
+      $('#karyawan_id').hide();
+    } else if ($(this).val() == "Karyawan"){
+      $('#karyawan_id').show();
+      $('#mitra_id').hide();
+    } else {
+      $('#mitra_id').show();
+      $('#karyawan_id').hide();
+    }
+    stepstatus('2','Memproses')
+  });
 
-	function disableeditinfohargakah(answer){
-		$('.tabel-payment-detail').children('tbody').children('tr').find('input').prop('readonly', answer);
-	}
+  function disableeditinfohargakah(answer){
+    $('.tabel-payment-detail').children('tbody').children('tr').find('input').prop('readonly', answer);
+  }
 
-	$(document).on('click', '.btn-konfirmasi-payment', function (e) {
-		e.preventDefault()
-		disableeditinfohargakah(true)
-		$('.tabel-payment-detail tr td input').attr('disabled');
-		$('#icon-oke').html('<i class="fa fa-check" style="font-size: 2em;"></i>')
-		$('#payment-info-action').html('<button class="btn btn-info" id="edit-payment-detail">Edit</button>')
-		stepstatus('3','Memproses')
-	});
+  $(document).on('click','.btn-konfirmasi-payment', function (e) {
+    e.preventDefault()
+    disableeditinfohargakah(true)
+    if ($('.btn-danger').length < 1) {
+      $('.tabel-payment-detail tr td input').attr('disabled');
+      stepstatus('3','Memproses')
+    }
+    $('#icon-oke').html('<i class="fa fa-check" style="font-size: 2em;"></i>')
+    $('#payment-info-action').html('<button class="btn btn-info" id="edit-payment-detail">Edit</button>')
+  });
 
-	$(document).on('click','#edit-payment-detail', function (e) {
-		e.preventDefault()
-		disableeditinfohargakah(false)
+  $(document).on('click','#edit-payment-detail', function (e) {
+    e.preventDefault()
+    disableeditinfohargakah(false)
     $('#icon-oke').html('')
-		$('#payment-info-action').html('<button class="btn btn-primary btn-konfirmasi-payment">Konfirmasi</button>')
-	})
+    $('#payment-info-action').html('<button class="btn btn-primary btn-konfirmasi-payment">Konfirmasi</button>')
+  })
 
 
-	$(document).on("propertychange change click keyup input paste ready", ".input-nilai", function() {
-	    var sum = 0;
-	    $(".input-nilai").each(function(){
-	        sum += +$(this).val();
-	    });
-	    $("#txttotalbayarnya").text('Rp.' + sum);
-      $("#wajibdibayar").val(sum);
-	});
+  $(document).on('propertychange change click keyup input paste ready','.input-nilai-khusus', function() {
+    var dp = $('#dp').val()
+    var biayaadmin = $('.input-nilai-khusus').val()
+
+    $('#txttotalbayarnya').text(parseInt(dp) + parseInt(biayaadmin))
+    $('#wajibdibayar').val(parseInt(dp) + parseInt(biayaadmin))
+  })
+
+  $(document).on("propertychange change click keyup input paste ready", ".input-nilai", function() {
+      var sum = 0;
+      $(".input-nilai").each(function(){
+          sum += +$(this).val();
+      });
+
+      var cicilan = $('#lama_cicilan').val()
+
+      var divided = parseInt(sum)/parseInt(cicilan)
 
 
-	$("#jenis_pembayaran").change(function () {
-		stepstatus('4','Memproses')
-	})
-	
-	$("#tanggal_sale").change(function () {
-		$('#notes').html(`
+      if (!divided || divided == Infinity) {
+        $('#warning1').html('<i class="fa fa-warning" style="color: #e2c227;"></i>')
+        $('.bayaranpbulantb').text(0);
+        $('.bayaranpbulantb').val(0);
+      } else {
+        $('#warning1').html('')
+        $(".bayaranpbulantb").text(divided.toFixed(2));
+        $(".bayaranpbulantb").val(divided.toFixed(2));
+      }
+
+      var bunga = $('#bunga_cicilan').val()
+      var resultnya = parseInt(divided) + (parseInt(divided) * (parseFloat(bunga)/100))
+
+      $('.bayaranpbulanb').text(resultnya)
+      $('.bayaranpbulanb').val(resultnya)
+  });
+
+
+  $("#jenis_pembayaran").change(function () {
+    stepstatus('4','Memproses')
+  })
+  
+  $("#tanggal_sale").change(function () {
+    stepstatus('5','Memproses')    
+  });
+
+  $('#komentar').change(function() {
+    $('#notes').html(`
                 <td colspan="2" align="center">
                   <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>" />
                   <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i>Simpan</button>
                   <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Batal</a>
                 </td>
               `)
-	});
+  })
 
         $(document).on('click','#pilih',function(){
           $('#item_id').val($(this).data('1'))
