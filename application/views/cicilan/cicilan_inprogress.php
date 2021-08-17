@@ -92,7 +92,4 @@
 		    return 'BElum smua? yakin?'
 		}
 	};
-
-	$(document).ready(function() {
-	})
 </script>

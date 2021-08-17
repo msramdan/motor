@@ -78,6 +78,7 @@ class Sale_model extends CI_Model
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id', 'left');
         $this->db->join('item', 'item.item_id = sale.item_id', 'left');
         $this->db->order_by($this->id, $this->order);
+        $this->db->where('item.unit_id', $this->session->userdata('unit_id'));
         $this->db->group_start();
         $this->db->like('sale_id', $q);
     	$this->db->or_like('invoice', $q);
@@ -89,88 +90,6 @@ class Sale_model extends CI_Model
     	$this->db->or_like('user.nama_user', $q);
         $this->db->group_end();
     	$this->db->limit($limit, $start);
-        return $this->db->get($this->table)->result();
-    }
-
-    // get total rows
-    function total_rowsacl($q = NULL) {
-        $this->db->like('sale_id', $q);
-        $this->db->or_like('invoice', $q);
-        $this->db->or_like('pelanggan_id', $q);
-        $this->db->or_like('item_id', $q);
-        $this->db->or_like('total_price_sale', $q);
-        $this->db->or_like('type_sale', $q);
-        $this->db->or_like('tanggal_sale', $q);
-        $this->db->or_like('user_id', $q);
-        $this->db->where('type_sale','Kredit');
-        $this->db->from($this->table);
-        return $this->db->count_all_results();
-    }
-
-    // get data with limit and search
-    function get_limit_dataacl($limit, $start = 0, $q = NULL) {
-        $this->db->join('user', 'user.user_id = sale.user_id', 'left');
-        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id', 'left');
-        $this->db->join('item', 'item.item_id = sale.item_id', 'left');
-        $this->db->order_by($this->id, $this->order);
-        $this->db->group_start();
-        $this->db->like('sale_id', $q);
-        $this->db->or_like('invoice', $q);
-        $this->db->or_like('pelanggan.nama_pelanggan', $q);
-        $this->db->or_like('item.nama_item', $q);
-        $this->db->or_like('total_price_sale', $q);
-        $this->db->or_like('type_sale', $q);
-        $this->db->or_like('tanggal_sale', $q);
-        $this->db->or_like('user.nama_user', $q);
-        $this->db->group_end();
-        $this->db->where('type_sale','Kredit');
-        $this->db->limit($limit, $start);
-        return $this->db->get($this->table)->result();
-    }
-
-    function total_rowsapprccl($q = NULL) {
-
-        $where = array(
-            'type_sale' => 'Kredit',
-            'status_sale' => 'Dalam Review'
-        );
-
-        $this->db->like('sale_id', $q);
-        $this->db->or_like('invoice', $q);
-        $this->db->or_like('pelanggan_id', $q);
-        $this->db->or_like('item_id', $q);
-        $this->db->or_like('total_price_sale', $q);
-        $this->db->or_like('type_sale', $q);
-        $this->db->or_like('tanggal_sale', $q);
-        $this->db->or_like('user_id', $q);
-        $this->db->where($where);
-        $this->db->from($this->table);
-        return $this->db->count_all_results();
-    }
-
-    // get data with limit and search
-    function get_limit_dataapprccl($limit, $start = 0, $q = NULL) {
-        $where = array(
-            'type_sale' => 'Kredit',
-            'status_sale' => 'Dalam Review'
-        );
-
-        $this->db->join('user', 'user.user_id = sale.user_id', 'left');
-        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id', 'left');
-        $this->db->join('item', 'item.item_id = sale.item_id', 'left');
-        $this->db->order_by($this->id, $this->order);
-        $this->db->group_start();
-        $this->db->like('sale_id', $q);
-        $this->db->or_like('invoice', $q);
-        $this->db->or_like('pelanggan.nama_pelanggan', $q);
-        $this->db->or_like('item.nama_item', $q);
-        $this->db->or_like('total_price_sale', $q);
-        $this->db->or_like('type_sale', $q);
-        $this->db->or_like('tanggal_sale', $q);
-        $this->db->or_like('user.nama_user', $q);
-        $this->db->group_end();
-        $this->db->where($where);
-        $this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

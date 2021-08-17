@@ -47,16 +47,15 @@ class Approval_lists_model extends CI_Model
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
+        $this->db->join('sale','sale.invoice = approval_lists.invoice_id');
+        $this->db->join('item','item.item_id = sale.item_id', 'left');
         $this->db->order_by($this->id, $this->order);
         $this->db->like('approval_id', $q);
-	$this->db->or_like('invoice_id', $q);
-	$this->db->or_like('approve_by', $q);
-    $this->db->or_like('jenis_tindakan', $q);
-	$this->db->or_like('approval_status', $q);
-	$this->db->or_like('keterangan', $q);
-	$this->db->or_like('komentar', $q);
-	$this->db->limit($limit, $start);
-    $this->db->join('sale','sale.invoice = approval_lists.invoice_id');
+    	$this->db->or_like('invoice_id', $q);
+    	$this->db->or_like('approve_by', $q);
+        $this->db->or_like('jenis_tindakan', $q);
+    	$this->db->or_like('approval_status', $q);
+    	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }
 

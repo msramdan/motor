@@ -13,6 +13,7 @@ class R_cicilan extends CI_Controller
         $this->load->model('Sale_detail_model');
         $this->load->model('Dashboard_model');
         $this->load->model('Item_model');
+        $this->load->model('Denda_model');
         $this->load->model('karyawan_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Mitra_model');
@@ -399,8 +400,6 @@ class R_cicilan extends CI_Controller
         $penginput = $this->fungsi->user_login()->username;
         $label = '';
 
-        $lunaskah = 'belum';
-
         $statusbayarancicilan = '';
 
         $cek = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
@@ -427,65 +426,15 @@ class R_cicilan extends CI_Controller
                 'tanggal_dibayar' => $tglinput,
                 'penginput' => $penginput
             );
-            $this->Sale_detail_model->update($sale_detail_id,$dttotalcicilan);
+            // $this->Sale_detail_model->update($sale_detail_id,$dttotalcicilan);
 
         }
 
-        $this->update_sale_dibayar($invoice_id);
+        // $this->update_sale_dibayar($invoice_id);
 
+        $cicilanlunaskah = $this->cekCicilanLunas($invoice_id);
 
-        $cekstatuslunas = $this->Sale_detail_model->cekstatuslunas($invoice_id);
-
-        $denda = false;
-
-        $datatunggakan = 'tidak ada';
-
-        if ($cekstatuslunas->telah_bayar == $cekstatuslunas->total_bayar) {
-
-            // memang bayar pas, tapi apakah kamu telat bayarnya?
-            $jatuhtempo = new DateTime($cek->jatuh_tempo);
-            $later = new DateTime();
-            $abs_diff = $later->diff($jatuhtempo)->format("%r%a");
-            if ($abs_diff < 0) {
-                //check
-                $cekdenda = $this->Denda_model->get_by_id($sale_detail_id);
-
-                if ($cekdenda) {
-                    $datatunggakan = array(
-                        'sale_detail_id' => $cekdenda->sale_detail_id,
-                        'jumlah_telat_hari' => $cekdenda->jumlah_telat_hari,
-                        'jumlah_denda' => $cekdenda->jumlah_denda,
-                        'status' => $cekdenda->status
-                    );
-                }
-
-                if (!$cekdenda) {
-                    $datatunggakan = array(
-                        'sale_detail_id' => $sale_detail_id,
-                        'jumlah_telat_hari' => abs($abs_diff),
-                        'jumlah_denda' => (0.05 * intval($cek->harus_dibayar)) * abs($abs_diff),
-                        'status' => 'belum dibayar'
-                    );
-                    $this->Denda_model->insert($datatunggakan);
-                }
-                $denda = true;
-            }
-
-
-            $lunaskah = 'Lunas';
-            $datatoupdate = array(
-                'status_sale' => 'Selesai',
-            );
-
-            $this->Sale_model->update_data_dibayar($invoice_id, $datatoupdate);
-
-        } else {
-            $datatoupdate = array(
-                'status_sale' => 'Dalam Cicilan',
-            );
-
-            $this->Sale_model->update_data_dibayar($invoice_id, $datatoupdate);            
-        }
+        $dendadetectionresult = $this->cekDenda($cek,$sale_detail_id);
 
         $test = 'no';
 
@@ -496,10 +445,9 @@ class R_cicilan extends CI_Controller
             'tglinput' => $tglinput,
             'penginput' => $penginput,
             'label' => $label,
-            'lunaskah' => $lunaskah,
+            'lunaskah' => $cicilanlunaskah,
             'statusbayarcicilanini' => $statusbayarancicilan,
-            'denda' => $denda,
-            'datatunggakan' => $datatunggakan,
+            'denda' => $dendadetectionresult,
             'test' => json_encode($test)
         );
 
@@ -533,8 +481,6 @@ class R_cicilan extends CI_Controller
         
     }
 
-    // stil failed
-
     public function updateNextCicilan($invoice)
     {
         $deteksipembayranyangbelumreadylast = $this->Sale_detail_model->deteksidatacicilan($invoice, 'belum siap dibayar');
@@ -543,9 +489,77 @@ class R_cicilan extends CI_Controller
             $updatenextcicilan = array(
                 'status' => 'siap dibayar',
             );
-            $this->Sale_detail_model->update($deteksipembayranyangbelumreadylast->sale_detail_id, $updatenextcicilan);
+            // $this->Sale_detail_model->update($deteksipembayranyangbelumreadylast->sale_detail_id, $updatenextcicilan);
 
             return $deteksipembayranyangbelumreadylast;
+        }
+    }
+
+    public function cekDenda($cek,$sale_detail_id)
+    {
+        $jatuhtempo = new DateTime($cek->jatuh_tempo);
+        $later = new DateTime();
+        $abs_diff = $later->diff($jatuhtempo)->format("%r%a");
+        
+        $cekdenda = $this->Denda_model->get_by_id($sale_detail_id);
+
+        if ($cekdenda) {
+            if ($cekdenda->status == 'dibayar') {
+                return 'denda lunas';
+            }
+
+            if ($cekdenda->status == 'belum dibayar') {
+                return 'denda belum lunas';
+                // $datatunggakan = array(
+                //     'jumlah_telat_hari' => $cekdenda->jumlah_telat_hari,
+                //     'jumlah_denda' => $cekdenda->jumlah_denda,
+                //     'status' => $cekdenda->status
+                // );
+                // $this->Denda_model->update($cekdenda->sale_detail_id, $datatunggakan);
+                // $denda = $datatunggakan;
+            }
+        }
+
+        if (!$cekdenda) {
+            if ($abs_diff < 0) {
+                $datatunggakan = array(
+                    'sale_detail_id' => $sale_detail_id,
+                    'jumlah_telat_hari' => abs($abs_diff),
+                    'jumlah_denda' => intval((0.05 * intval($cek->harus_dibayar)) * abs($abs_diff)),
+                    'status' => 'belum dibayar'
+                );
+                // $this->Denda_model->insert($datatunggakan);
+                $denda = $datatunggakan;
+                return json_encode($datatunggakan);
+            }
+            return 'tidak ada denda';
+        }
+    }
+
+    public function cekCicilanLunas($invoice_id)
+    {
+        $cekstatuslunas = $this->Sale_detail_model->cekstatuslunas($invoice_id);
+
+        // $cekdendaberdasarkaninvoice = $this->Denda_model->cekdendaberdasarkaninvoice($invoide_id);
+
+        $datatunggakan = 'tidak ada';
+        if ($cekstatuslunas->telah_bayar == $cekstatuslunas->total_bayar) {
+
+            if ($denda == 'denda lunas' || $denda == 'tidak ada denda') {
+                $lunaskah = 'Lunas';
+                $datatoupdate = array(
+                    'status_sale' => 'Selesai',
+                );
+            }
+            // $this->Sale_model->update_data_dibayar($invoice_id, $datatoupdate);
+            return $lunaskah;
+        } else {
+            $lunaskah = 'belum lunas';
+            $datatoupdate = array(
+                'status_sale' => 'Dalam Cicilan',
+            );
+            // $this->Sale_model->update_data_dibayar($invoice_id, $datatoupdate);
+            return $lunaskah;
         }
     }
 

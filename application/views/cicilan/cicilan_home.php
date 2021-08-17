@@ -111,16 +111,16 @@
 
                 console.log(data)
 
-                if (dt.datatunggakan != 'tidak ada') {
+                if (dt.denda != 'tidak ada denda') {
                     thisel.parents('.input-group').prev('.bton-action').children('span.button-bayar-cicilan-wrapper').html('<button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button>')
+
+                    alert(dt.denda)
                 }
 
 
                 if (dt.statusbayarcicilanini == 'dibayar') {
                     refreshtablecicilan(invoice)
                 }
-
-                alert(dt.test)
 
                 thisel.parents('.input-group').prev('.bton-action').children('.btn-show-input').css('display','unset')
                 thisel.parents('.input-group').prev('.bton-action').children('span.status').html(dt.label)

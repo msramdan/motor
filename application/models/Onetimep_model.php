@@ -51,6 +51,7 @@ class Onetimep_model extends CI_Model
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id', 'left');
         $this->db->join('item', 'item.item_id = sale.item_id', 'left');
         $this->db->order_by('sale_id', $this->order);
+        $this->db->where('item.unit_id', $this->session->userdata('unit_id'));
         $this->db->group_start();
         $this->db->like('sale_id', $q);
     	$this->db->or_like('invoice', $q);

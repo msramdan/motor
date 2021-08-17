@@ -58,6 +58,7 @@
             </tr><?php
             foreach ($approval_lists_data as $approval_lists)
             {
+                if ($approval_lists->unit_id === $this->session->userdata('unit_id')) {
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
@@ -73,23 +74,14 @@
 			<td><?php echo $approval_lists->komentar ?></td>
 			<td style="text-align:center" width="200px">
 				<?php
-                // if ($approval_lists->jenis_tindakan == 'Pembayaran Cash' || $approval_lists->jenis_tindakan == 'Pembayaran Kredit') {
-                //      echo show_button('Approval_cicilan', 'read', $approval_lists->invoice_id);
-                //  } 
-
-                // echo show_button($menu_accessed,'update_harga',encrypt_url($item->item_id), NULL, 'fa-pencil-square-o');
-                // echo show_button($menu_accessed, 'read', $item->item_id);
-                // echo show_button($menu_accessed, 'update', $item->item_id);
-                // echo show_button($menu_accessed, 'delete', $item->item_id);
-				echo anchor(site_url('Approval_cicilan/read/'.$approval_lists->invoice_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
-				// echo '  '; 
-				// echo anchor(site_url('approval_lists/update/'.$approval_lists->approval_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				// echo '  '; 
-				// echo anchor(site_url('approval_lists/delete/'.$approval_lists->approval_id),'<i class="fa fa-trash-o" aria-hidden="true"></i>','class="btn btn-danger btn-sm" Delete','onclick="javasciprt: return confirm(\'Are You Sure ?\')"'); 
+                echo show_button($menu_accessed, 'read', $approval_lists->invoice_id);
+                
+				//echo anchor(site_url('Approval_lists/read/'.$approval_lists->invoice_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
 				?>
 			</td>
 		</tr>
                 <?php
+                }
             }
             ?>
         </table>

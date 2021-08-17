@@ -82,6 +82,11 @@ class Denda_model extends CI_Model
         return $kd;
     }
 
+    function cekdendaberdasarkaninvoice()
+    {
+        $this->db->select('*')->from($this->table)->where('invoice');
+    }
+
 }
 
 /* End of file Grup_model.php */
