@@ -109,9 +109,7 @@
             success: function(data){
                 const dt = JSON.parse(data)
 
-                console.log(data)
-
-                if (dt.denda != 'tidak ada denda') {
+                if (typeof dt.denda !== 'string' || dt.denda === 'denda belum lunas') {
                     thisel.parents('.input-group').prev('.bton-action').children('span.button-bayar-cicilan-wrapper').html('<button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button>')
 
                     alert(dt.denda)
@@ -135,6 +133,13 @@
                     Swal.fire({
                       icon: 'success',
                       title: "Cicilan Lunas"
+                    })
+                }
+
+                if (dt.lunaskah == 'Lunas dengan denda') {
+                    Swal.fire({
+                      icon: 'warning',
+                      title: "Lunas tapi masih ada denda yang belom kebayar"
                     })
                 }
             }

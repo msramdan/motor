@@ -55,23 +55,39 @@
 								}
 
 							?>
-							<button type="button" class="btn btn-primary btn-xs btn-show-input"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+							<?php
+							if ($lc->total_bayar == $lc->harus_dibayar) {
+								?>
+								<a type="button" class="btn btn-primary btn-xs" href="<?php echo base_url().'r_cicilan/kwitansi/'.$lc->pembayaran_ke.'/'.$lc->sale_id ?>"><i class="fa fa-print"></i></a>
+								<?php
+							} else {
+								?>
+									<button type="button" class="btn btn-primary btn-xs btn-show-input"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+								<?php
+							}
+							?>
 							<span class="button-bayar-cicilan-wrapper"></span>
 						</div>
-		                <div class="input-group" style=" max-width: 220px;
-						    transition: all 250ms ease-in-out;
-						    margin-top: -6vh;
-						    position: relative;
-						    z-index: 1;
-						    margin-bottom: 0;">
-						    <input type="hidden" name="pembayaranke" id="pembayaranke" value="<?php echo $lc->pembayaran_ke ?>">
-		                    <input type="text" class="form-control" value="<?php echo $lc->total_bayar ?>">
-		                    <span class="input-group-btn container-submit-cicilan-action">
-								<button type="button" class="btn btn-primary submit-cicilan"><i class="fa fa-check"></i></button>
-								<button type="button" class="btn btn-danger cancel-input-cicilan"><i class="fa fa-times"></i></button>
-								<input type="hidden" name="id_cicilan" class="id_cicilan" value="<?php echo $lc->sale_detail_id ?>">
-							</span>
-		                </div>
+						<?php
+							if ($lc->total_bayar != $lc->harus_dibayar) {
+								?>
+								<div class="input-group" style=" max-width: 220px;
+								    transition: all 250ms ease-in-out;
+								    margin-top: -6vh;
+								    position: relative;
+								    z-index: 1;
+								    margin-bottom: 0;">
+								    <input type="hidden" name="pembayaranke" id="pembayaranke" value="<?php echo $lc->pembayaran_ke ?>">
+				                    <input type="text" class="form-control" value="<?php echo $lc->total_bayar ?>">
+				                    <span class="input-group-btn container-submit-cicilan-action">
+										<button type="button" class="btn btn-primary submit-cicilan"><i class="fa fa-check"></i></button>
+										<button type="button" class="btn btn-danger cancel-input-cicilan"><i class="fa fa-times"></i></button>
+										<input type="hidden" name="id_cicilan" class="id_cicilan" value="<?php echo $lc->sale_detail_id ?>">
+									</span>
+				                </div>
+								<?php
+							}
+						?>
 					</td>
 					<td>
 						<span class="txttgldibayar">

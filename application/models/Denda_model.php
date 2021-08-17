@@ -25,7 +25,7 @@ class Denda_model extends CI_Model
     // get data by id
     function get_by_id($id)
     {
-        $this->db->where($this->id, $id);
+        $this->db->where('sale_detail_id', $id);
         return $this->db->get($this->table)->row();
     }
     

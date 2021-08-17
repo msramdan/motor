@@ -122,6 +122,19 @@ class Sale_detail_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    function ceksemuadendapadainvoiceini($invoice)
+    {
+        // SELECT * FROM sale_detail JOIN denda ON denda.sale_detail_id = sale_detail.sale_detail_id WHERE sale_id = 'S1708210002';
+        $where = array(
+            'sale_id' => $invoice,
+            'denda.status' => 'belum dibayar'
+        );
+        $this->db->select('*')
+            ->from('sale_detail')
+            ->join('denda','denda.sale_detail_id = sale_detail.sale_detail_id')
+            ->where($where);
+        return $this->db->get()->num_rows();
+    }
 }
 
 /* End of file Sale_detail_model.php */

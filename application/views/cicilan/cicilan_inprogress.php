@@ -54,6 +54,9 @@
                         </div>
                         <small><?php echo $progresscicilan->total_dibayar; ?>/<?php echo $progresscicilan->total_angsuran; ?> Terbayar</small>
                     </div>
+                    <div>
+                    	<a class="btn btn-primary" href="<?php echo base_url().'r_cicilan/cetak_kartupiutang/'.$invoice_id ?>">Kartu Piutang</a>
+                    </div>
 			    </div>
 			</div>
 		</div>
