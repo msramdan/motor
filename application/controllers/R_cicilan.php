@@ -288,12 +288,18 @@ class R_cicilan extends CI_Controller
             $month = strtotime("+1 month", $month);
         }
 
+        $ket = $this->input->post('komentar',TRUE);
+
+        if ($ket == null) {
+            $ket = 'Tidak ada';
+        }
+
         $approval_stage = $this->custom_authorization->addApprovalby($totaltransaksi);
         $data = array(
             'invoice_id' => $id,
             'approve_by' => $approval_stage,
             'approval_status' => 'Dalam Review',
-            'keterangan' => $this->input->post('komentar',TRUE),
+            'keterangan' => $ket,
             'jenis_tindakan' => 'Pembayaran Kredit',
             'komentar' => '',
             'unit_id' => $this->session->userdata('unit_id')

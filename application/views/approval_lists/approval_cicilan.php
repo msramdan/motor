@@ -3,14 +3,14 @@
 		<div class="x_panel">
 	        <h2 style="margin-top:0px">Overview</h2>
 	        <table class="table">
-			    <tr><td>Invoice</td><td><?php echo $invoice; ?></td></tr>
-			    <tr><td><b>Pelanggan</b></td><td><?php echo $nama_pelanggan; ?></td></tr>
-			    <tr><td><b>Alamat</b></td><td><?php echo $alamat_domisili; ?></td></tr>
-			    <tr><td>Jenis Barang</td><td><?php echo $nama_jenis_item; ?></td></tr>
-			    <tr><td>Merk</td><td><?php echo $nama_merek; ?></td></tr>
-			    <tr><td>Type</td><td><?php echo $nama_type; ?></td></tr>
-			    <tr><td>No. BPKB</td><td><?php echo $no_bpkb; ?></td></tr>
-			    <tr><td>Warna</td><td><?php echo $warna1.'/'.$warna2; ?></td></tr>
+			    <tr><td>Invoice</td><td><?php echo $invoice; ?></td><td></td></tr>
+			    <tr><td><b>Pelanggan</b></td><td><?php echo $nama_pelanggan; ?></td><td><span><a class="btn btn-primary btn-xs" href="<?php echo base_url().'pelanggan/read/'.$pelanggan_id ?>" target="_blank" and rel="noopener noreferrer"><i class="fa fa-eye"></i></a></span></td></tr>
+			    <tr><td><b>Alamat</b></td><td><?php echo $alamat_domisili; ?></td><td></td></tr>
+			    <tr><td>Jenis Barang</td><td><?php echo $nama_jenis_item; ?></td><td></td></tr>
+			    <tr><td>Merk</td><td><?php echo $nama_merek; ?></td><td></td></tr>
+			    <tr><td>Type</td><td><?php echo $nama_type; ?></td><td></td></tr>
+			    <tr><td>No. BPKB</td><td><?php echo $no_bpkb; ?></td><td><span><a class="btn btn-primary btn-xs" href="<?php echo base_url().'item/read/'.$item_id ?>" target="_blank" and rel="noopener noreferrer"><i class="fa fa-eye"></i></a></span></td></tr>
+			    <tr><td>Warna</td><td><?php echo $warna1.'/'.$warna2; ?></td><td></td></tr>
 			    <tr><td>Status Approval</td><td>
 			    	<ul>
 				    	<?php
@@ -39,7 +39,6 @@
 			    				<tr>
 				                  <th>Nama Berkas</th>
 				                  <th>Download</th>
-				                  <th>Hapus</th>
 				                </tr>
 				                <?php foreach ($berkas->result() as $key => $data) { ?>
 				    			<tr>
@@ -116,22 +115,103 @@
     	<p><b>Catatan:</b> <?php echo $catatan ?></p>
     </div>
 </div>
-<a href="<?php echo base_url() ?>Approval_lists" class="btn btn-secondary">Kembali</a>
-<?php
-	// echo $result;
 
-	if ($result == 'no') {
-		?>
-		<form action="yes" method="post">
-			<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
-			<button type="submit" class="btn btn-warning">Setujui</button>
-		</form>
+<div class="form-group">
+	<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+	  <a href="<?php echo base_url() ?>Approval_lists" class="btn btn-secondary">Kembali</a>
+	  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
+	</div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-sm">
+	  <div class="modal-content">
+
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+	      </button>
+	      <h4 class="modal-title" id="myModalLabel2">Pilih Tindakan</h4>
+	    </div>
+	    <div class="modal-body">
+	    <center>
+			<div class="btn-group button-action-choice" style="margin: auto;">
+				<button class="btn btn-primary btn-setuju btn-lg" style="width: 90px;"><i class="fa fa-check"></i><p>Setuju</p></button>
+		        <button class="btn btn-danger btn-tolak btn-lg" style="width: 90px;"><i class="fa fa-times"></i><p>Tolak</p></button>
+				<button class="btn btn-secondary btn-lg" data-dismiss="modal" style="width: 90px;"><i class="fa fa-sign-out"></i><p>Batal</p></button>
+	      	</div>
+
+	      	<div class="group-setuju btn-group-confirmation-action" style="display: none;">
+	      		<?php
+	      		if ($result == 'no') {
+					?>
+					<form action="yes" method="post">
+						<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
+						<div class="btn-group">
+							<button type="submit" class="btn btn-secondary btn-lg" style="width: 90px;"><i class="fa fa-sign-out"></i><p>Ya</p></button>
+							<button class="btn btn-danger btn-lg btn-cancel-confirmation" style="width: 90px;"><i class="fa fa-times"></i><p>Batal</p></button>
+						</div>
+					</form>
+					<?php
+					} else {
+						?>
+						<h4>Tidak dapat melakukan tindakan tersebut</h4>
+						<?php
+					}
+				?>
+	      	</div>
+
+	      	<div class="group-tolak btn-group-confirmation-action" style="display: none;">
+	      		<?php if ($result == 'no') {
+	      			?>
+	      			<form action="no" method="post">
+						<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
+						<textarea placeholder="alasan tolak" name="komentar" id="komentar" rows="3" style="resize: none; margin: 1vh 0;"></textarea>
+						<div class="btn-group">
+							<button type="submit" disabled class="btn btn-secondary btn-lg btn-init-tolak" style="width: 90px;"><i class="fa fa-sign-out"></i><p>Ya</p></button>
+							<button class="btn btn-danger btn-lg btn-cancel-confirmation" style="width: 90px;"><i class="fa fa-times"></i><p>Batal</p></button>
+						</div>
+					</form>
+	      			<?php
+					} else {
+						?>
+						<h4>Tidak dapat melakukan tindakan tersebut</h4>
+	      			<?php
+	      		} ?>
+	      	</div>
+      	</center>
 		
-		<form action="no" method="post">
-			<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
-			<input type="text" placeholder="alasan tolak" name="komentar" id="komentar">
-			<button type="submit" class="btn btn-danger">Tolak</button>	
-		</form>
-		<?php
-	}
-?>
+	    </div>
+	  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+	$('.btn-setuju').click(function() {
+		$('.button-action-choice').css('display','none')
+		$('.group-setuju').css('display','inline-block')
+		$('#myModalLabel2').text('Anda yakin? (Setujui Approval)')
+	})
+
+	$('.btn-tolak').click(function() {
+		$('.button-action-choice').css('display','none')
+		$('.group-tolak').css('display','inline-block')
+		$('#myModalLabel2').text('Anda yakin? (Tolak Approval)')
+	})
+
+	$('.btn-cancel-confirmation').click(function(e) {
+		e.preventDefault()
+		$('#myModalLabel2').text('Pilih Tindakan')
+		$('.btn-group-confirmation-action').css('display','none')
+		$('.button-action-choice').css('display','inline-block')
+	})
+
+	$('#komentar').on('input',function() {
+		if (!$(this).val()) {
+			$('.btn-init-tolak').attr("disabled", true);
+		} else {
+			$('.btn-init-tolak').removeAttr("disabled");
+		}
+	});
+
+
+</script>
