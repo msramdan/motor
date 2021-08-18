@@ -20,7 +20,7 @@ class Approval_lists_model extends CI_Model
     {
         $this->db->order_by($this->id, $this->order);
         $this->db->join('sale','sale.invoice = approval_lists.invoice_id');
-        $this->db->where('approval_lists.unit_id', $this->session->userdata('unit_id'));
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
         return $this->db->get($this->table)->result();
     }
 
@@ -48,14 +48,15 @@ class Approval_lists_model extends CI_Model
 
     // get data with limit and search
     function get_limit_data($limit, $start = 0, $q = NULL) {
-        $this->db->join('sale','sale.invoice = approval_lists.invoice_id');
-        $this->db->where('approval_lists.unit_id', $this->session->userdata('unit_id'));
         $this->db->order_by($this->id, $this->order);
+        $this->db->where('unit_id', $this->session->userdata('unit_id'));
+        $this->db->group_start();
         $this->db->like('approval_id', $q);
     	$this->db->or_like('invoice_id', $q);
     	$this->db->or_like('approve_by', $q);
         $this->db->or_like('jenis_tindakan', $q);
     	$this->db->or_like('approval_status', $q);
+        $this->db->group_end();
     	$this->db->limit($limit, $start);
         return $this->db->get($this->table)->result();
     }

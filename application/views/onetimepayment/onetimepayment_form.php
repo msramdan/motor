@@ -404,17 +404,17 @@
 
 	$("#jenis_pembayaran").change(function () {
 		stepstatus('4','Memproses')
-	})
-	
-	$("#tanggal_sale").change(function () {
-		$('#notes').html(`
+
+    setTimeout(function(){
+      $('#notes').html(`
                 <td colspan="2" align="center">
                   <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>" />
                   <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i>Simpan</button>
                   <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Batal</a>
                 </td>
               `)
-	});
+    },3000)
+	})
 
         $(document).on('click','#pilih',function(){
           $('#item_id').val($(this).data('1'))

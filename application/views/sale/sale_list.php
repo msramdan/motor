@@ -105,7 +105,7 @@
                 }
                 else
                 {
-                    echo show_button('R_cicilan', 'update', $sale->invoice);
+                    echo show_button('R_onetimep', 'update', $sale->invoice);
                 }
                 if ($sale->status_sale !== 'Dalam Review') {
                     echo show_button($menu_accessed, 'delete', $sale->sale_id);

@@ -25,7 +25,7 @@ class R_onetimep extends CI_Controller
         $v = array(
             'invoice_id' => $this->session->flashdata('invoicenya')
         );
-        $this->template->load('template','onetimepayment/onetimepayment_home');
+        $this->template->load('template','onetimepayment/onetimepayment_home', $v);
     }
 
     public function update($invoice)
@@ -417,7 +417,7 @@ class R_onetimep extends CI_Controller
         $karyawan = $this->karyawan_model->get_all();
         $jenis_pembayaran = $this->Jenis_pembayaran_model->get_all();
         $mitra = $this->Mitra_model->get_all();
-        if($row)
+        if($row && $row->unit_id === $this->session->userdata('unit_id'))
         {
             if ($row->status_sale === 'Belum Dibayar' && $row->type_sale === 'Cash') {
                 $fetched = array(
@@ -506,6 +506,14 @@ class R_onetimep extends CI_Controller
                     'user_id' => $row->nama_user,
                 );
                 $this->load->view('onetimepayment/onetimepayment_read', $sajidata);
+            }
+
+            if ($row->type_sale === 'Kredit') {
+                
+                echo '  <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
+                        <div><i class="fa fa-times" style="font-size: 65px"></i></div>
+                        <h3 style="color: #9d9d9d;s">Data '.$invoice.' Tidak Ditemukan</h3>
+                    <div>';
             }
         }
         else

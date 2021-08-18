@@ -113,6 +113,14 @@ class R_cicilan extends CI_Controller
             if ($row->status_sale === 'Selesai' && $row->type_sale === 'Kredit') {
                 $this->show_cicilanfinalinfo($invoice);
             }
+
+            if ($row->type_sale === 'Cash') {
+                
+                echo '  <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
+                        <div><i class="fa fa-times" style="font-size: 65px"></i></div>
+                        <h3 style="color: #9d9d9d;s">Data '.$invoice.' Tidak Ditemukan</h3>
+                    <div>';
+            }
         }
         else
         {

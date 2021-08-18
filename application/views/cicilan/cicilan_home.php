@@ -14,9 +14,9 @@
                         </span>
                     </div>
                     <div id="infoinvoicewrapper" style="margin-top: 3vh;">
-                        <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
-                            <div><i class="fa fa-search" style="font-size: 65px"></i></div>
-                            <h3 style="color: #9d9d9d;s">Data invoice akan muncul disini</h3>
+                        <div class="info" style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
+                            <div class="icon"><i class="fa fa-search" style="font-size: 65px"></i></div>
+                            <h3 class="title" style="color: #9d9d9d;s">Data invoice akan muncul disini</h3>
                         <div>
                     </div>
                 </div>
@@ -29,6 +29,10 @@
 
     const initsearch = () => {
         const invoice = $('#tbinvoice').val()
+        $('#infoinvoicewrapper').html(`<div class="info" style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
+                            <div class="icon"><i class="fa fa-circle-o-notch fa-spin" style="font-size: 65px"></i></div>
+                            <h3 class="title" style="color: #9d9d9d;s">Mencari data...</h3>
+                        <div>`)
         $.ajax({
             type : "POST",
             url  : "<?php echo base_url() ?>/R_cicilan/searchInvoice",
@@ -37,16 +41,24 @@
             },
             success: function(data){
                 // const dt = JSON.parse(data)
-                $('#infoinvoicewrapper').html(data);
+                setTimeout(function(){
+                    $('#infoinvoicewrapper').html(data);
+                },2000)
+            },
+            error: function(e){
+              setTimeout(function(){
+                    $('#infoinvoicewrapper').html('Server mengalami masalah, silahkan coba lagi');
+                },2000)
             }
         });
     }
+
     $(document).ready(function(){
         if ($('#tbinvoice').val()) {
-            alert('it has value!!!')
+            console.log('it has value!!!')
             initsearch()
         } else {
-            alert('wohooww')
+            console.log('wohooww')
         }
     })
 
