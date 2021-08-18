@@ -58,7 +58,6 @@
             </tr><?php
             foreach ($approval_lists_data as $approval_lists)
             {
-                if ($approval_lists->unit_id === $this->session->userdata('unit_id')) {
                 ?>
                 <tr>
 			<td width="10px"><?php echo ++$start ?></td>
@@ -81,7 +80,6 @@
 			</td>
 		</tr>
                 <?php
-                }
             }
             ?>
         </table>

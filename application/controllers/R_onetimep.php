@@ -22,7 +22,59 @@ class R_onetimep extends CI_Controller
     public function index()
     {
     	is_allowed($this->uri->segment(1),null);
+        $v = array(
+            'invoice_id' => $this->session->flashdata('invoicenya')
+        );
         $this->template->load('template','onetimepayment/onetimepayment_home');
+    }
+
+    public function update($invoice)
+    {
+        $this->session->set_flashdata('invoicenya', $invoice);
+        redirect('R_onetimep/', 'refresh');
+    }
+
+    public function saveandedit()
+    {
+        $invoice = $this->input->get('invoice');
+        $pelanggan_id = $this->input->get('idp');
+        $itemid = $this->input->get('buy');
+        $typeSale = $this->input->get('st');
+        $tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->get('d')));
+        $userid = $this->input->get('user_id');
+        $total_price_sale = $this->input->get('pc');
+
+        $data = array(
+            'invoice' => $invoice,
+            'jenis_bayar' => 'N/A',
+            'pelanggan_id' => $pelanggan_id,
+            'item_id' => $itemid,
+            'total_price_sale' => $total_price_sale,
+            'biaya_admin' => 0,
+            'total_bayar' => 0,
+            'dibayar' => 0,
+            'type_sale' => $typeSale,
+            'tanggal_sale' => $tanggalsale,
+            'user_id' => $userid,
+            'surveyor_id' => 'N/A',
+            'sales_referral' => 'N/A',
+            'contact_id' => 'N/A',
+            'status_sale' => 'Belum Dibayar',
+        );
+
+        $this->Sale_model->insert($typeSale, $data);
+
+        $whereitem = array(
+            'item_id' => $itemid
+        );
+        $statustoupdate = array(
+            'status' => 'Proses Jual'
+        );
+
+        $this->Item_model->update($itemid, $statustoupdate);
+        
+        $this->session->set_flashdata('invoicenya', $invoice);
+        redirect('R_onetimep/', 'refresh');
     }
 
     public function paymentformfor() 

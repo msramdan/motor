@@ -14,7 +14,10 @@
                         </span>
                     </div>
                     <div id="infoinvoicewrapper" style="margin-top: 3vh;">
-                        
+                        <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
+                            <div><i class="fa fa-search" style="font-size: 65px"></i></div>
+                            <h3 style="color: #9d9d9d;s">Data invoice akan muncul disini</h3>
+                        <div>
                     </div>
                 </div>
             </div>

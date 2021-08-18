@@ -305,7 +305,7 @@
                 <td colspan="2" align="center">
                   <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>" />
                   <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i>Simpan</button>
-                  <a class="btn btn-primary" href="<?php echo base_url() ?>r_onetimep/paymentform?invoice=${invoice}&idp=${pelanggan_id}&buy=${item_id}&st=Cash&d=${moment().toISOString()}&pc=${total_price_sale}&user_id=${user_id}"><i class="fa fa-card"></i>Lanjut Pembayaran</a>
+                  <a class="btn btn-primary" href="<?php echo base_url() ?>r_onetimep/saveandedit?invoice=${invoice}&idp=${pelanggan_id}&buy=${item_id}&st=Cash&d=${moment().toISOString()}&pc=${total_price_sale}&user_id=${user_id}"><i class="fa fa-card"></i>Lanjut Pembayaran</a>
                   <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a>
                 </td>
               `)
@@ -334,7 +334,7 @@
                 <td colspan="2" align="center">
                   <input type="hidden" name="sale_id" value="<?php echo $sale_id; ?>" />
                   <button type="submit" class="btn btn-danger"><i class="fa fa-floppy-o"></i>Simpan</button>
-                  <a class="btn btn-primary" href="<?php echo base_url() ?>cicilan/paymentform?invoice=${invoice}&idp=${pelanggan_id}&buy=${item_id}&st=Kredit&d=${moment().toISOString()}&pc=${total_price_sale}&ci=${durasicicilan}&user_id=${user_id}"><i class="fa fa-card"></i>Lanjut Pembayaran</a>
+                  <a class="btn btn-primary" href="<?php echo base_url() ?>r_cicilan/saveandedit?invoice=${invoice}&idp=${pelanggan_id}&buy=${item_id}&st=Kredit&d=${moment().toISOString()}&pc=${total_price_sale}&ci=${durasicicilan}&user_id=${user_id}"><i class="fa fa-card"></i>Lanjut Pembayaran</a>
                   <a href="<?php echo site_url('sale') ?>" class="btn btn-info"><i class="fa fa-sign-out"></i> Kembali</a>
                 </td>
               `)
