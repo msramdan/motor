@@ -85,7 +85,7 @@
 
                                         echo show_button($menu_accessed, 'read', $item->item_id);
 
-                                        if ($item->status !== 'Proses Jual') {
+                                        if ($item->status === 'Ready') {
                                             echo show_button($menu_accessed,'update_harga',encrypt_url($item->item_id), NULL, 'fa-pencil-square-o');
                                             echo show_button($menu_accessed, 'update', $item->item_id);
                                             echo show_button($menu_accessed, 'delete', $item->item_id);

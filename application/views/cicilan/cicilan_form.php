@@ -120,7 +120,7 @@
                         <td></td>
                         <td>Bunga %</td>
                         <td>
-                          <input type="number" name="bunga_cicilan" class="form-control input-nilai" id="bunga_cicilan" value="" placeholder="Bunga/bulan(%)">
+                          <input type="number" readonly="true" name="bunga_cicilan" class="form-control input-nilai" id="bunga_cicilan" value="<?php echo $bunga->nominal ?>" placeholder="Bunga/bulan(%)">
                         </td>
                       </tr>
                       <tr>

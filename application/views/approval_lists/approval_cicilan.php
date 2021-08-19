@@ -116,12 +116,9 @@
     </div>
 </div>
 
-<div class="form-group">
-	<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-	  <a href="<?php echo base_url() ?>Approval_lists" class="btn btn-secondary">Kembali</a>
-	  <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
-	</div>
-</div>
+
+<a href="<?php echo base_url() ?>Approval_lists" class="btn btn-secondary">Kembali</a>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Pilih Tindakan</button>
 
 <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-sm">

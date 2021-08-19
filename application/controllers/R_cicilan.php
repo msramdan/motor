@@ -197,6 +197,7 @@ class R_cicilan extends CI_Controller
             'karyawan' =>$this->karyawan_model->get_all(),
             'jenis_pembayaran' =>$this->Jenis_pembayaran_model->get_all(),
             'mitra' =>$this->Mitra_model->get_all(),
+            'bunga' => $this->Dashboard_model->bunga()
         );
 
         //print_r($fetched);
