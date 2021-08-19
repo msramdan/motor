@@ -125,11 +125,11 @@
             success: function(data){
                 const dt = JSON.parse(data)
 
-                if (typeof dt.denda !== 'string' || dt.denda === 'denda belum lunas') {
-                    thisel.parents('.input-group').prev('.bton-action').children('span.button-bayar-cicilan-wrapper').html('<button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button>')
+                // if (typeof dt.denda !== 'string' || dt.denda === 'denda belum lunas') {
+                //     thisel.parents('.input-group').prev('.bton-action').children('span.button-bayar-cicilan-wrapper').html('<button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button>')
 
-                    alert(dt.denda)
-                }
+                //     alert(dt.denda)
+                // }
 
 
                 if (dt.statusbayarcicilanini == 'dibayar') {
@@ -174,5 +174,31 @@
             }
         })
     }
+
+    $(document).on('click','#btn-reload', function() {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+
+        const a = $(this).data('invoice')
+
+        $('.loading-table-indicator-wrapper').css('display','flex')
+        setTimeout(function() {
+            $('.loading-table-indicator-wrapper').css('display','none')
+            refreshtablecicilan(a)
+            Toast.fire({
+              icon: 'success',
+              title: 'Refresh Berhasil'
+            })
+        }, 1000)
+    })
 
 </script>

@@ -67,13 +67,22 @@
 
 <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
-        <h2 style="margin-top:0px">Kelola Data Cicilan</h2>
+    	<div class="loading-table-indicator-wrapper" style="position: absolute;
+		display: none;
+		background: #0000003d;
+		width: 100%;
+		height: 100%;
+		z-index: 999;">
+    		<i class="fa fa-refresh fa-spin" style="margin: auto; font-size: 51px;color: white;"></i>
+    	</div>
+        <h2 style="margin-top:0px">Kelola Data Cicilan <span><button class="btn btn-default btn-xs" id="btn-reload" data-invoice="<?php echo $invoice ?>"><i class="fa fa-refresh"></i></button></span></h2>
         <input type="hidden" name="id_sale" class="id_sale" value="<?php echo $invoice ?>">
-        <div class="tabel-pembayaran-cicilan">  	
+        <div class="tabel-pembayaran-cicilan" style="position: relative;">  	
 	    	<?php
 	    		$e = array(
 	    			'list_cicilan' => $list_cicilan,
-	    			'sisapembayaranbrapax' => $sisapembayaranbrapax
+	    			'sisapembayaranbrapax' => $sisapembayaranbrapax,
+	    			'classnyak' => $classnyak
 	    		);
 	    		$this->load->view('cicilan/cicilan_table', $e);
 	    	?>

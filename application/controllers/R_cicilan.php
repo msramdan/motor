@@ -412,7 +412,8 @@ class R_cicilan extends CI_Controller
 
             'sisapembayaranbrapax' => $sisapembayaran,
 
-            'progresscicilan' => $progresscicilan
+            'progresscicilan' => $progresscicilan,
+            'classnyak' => $this
         );
         $this->load->view('cicilan/cicilan_inprogress', $sajidata);
     }
@@ -503,8 +504,6 @@ class R_cicilan extends CI_Controller
 
         $semuacicilanlunaskah = $this->cekSemuaCicilanLunas($invoice_id);
 
-        $dendadetectionresult = $this->cekDenda($cek,$sale_detail_id);
-
         $test = 'no';
 
         if ($statusbayarancicilan == 'dibayar') {
@@ -516,7 +515,6 @@ class R_cicilan extends CI_Controller
             'label' => $label,
             'lunaskah' => $semuacicilanlunaskah,
             'statusbayarcicilanini' => $statusbayarancicilan,
-            'denda' => $dendadetectionresult,
             'test' => json_encode($test)
         );
 
@@ -538,12 +536,15 @@ class R_cicilan extends CI_Controller
 
     public function refresh_cicilan_table()
     {
+        // it really breaks the principal of MVC, should fine another way later (timestamp: 15:46, 19 Agustus 2021)
+        
         $invoice = $this->input->post('idinvoice');
         $listcicilan = $this->Sale_detail_model->get_by_id($invoice);
         $sisapembayaran = $this->Sale_detail_model->count_sisa_pembayaran($invoice);
         $arr = array(
             'list_cicilan' => $listcicilan,
-            'sisapembayaranbrapax' => $sisapembayaran
+            'sisapembayaranbrapax' => $sisapembayaran,
+            'classnyak' => $this
         );
         
         $this->load->view('cicilan/cicilan_table', $arr);
@@ -564,11 +565,13 @@ class R_cicilan extends CI_Controller
         }
     }
 
-    public function cekDenda($cek,$sale_detail_id)
+    public function cekDenda($sale_detail_id)
     {
+        $cek = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
+
         $jatuhtempo = new DateTime($cek->jatuh_tempo);
-        $later = new DateTime();
-        $abs_diff = $later->diff($jatuhtempo)->format("%r%a");
+        $haribayarnya = new DateTime();
+        $abs_diff = $haribayarnya->diff($jatuhtempo)->format("%r%a");
         
         $cekdenda = $this->Denda_model->get_by_id($sale_detail_id);
 

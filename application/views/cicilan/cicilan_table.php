@@ -66,7 +66,17 @@
 								<?php
 							}
 							?>
-							<span class="button-bayar-cicilan-wrapper"></span>
+							<span class="button-bayar-denda-wrapper">
+								<?php
+									if ($classnyak->cekDenda($lc->sale_detail_id) === 'denda belum lunas') 
+									{
+										?>
+										<button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button>
+										<?php
+									}
+								?>
+
+							</span>
 						</div>
 						<?php
 							if ($lc->total_bayar != $lc->harus_dibayar) {
