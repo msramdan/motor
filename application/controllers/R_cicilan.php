@@ -581,7 +581,12 @@ class R_cicilan extends CI_Controller
             }
 
             if ($cekdenda->status == 'belum dibayar') {
-                return 'denda belum lunas';
+                $arrdatadenda = array(
+                    'jumlah_telat_hari' => $cekdenda->jumlah_telat_hari,
+                    'jumlah_denda' => $cekdenda->jumlah_denda,
+                    'status' => $cekdenda->status
+                ); 
+                return $arrdatadenda;
             }
         }
 
@@ -595,7 +600,7 @@ class R_cicilan extends CI_Controller
                 );
                 $this->Denda_model->insert($datatunggakan);
                 $denda = $datatunggakan;
-                return json_encode($datatunggakan);
+                return $datatunggakan;
             }
             return 'tidak ada denda';
         }

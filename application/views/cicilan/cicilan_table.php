@@ -68,10 +68,11 @@
 							?>
 							<span class="button-bayar-denda-wrapper">
 								<?php
-									if ($classnyak->cekDenda($lc->sale_detail_id) === 'denda belum lunas') 
+									$den = $classnyak->cekDenda($lc->sale_detail_id);
+									if (is_array($den)) 
 									{
 										?>
-										<button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button>
+										<button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modal<?php echo $lc->pembayaran_ke ?>"><i class="fa fa-warning"></i></button>
 										<?php
 									}
 								?>
@@ -129,3 +130,35 @@
 <div style="text-align: center; font-size: 24px; font-weight: bold;">
 	<p class="warn-sisapembayaran"><span class="brapax"><?php echo $sisapembayaranbrapax ?></span> Pembayaran tersisa</p>
 </div>
+
+<?php
+	foreach($list_cicilan as $lc) {
+		$den = $classnyak->cekDenda($lc->sale_detail_id);
+		if (is_array($den)) 
+		{
+			?>
+			<div class="modal fade" id="modal<?php echo $lc->pembayaran_ke ?>" tabindex="-1" role="dialog" aria-hidden="true">
+	            <div class="modal-dialog modal-sm">
+	              <div class="modal-content">
+
+	                <div class="modal-header">
+	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+	                  </button>
+	                  <h4 class="modal-title" id="myModalLabel2">Form Bayar Denda</h4>
+	                </div>
+	                <div class="modal-body">
+	                  <p><label class="label label-danger"><?php echo $den['jumlah_telat_hari'] ?> Hari</label> terlewat dari jatuh tempo, adapun kewajiban bayar dendanya sebesar <b><?php echo $den['jumlah_denda'] ?></b></p>
+	                </div>
+	                <div class="modal-footer">
+	                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                  <button type="button" class="btn btn-primary">Save changes</button>
+	                </div>
+
+	              </div>
+	            </div>
+	        </div>
+
+			<?php
+		}
+	}
+?>
