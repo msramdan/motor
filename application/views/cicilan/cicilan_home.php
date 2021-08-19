@@ -19,6 +19,7 @@
                             <h3 class="title" style="color: #9d9d9d;s">Data invoice akan muncul disini</h3>
                         <div>
                     </div>
+                    <p>Tidak dapat menginput invoice? coba cari di <a class="btn btn-warning btn-xs" href="<?php echo base_url().'Sale' ?>">daftar penjualan</a></p>
                 </div>
             </div>
         </div>

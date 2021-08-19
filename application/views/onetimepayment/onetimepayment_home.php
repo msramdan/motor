@@ -13,10 +13,12 @@
                             <button class="btn btn-primary" id="btnsearchinvoice" type="button">Go!</button>
                         </span>
                     </div>
+                    
                     <div id="infoinvoicewrapper" style="margin-top: 3vh;">
                         <div class="info" style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
                             <div class="icon"><i class="fa fa-search" style="font-size: 65px"></i></div>
                             <h3 class="title" style="color: #9d9d9d;s">Data invoice akan muncul disini</h3>
+                            <p>Tidak dapat menginput invoice? coba cari di <a class="btn btn-warning btn-xs" href="<?php echo base_url().'Sale' ?>">daftar penjualan</a></p>
                         <div>
                     </div>
                 </div>

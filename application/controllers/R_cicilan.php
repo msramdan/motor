@@ -119,6 +119,7 @@ class R_cicilan extends CI_Controller
                 echo '  <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
                         <div><i class="fa fa-times" style="font-size: 65px"></i></div>
                         <h3 style="color: #9d9d9d;s">Data '.$invoice.' Tidak Ditemukan</h3>
+                        <p>Lupa nomor invoice? coba cari di <a class="btn btn-warning btn-xs" href="'. base_url().'Sale">daftar penjualan</a></p>
                     <div>';
             }
         }
@@ -127,6 +128,7 @@ class R_cicilan extends CI_Controller
             echo '  <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
                         <div><i class="fa fa-times" style="font-size: 65px"></i></div>
                         <h3 style="color: #9d9d9d;s">Data '.$invoice.' Tidak Ditemukan</h3>
+                        <p>Lupa nomor invoice? coba cari di <a class="btn btn-warning btn-xs" href="'. base_url().'Sale">daftar penjualan</a></p>
                     <div>';
         }
     }
