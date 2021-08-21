@@ -144,14 +144,16 @@
 	                <div class="modal-header">
 	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
 	                  </button>
-	                  <h4 class="modal-title" id="myModalLabel2">Form Bayar Denda</h4>
+	                  <h4 class="modal-title" id="myModalLabel2">Bayar Denda</h4>
 	                </div>
 	                <div class="modal-body">
 	                  <p><label class="label label-danger"><?php echo $den['jumlah_telat_hari'] ?> Hari</label> terlewat dari jatuh tempo, adapun kewajiban bayar dendanya sebesar <b><?php echo $den['jumlah_denda'] ?></b></p>
+
+	                  <p style="font-style: italic; font-size: 11px; color: red;">*Pastikan sebelum print kwitansi, pembayaran denda sudah diterima</p>
 	                </div>
 	                <div class="modal-footer">
 	                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	                  <button type="button" class="btn btn-primary">Save changes</button>
+	                  <a target="_blank" rel="noopener noreferrer" href="<?php echo base_url().'R_cicilan/kwitansiBayardenda/'.$lc->pembayaran_ke.'/'.$lc->sale_id ?>" class="btn btn-primary"><i class="fa fa-print"></i></a>
 	                </div>
 
 	              </div>

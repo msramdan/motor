@@ -1,5 +1,10 @@
 <?php
 
+require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -654,9 +659,85 @@ class R_cicilan extends CI_Controller
         return json_encode('success');
     }
 
-    public function kwitansi($pembayaranke, $invoice)
+    public function kwitansiBayardenda($pembayaranke, $invoice)
     {
-        echo $pembayaranke.' | '.$invoice;
+        $pdf = new FPDF('l','mm','A5');
+        $data = $this->Denda_model->get_invoice_profile($invoice);
+        $datadenda = $this->Denda_model->getInfoDendaBerdasarkanInvoice($invoice);
+
+        $pdf->AddPage();
+
+        $pdf->setxY(15, 10);$pdf->SetFont('Arial','B',16);$pdf->Cell(100,7,'KWITANSI PEMBAYARAN DENDA',0,0,'L');
+
+        $pdf->setXY(15, 25);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(35,6,'Nama Pelanggan',0,2,'L');
+        $pdf->Cell(35,6,'No. HP',0,2,'L');
+        $pdf->Cell(35,6,'Alamat',0,2,'L');
+        $pdf->setXY(15, 55);
+        $pdf->Cell(35,6,'Type Sale',0,2,'L');
+
+        $pdf->setXY(40, 25);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+
+        $pdf->setXY(42, 25);
+        $pdf->SetFont('Arial','',8);
+        $pdf->Cell(65,6,$data->nama_pelanggan,0,2,'L');
+        $pdf->Cell(65,6,$data->no_hp_pelanggan,0,2,'L');
+        $pdf->MultiCell(50,6,$data->alamat_ktp,0,'L',false);
+        
+        $pdf->setXY(15, 55);
+        $pdf->Cell(35,6,'Type Sale',0,2,'L');
+        $pdf->setXY(50, 55);
+        $pdf->Cell(65,6,': '.$data->type_sale,0,2,'L');
+
+        
+        // SET X itu dari pojok kiri atas ke kanan
+        // SET Y itu dari pojok kiri atas ke bawah
+        // setXY() DUAA DUANYA
+        
+        $pdf->setXY(120, 19);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(20,6,'Invoice',0,2,'L');
+        $pdf->Cell(20,6,'Tanggal',0,2,'L');
+        $pdf->Cell(20,6,'Halaman',0,2,'L');
+
+        $pdf->setXY(140, 19);
+        $pdf->SetFont('Arial','',8);
+        $pdf->Cell(50,6,': '.$data->invoice,0,2,'L');
+        $pdf->Cell(50,6,': '.date('d-m-Y h:m:s'),0,2,'L');
+        $pdf->Cell(50,6,': 1',0,2,'L');
+        
+
+        $pdf->setXY(10, 70);
+        $pdf->SetFont('Arial','B',9);
+        $pdf->Cell(7,6,'No',1,0);
+        $pdf->Cell(85,6,'Deskripsi',1,0);
+        $pdf->Cell(25,6,'Qty',1,0);
+        $pdf->Cell(25,6,'Harga',1,0);
+        $pdf->Cell(25,6,'Jumlah',1,1);
+        
+        $pdf->SetFont('Arial','',9);
+        $pdf->Cell(7,25,'1',1,0);
+        $x_axis = $pdf->getx();
+        $pdf->vcell(85,25,$x_axis,'Bayar denda pembayaran ke-'.$pembayaranke.' untuk invoice '.$data->invoice.'(lewat '.$datadenda->jumlah_telat_hari.' hari sejak '.$datadenda->jatuh_tempo.')');
+        $pdf->Cell(25,25,'1',1,0);
+        $pdf->Cell(25,25,$datadenda->jumlah_denda,1,0);
+        $pdf->Cell(25,25,$datadenda->jumlah_denda,1,0);
+        $pdf->setXY(127, 101);
+        $pdf->Cell(25,6,'Biaya Admin',0,0);
+        $pdf->Cell(25,6,'0',1,0);
+        $pdf->setXY(127, 107);
+        $pdf->Cell(25,6,'Grand Total',0,0);
+        $pdf->Cell(25,6,$datadenda->jumlah_denda,1,0);
+
+
+        $pdf->setXY(20, 120);
+        $pdf->Cell(50,6,'(KASIR)',0,0,'C');
+        $pdf->Output('kwitansidenda'.$invoice.$pembayaranke.'.pdf', 'D');
     }
 
     public function kartuPiutang($invoice)

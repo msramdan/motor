@@ -82,9 +82,30 @@ class Denda_model extends CI_Model
         return $kd;
     }
 
-    function cekdendaberdasarkaninvoice()
+    function getInfoDendaBerdasarkanInvoice($invoice)
     {
-        $this->db->select('*')->from($this->table)->where('invoice');
+        $this->db->select('*')
+            ->from($this->table)
+            ->join('sale_detail','sale_detail.sale_detail_id = denda.sale_detail_id')
+            ->where('sale_id',$invoice);
+        return $this->db->get()->row();
+    }
+
+    function get_data_kwitansi($id)
+    {
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('user','user.user_id = sale.user_id');
+        $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+    }
+
+    function get_invoice_profile($invoice)
+    {
+        $this->db->join('pelanggan','pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('item','item.item_id = sale.item_id');
+        $this->db->join('user','user.user_id = sale.user_id');
+        $this->db->where('invoice', $invoice);
+        return $this->db->get('sale')->row();
     }
 
 }
