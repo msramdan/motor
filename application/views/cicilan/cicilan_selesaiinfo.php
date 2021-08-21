@@ -3,52 +3,15 @@
     	<p><b>Catatan:</b> Cicilan untuk <?php echo $invoice_id ?> Telah menyelesaikan cicilan</p>
     </div>
 	<div style="display: flex;justify-content: center;text-align: center;">
-		<?php 
-			$wh = json_decode($whoisreviewing, true);
-			foreach ($wh as $key => $value) {
-				if ($value == '-') {
-					?>
-					<div style="width: 25%;">
-						<div style="position: relative;">
-							<i class="fa fa-users" style="font-size: 67px;"></i>
-							<i class="fa fa-minus" style="font-size: 27px; position: absolute; bottom: 0;"></i>
-						</div>
-						<h3><?php echo $key ?></h3>
+		<div style="width: 25%;">
+			<div style="position: relative;">
+				<i class="fa fa-user" style="font-size: 67px;"></i>
+				<i class="fa fa-check-circle" style="font-size: 27px; color: green; position: absolute; bottom: 0;"></i>
+			</div>
+			<h3><?php echo $invoice_id ?></h3>
 
-						<p><label class="label label-default">Dalam Review</label></p>
-					</div>
-					<?php
-				}
-
-				if ($value == 'true') {
-					?>
-					<div style="width: 25%;">
-						<div style="position: relative;">
-							<i class="fa fa-users" style="font-size: 67px;"></i>
-							<i class="fa fa-check-circle" style="font-size: 27px; color: green; position: absolute; bottom: 0;"></i>
-						</div>
-						<h3><?php echo $key ?></h3>
-
-						<p><label class="label label-success">Disetujui</label></p>
-					</div>
-					<?php
-				}
-
-				if ($value == 'false') {
-					?>
-					<div style="width: 25%;">
-						<div style="position: relative;">
-							<i class="fa fa-users" style="font-size: 67px;"></i>
-							<i class="fa fa-times-circle" style="font-size: 27px; color: red; position: absolute; bottom: 0;"></i>
-						</div>
-						<h3><?php echo $key ?></h3>
-
-						<p><label class="label label-danger">Ditolak</label></p>
-					</div>
-					<?php
-				}
-			}
-		?>
+			<p><label class="label label-success">Cicilan Lunas</label></p>
+		</div>
 	</div>
 	<div style="width: 100%; text-align: center; margin: 25px 0;">
 		<button class="btn btn-default btn-lg" id="btn-show-detail">Detail</button>
@@ -177,6 +140,35 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+    	<div class="loading-table-indicator-wrapper" style="position: absolute;
+		display: none;
+		background: #0000003d;
+		width: 100%;
+		height: 100%;
+		z-index: 999;">
+    		<i class="fa fa-refresh fa-spin" style="margin: auto; font-size: 51px;color: white;"></i>
+    	</div>
+        <h2 style="margin-top:0px">Data Cicilan <span><button class="btn btn-default btn-xs" id="btn-reload" data-invoice="<?php echo $invoice_id ?>"><i class="fa fa-refresh"></i></button></span></h2>
+        <input type="hidden" name="id_sale" class="id_sale" value="<?php echo $invoice_id ?>">
+        <div class="tabel-pembayaran-cicilan" style="position: relative;">  	
+	    	<?php
+	    		$e = array(
+	    			'list_cicilan' => $list_cicilan,
+	    			'sisapembayaranbrapax' => $sisapembayaranbrapax,
+	    			'classnyak' => $classnyak
+	    		);
+	    		$this->load->view('cicilan/cicilan_table', $e);
+	    	?>
+        </div>
+		<span class="wrapper-confirmation-lunas-action">
+			
+		</span>
+    </div>
 </div>
 
 <script type="text/javascript">

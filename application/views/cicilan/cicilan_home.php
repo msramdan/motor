@@ -155,7 +155,8 @@
                 if (dt.lunaskah == 'Lunas dengan denda') {
                     Swal.fire({
                       icon: 'warning',
-                      title: "Lunas tapi masih ada denda yang belom kebayar"
+                      title: "Cicilan Lunas",
+                      text: "Masih ada denda yang belum terbayar"
                     })
                 }
             }

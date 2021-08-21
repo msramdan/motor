@@ -423,11 +423,17 @@ class R_cicilan extends CI_Controller
         $this->load->view('cicilan/cicilan_inprogress', $sajidata);
     }
 
-    public function show_cicilanfinalinfo($id) 
+    public function show_cicilanfinalinfo($invoice) 
     {
-        $row = $this->Approval_lists_model->get_by_invoice($id);
+        $row = $this->Approval_lists_model->get_by_invoice($invoice);
 
-        $sale = $this->Sale_model->get_by_invoice($id);
+        $sale = $this->Sale_model->get_by_invoice($invoice);
+
+        $listcicilan = $this->Sale_detail_model->get_by_id($invoice);
+
+        $sisapembayaran = $this->Sale_detail_model->count_sisa_pembayaran($invoice);
+
+        $progresscicilan = $this->Sale_detail_model->get_progress_jumlah_cicilan($invoice);
 
         $data = array(
             'approval_id' => $row->approval_id,
@@ -450,6 +456,12 @@ class R_cicilan extends CI_Controller
             'tanggal_sale' => $sale->tanggal_sale,
             'last_updated' => $sale->last_updated,
             'user_id' => $sale->nama_user,
+
+            'list_cicilan' => $listcicilan,
+            'sisapembayaranbrapax' => $sisapembayaran,
+
+            'progresscicilan' => $progresscicilan,
+            'classnyak' => $this,
 
             'berkas' =>$this->Pelanggan_model->get_berkas($sale->pelanggan_id),
         );
