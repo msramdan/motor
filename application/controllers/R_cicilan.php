@@ -939,8 +939,36 @@ class R_cicilan extends CI_Controller
         $pdf->setXY(20, 260);
         $pdf->Cell(50,6,'(KASIR)',0,0,'C');
         $pdf->Cell(40,6,'(PENERIMA)',0,0,'R');
-        $pdf->Output('result.pdf', 'D');
-    }    
+        $pdf->Output('kartupiutang'.$id.'.pdf', 'D');
+    }
+
+    function refresh_info_pembayaran()
+    {
+        $invoice = $this->input->post('idinvoice');
+        $row = $this->Sale_model->get_by_invoice($invoice);
+
+        $listcicilan = $this->Sale_detail_model->get_by_id($invoice);
+
+        $sisapembayaran = $this->Sale_detail_model->count_sisa_pembayaran($invoice);
+
+        $progresscicilan = $this->Sale_detail_model->get_progress_jumlah_cicilan($invoice);
+
+        $sajidata = array(
+            'invoice_id' => $invoice,
+            'total_price_sale' => $row->total_price_sale,
+            'biaya_admin' => $row->biaya_admin,
+            'total_bayar' => $row->total_bayar,
+            'dibayar' => $row->dibayar,
+            'status_sale' => $row->status_sale,
+            'last_updated' => $row->last_updated,
+            'list_cicilan' => $listcicilan,
+
+            'sisapembayaranbrapax' => $sisapembayaran,
+
+            'progresscicilan' => $progresscicilan
+        );
+        $this->load->view('cicilan/info_pembayaran', $sajidata);
+    }
 
 }
 

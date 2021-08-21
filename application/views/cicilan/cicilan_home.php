@@ -133,7 +133,7 @@
 
 
                 if (dt.statusbayarcicilanini == 'dibayar') {
-                    refreshtablecicilan(invoice)
+                    refreshData(invoice)
                 }
 
                 thisel.parents('.input-group').prev('.bton-action').children('.btn-show-input').css('display','unset')
@@ -162,7 +162,7 @@
         });
     })
 
-    function refreshtablecicilan(invoice) {
+    function refreshTabel(invoice) {
         $.ajax({
             type : "POST",
             url  : "<?php echo base_url() ?>/R_cicilan/refresh_cicilan_table",
@@ -172,7 +172,25 @@
             success: function(data){
                 $('.tabel-pembayaran-cicilan').html(data)
             }
-        })
+        })        
+    }
+
+    function refreshInfopembayaran(invoice) {
+        $.ajax({
+            type : "POST",
+            url  : "<?php echo base_url() ?>R_cicilan/refresh_info_pembayaran",
+            data : {
+                idinvoice: invoice
+            },
+            success: function(data){
+                $('.info-pembayaran-wrapper').html(data)
+            }
+        })        
+    }
+
+    function refreshData(invoice) {
+        refreshTabel(invoice)
+        refreshInfopembayaran(invoice)
     }
 
     $(document).on('click','#btn-reload', function() {
@@ -193,7 +211,7 @@
         $('.loading-table-indicator-wrapper').css('display','flex')
         setTimeout(function() {
             $('.loading-table-indicator-wrapper').css('display','none')
-            refreshtablecicilan(a)
+            refreshTabel(a)
             Toast.fire({
               icon: 'success',
               title: 'Refresh Berhasil'
