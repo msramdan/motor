@@ -89,13 +89,13 @@
     });
 
     $(document).on('click','.btn-show-input', function() {
-        $(this).parents('div').next('.input-group').css('margin-top','0vh')
-        $(this).css('display','none')
+        $(this).parents('td').prev().prev().prev().children('div.input-group').css('margin-top','0vh')
+        $(this).parents('div.x_content').children('button.btn.btn-primary.dropdown-toggle').prop('disabled', true)
     })
 
     $(document).on('click','.cancel-input-cicilan',function() {
-        $(this).parents('.input-group').prev('.bton-action').children('.btn-show-input').css('display','unset')
-        $(this).parents('.input-group').css('margin-top','-6vh')
+        $(this).parents('.input-group').css('margin-top','-40px')
+        $(this).parents('td').next().next().next().children('div.x_content').children('button.btn.btn-primary.dropdown-toggle').prop('disabled', false)
 
     })
 
@@ -125,25 +125,16 @@
             success: function(data){
                 const dt = JSON.parse(data)
 
-                // if (typeof dt.denda !== 'string' || dt.denda === 'denda belum lunas') {
-                //     thisel.parents('.input-group').prev('.bton-action').children('span.button-bayar-cicilan-wrapper').html('<button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button>')
-
-                //     alert(dt.denda)
-                // }
-
-
-                if (dt.statusbayarcicilanini == 'dibayar') {
-                    refreshData(invoice)
-                }
-
                 thisel.parents('.input-group').prev('.bton-action').children('.btn-show-input').css('display','unset')
                 thisel.parents('.input-group').prev('.bton-action').children('span.status').html(dt.label)
-                thisel.parents('.input-group').css('margin-top','-6vh')
+                thisel.parents('.input-group').css('margin-top','-40px')
                 elemtxtdibayar.text(dt.tglinput)
                 elempenginput.text(dt.penginput)
 
                 thisel.html('<i class="fa fa-check"></i>')
                 thisel.removeAttr('disabled')
+                refreshData(invoice)
+                thisel.parents('td').next().next().next().children('div.x_content').children('button.btn.btn-primary.dropdown-toggle').prop('disabled', false)
 
                 if (dt.lunaskah == 'Lunas') {
                     Swal.fire({
@@ -219,5 +210,57 @@
             })
         }, 1000)
     })
+
+    $(document).on('submit','#bayar_denda_form', function(e){
+        dataString = $("#bayar_denda_form").serialize();
+
+        const thisel = $(this)
+
+        inv = $('input[name="invoicehidden"]').val()
+
+        e.preventDefault()
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>R_cicilan/bayarDenda",
+            data: dataString,
+            success: function(data){
+
+                const a = JSON.parse(data)
+
+                if (a.status === 'bayarnyakelebihan') {
+                    thisel.children('div.modal-body').children('div.warningalert').html(`<div class="alert alert-info">
+                                    <p>Pembayaran melebihi yang ditentukan, menyesuaikan pembayaran...</p>
+                                </div>`)
+                    thisel.children('div.modal-body').children('input[name="tbjumlahbayar"]').val('')
+                    thisel.children('div.modal-body').children('input[name="tbjumlahbayar"]').val(a.recommendedvalue)
+                }
+
+                if (a.status === 'udahlunas') {
+                    thisel.children('div.modal-body').children('div.alert.alert-info').html(`<div class="alert alert-success">
+                                    <p>Pembayaran denda sudah lunas</p>
+                                </div>`)
+                }
+
+                if (a.status === 'success') {
+                    Swal.fire({
+                      icon: 'success',
+                      title: "Pembayaran disimpan"
+                    })
+
+                    $('.loading-table-indicator-wrapper').css('display','flex')
+
+                    setTimeout(function() {
+                        $('.loading-table-indicator-wrapper').css('display','none')
+                        refreshTabel(inv)
+                    }, 1000)
+                    $(".modal").modal("hide")
+                }
+            },
+            error: function(e){
+                refreshTabel(inv)
+                $('.loading-table-indicator-wrapper').css('display','none')
+            }
+        });
+    });
 
 </script>

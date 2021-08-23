@@ -41,7 +41,7 @@ class Sale_detail_model extends CI_Model
 
     function count_sisa_pembayaran($id)
     {
-        $query = $this->db->query('SELECT * FROM sale_detail WHERE sale_id = "'.$id.'" AND status = "belum siap dibayar" OR status = "siap dibayar"');
+        $query = $this->db->query('SELECT * FROM sale_detail WHERE sale_id = "'.$id.'" AND (status = "belum siap dibayar" OR status = "siap dibayar")');
         return $query->num_rows();
     }
 

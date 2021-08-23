@@ -319,6 +319,18 @@ class R_cicilan extends CI_Controller
 
         $this->Sale_model->update_data_dibayar($id, $datatoupdate);
 
+        $datahistorypayment = array(
+            'id' => $id,
+            'total_bayar' => $kudubayar,
+            'tanggal_bayar' => $tanggalsale,
+            'jenis_pembayaran' => 'dp cicilan',
+            'status' => 'dibayar',
+            'deskripsi' => 'bayar dp cicilan',
+            'unit_id' => $this->session->userdata('unit_id')
+        );
+
+        $this->Sale_model->inserttopaymenthistory($datahistorypayment);
+
 
 
         $fetchone = $this->Approval_lists_model->get_by_invoice($id);
@@ -464,6 +476,7 @@ class R_cicilan extends CI_Controller
             'classnyak' => $this,
 
             'berkas' =>$this->Pelanggan_model->get_berkas($sale->pelanggan_id),
+            'cekdenda' => $this->cekDendapadaInvoice($invoice)
         );
         $this->load->view('cicilan/cicilan_selesaiinfo', $data);
     }
@@ -490,6 +503,18 @@ class R_cicilan extends CI_Controller
             {
                 $statusbayarancicilan = 'dibayar';
                 $label = '<button type="button" class="btn btn-success btn-xs">Lunas</button>';
+
+                $datahistorypayment = array(
+                    'id' => $invoice_id,
+                    'total_bayar' => $total_bayar,
+                    'tanggal_bayar' => $tglinput,
+                    'jenis_pembayaran' => 'bayar cicilan',
+                    'status' => 'dibayar',
+                    'deskripsi' => 'bayar cicilan ke '.$pembayaranke,
+                    'unit_id' => $this->session->userdata('unit_id')
+                );
+
+                $this->Sale_model->inserttopaymenthistory($datahistorypayment);
             }
 
             if(intval($total_bayar) < intval($cek->harus_dibayar)) {
@@ -498,7 +523,7 @@ class R_cicilan extends CI_Controller
             }
 
             if(intval($total_bayar) > intval($cek->harus_dibayar)) {
-                $statusbayarancicilan = 'dibayar';
+                $statusbayarancicilan = 'siap dibayar';
                 $label = '<button type="button" class="btn btn-secondary btn-xs">Pembayaran Berlebih (dibayar = '.$total_bayar.')</button>';
             }
 
@@ -519,7 +544,7 @@ class R_cicilan extends CI_Controller
 
         $this->update_sale_dibayar($invoice_id);
 
-        $semuacicilanlunaskah = $this->cekSemuaCicilanLunas($invoice_id);
+        $semuacicilanlunaskah = $this->pastikanSemuaCicilanLunas($invoice_id);
 
         $test = 'no';
 
@@ -552,16 +577,14 @@ class R_cicilan extends CI_Controller
     }
 
     public function refresh_cicilan_table()
-    {
-        // it really breaks the principal of MVC, should fine another way later (timestamp: 15:46, 19 Agustus 2021)
-        
+    {   
         $invoice = $this->input->post('idinvoice');
         $listcicilan = $this->Sale_detail_model->get_by_id($invoice);
         $sisapembayaran = $this->Sale_detail_model->count_sisa_pembayaran($invoice);
         $arr = array(
             'list_cicilan' => $listcicilan,
             'sisapembayaranbrapax' => $sisapembayaran,
-            'classnyak' => $this
+            'classnyak' => $this // it really breaks the principal of MVC, should fine another way later (timestamp: 15:46, 19 Agustus 2021)
         );
         
         $this->load->view('cicilan/cicilan_table', $arr);
@@ -597,10 +620,12 @@ class R_cicilan extends CI_Controller
                 return 'denda lunas';
             }
 
-            if ($cekdenda->status == 'belum dibayar') {
+            if ($cekdenda->status == 'belum dibayar' || $cekdenda->status == 'belum lunas') {
                 $arrdatadenda = array(
                     'jumlah_telat_hari' => $cekdenda->jumlah_telat_hari,
                     'jumlah_denda' => $cekdenda->jumlah_denda,
+                    'diskon_denda' => $cekdenda->diskon_denda,
+                    'dibayar' => $cekdenda->dibayar,
                     'status' => $cekdenda->status
                 ); 
                 return $arrdatadenda;
@@ -613,6 +638,8 @@ class R_cicilan extends CI_Controller
                     'sale_detail_id' => $sale_detail_id,
                     'jumlah_telat_hari' => abs($abs_diff),
                     'jumlah_denda' => intval((0.05 * intval($cek->harus_dibayar)) * abs($abs_diff)),
+                    'diskon_denda' => 0,
+                    'dibayar' => 0,
                     'status' => 'belum dibayar'
                 );
                 $this->Denda_model->insert($datatunggakan);
@@ -623,7 +650,7 @@ class R_cicilan extends CI_Controller
         }
     }
 
-    public function cekSemuaCicilanLunas($invoice_id)
+    public function pastikanSemuaCicilanLunas($invoice_id)
     {
         $cekstatuslunas = $this->Sale_detail_model->cekstatuslunas($invoice_id);
 
@@ -658,16 +685,112 @@ class R_cicilan extends CI_Controller
         }
     }
 
+    public function cekDendapadaInvoice($invoice_id)
+    {
+        $cekalldendadataonthisinvoice = $this->Sale_detail_model->ceksemuadendapadainvoiceini($invoice_id);
+        if ($cekalldendadataonthisinvoice < 1) {
+            $lunaskah = 'Lunas';
+            return $lunaskah;
+        } else {
+            $lunaskah = 'Lunas dengan denda';
+            return $lunaskah;
+        }
+    }
+
     public function bayarDenda()
     {
         $sale_detail_id = $this->input->post('idcicilan');
-        $jumlahdenda = $this->input->post('dibayardendanya');
+        $dibayar = $this->input->post('tbjumlahbayar');
+        $invoice_id = $this->input->post('invoicehidden');
+        $cicilanke = $this->input->post('cicilanke');
 
-        $datatunggakan = array(
-            'jumlah_denda' => intval($jumlahdenda),
-            'status' => 'dibayar'
+        $cek = $this->Denda_model->get_by_id($sale_detail_id);
+
+        $init = intval($cek->dibayar);
+
+        $added = $init + intval($dibayar);
+
+        if ($cek->dibayar < $cek->jumlah_denda) {
+            if ($added <= $cek->jumlah_denda) {
+                $datatunggakan;
+
+                if ($added == $cek->jumlah_denda) {
+                    $datatunggakan = array(
+                        'dibayar' => $added,
+                        'status' => 'dibayar'
+                    );
+                }
+
+                if ($added < $cek->jumlah_denda) {
+                    $datatunggakan = array(
+                        'dibayar' => $added,
+                        'status' => 'belum lunas'
+                    );
+                }
+
+                if ($added > $cek->jumlah_denda) {
+                    $datatunggakan = array(
+                        'dibayar' => $added,
+                        'status' => 'kelebihan'
+                    );
+                }
+
+                $this->Denda_model->update_by_sale_data_id($sale_detail_id, $datatunggakan);
+
+                $datacicilan = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
+                $datahistorypayment = array(
+                    'id' => $invoice_id,
+                    'total_bayar' => $dibayar,
+                    'tanggal_bayar' => date("Y-m-d h:m:s"),
+                    'jenis_pembayaran' => 'bayar denda',
+                    'status' => $datatunggakan['status'],
+                    'deskripsi' => 'bayar denda cicilan ke '.$cicilanke,
+                    'unit_id' => $this->session->userdata('unit_id')
+                );
+
+                $this->Sale_model->inserttopaymenthistory($datahistorypayment);
+                
+                $p = array(
+                    'status' => 'success'
+                );
+                echo json_encode($p);
+            }
+            else
+            {
+                $p = array(
+                    'status' => 'bayarnyakelebihan',
+                    'recommendedvalue' => $cek->jumlah_denda - $cek->dibayar
+                );
+                echo json_encode($p);
+            }
+        }
+        else
+        {
+            $p = array(
+                'status' => 'udahlunas'
+            );
+            echo json_encode($p);
+        }
+    }
+
+    public function pengajuanDiskonDenda()
+    {
+        $id = $this->input->post('invoice_id');
+        $ket = $this->input->post('catatan');
+
+        $approval_stage = $this->custom_authorization->addApprovalby('p-diskondenda');
+
+        $data = array(
+            'invoice_id' => $id,
+            'approve_by' => $approval_stage,
+            'approval_status' => 'Dalam Review',
+            'keterangan' => $ket,
+            'jenis_tindakan' => 'Pengajuan Diskon',
+            'komentar' => '',
+            'unit_id' => $this->session->userdata('unit_id')
         );
-        $this->Denda_model->update($sale_detail_id, $datatunggakan);
+
+        $this->Approval_lists_model->insert($data);
         return json_encode('success');
     }
 
@@ -750,6 +873,87 @@ class R_cicilan extends CI_Controller
         $pdf->setXY(20, 120);
         $pdf->Cell(50,6,'(KASIR)',0,0,'C');
         $pdf->Output('kwitansidenda'.$invoice.$pembayaranke.'.pdf', 'D');
+    }
+
+    public function kwitansiBayarCicilan($sale_detail_id, $invoice, $pembayaranke)
+    {
+        $pdf = new FPDF('l','mm','A5');
+        $data = $this->Denda_model->get_invoice_profile($invoice);
+        $cek = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
+
+        $pdf->AddPage();
+
+        $pdf->setxY(15, 10);$pdf->SetFont('Arial','B',16);$pdf->Cell(100,7,'KWITANSI CICILAN',0,0,'L');
+
+        $pdf->setXY(15, 25);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(35,6,'Nama Pelanggan',0,2,'L');
+        $pdf->Cell(35,6,'No. HP',0,2,'L');
+        $pdf->Cell(35,6,'Alamat',0,2,'L');
+        $pdf->setXY(15, 55);
+        $pdf->Cell(35,6,'Type Sale',0,2,'L');
+
+        $pdf->setXY(40, 25);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+        $pdf->Cell(35,6,':',0,2,'L');
+
+        $pdf->setXY(42, 25);
+        $pdf->SetFont('Arial','',8);
+        $pdf->Cell(65,6,$data->nama_pelanggan,0,2,'L');
+        $pdf->Cell(65,6,$data->no_hp_pelanggan,0,2,'L');
+        $pdf->MultiCell(50,6,$data->alamat_ktp,0,'L',false);
+        
+        $pdf->setXY(15, 55);
+        $pdf->Cell(35,6,'Type Sale',0,2,'L');
+        $pdf->setXY(50, 55);
+        $pdf->Cell(65,6,': '.$data->type_sale,0,2,'L');
+
+        
+        // SET X itu dari pojok kiri atas ke kanan
+        // SET Y itu dari pojok kiri atas ke bawah
+        // setXY() DUAA DUANYA
+        
+        $pdf->setXY(120, 19);
+        $pdf->SetFont('Arial','B',8);
+        $pdf->Cell(20,6,'Invoice',0,2,'L');
+        $pdf->Cell(20,6,'Tanggal',0,2,'L');
+        $pdf->Cell(20,6,'Halaman',0,2,'L');
+
+        $pdf->setXY(140, 19);
+        $pdf->SetFont('Arial','',8);
+        $pdf->Cell(50,6,': '.$data->invoice,0,2,'L');
+        $pdf->Cell(50,6,': '.date('d-m-Y h:m:s'),0,2,'L');
+        $pdf->Cell(50,6,': 1',0,2,'L');
+        
+
+        $pdf->setXY(10, 70);
+        $pdf->SetFont('Arial','B',9);
+        $pdf->Cell(7,6,'No',1,0);
+        $pdf->Cell(85,6,'Deskripsi',1,0);
+        $pdf->Cell(25,6,'Qty',1,0);
+        $pdf->Cell(25,6,'Harga',1,0);
+        $pdf->Cell(25,6,'Jumlah',1,1);
+        
+        $pdf->SetFont('Arial','',9);
+        $pdf->Cell(7,25,'1',1,0);
+        $x_axis = $pdf->getx();
+        $pdf->vcell(85,25,$x_axis,'Bayar cicilan pembayaran ke-'.$pembayaranke.' untuk invoice '.$data->invoice);
+        $pdf->Cell(25,25,'1',1,0);
+        $pdf->Cell(25,25,$cek->total_bayar,1,0);
+        $pdf->Cell(25,25,$cek->total_bayar,1,0);
+        $pdf->setXY(127, 101);
+        $pdf->Cell(25,6,'Biaya Admin',0,0);
+        $pdf->Cell(25,6,'0',1,0);
+        $pdf->setXY(127, 107);
+        $pdf->Cell(25,6,'Grand Total',0,0);
+        $pdf->Cell(25,6,$cek->total_bayar,1,0);
+
+
+        $pdf->setXY(20, 120);
+        $pdf->Cell(50,6,'(KASIR)',0,0,'C');
+        $pdf->Output('kwitansicicilan'.$invoice.$pembayaranke.'.pdf', 'D');
     }
 
     public function kartuPiutang($invoice)
@@ -933,20 +1137,6 @@ class R_cicilan extends CI_Controller
                 $pdf->Cell(25,8, $bruto -= $v->harus_dibayar, 1, 0);
                 $pdf->Cell(25,8, 'Bayar', 1,1);
         }
-        
-        // $pdf->SetFont('Arial','',9);
-        // $pdf->Cell(7,25,'1',1,0);
-        // $pdf->Cell(85,25,$data->nama_item,1,0);
-        // $pdf->Cell(25,25,'1',1,0);
-        // $pdf->Cell(25,25,$data->harga_beli,1,0);
-        // $pdf->Cell(25,25,floatval($data->harga_beli) * 1,1,0); //harga beli dikali 1
-        // $pdf->setXY(127, 101);
-        // $pdf->Cell(25,6,'Biaya Admin',0,0);
-        // $pdf->Cell(25,6,$data->biaya_admin,1,0);
-        // $pdf->setXY(127, 107);
-        // $pdf->Cell(25,6,'Grand Total',0,0);
-        // $pdf->Cell(25,6,$data->total_price_sale,1,0);
-
 
         $pdf->setXY(20, 260);
         $pdf->Cell(50,6,'(KASIR)',0,0,'C');

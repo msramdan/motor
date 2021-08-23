@@ -2,6 +2,15 @@
 	<div class="alert alert-success alert-dismissible">
     	<p><b>Catatan:</b> Cicilan untuk <?php echo $invoice_id ?> Telah menyelesaikan cicilan</p>
     </div>
+    <?php
+    	if ($cekdenda === 'Lunas dengan denda') {
+    		?>
+    		<div class="alert alert-info alert-dismissible">
+		    	<p><b>Catatan:</b> Cicilan untuk <?php echo $invoice_id ?> memiliki denda yang belum dibayar (cek data cicilan dibawah dan klik tanda <span><button type="button" class="btn btn-warning btn-xs"><i class="fa fa-warning"></i></button></span> pada cicilan</p>
+		    </div>
+    		<?php
+    	}
+    ?>
 	<div style="display: flex;justify-content: center;text-align: center;">
 		<div style="width: 25%;">
 			<div style="position: relative;">
