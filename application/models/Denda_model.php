@@ -60,6 +60,12 @@ class Denda_model extends CI_Model
         $this->db->update($this->table, $data);
     }
 
+    function update_by_sale_data_id($id, $data)
+    {
+        $this->db->where('sale_detail_id', $id);
+        $this->db->update($this->table, $data);
+    }
+
     // delete data
     function delete($id)
     {

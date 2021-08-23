@@ -15,22 +15,34 @@ Class Custom_authorization{
     }
 
     // for adding new data
-    public function addApprovalby($jumlah_transaksi)
+    public function addApprovalby($value)
     {
-        if (intval($jumlah_transaksi) <= 5000000 ) {
-            $approvneed = '{"Manager Unit":"-"}';
-            return $approvneed;
+        if (is_int($value)) {
+            $jumlah_transaksi = $value;
+            // code...
+            if (intval($jumlah_transaksi) <= 5000000 ) {
+                $approvneed = '{"Manager Unit":"-"}';
+                return $approvneed;
+            }
+
+            if (intval($jumlah_transaksi) > 5000000 && intval($jumlah_transaksi) <= 10000000) {
+                $approvneed = '{"Manager Unit":"-","Owner":"-"}';
+                return $approvneed;
+            }
+
+            if (intval($jumlah_transaksi) > 5000000 ) {
+                $approvneed = '{"Manager Unit":"-","Owner":"-"}';
+                return $approvneed;
+            }
+        }
+        else
+        {
+            if ($value === 'p-diskondenda') {
+                $approvneed = '{"Owner":"-"}';
+                return $approvneed;
+            }
         }
 
-        if (intval($jumlah_transaksi) > 5000000 && intval($jumlah_transaksi) <= 10000000) {
-            $approvneed = '{"Manager Unit":"-","Owner":"-"}';
-            return $approvneed;
-        }
-
-        if (intval($jumlah_transaksi) > 5000000 ) {
-            $approvneed = '{"Manager Unit":"-","Owner":"-"}';
-            return $approvneed;
-        }
     }
 
     public function authorization_scheme($scheme, $level_id, $data_required)

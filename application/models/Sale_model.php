@@ -115,6 +115,11 @@ class Sale_model extends CI_Model
         }
     }
 
+    function inserttopaymenthistory($data)
+    {
+        $this->db->insert('history_pembayaran', $data);
+    }
+
     // update data
     function update($id, $data)
     {
