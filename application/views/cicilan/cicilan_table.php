@@ -84,6 +84,7 @@
 										<button type="button" class="btn btn-primary submit-cicilan"><i class="fa fa-check" style="margin: 0;"></i></button>
 										<button type="button" class="btn btn-danger cancel-input-cicilan"><i class="fa fa-times"></i></button>
 										<input type="hidden" name="id_cicilan" class="id_cicilan" value="<?php echo $lc->sale_detail_id ?>">
+										<input type="hidden" name="invoicehidden" value="<?php echo $lc->sale_id ?>">
 									</span>
 				                </div>
 								<?php
@@ -139,12 +140,14 @@
 									if ($den == 'denda lunas') {
 										?>
 										<li><a href="<?php echo base_url().'r_cicilan/kwitansiBayardenda/'.$lc->pembayaran_ke.'/'.$lc->sale_id ?>">Cetak Kwitansi Denda</a></li>
+										<li><a href="#" data-toggle="modal" data-target="#modalhistorydenda<?php echo $lc->pembayaran_ke ?>">History Bayar Denda</a></li>
 										<?php
 									}
 									else
 									{
 										?>
 										<li><a href="#" data-toggle="modal" data-target="#modalbayardenda<?php echo $lc->pembayaran_ke ?>">Bayar Denda</a></li>
+										<li><a href="#" data-toggle="modal" data-target="#modalhistorydenda<?php echo $lc->pembayaran_ke ?>">History Bayar Denda</a></li>
 										<li><a href="#">Diskon Denda</a></li>
 										<?php	
 									}
@@ -166,7 +169,35 @@
 <?php
 	foreach($list_cicilan as $lc) {
 		$den = $classnyak->cekDenda($lc->sale_detail_id);
-		if (is_array($den)) 
+
+		if($den == 'denda lunas')
+		{
+			?>
+			<div class="modal fade" id="modalhistorydenda<?php echo $lc->pembayaran_ke ?>" tabindex="-1" role="dialog" aria-hidden="true">
+	            <div class="modal-dialog modal-sm">
+	              <div class="modal-content">
+
+	                <div class="modal-header">
+	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+	                  </button>
+	                  <h4 class="modal-title" id="myModalLabel2">History Bayar Denda</h4>
+	                </div>
+	                <div class="modal-body">
+	                <?php
+            			$classnyak->get_history_denda($lc->sale_id, $lc->pembayaran_ke);
+            		?>
+	                </div>
+	                <div class="modal-footer">
+	                  <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+	                </div>
+
+	              </div>
+	            </div>
+	        </div>
+			<?php
+		}
+
+		if (is_array($den))
 		{
 			?>
 			<div class="modal fade" id="modalbayardenda<?php echo $lc->pembayaran_ke ?>" tabindex="-1" role="dialog" aria-hidden="true">
@@ -179,26 +210,25 @@
 		                  <h4 class="modal-title" id="myModalLabel2">Bayar Denda</h4>
 		                </div>
 		                <div class="modal-body">
-		                		<div class="warningalert">
-		                			
-		                		</div>
-		                		<table>
-		                			<tr>
-		                				<td>Wajib dibayar</td>
-		                				<td>:</td>
-		                				<td><?php echo $den['jumlah_denda'] ?></td>
-		                			</tr>
-		                			<tr>
-		                				<td>Telah dibayar</td>
-		                				<td>:</td>
-		                				<td><?php echo $den['dibayar'] ?></td>
-		                			</tr>
-		                		</table>
-		                		<input type="hidden" name="cicilanke" value="<?php echo $lc->pembayaran_ke ?>">
-		                		<input type="hidden" name="invoicehidden" value="<?php echo $lc->sale_id ?>">
-		                		<input type="hidden" name="idcicilan" value="<?php echo $lc->sale_detail_id ?>">
-		                		<input type="number" name="tbjumlahbayar" placeholder="Masukan jumlah bayar">
-		                		
+	                		<div class="warningalert">
+	                			
+	                		</div>
+	                		<table>
+	                			<tr>
+	                				<td>Wajib dibayar</td>
+	                				<td>:</td>
+	                				<td><?php echo $den['jumlah_denda'] ?></td>
+	                			</tr>
+	                			<tr>
+	                				<td>Telah dibayar</td>
+	                				<td>:</td>
+	                				<td><?php echo $den['dibayar'] ?></td>
+	                			</tr>
+	                		</table>
+	                		<input type="hidden" name="cicilanke" value="<?php echo $lc->pembayaran_ke ?>">
+	                		<input type="hidden" name="invoicehidden" value="<?php echo $lc->sale_id ?>">
+	                		<input type="hidden" name="idcicilan" value="<?php echo $lc->sale_detail_id ?>">
+	                		<input type="number" name="tbjumlahbayar" placeholder="Masukan jumlah bayar">
 		                  <p style="font-style: italic; font-size: 11px; color: red;">*Pastikan sebelum input dan print kwitansi, pembayaran denda sudah diterima</p>
 		                </div>
 		                <div class="modal-footer">
@@ -217,7 +247,7 @@
 	                <div class="modal-header">
 	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
 	                  </button>
-	                  <h4 class="modal-title" id="myModalLabel2">Bayar Denda</h4>
+	                  <h4 class="modal-title" id="myModalLabel2">Peringatan Bayar Denda</h4>
 	                </div>
 	                <div class="modal-body">
 	                  <p><label class="label label-danger"><?php echo $den['jumlah_telat_hari'] ?> Hari</label> terlewat dari jatuh tempo, adapun kewajiban bayar dendanya sebesar <b><?php echo $den['jumlah_denda'] ?></b></p>
@@ -225,14 +255,34 @@
 	                  <p style="font-style: italic; font-size: 11px; color: red;">*Pastikan sebelum print kwitansi, pembayaran denda sudah diterima</p>
 	                </div>
 	                <div class="modal-footer">
-	                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	                  <a target="_blank" rel="noopener noreferrer" href="<?php echo base_url().'R_cicilan/kwitansiBayardenda/'.$lc->pembayaran_ke.'/'.$lc->sale_id ?>" class="btn btn-primary"><i class="fa fa-print"></i></a>
+	                  <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
 	                </div>
 
 	              </div>
 	            </div>
 	        </div>
 
+	        <div class="modal fade" id="modalhistorydenda<?php echo $lc->pembayaran_ke ?>" tabindex="-1" role="dialog" aria-hidden="true">
+	            <div class="modal-dialog modal-sm">
+	              <div class="modal-content">
+
+	                <div class="modal-header">
+	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+	                  </button>
+	                  <h4 class="modal-title" id="myModalLabel2">History Bayar Denda</h4>
+	                </div>
+	                <div class="modal-body">
+	                <?php
+            			$classnyak->get_history_denda($lc->sale_id, $lc->pembayaran_ke);
+            		?>
+	                </div>
+	                <div class="modal-footer">
+	                  <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+	                </div>
+
+	              </div>
+	            </div>
+	        </div>
 			<?php
 		}
 	}

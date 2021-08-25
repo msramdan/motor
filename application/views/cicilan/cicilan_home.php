@@ -108,7 +108,7 @@
 
         const id_cicilan = $(this).next().next().val()
         const bayar = $(this).parents('.container-submit-cicilan-action').prev().val()
-        const invoice = $('.id_sale').val()
+        const invoice = $(this).next().next().next().val()
         const elemtxtdibayar = $(this).parents('td').next().children('span')
         const elempenginput = $(this).parents('td').next().next().children('span')
         const pembayaranke = $(this).parents('.container-submit-cicilan-action').prev().prev().val()
@@ -212,7 +212,7 @@
     })
 
     $(document).on('submit','#bayar_denda_form', function(e){
-        dataString = $("#bayar_denda_form").serialize();
+        dataString = $(this).serialize();
 
         const thisel = $(this)
 
