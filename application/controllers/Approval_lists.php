@@ -72,26 +72,26 @@ class Approval_lists extends CI_Controller
         $this->template->load('template','approval_lists/approval_lists_form', $data);
     }
     
-    public function create_action() 
-    {
-        $this->_rules();
+    // public function create_action() 
+    // {
+    //     $this->_rules();
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        } else {
-            $data = array(
-        		'invoice_id' => $this->input->post('invoice_id',TRUE),
-        		'approve_by' => $this->input->post('approve_by',TRUE),
-        		'approval_status' => $this->input->post('approval_status',TRUE),
-        		'keterangan' => $this->input->post('keterangan',TRUE),
-        		'komentar' => $this->input->post('komentar',TRUE),
-            );
+    //     if ($this->form_validation->run() == FALSE) {
+    //         $this->create();
+    //     } else {
+    //         $data = array(
+    //     		'invoice_id' => $this->input->post('invoice_id',TRUE),
+    //     		'approve_by' => $this->input->post('approve_by',TRUE),
+    //     		'approval_status' => $this->input->post('approval_status',TRUE),
+    //     		'keterangan' => $this->input->post('keterangan',TRUE),
+    //     		'komentar' => $this->input->post('komentar',TRUE),
+    //         );
 
-            $this->Approval_lists_model->insert($data);
-            $this->session->set_flashdata('message', 'Create Record Success');
-            redirect(site_url('approval_lists'));
-        }
-    }
+    //         $this->Approval_lists_model->insert($data);
+    //         $this->session->set_flashdata('message', 'Create Record Success');
+    //         redirect(site_url('approval_lists'));
+    //     }
+    // }
     
     public function update($id) 
     {

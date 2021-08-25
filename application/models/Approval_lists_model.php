@@ -31,6 +31,16 @@ class Approval_lists_model extends CI_Model
         $this->db->where('invoice_id', $id);
         return $this->db->get($this->table)->row();
     }
+
+    function cekStatusPengajuanDiskonDenda($id,$filter)
+    {
+        $where = array(
+            'invoice_id' => $id
+        );
+
+        $this->db->where($where)->like('keterangan', $filter);
+        return $this->db->get($this->table)->row();
+    }
     
     // get total rows
     function total_rows($q = NULL) {

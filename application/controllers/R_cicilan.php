@@ -774,27 +774,6 @@ class R_cicilan extends CI_Controller
         }
     }
 
-    public function pengajuanDiskonDenda()
-    {
-        $id = $this->input->post('invoice_id');
-        $ket = $this->input->post('catatan');
-
-        $approval_stage = $this->custom_authorization->addApprovalby('p-diskondenda');
-
-        $data = array(
-            'invoice_id' => $id,
-            'approve_by' => $approval_stage,
-            'approval_status' => 'Dalam Review',
-            'keterangan' => $ket,
-            'jenis_tindakan' => 'Pengajuan Diskon',
-            'komentar' => '',
-            'unit_id' => $this->session->userdata('unit_id')
-        );
-
-        $this->Approval_lists_model->insert($data);
-        return json_encode('success');
-    }
-
     public function kwitansiBayardenda($pembayaranke, $invoice)
     {
         $pdf = new FPDF('l','mm','A5');
@@ -1262,6 +1241,50 @@ class R_cicilan extends CI_Controller
         $data['pembayaranke'] = $pembayaranke;
         $this->load->view('cicilan/history_denda_table', $data);
 
+    }
+
+    function cekApprovalDiskonDenda($idcicilan,$pembayaranke, $invoice)
+    {
+        $cek = $this->Approval_lists_model->cekStatusPengajuanDiskonDenda($invoice, '"idcicilan":"'.$idcicilan.'"');
+
+        $array = array(
+            'dataa' => $cek,
+            'idcicilan' => $idcicilan,
+            'pembayaranke' => $pembayaranke,
+            'invoice' => $invoice
+        );
+        $this->load->view('cicilan/approval_diskon_denda',$array);
+    }
+
+    function insertpengajuanDiskonDenda()
+    {
+        $invoice = $this->input->post('invoicehidden');
+        $cicilanke = $this->input->post('cicilanke');
+        $idcicilan = $this->input->post('idcicilan');
+        $textket = $this->input->post('catatan');
+        $jumlahpotonganyangdiajukan = $this->input->post('tbjumlahdiskon');
+
+        $arraydata = array(
+            'idcicilan' => $idcicilan,
+            'jumlahpotonganyangdiajukan' => $jumlahpotonganyangdiajukan,
+            'keterangan' => $textket
+        );
+
+        $ket = json_encode($arraydata);
+
+        $approval_stage = $this->custom_authorization->addApprovalby('p-diskondenda');
+
+        $data = array(
+            'invoice_id' => $invoice,
+            'approve_by' => $approval_stage,
+            'approval_status' => 'Dalam Review',
+            'keterangan' => $ket,
+            'jenis_tindakan' => 'Pengajuan Diskon',
+            'komentar' => '',
+            'unit_id' => $this->session->userdata('unit_id')
+        );
+
+        $this->Approval_lists_model->insert($data);
     }
 
 }

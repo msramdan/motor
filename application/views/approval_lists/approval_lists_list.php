@@ -11,10 +11,7 @@
         <div class="box-body">
             <div class='row'>
             <div class='col-md-9'>
-            <div style="padding-bottom: 10px;">
-        <?php echo anchor(site_url('approval_lists/create'), '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah Data', 'class="btn btn-danger btn-sm"'); ?>
-		<?php echo anchor(site_url('approval_lists/excel'), '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel', 'class="btn btn-success btn-sm"'); ?>
-		<?php echo anchor(site_url('approval_lists/word'), '<i class="fa fa-file-word-o" aria-hidden="true"></i> Export Ms Word', 'class="btn btn-primary btn-sm"'); ?></div>
+            <div style="padding-bottom: 10px;"></div>
             </div>
             <div class='col-md-3'>
             <form action="<?php echo site_url('approval_lists/index'); ?>" class="form-inline" method="get">

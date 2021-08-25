@@ -67,8 +67,31 @@
         initsearch()
     })
 
+    $(document).on('submit','#pengajuan_diskon_denda_form', function(e){
+        dataString = $(this).serialize();
+        const invoice = $('input[name="invoicehidden"]').val()
+        e.preventDefault()
+
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>R_cicilan/insertpengajuanDiskonDenda",
+            data: dataString,
+            success: function(data){
+                // alert('Successful!');
+                Swal.fire({
+                  icon: 'success',
+                  title: "Pengajuan Sukses",
+                  text: "Silahkan cek kembali dengan memilih cicilan lalu klik 'Pengajuan Denda'"
+                })
+
+                refreshTabel(invoice)
+                $(".modal").modal("hide")
+            }
+        });
+    });
+
     $(document).on('submit','#update_cicilan_payment_form', function(e){
-        dataString = $("#update_cicilan_payment_form").serialize();
+        dataString = $(this).serialize();
 
         e.preventDefault()
 

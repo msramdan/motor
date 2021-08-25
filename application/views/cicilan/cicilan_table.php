@@ -148,7 +148,7 @@
 										?>
 										<li><a href="#" data-toggle="modal" data-target="#modalbayardenda<?php echo $lc->pembayaran_ke ?>">Bayar Denda</a></li>
 										<li><a href="#" data-toggle="modal" data-target="#modalhistorydenda<?php echo $lc->pembayaran_ke ?>">History Bayar Denda</a></li>
-										<li><a href="#">Diskon Denda</a></li>
+										<li><a href="#" data-toggle="modal" data-target="#modaldiskondenda<?php echo $lc->pembayaran_ke ?>">Diskon Denda</a></li>
 										<?php	
 									}
 								}
@@ -191,6 +191,36 @@
 	                  <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
 	                </div>
 
+	              </div>
+	            </div>
+	        </div>
+
+	        <div class="modal fade" id="modaldiskondenda<?php echo $lc->pembayaran_ke ?>" tabindex="-1" role="dialog" aria-hidden="true">
+	            <div class="modal-dialog modal-sm">
+	              <div class="modal-content">
+	              	<form id="pengajuan_diskon_denda_form" method="post">
+		                <div class="modal-header">
+		                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+		                  </button>
+		                  <h4 class="modal-title" id="myModalLabel2">History Bayar Denda</h4>
+		                </div>
+		                <div class="modal-body">
+		                	<input type="hidden" name="cicilanke" value="<?php echo $lc->pembayaran_ke ?>">
+	                		<input type="hidden" name="invoicehidden" value="<?php echo $lc->sale_id ?>">
+	                		<input type="hidden" name="idcicilan" value="<?php echo $lc->sale_detail_id ?>">
+		                <?php
+		                	$l = $classnyak->cekApprovalDiskonDenda($lc->sale_detail_id,$lc->pembayaran_ke,$invoice);
+		                	if ($l === 'no data') {
+		                		echo 'no dataaa';
+		                	} else {
+		                		$classnyak->cekApprovalDiskonDenda($lc->sale_detail_id,$lc->pembayaran_ke,$invoice);
+		                	}
+	            		?>
+		                </div>
+		                <div class="modal-footer">
+		                  <button type="submit" class="btn btn-primary" data-dismiss="modal">Submit</button>
+		                </div>
+		            </form>
 	              </div>
 	            </div>
 	        </div>
@@ -280,6 +310,26 @@
 	                  <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
 	                </div>
 
+	              </div>
+	            </div>
+	        </div>
+
+	        <div class="modal fade" id="modaldiskondenda<?php echo $lc->pembayaran_ke ?>" tabindex="-1" role="dialog" aria-hidden="true">
+	            <div class="modal-dialog modal-sm">
+	              <div class="modal-content">
+	                <div class="modal-header">
+	                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+	                  </button>
+	                  <h4 class="modal-title" id="myModalLabel2">Pengajuan Diskon Denda</h4>
+	                </div>
+	                <div class="modal-body">
+	                	<input type="hidden" name="cicilanke" value="<?php echo $lc->pembayaran_ke ?>">
+                		<input type="hidden" name="invoicehidden" value="<?php echo $lc->sale_id ?>">
+                		<input type="hidden" name="idcicilan" value="<?php echo $lc->sale_detail_id ?>">
+	                <?php
+	                		$classnyak->cekApprovalDiskonDenda($lc->sale_detail_id,$lc->pembayaran_ke,$lc->sale_id);
+            		?>
+	                </div>
 	              </div>
 	            </div>
 	        </div>

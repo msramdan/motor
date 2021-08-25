@@ -135,6 +135,23 @@ class Sale_detail_model extends CI_Model
             ->where($where);
         return $this->db->get()->num_rows();
     }
+
+    function getDataHistoryPembayaran($invoice, $jenispembayaraan, $filter = NULL)
+    {
+        $where = array(
+            'id' => $invoice,
+            'jenis_pembayaran' => $jenispembayaraan,
+            'deskripsi' => $filter
+        );
+        $this->db->select('*');
+        $this->db->where($where);
+        $this->db->order_by('tanggal_bayar','DESC');
+        if ($this->db->get('history_pembayaran')->result()) {
+            return $this->db->get('history_pembayaran')->result();
+        } else {
+            return 'tidak ada data';
+        }
+    }
 }
 
 /* End of file Sale_detail_model.php */
