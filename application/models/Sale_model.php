@@ -174,7 +174,7 @@ class Sale_model extends CI_Model
 
     function get_bungapercicilan($inv)
     {
-        $this->db->select("pokok_cicilan, harus_dibayar, nilai_bunga_percicilan, COUNT(harus_dibayar) as 'brapaxcicilan', left(jatuh_tempo,2) as 'tiap_tanggal'")
+        $this->db->select("pokok_cicilan, harus_dibayar, nilai_bunga_percicilan, COUNT(harus_dibayar) as 'brapaxcicilan', MID(jatuh_tempo,9,2) as 'tiap_tanggal'")
             ->distinct()
             ->from('sale_detail');
         $this->db->where('sale_id',$inv);
