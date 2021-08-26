@@ -736,7 +736,7 @@ class R_cicilan extends CI_Controller
                     );
                 }
 
-                $this->Denda_model->update_by_sale_data_id($sale_detail_id, $datatunggakan);
+                $this->Denda_model->update_by_sale_detail_id($sale_detail_id, $datatunggakan);
 
                 $datacicilan = $this->Sale_detail_model->get_data_cicilan($sale_detail_id);
                 $datahistorypayment = array(
@@ -1263,10 +1263,13 @@ class R_cicilan extends CI_Controller
         $idcicilan = $this->input->post('idcicilan');
         $textket = $this->input->post('catatan');
         $jumlahpotonganyangdiajukan = $this->input->post('tbjumlahdiskon');
+        $jumlahdendasaatini = $this->Denda_model->get_by_id($idcicilan)->jumlah_denda;
 
         $arraydata = array(
             'idcicilan' => $idcicilan,
+            'totaldenda' => $jumlahdendasaatini,
             'jumlahpotonganyangdiajukan' => $jumlahpotonganyangdiajukan,
+            'jumlahdendasaatini' => $jumlahdendasaatini,
             'keterangan' => $textket
         );
 

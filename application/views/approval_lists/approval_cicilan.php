@@ -143,6 +143,7 @@
 					?>
 					<form action="yes" method="post">
 						<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
+						<input type="hidden" name="approval_id" id="approval_id" value="<?php echo $approval_id ?>">
 						<div class="btn-group">
 							<button type="submit" class="btn btn-secondary btn-lg" style="width: 90px;"><i class="fa fa-sign-out"></i><p>Ya</p></button>
 							<button class="btn btn-danger btn-lg btn-cancel-confirmation" style="width: 90px;"><i class="fa fa-times"></i><p>Batal</p></button>
@@ -162,6 +163,7 @@
 	      			?>
 	      			<form action="no" method="post">
 						<input type="hidden" name="invoicehidden" id="invoicehidden" value="<?php echo $invoice ?>">
+						<input type="hidden" name="approval_id" id="approval_id" value="<?php echo $approval_id ?>">
 						<textarea placeholder="alasan tolak" name="komentar" id="komentar" rows="3" style="resize: none; margin: 1vh 0;"></textarea>
 						<div class="btn-group">
 							<button type="submit" disabled class="btn btn-secondary btn-lg btn-init-tolak" style="width: 90px;"><i class="fa fa-sign-out"></i><p>Ya</p></button>

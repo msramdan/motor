@@ -32,6 +32,13 @@ class Approval_lists_model extends CI_Model
         return $this->db->get($this->table)->row();
     }
 
+    // get data by id
+    function get_by_id($id)
+    {
+        $this->db->where($this->id, $id);
+        return $this->db->get($this->table)->row();
+    }
+
     function cekStatusPengajuanDiskonDenda($id,$filter)
     {
         $where = array(
@@ -81,6 +88,12 @@ class Approval_lists_model extends CI_Model
     function update($id, $data)
     {
         $this->db->where('invoice_id', $id);
+        $this->db->update($this->table, $data);
+    }
+
+    function update_by_id($id, $data)
+    {
+        $this->db->where($this->id, $id);
         $this->db->update($this->table, $data);
     }
 

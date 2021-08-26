@@ -28,24 +28,6 @@ class Denda_model extends CI_Model
         $this->db->where('sale_detail_id', $id);
         return $this->db->get($this->table)->row();
     }
-    
-    // get total rows
-    function total_rows($q = NULL) {
-        $this->db->like('grup_id', $q);
-	$this->db->or_like('nama_grup', $q);
-	$this->db->from($this->table);
-        return $this->db->count_all_results();
-    }
-
-    // get data with limit and search
-    function get_limit_data($limit, $start = 0, $q = NULL) {
-        $this->db->order_by($this->id, $this->order);
-        $this->db->like('grup_id', $q);
-	$this->db->or_like('nama_grup', $q);
-    $this->db->or_like('kd_grup', $q);
-	$this->db->limit($limit, $start);
-        return $this->db->get($this->table)->result();
-    }
 
     // insert data
     function insert($data)
@@ -60,18 +42,13 @@ class Denda_model extends CI_Model
         $this->db->update($this->table, $data);
     }
 
-    function update_by_sale_data_id($id, $data)
+    // update data
+    function update_by_sale_detail_id($id, $data)
     {
         $this->db->where('sale_detail_id', $id);
         $this->db->update($this->table, $data);
     }
 
-    // delete data
-    function delete($id)
-    {
-        $this->db->where($this->id, $id);
-        $this->db->delete($this->table);
-    }
 
     function buat_kode(){
         $q = $this->db->query("SELECT MAX(RIGHT(kd_grup,3)) AS kd_max FROM grup");

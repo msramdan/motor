@@ -58,13 +58,19 @@ Class Custom_authorization{
                 return $ceg;
                 // return $checkallapproved;
             }
+
+            if ($schemenumber == 2) {
+                $ceg = $this->signtheApprovalDiskonDenda($result->nama_level,$data_required);
+                return $ceg;
+                // return $checkallapproved;
+            }
         }
     }
 
     public function signtheApproval($level, $data_required)
     {
     	
-        $checkdata = $this->ci->Approval_lists_model->get_by_invoice($data_required['invoice']);
+        $checkdata = $this->ci->Approval_lists_model->get_by_id($data_required['approval_id']);
 
         $leveldisale = json_decode($checkdata->approve_by, true);
 
@@ -83,7 +89,7 @@ Class Custom_authorization{
                 return $arr;
             }
 
-            if ($checkeverythingisapproved == 'cicilanApproved') {
+            if ($checkeverythingisapproved == 'Approved') {
                 $arr = array(
                     'dataapprovalupdate' => json_encode($leveldisale),
                     'status' => 'cicilanApproved'
@@ -91,7 +97,7 @@ Class Custom_authorization{
                 return $arr;
             }
 
-            if ($checkeverythingisapproved == 'cicilanDisapproved') {
+            if ($checkeverythingisapproved == 'Disapproved') {
                 $arr = array(
                     'dataapprovalupdate' => json_encode($leveldisale),
                     'status' => 'Cicilandisapproved'
@@ -130,9 +136,9 @@ Class Custom_authorization{
         
         if ($sudahtandatangan == $approvedrequirement) {
             if ($tandatanganfalse == $sudahtandatangan || $tandatanganfalse > 0) {
-                return 'cicilanDisapproved';
+                return 'Disapproved';
             } else {
-                return 'cicilanApproved';
+                return 'Approved';
             }
         }
 
@@ -157,5 +163,42 @@ Class Custom_authorization{
         }
         return 'yes';
 
+    }
+
+    public function signtheApprovalDiskonDenda($level, $data_required)
+    {
+        
+        $checkdata = $this->ci->Approval_lists_model->get_by_id($data_required['approval_id']);
+
+        $leveldisale = json_decode($checkdata->approve_by, true);
+
+        if ($leveldisale[$level] == '-') {
+            $invoice = $data_required['invoice'];
+
+            $leveldisale[$level] = $data_required['approvestatus'];
+
+            $checkeverythingisapproved = $this->checkToMakeSureEverythingisApproved($leveldisale);
+
+            if ($checkeverythingisapproved == 'Approved') {
+                $arr = array(
+                    'dataapprovalupdate' => json_encode($leveldisale),
+                    'status' => 'Approved'
+                );
+                return $arr;
+            }
+
+            if ($checkeverythingisapproved == 'Disapproved') {
+                $arr = array(
+                    'dataapprovalupdate' => json_encode($leveldisale),
+                    'status' => 'Disapproved'
+                );
+                return $arr;
+            }
+        } else {
+            $arr = array(
+                'status' => 'alreadyapprove'
+            );
+            return $arr;
+        }
     }
 }

@@ -66,11 +66,22 @@
             } ?></td>
 			<td><?php echo $approval_lists->approval_status ?></td>
             <td><?php echo $approval_lists->jenis_tindakan ?></td>
-			<td><?php echo $approval_lists->keterangan ?></td>
+			<td><?php
+
+                if ($approval_lists->jenis_tindakan === 'Pengajuan Diskon') {
+                    ?>
+                    Pengajuan Diskon untuk denda cicilan
+                    <?php
+                }else{
+                    
+                    echo $approval_lists->keterangan;
+                    
+                }
+                ?></td>
 			<td><?php echo $approval_lists->komentar ?></td>
 			<td style="text-align:center" width="200px">
 				<?php
-                echo show_button($menu_accessed, 'read', $approval_lists->invoice_id);
+                echo show_button($menu_accessed, 'read', $approval_lists->approval_id.'/'.$approval_lists->invoice_id);
                 
 				//echo anchor(site_url('Approval_lists/read/'.$approval_lists->invoice_id),'<i class="fa fa-eye" aria-hidden="true"></i>','class="btn btn-success btn-sm"'); 
 				?>
