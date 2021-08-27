@@ -77,7 +77,7 @@
             url: "<?php echo base_url() ?>R_cicilan/insertpengajuanDiskonDenda",
             data: dataString,
             success: function(data){
-                // alert('Successful!');
+                $(".modal .close").click()
                 Swal.fire({
                   icon: 'success',
                   title: "Pengajuan Sukses",
@@ -85,7 +85,6 @@
                 })
 
                 refreshTabel(invoice)
-                $(".modal").modal("hide")
             }
         });
     });

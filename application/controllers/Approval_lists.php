@@ -237,12 +237,16 @@ class Approval_lists extends CI_Controller
         $cektypeapproval = $this->Approval_lists_model->get_by_id($id);
 
         if ($cektypeapproval->jenis_tindakan === 'Pengajuan Diskon') {
+            $this->load->library('Custom_authorization');
+            $getlevelname = $this->fungsi->user_login()->nama_level;
+            $cekapprove = $this->custom_authorization->apaAkuSudahApprove($getlevelname,$cektypeapproval->approval_id);
             $arr = array(
                 'invoice_id' => $cektypeapproval->invoice_id,
                 'approve_by' => $cektypeapproval->approve_by,
                 'approval_status' => $cektypeapproval->approval_status,
                 'keterangan' => $cektypeapproval->keterangan,
                 'approval_id' => $cektypeapproval->approval_id,
+                'status_approve' => $cekapprove
 
             );
             $this->template->load('template','approval_lists/approval_diskon_denda', $arr);
@@ -254,7 +258,7 @@ class Approval_lists extends CI_Controller
             $getlevelname = $this->fungsi->user_login()->nama_level;
 
             $this->load->library('Custom_authorization');
-            $letscheck = $this->custom_authorization->apaAkuSudahApprove($getlevelname,$invoice);
+            $letscheck = $this->custom_authorization->apaAkuSudahApprove($getlevelname,$cektypeapproval->approval_id);
 
             $fetched = array(
                 'admin_fee' => $this->Dashboard_model->admin_fee(),
@@ -352,7 +356,7 @@ class Approval_lists extends CI_Controller
                 'approvestatus' => 'true',
                 'nominal_diskon' => $this->input->post('nominal_diskon'),
                 'jumlah_denda' => $this->input->post('jumlah_denda'),
-                'id_denda' => $this->input->post('id_denda'),
+                'sale_detail_id' => $this->input->post('idcicilan'),
                 'approval_id' => $approvalid
             );
             $customAuthorizationCheck = $this->custom_authorization->authorization_scheme('2', $approvalby, $datarequired);
@@ -371,10 +375,10 @@ class Approval_lists extends CI_Controller
                     $this->Approval_lists_model->update_by_id($approvalid, $dataapprovaltoupdate);
 
                     $datatoupdate = array(
-                        'jumlah_denda' => intval($datarequired['nominal_denda']),
+                        'jumlah_denda' => intval($datarequired['jumlah_denda']) - intval($datarequired['nominal_diskon']),
                     );
 
-                    $this->Denda_model->update_by_sale_detail_id($datarequired['id_denda'],$datatoupdate);
+                    $this->Denda_model->update_by_sale_detail_id($datarequired['sale_detail_id'],$datatoupdate);
                 }
 
                 if ($customAuthorizationCheck['status'] === 'alreadyapprove') {

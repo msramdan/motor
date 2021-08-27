@@ -145,9 +145,9 @@ Class Custom_authorization{
         return 'belumlengkap';
     }
 
-    public function apaAkuSudahApprove($level, $invoice)
+    public function apaAkuSudahApprove($level, $approval_id)
     {
-        $checkdata = $this->ci->Approval_lists_model->get_by_invoice($invoice);
+        $checkdata = $this->ci->Approval_lists_model->get_by_id($approval_id);
 
         $leveldisale = json_decode($checkdata->approve_by, true);
 
