@@ -153,7 +153,7 @@
 									}
 								}
 							?>
-							<li><a href="#">Detail</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#modaldetailcicilan<?php echo $lc->pembayaran_ke ?>">Detail</a></li>
 		                    </ul>
 		                </div>
 					</td>
@@ -169,6 +169,72 @@
 <?php
 	foreach($list_cicilan as $lc) {
 		$den = $classnyak->cekDenda($lc->sale_detail_id);
+
+		?>
+		<div class="modal fade" id="modaldetailcicilan<?php echo $lc->pembayaran_ke ?>" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+              <div class="modal-content">
+
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                  </button>
+                  <h4 class="modal-title" id="myModalLabel2">History Bayar Denda</h4>
+                </div>
+                <div class="modal-body">
+                	<table class="table table-bordered table-striped">	
+                		<tr>
+                			<td>Jatuh Tempo</td>
+                			<td>:</td>
+                			<td><?php echo $lc->jatuh_tempo ?></td>
+                		</tr>
+                		<tr>
+                			<td>Tanggal Dibayar</td>
+                			<td>:</td>
+                			<td><?php echo $lc->tanggal_dibayar ?></td>
+                		</tr>
+                		<tr>
+                			<td>Status</td>
+                			<td>:</td>
+                			<td>
+                				<?php
+
+                				if ($lc->tanggal_dibayar != NULL) {
+							        $now = strtotime($lc->jatuh_tempo); // or your date as well
+							        $your_date = strtotime($lc->tanggal_dibayar);
+							        $datediff = $your_date - $now;
+
+							        $count = round($datediff / (60 * 60 * 24));
+
+							        if ($count <= 30) {
+							            echo '<label class="label label-success" style="font-size: 1em;">Lancar</label>';
+							        }
+
+							        if ($count > 30 && $count <= 60) {
+							            echo '<label class="label label-warning" style="font-size: 1em;">Kurang Lancar</label>';
+							        }
+
+							        if ($count > 60 && $count <= 74) {
+							            echo '<label class="label label-warning" style="font-size: 1em;">Diragukan</label>Kurang Lancar';
+							        }
+
+							        if ($count > 75) {
+							            echo '<label class="label label-danger" style="font-size: 1em;">Macet</label>';
+							        }
+							    }
+
+                				?>
+                			</td>
+                		</tr>
+                	</table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+                </div>
+
+              </div>
+            </div>
+        </div>
+		<?php
 
 		if($den == 'denda lunas')
 		{

@@ -65,6 +65,14 @@ function check_access($level_id, $menu_id ){
 
  }
 
+function cekstatuscicilan($invoice)
+{
+    $ci = get_instance();
+    $ci->db->select('jatuh_tempo, tanggal_dibayar');
+    $ci->db->where('sale_id', $invoice);
+    return $ci->db->get('sale_detail')->result_array();
+}
+
  //acces_delete
   function check_access_delete($level_id, $menu_id ){
     $ci = get_instance();
