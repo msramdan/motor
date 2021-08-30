@@ -22,7 +22,7 @@ class Sale_model extends CI_Model
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
         $this->db->join('item', 'item.item_id = sale.item_id','left');
         $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
-        $tshis->db->join('type', 'type.type_id = item.type_id','left');
+        $this->db->join('type', 'type.type_id = item.type_id','left');
         
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
@@ -197,6 +197,25 @@ class Sale_model extends CI_Model
         $this->db->join('level','level.level_id = user.level_id','left');
         $this->db->where('invoice', $id);
         return $this->db->get()->row();
+    }
+
+    function getAllbyKeadaanCicilan($status)
+    {
+        $this->db->select('*')
+            ->where('type_sale','Kredit')
+            ->group_start()
+                ->where('status_sale','Dalam Cicilan')
+                ->or_where('status_sale','Selesai')
+            ->group_end()
+            ->where('keadaan_cicilan',$status);
+        $this->db->from('sale');
+        $this->db->join('user', 'user.user_id = sale.user_id');
+        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('item', 'item.item_id = sale.item_id','left');
+        $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
+        $this->db->join('type', 'type.type_id = item.type_id','left');
+        
+        return $this->db->get()->result();
     }
 }
 

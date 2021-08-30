@@ -1,6 +1,24 @@
 <h2 style="margin-top:0px">Info Pembayaran</h2>
 <?php
 
+$outputkc = '';
+
+if ($resultkeadancicilankeseluruhan === 'Lancar') {
+    $outputkc = '<button class="btn btn-success btn-xs">Lancar</button>';
+}
+
+if ($resultkeadancicilankeseluruhan === 'Kurang Lancar') {
+    $outputkc = '<button class="btn btn-warning btn-xs">Kurang Lancar</button>';
+}
+
+if ($resultkeadancicilankeseluruhan === 'Diragukan') {
+    $outputkc = '<button class="btn btn-danger btn-xs">Diragukan</button>';
+}
+
+if ($resultkeadancicilankeseluruhan === 'Macet') {
+    $outputkc = '<button class="btn btn-danger btn-xs">Macet</button>';
+}
+
 if($status_sale === 'Selesai')
 {?>
     <label class="label label-success" style="font-size: 1em;">Lunas</label>
@@ -11,7 +29,7 @@ if($status_sale === 'Selesai')
     	<tr><td>Dibayar</td><td>: </td><td><?php echo $dibayar; ?></td></tr>
     	<tr><td>Sisa</td><td>: </td><td><?php echo intval($total_bayar) - intval($dibayar); ?></td></tr>
     	<tr><td>Pembayaran Terakhir</td><td>: </td><td><?php echo $last_updated; ?></td></tr>
-        <tr><td>Keadaan Proses Cicilan</td><td>: </td><td><?php echo $resultkeadancicilankeseluruhan ?></td></tr>
+        <tr><td>Keadaan Proses Cicilan</td><td>: </td><td><?php echo $outputkc ?></td></tr>
     </table>
 <?php
 }
@@ -25,7 +43,7 @@ if ($status_sale === 'Dalam Cicilan') {
     	<tr><td>Dibayar</td><td>: </td><td><?php echo $dibayar; ?></td></tr>
     	<tr><td>Sisa</td><td>: </td><td><?php echo intval($total_bayar) - intval($dibayar); ?></td></tr>
     	<tr><td>Pembayaran Terakhir</td><td>: </td><td><?php echo $last_updated; ?></td></tr>
-        <tr><td>Keadaan Proses Cicilan</td><td>: </td><td><?php echo $resultkeadancicilankeseluruhan ?></td></tr>
+        <tr><td>Keadaan Proses Cicilan</td><td>: </td><td><?php echo $outputkc ?></td></tr>
     </table>
 <?php
 }
