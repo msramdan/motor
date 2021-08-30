@@ -214,8 +214,35 @@ class Sale_model extends CI_Model
         $this->db->join('item', 'item.item_id = sale.item_id','left');
         $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
         $this->db->join('type', 'type.type_id = item.type_id','left');
-        
+
         return $this->db->get()->result();
+    }
+
+    function total_rows_ka($q = NULL, $status) {
+        $this->db->where('type_sale','Kredit');
+        $this->db->where('keadaan_cicilan',$status)
+            ->group_start()
+                ->where('status_sale','Dalam Cicilan')
+                ->or_where('status_sale','Selesai')
+            ->group_end();
+        $this->db->from($this->table);
+        return $this->db->count_all_results();
+    }
+
+    // get data with limit and search
+    function get_limit_data_ka($limit, $start = 0, $q = NULL, $status) {
+        $this->db->join('user', 'user.user_id = sale.user_id', 'left');
+        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id', 'left');
+        $this->db->join('item', 'item.item_id = sale.item_id', 'left');
+        $this->db->order_by($this->id, $this->order);
+        $this->db->where('item.unit_id', $this->session->userdata('unit_id'));
+        $this->db->where('keadaan_cicilan',$status);
+        $this->db->group_start();
+            $this->db->where('status_sale','Dalam Cicilan');
+            $this->db->or_where('status_sale','Selesai');
+        $this->db->group_end();
+        $this->db->limit($limit, $start);
+        return $this->db->get($this->table)->result();
     }
 }
 

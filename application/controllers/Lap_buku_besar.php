@@ -24,26 +24,54 @@ class Lap_buku_besar extends CI_Controller
     {
         is_allowed($this->uri->segment(1),null);
 
-        $view = '';
+        $data['view'] = '';
 
         if ($status === 'list_lancar') {
-    		$view = 'Lancar';
+    		$data['view'] = 'Lancar';
     	}
 
     	if ($status === 'list_kurang_lancar') {
-    		$view = 'Kurang Lancar';
+    		$data['view'] = 'Kurang Lancar';
     	}
 
     	if ($status === 'list_diragukan') {
-    		$view = 'Diragukan';
+    		$data['view'] = 'Diragukan';
     	}
 
     	if ($status === 'list_macet') {
-    		$view = 'Macet';
+    		$data['view'] = 'Macet';
     	}
 
-        $data['lists_data'] = $this->Sale_model->getAllbyKeadaanCicilan($view);
+    	$q = urldecode($this->input->get('q', TRUE));
+        $start = intval($this->uri->segment(3));
         
+        if ($q <> '') {
+            $config['base_url'] = base_url() . '.php/c_url/index.html?q=' . urlencode($q);
+            $config['first_url'] = base_url() . 'index.php/sale/index.html?q=' . urlencode($q);
+        } else {
+            $config['base_url'] = base_url() . 'index.php/sale/index/';
+            $config['first_url'] = base_url() . 'index.php/sale/index/';
+        }
+
+        $config['per_page'] = 10;
+        $config['page_query_string'] = FALSE;
+        $config['total_rows'] = $this->Sale_model->total_rows_ka($q, $data['view']);
+        $sale = $this->Sale_model->get_limit_data_ka($config['per_page'], $start, $q, $data['view']);
+        $config['full_tag_open'] = '<ul class="pagination pagination-sm no-margin pull-right">';
+        $config['full_tag_close'] = '</ul>';
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
+
+        $data = array(
+            'lists_data' => $sale,
+            'q' => $q,
+            'pagination' => $this->pagination->create_links(),
+            'total_rows' => $config['total_rows'],
+            'start' => $start,
+            'level_id' => $this->session->userdata('level_id'),
+            'menu_accessed' => $this->uri->segment(1)
+        );
+
         $this->template->load('template','laporan/list_bb', $data);
     }
 
