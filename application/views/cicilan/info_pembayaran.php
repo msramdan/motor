@@ -1,40 +1,6 @@
 <h2 style="margin-top:0px">Info Pembayaran</h2>
 <?php
 
-$arraystatus = array();
-
-$arraystatusfromdb = cekstatuscicilan($invoice_id);
-
-foreach ($arraystatusfromdb as $v) {
-    if ($v['tanggal_dibayar'] != NULL) {
-        $now = strtotime($v['jatuh_tempo']); // or your date as well
-        $your_date = strtotime($v['tanggal_dibayar']);
-        $datediff = $your_date - $now;
-
-        $count = round($datediff / (60 * 60 * 24));
-
-        if ($count <= 30) {
-            $arraystatus[] = '<label class="label label-success" style="font-size: 1em;">Lancar</label>';
-        }
-
-        if ($count > 30 && $count <= 60) {
-            $arraystatus[] = '<label class="label label-warning" style="font-size: 1em;">Kurang Lancar</label>';
-        }
-
-        if ($count > 60 && $count <= 74) {
-            $arraystatus[] = '<label class="label label-warning" style="font-size: 1em;">Diragukan</label>Kurang Lancar';
-        }
-
-        if ($count > 75) {
-            $arraystatus[] = '<label class="label label-danger" style="font-size: 1em;">Macet</label>';
-        }
-    }
-}
-
-$counted = array_count_values($arraystatus);
-arsort($counted);
-$resultkeadancicilankeseluruhan = key($counted);
-
 if($status_sale === 'Selesai')
 {?>
     <label class="label label-success" style="font-size: 1em;">Lunas</label>

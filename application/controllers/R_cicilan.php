@@ -70,6 +70,7 @@ class R_cicilan extends CI_Controller
             'total_bayar' => 0,
             'dibayar' => 0,
             'type_sale' => $typeSale,
+            'keadaan_cicilan' => '-',
             'tanggal_sale' => $tanggalsale,
             'user_id' => $userid,
             'surveyor_id' => 'N/A',
@@ -431,7 +432,8 @@ class R_cicilan extends CI_Controller
             'sisapembayaranbrapax' => $sisapembayaran,
 
             'progresscicilan' => $progresscicilan,
-            'classnyak' => $this
+            'classnyak' => $this,
+            'resultkeadancicilankeseluruhan' => $row->keadaan_cicilan
         );
         $this->load->view('cicilan/cicilan_inprogress', $sajidata);
     }
@@ -570,11 +572,51 @@ class R_cicilan extends CI_Controller
         
         $gettotaldibayarsekarang = $dibayar->telah_dibayar;
         
+        $cekkeadaancicilan = $this->cek_kesehatan_cicilan($id);
+
         $data = array(
-            'dibayar' => $gettotaldibayarsekarang
+            'dibayar' => $gettotaldibayarsekarang,
+            'keadaan_cicilan' => $cekkeadaancicilan
         );
 
         $this->Sale_model->update_data_dibayar($id,$data);
+    }
+
+    public function cek_kesehatan_cicilan($invoice_id)
+    {
+        $arraystatus = array();
+
+        $arraystatusfromdb = cekstatuscicilan($invoice_id);
+
+        foreach ($arraystatusfromdb as $v) {
+            if ($v['tanggal_dibayar'] != NULL) {
+                $now = strtotime($v['jatuh_tempo']); // or your date as well
+                $your_date = strtotime($v['tanggal_dibayar']);
+                $datediff = $your_date - $now;
+
+                $count = round($datediff / (60 * 60 * 24));
+
+                if ($count <= 30) {
+                    $arraystatus[] = 'Lancar';
+                }
+
+                if ($count > 30 && $count <= 60) {
+                    $arraystatus[] = 'Kurang Lancar';
+                }
+
+                if ($count > 60 && $count <= 74) {
+                    $arraystatus[] = 'Diragukan';
+                }
+
+                if ($count > 75) {
+                    $arraystatus[] = 'Macet';
+                }
+            }
+        }
+
+        $counted = array_count_values($arraystatus);
+        arsort($counted);
+        return key($counted);
     }
 
     public function refresh_cicilan_table()
@@ -1228,7 +1270,8 @@ class R_cicilan extends CI_Controller
 
             'sisapembayaranbrapax' => $sisapembayaran,
 
-            'progresscicilan' => $progresscicilan
+            'progresscicilan' => $progresscicilan,
+            'resultkeadancicilankeseluruhan' => $row->keadaan_cicilan
         );
         $this->load->view('cicilan/info_pembayaran', $sajidata);
     }

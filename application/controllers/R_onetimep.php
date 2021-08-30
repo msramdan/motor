@@ -54,6 +54,7 @@ class R_onetimep extends CI_Controller
             'total_bayar' => 0,
             'dibayar' => 0,
             'type_sale' => $typeSale,
+            'keadaan_cicilan' => 'NULL',
             'tanggal_sale' => $tanggalsale,
             'user_id' => $userid,
             'surveyor_id' => 'N/A',
