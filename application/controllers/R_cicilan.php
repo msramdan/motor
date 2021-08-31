@@ -217,7 +217,7 @@ class R_cicilan extends CI_Controller
     {
         $id = $this->input->post('invoicehidden');
 
-        $contact_id = 'N/A';
+        $contact_id = '0';
         if ($this->input->post('sales_referral')=="Karyawan") {
             $contact_id = $this->input->post('karyawan_id');
         }
@@ -233,6 +233,8 @@ class R_cicilan extends CI_Controller
         $kudubayar = $this->input->post('wajibdibayar');
 
         $sales_referral = $this->input->post('sales_referral');
+
+        $surveyor = $this->input->post('surveyor_id');
 
         $total_cicilan_brpa_x = $this->input->post('lama_cicilan');
 
@@ -260,6 +262,7 @@ class R_cicilan extends CI_Controller
             'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
             'tanggal_sale' => $tanggalsale,
 
+            'surveyor_id' => $surveyor,
             'status_sale' => 'Dalam Review'
         );
 
