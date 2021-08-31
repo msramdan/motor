@@ -571,3 +571,12 @@ function longdate_indo($tanggal)
     else if($nama=="Saturday") {$nama_hari="Sabtu";}
     return $nama_hari.','.$tgl.' '.$bulan.' '.$thn;
 }
+
+function get_precentage($total, $number)
+{
+    if ($total > 0) {
+        return round(($number * 100) / $total, 2);
+    } else {
+        return 0;
+    }
+}

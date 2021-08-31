@@ -10,6 +10,7 @@ class Lap_buku_besar extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('Sale_model');
+        $this->load->model('User_m');
         $this->load->model('Laporan_model');
         $this->load->library('form_validation');
     }
@@ -20,6 +21,7 @@ class Lap_buku_besar extends CI_Controller
 
         $data = array(
             'classnyak' => $this,
+            'dataunit' => $this->User_m->getgroupusaha($this->session->userdata('unit_id'))
         );
         
         $this->template->load('template','laporan/buku_besar_category', $data);

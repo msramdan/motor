@@ -18,7 +18,7 @@ class Laporan_model extends CI_Model
             FROM sale_detail
             JOIN sale ON sale.invoice = sale_detail.sale_id
             LEFT JOIN item ON item.item_id = sale.item_id
-            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = 2 AND sale.keadaan_cicilan = '".$keadaancicilan."';
+            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = ".$this->session->userdata('unit_id')." AND sale.keadaan_cicilan = '".$keadaancicilan."';
         ";
         return $this->db->query($query)->row();
     }
@@ -30,7 +30,7 @@ class Laporan_model extends CI_Model
             FROM sale_detail
             JOIN sale ON sale.invoice = sale_detail.sale_id
             LEFT JOIN item ON item.item_id = sale.item_id
-            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = 2 AND sale_detail.status = 'dibayar' AND sale.keadaan_cicilan = '".$keadaancicilan."';
+            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = ".$this->session->userdata('unit_id')." AND sale_detail.status = 'dibayar' AND sale.keadaan_cicilan = '".$keadaancicilan."';
         ";
         return $this->db->query($query)->row();
     }
@@ -42,7 +42,7 @@ class Laporan_model extends CI_Model
             FROM sale_detail
             JOIN sale ON sale.invoice = sale_detail.sale_id
             LEFT JOIN item ON item.item_id = sale.item_id
-            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = 2 AND (sale_detail.status = 'siap dibayar' OR sale_detail.status = 'belum siap dibayar') AND sale.keadaan_cicilan = '".$keadaancicilan."';
+            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = ".$this->session->userdata('unit_id')." AND (sale_detail.status = 'siap dibayar' OR sale_detail.status = 'belum siap dibayar') AND sale.keadaan_cicilan = '".$keadaancicilan."';
         ";
         return $this->db->query($query)->row();
     }
