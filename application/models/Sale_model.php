@@ -23,7 +23,11 @@ class Sale_model extends CI_Model
         $this->db->join('item', 'item.item_id = sale.item_id','left');
         $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
         $this->db->join('type', 'type.type_id = item.type_id','left');
-        
+        $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id','left');
+        $this->db->join('karyawan', 'karyawan.karyawan_id = sale.surveyor_id','left');
+        $this->db->join('unit', 'unit.unit_id = item.unit_id','left');
+        $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id','left');
+
         $this->db->order_by($this->id, $this->order);
         return $this->db->get($this->table)->result();
     }

@@ -298,66 +298,144 @@ class Sale extends CI_Controller
 
     public function excel()
     {
+        // $spreadsheet = new Spreadsheet();
+        // $sheet = $spreadsheet->getActiveSheet();
+        // /*$sheet->mergeCells('A1:A2'); // No
+        // $sheet->mergeCells('B1:B2'); //invoice
+        // $sheet->mergeCells('C1:E1'); //item
+        // $sheet->mergeCells('F1:F2'); //kategori
+        // $sheet->mergeCells('G1:G2'); //jenis item
+        // $sheet->mergeCells('H1:H2'); //nama pelanggan
+        // $sheet->mergeCells('I1:I2'); //id pelanggan
+        // $sheet->mergeCells('J1:J2'); //id pembelian
+        // $sheet->mergeCells('K1:L1'); //waktu (meliputi tanggal dan jam)
+        // $sheet->mergeCells('M1:M2'); //Harga beli pokok
+        // $sheet->mergeCells('N1:S1'); //Haarga (meliputi perolehan, rekondisi, stnk, komisi, admin, lainnya)
+        // $sheet->mergeCells('T1:T2'); //User
+        
+        // $sheet->setCellValue('A1', 'No');
+        // $sheet->setCellValue('B1', 'Invoice');
+        // $sheet->setCellValue('C1', 'Item');
+        // $sheet->setCellValue('C2', 'Merek');
+        // $sheet->setCellValue('D2', 'Type');
+        // $sheet->setCellValue('E2', 'Nopol');
+        // $sheet->setCellValue('F1', 'Kategori');
+        // $sheet->setCellValue('G1', 'Jenis');
+        // $sheet->setCellValue('H1', 'Nama Pelanggan');
+        // $sheet->setCellValue('I1', 'ID Pelanggan');
+        // $sheet->setCellValue('J1', 'ID Pembelian');
+        // $sheet->setCellValue('K1', 'Waktu');
+        // $sheet->setCellValue('K2', 'Tanggal');
+        // $sheet->setCellValue('L2', 'Jam');
+        // $sheet->setCellValue('M1', 'Harga Beli Pokok');
+        // $sheet->setCellValue('N1', 'Harga');
+        // $sheet->setCellValue('N2', 'Perolehan');
+        // $sheet->setCellValue('O2', 'Rekondisi');
+        // $sheet->setCellValue('P2', 'STNK');
+        // $sheet->setCellValue('Q2', 'Komisi');
+        // $sheet->setCellValue('R2', 'Admin');
+        // $sheet->setCellValue('S2', 'Lainnya');
+        // $sheet->setCellValue('T1', 'User');*/
+
+        // $sheet->mergeCells('A1:A2'); // No
+        // $sheet->mergeCells('B1:B2'); //invoice
+        // $sheet->mergeCells('C1:C2'); //id pelanggan
+        // $sheet->mergeCells('D1:D2'); //Nama pelanggan
+        // $sheet->mergeCells('E1:F1'); //item (meliputi merek dan type)
+        // $sheet->mergeCells('G1:G2'); //TOTAL PRICE Sale
+        // $sheet->mergeCells('H1:H2'); //Type sale
+        // $sheet->mergeCells('I1:I2'); //TANGGAL Sale
+        // $sheet->mergeCells('J1:J2'); //USER
+
+        // $sheet->setCellVAlue('A1','No');
+        // $sheet->setCellVAlue('B1','Invoice');
+        // $sheet->setCellVAlue('C1','ID Pelanggan');
+        // $sheet->setCellVAlue('D1','Nama Pelanggan');
+        // $sheet->setCellVAlue('E1','item');
+        // $sheet->setCellVAlue('E2','Merek');
+        // $sheet->setCellVAlue('F2','Type');
+        // $sheet->setCellVAlue('G1','Total Price Sale');
+        // $sheet->setCellVAlue('H1','Type Sale');
+        // $sheet->setCellVAlue('I1','Tanggal Sale');
+        // $sheet->setCellVAlue('J1','User');
+        
+        // $nourut = 1;
+        // $baris = 3;
+        // foreach($this->Sale_model->get_all() as $data)
+        // {
+            
+        //     $sheet->setCellValue('A'.$baris, $nourut++);
+        //     $sheet->setCellValue('B'.$baris, $data->invoice);
+        //     $sheet->setCellValue('C'.$baris, $data->pelanggan_id);
+        //     $sheet->setCellValue('D'.$baris, $data->nama_pelanggan);
+        //     $sheet->setCellValue('E'.$baris, $data->nama_merek);
+        //     $sheet->setCellValue('F'.$baris, $data->nama_type);
+        //     $sheet->setCellValue('G'.$baris, $data->total_price_sale);
+        //     $sheet->setCellValue('H'.$baris, $data->type_sale);
+        //     $sheet->setCellValue('I'.$baris, $data->tanggal_sale);
+        //     $sheet->setCellValue('J'.$baris, $data->nama_user);
+        //     $baris++;
+        // }
+
+        
+        // $writer = new Xlsx($spreadsheet);
+        // $filename = 'sale-report';
+        
+        // header('Content-Type: application/vnd.ms-excel');
+        // header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+        // header('Cache-Control: max-age=0');
+
+        // $writer->save('php://output');
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        /*$sheet->mergeCells('A1:A2'); // No
-        $sheet->mergeCells('B1:B2'); //invoice
-        $sheet->mergeCells('C1:E1'); //item
-        $sheet->mergeCells('F1:F2'); //kategori
-        $sheet->mergeCells('G1:G2'); //jenis item
-        $sheet->mergeCells('H1:H2'); //nama pelanggan
-        $sheet->mergeCells('I1:I2'); //id pelanggan
-        $sheet->mergeCells('J1:J2'); //id pembelian
-        $sheet->mergeCells('K1:L1'); //waktu (meliputi tanggal dan jam)
-        $sheet->mergeCells('M1:M2'); //Harga beli pokok
-        $sheet->mergeCells('N1:S1'); //Haarga (meliputi perolehan, rekondisi, stnk, komisi, admin, lainnya)
-        $sheet->mergeCells('T1:T2'); //User
-        
-        $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Invoice');
-        $sheet->setCellValue('C1', 'Item');
-        $sheet->setCellValue('C2', 'Merek');
-        $sheet->setCellValue('D2', 'Type');
-        $sheet->setCellValue('E2', 'Nopol');
-        $sheet->setCellValue('F1', 'Kategori');
-        $sheet->setCellValue('G1', 'Jenis');
-        $sheet->setCellValue('H1', 'Nama Pelanggan');
-        $sheet->setCellValue('I1', 'ID Pelanggan');
-        $sheet->setCellValue('J1', 'ID Pembelian');
-        $sheet->setCellValue('K1', 'Waktu');
-        $sheet->setCellValue('K2', 'Tanggal');
-        $sheet->setCellValue('L2', 'Jam');
-        $sheet->setCellValue('M1', 'Harga Beli Pokok');
-        $sheet->setCellValue('N1', 'Harga');
-        $sheet->setCellValue('N2', 'Perolehan');
-        $sheet->setCellValue('O2', 'Rekondisi');
-        $sheet->setCellValue('P2', 'STNK');
-        $sheet->setCellValue('Q2', 'Komisi');
-        $sheet->setCellValue('R2', 'Admin');
-        $sheet->setCellValue('S2', 'Lainnya');
-        $sheet->setCellValue('T1', 'User');*/
 
         $sheet->mergeCells('A1:A2'); // No
         $sheet->mergeCells('B1:B2'); //invoice
-        $sheet->mergeCells('C1:C2'); //id pelanggan
-        $sheet->mergeCells('D1:D2'); //Nama pelanggan
-        $sheet->mergeCells('E1:F1'); //item (meliputi merek dan type)
-        $sheet->mergeCells('G1:G2'); //TOTAL PRICE Sale
-        $sheet->mergeCells('H1:H2'); //Type sale
-        $sheet->mergeCells('I1:I2'); //TANGGAL Sale
-        $sheet->mergeCells('J1:J2'); //USER
+        $sheet->mergeCells('C1:H1'); //item (meliputi merek dan type)
+        $sheet->mergeCells('I1:I2');
+        $sheet->mergeCells('J1:K1');
+        $sheet->mergeCells('L1:L2');
+        $sheet->mergeCells('M1:M2');
+        $sheet->mergeCells('N1:O1');
+        $sheet->mergeCells('P1:P2');
+        $sheet->mergeCells('Q1:Q2');
+        $sheet->mergeCells('R1:R2');
+        $sheet->mergeCells('S1:S2');
+        $sheet->mergeCells('T1:T2');
+        $sheet->mergeCells('U1:U2');
+        $sheet->mergeCells('V1:V2');
+        $sheet->mergeCells('W1:W2');
+        
 
-        $sheet->setCellVAlue('A1','No');
-        $sheet->setCellVAlue('B1','Invoice');
-        $sheet->setCellVAlue('C1','ID Pelanggan');
-        $sheet->setCellVAlue('D1','Nama Pelanggan');
-        $sheet->setCellVAlue('E1','item');
-        $sheet->setCellVAlue('E2','Merek');
-        $sheet->setCellVAlue('F2','Type');
-        $sheet->setCellVAlue('G1','Total Price Sale');
-        $sheet->setCellVAlue('H1','Type Sale');
-        $sheet->setCellVAlue('I1','Tanggal Sale');
-        $sheet->setCellVAlue('J1','User');
+        $sheet->setCellValue('A1','No');
+        $sheet->setCellValue('B1','Invoice');
+        $sheet->setCellValue('C1','item');
+        $sheet->setCellValue('C2','ID Item');
+        $sheet->setCellValue('D2','Merek');
+        $sheet->setCellValue('E2','Type');
+        $sheet->setCellValue('F2','STNK');
+        $sheet->setCellValue('G2','Kategori');
+        $sheet->setCellValue('H2','Jenis');
+        $sheet->setCellValue('I1','Surveyor');
+        $sheet->setCellValue('J1','Lokasi');
+        $sheet->setCellValue('J2','Unit');
+        $sheet->setCellValue('K2','Wipem');
+        $sheet->setCellValue('L1','Nama Pelanggan');
+        $sheet->setCellValue('M1','ID Pelanggan');
+        $sheet->setCellValue('N1','Waktu');
+        $sheet->setCellValue('N2','Tanggal');
+        $sheet->setCellValue('O2','Jam');
+        $sheet->setCellValue('P1','DP');
+        $sheet->setCellValue('Q1','TradeIn');
+        $sheet->setCellValue('R1','Harga Beli Pokok');
+        $sheet->setCellValue('S1','Harga Penjualan');
+        $sheet->setCellValue('T1','Markup');
+        $sheet->setCellValue('U1','Sales Pokok');
+        $sheet->setCellValue('V1','Durasi Cicil');
+        $sheet->setCellValue('W1','Bunga/bln');
+        
+
         
         $nourut = 1;
         $baris = 3;
@@ -366,14 +444,28 @@ class Sale extends CI_Controller
             
             $sheet->setCellValue('A'.$baris, $nourut++);
             $sheet->setCellValue('B'.$baris, $data->invoice);
-            $sheet->setCellValue('C'.$baris, $data->pelanggan_id);
-            $sheet->setCellValue('D'.$baris, $data->nama_pelanggan);
-            $sheet->setCellValue('E'.$baris, $data->nama_merek);
-            $sheet->setCellValue('F'.$baris, $data->nama_type);
-            $sheet->setCellValue('G'.$baris, $data->total_price_sale);
-            $sheet->setCellValue('H'.$baris, $data->type_sale);
-            $sheet->setCellValue('I'.$baris, $data->tanggal_sale);
-            $sheet->setCellValue('J'.$baris, $data->nama_user);
+            $sheet->setCellValue('C'.$baris, $data->item_id);
+            $sheet->setCellValue('D'.$baris, $data->nama_merek);
+            $sheet->setCellValue('E'.$baris, $data->nama_type);
+            $sheet->setCellValue('F'.$baris, $data->no_stnk);
+            $sheet->setCellValue('G'.$baris, $data->nama_kategori);
+            $sheet->setCellValue('H'.$baris, $data->nama_jenis_item);
+            $sheet->setCellValue('I'.$baris, $data->nama_karyawan);
+            $sheet->setCellValue('J'.$baris, $data->nama_unit);
+            $sheet->setCellValue('K'.$baris, $data->nama_unit);
+            $sheet->setCellValue('L'.$baris, $data->nama_pelanggan);
+            $sheet->setCellValue('M'.$baris, $data->pelanggan_id);
+            $sheet->setCellValue('N'.$baris, $data->tanggal_sale);
+            $sheet->setCellValue('O'.$baris, $data->tanggal_sale);
+            $sheet->setCellValue('P'.$baris, 'WAIT');
+            $sheet->setCellValue('Q'.$baris, $data->harga_beli);
+            $sheet->setCellValue('R'.$baris, $data->harga_pokok);
+            $sheet->setCellValue('S'.$baris, $data->total_bayar);
+            $sheet->setCellValue('T'.$baris, 'WAIT');
+            $sheet->setCellValue('U'.$baris, $data->total_price_sale);
+            $sheet->setCellValue('V'.$baris, 'WAIT');
+            $sheet->setCellValue('W'.$baris, 'WAIT');
+
             $baris++;
         }
 
