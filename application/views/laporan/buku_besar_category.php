@@ -53,12 +53,12 @@
 		<tr>
 			<td width="10px"><?php echo ++$no ?></td>
 			<td><a href="<?php echo base_url().$url ?>" class="<?php echo $class ?>"><?php echo $a ?></a></td>
-			<td>test</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
+			<td><?php echo $classnyak->getDataSaldoAwalBB($a)->Pokok ?></td>
+			<td><?php echo $classnyak->getDataSaldoAwalBB($a)->Bunga ?></td>
+			<td><?php echo $classnyak->getDataAngsuranBB($a)->Pokok ?></td>
+			<td><?php echo $classnyak->getDataAngsuranBB($a)->Bunga ?></td>
+			<td><?php echo $classnyak->getDataSaldoAkhirBB($a)->Pokok ?></td>
+			<td><?php echo $classnyak->getDataSaldoAkhirBB($a)->Bunga ?></td>
 			<td>a</td>
 			<td>a</td>
 		</tr>

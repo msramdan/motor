@@ -10,14 +10,19 @@ class Lap_buku_besar extends CI_Controller
         parent::__construct();
         is_login();
         $this->load->model('Sale_model');
+        $this->load->model('Laporan_model');
         $this->load->library('form_validation');
     }
 
     public function index()
     {
         is_allowed($this->uri->segment(1),null);
+
+        $data = array(
+            'classnyak' => $this,
+        );
         
-        $this->template->load('template','laporan/buku_besar_category');
+        $this->template->load('template','laporan/buku_besar_category', $data);
     }
 
     public function list_data($status) 
@@ -73,6 +78,24 @@ class Lap_buku_besar extends CI_Controller
         );
 
         $this->template->load('template','laporan/list_bb', $data);
+    }
+
+    function getDataSaldoAwalBB($status)
+    {
+        $data = $this->Laporan_model->getSaldoAwalBB($status);
+        return $data;
+    }
+
+    function getDataAngsuranBB($status)
+    {
+        $data = $this->Laporan_model->getAngsuranlBB($status);
+        return $data;
+    }
+
+    function getDataSaldoAkhirBB($status)
+    {
+        $data = $this->Laporan_model->getSaldoAkhirBB($status);
+        return $data;
     }
 
  //    public function read($id) 

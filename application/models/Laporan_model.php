@@ -11,6 +11,42 @@ class Laporan_model extends CI_Model
         parent::__construct();
     }
 
+    function getSaldoAwalBB($keadaancicilan)
+    {
+        $query = "
+            SELECT SUM(sale_detail.pokok_cicilan) as 'Pokok',(SUM(sale_detail.harus_dibayar) - SUM(sale_detail.pokok_cicilan)) as 'Bunga'
+            FROM sale_detail
+            JOIN sale ON sale.invoice = sale_detail.sale_id
+            LEFT JOIN item ON item.item_id = sale.item_id
+            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = 2 AND sale.keadaan_cicilan = '".$keadaancicilan."';
+        ";
+        return $this->db->query($query)->row();
+    }
+
+    function getAngsuranlBB($keadaancicilan)
+    {
+        $query = "
+            SELECT SUM(sale_detail.pokok_cicilan) as 'Pokok',(SUM(sale_detail.harus_dibayar) - SUM(sale_detail.pokok_cicilan)) as 'Bunga'
+            FROM sale_detail
+            JOIN sale ON sale.invoice = sale_detail.sale_id
+            LEFT JOIN item ON item.item_id = sale.item_id
+            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = 2 AND sale_detail.status = 'dibayar' AND sale.keadaan_cicilan = '".$keadaancicilan."';
+        ";
+        return $this->db->query($query)->row();
+    }
+
+    function getSaldoAkhirBB($keadaancicilan)
+    {
+        $query = "
+            SELECT SUM(sale_detail.pokok_cicilan) as 'Pokok',(SUM(sale_detail.harus_dibayar) - SUM(sale_detail.pokok_cicilan)) as 'Bunga'
+            FROM sale_detail
+            JOIN sale ON sale.invoice = sale_detail.sale_id
+            LEFT JOIN item ON item.item_id = sale.item_id
+            WHERE sale_detail.sale_id = sale.invoice AND item.unit_id = 2 AND (sale_detail.status = 'siap dibayar' OR sale_detail.status = 'belum siap dibayar') AND sale.keadaan_cicilan = '".$keadaancicilan."';
+        ";
+        return $this->db->query($query)->row();
+    }
+
  //    // get all
  //    function get_all()
  //    {
