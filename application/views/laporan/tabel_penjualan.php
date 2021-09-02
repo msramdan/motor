@@ -38,32 +38,47 @@
 			$no = 0;
 		foreach($lists_data as $data)
 	        {
+	        	?>
 
-	           echo '<tr>';
-	           echo '<td>'.++$no.'</td>';
-	           echo '<td>'.$data->invoice.'</td>';
-	           echo '<td>'.$data->item_id.'</td>';
-	           echo '<td>'.$data->nama_merek.'</td>';
-	           echo '<td>'.$data->nama_type.'</td>';
-	           echo '<td>'.$data->no_stnk.'</td>';
-	           echo '<td>'.$data->nama_kategori.'</td>';
-	           echo '<td>'.$data->nama_jenis_item.'</td>';
-	           echo '<td>'.$data->nama_karyawan.'</td>';
-	           echo '<td>'.$data->nama_unit.'</td>';
-	           echo '<td>'.$data->nama_unit.'</td>';
-	           echo '<td>'.$data->nama_pelanggan.'</td>';
-	           echo '<td>'.$data->pelanggan_id.'</td>';
-	           echo '<td>'.$data->tanggal_sale.'</td>';
-	           echo '<td>'.$data->tanggal_sale.'</td>';
-	           echo '<td>'.$classnyak->History_pembayaran_model->getSingleDataHistoryPembayaran($data->invoice, 'dp cicilan')->total_bayar.'</td>';
-	           echo '<td>'.$data->harga_beli.'</td>';
-	           echo '<td>'.$data->harga_pokok.'</td>';
-	           echo '<td>'.$data->total_bayar.'</td>';
-	           echo '<td>'.(intval($data->total_bayar) - intval($data->harga_pokok)).'</td>';
-	           echo '<td>'.$data->total_price_sale.'</td>';
-	           echo '<td>'.$classnyak->Sale_model->get_bungapercicilan($data->invoice)->brapaxcicilan.'</td>';
-	           echo '<td>'.$classnyak->Sale_model->get_bungapercicilan($data->invoice)->nilai_bunga_percicilan.'</td>';
-	           echo '</tr>';
+	           <tr>
+		           <td><?php echo ++$no ?></td>
+
+		           <?php
+		           if ($data->type_sale === 'Kredit') {
+		           		?>
+		           		<td><a href="<?php echo base_url().'r_cicilan/update/'.$data->invoice ?>"><?php echo $data->invoice ?></a></td>
+		           		<?php
+		           }
+
+		           if ($data->type_sale === 'Cash') {
+		           		?>
+		           		<td><a href="<?php echo base_url().'r_onetimep/update/'.$data->invoice ?>"><?php echo $data->invoice ?></a></td>
+		           		<?php
+		           }
+		           ?> 
+		           <td><?php echo $data->item_id ?></td> 
+		           <td><?php echo $data->nama_merek ?></td> 
+		           <td><?php echo $data->nama_type ?></td> 
+		           <td><?php echo $data->no_stnk ?></td> 
+		           <td><?php echo $data->nama_kategori ?></td> 
+		           <td><?php echo $data->nama_jenis_item ?></td> 
+		           <td><?php echo $data->nama_karyawan ?></td> 
+		           <td><?php echo $data->nama_unit ?></td> 
+		           <td><?php echo $data->nama_unit ?></td> 
+		           <td><?php echo $data->nama_pelanggan ?></td> 
+		           <td><?php echo $data->pelanggan_id ?></td> 
+		           <td><?php echo $data->tanggal_sale ?></td> 
+		           <td><?php echo $data->tanggal_sale ?></td> 
+		           <td><?php echo $classnyak->History_pembayaran_model->getSingleDataHistoryPembayaran($data->invoice, 'dp cicilan')->total_bayar ?></td> 
+		           <td><?php echo $data->harga_beli ?></td> 
+		           <td><?php echo $data->harga_pokok ?></td> 
+		           <td><?php echo $data->total_bayar ?></td> 
+		           <td><?php echo (intval($data->total_bayar) - intval($data->harga_pokok)) ?></td> 
+		           <td><?php echo $data->total_price_sale ?></td> 
+		           <td><?php echo $classnyak->Sale_model->get_bungapercicilan($data->invoice)->brapaxcicilan ?></td> 
+		           <td><?php echo $classnyak->Sale_model->get_bungapercicilan($data->invoice)->nilai_bunga_percicilan ?></td> 
+	           </tr>
+	           <?php
 	        }
 		}
 		else
