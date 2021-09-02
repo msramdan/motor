@@ -30,6 +30,17 @@ class History_pembayaran_model extends CI_Model
         return $this->db->get('history_pembayaran')->result();
     }
 
+    function getSingleDataHistoryPembayaran($invoice, $jenispembayaraan)
+    {
+        $where = array(
+            'id' => $invoice,
+            'jenis_pembayaran' => $jenispembayaraan
+        );
+        $this->db->select('*');
+        $this->db->where($where);
+        return $this->db->get('history_pembayaran')->row();
+    }
+
 }
 
 /* End of file History_login_model.php */

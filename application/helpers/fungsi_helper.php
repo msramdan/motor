@@ -216,6 +216,20 @@ function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL)
                     $class = 'class="btn btn-warning btn-sm"';
                     echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
                 }
+
+                if ($function == 'export') {
+                    echo '<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="falsse">Export <span class="caret"></span>
+                        </button>
+                        <ul role="menu" class="dropdown-menu" style="top: 3rem; left: 12rem;">
+                          <li><a href="#">PDF</a>
+                          </li>
+                          <li><a href="'.base_url().$url.'/excel'.$id_data.'">Excel</a>
+                          </li>
+                          <li class="divider"></li>
+                          <li><a href="#">Lainnya</a>
+                          </li>
+                        </ul>';
+                }
             }
 
             if ($id_data == NULL || $id_data == '') {

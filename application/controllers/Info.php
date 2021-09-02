@@ -152,11 +152,11 @@ class Info extends CI_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('title', 'title', 'trim|required');
-	$this->form_validation->set_rules('desk', 'desk', 'trim|required');
+    	$this->form_validation->set_rules('title', 'title', 'trim|required');
+    	$this->form_validation->set_rules('desk', 'desk', 'trim|required');
 
-	$this->form_validation->set_rules('info_id', 'info_id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+    	$this->form_validation->set_rules('info_id', 'info_id', 'trim');
+    	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 }
 
