@@ -33,7 +33,7 @@ class Lap_penjualan extends CI_Controller
         $to = $this->input->post('toDate');
         $allunit = $this->input->post('allunit');
 
-        if ($allunit == 'true') {
+        if ($allunit == 'false') {
             $data['lists_data'] = $this->Laporan_model->getallSaleDatawithDate($from, $to);
             $data['fromDate'] = $from;
             $data['toDate'] = $to;
@@ -43,7 +43,12 @@ class Lap_penjualan extends CI_Controller
         }
         else
         {
-            echo 'all unit must true!';
+            $data['lists_data'] = $this->Laporan_model->getallSaleDatawithDate($from, $to, $this->session->userdata('unit_id'));
+            $data['fromDate'] = $from;
+            $data['toDate'] = $to;
+            $data['allunit'] = $allunit;
+            $data['classnyak'] = $this;
+            $this->load->view('laporan/tabel_penjualan', $data);
         }
     }
 
