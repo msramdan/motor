@@ -29,8 +29,8 @@
 				<td><a href="<?php echo base_url().'R_cicilan/kartuPiutang/'.$a->invoice ?>"><?php echo $a->invoice ?></a></td>
 				<td><?php echo $a->total_bayar ?></td>
 				<td><?php echo $a->dibayar ?></td>
-				<td>a</td>
-				<td>a</td>
+				<td><?php echo $classnyak->getPokokInvoiceterkini($a->invoice) ?></td>
+				<td><?php echo $classnyak->getBrutoInvoiceterkini($a->invoice) ?></td>
 			</tr>
 	            <?php
 	        }

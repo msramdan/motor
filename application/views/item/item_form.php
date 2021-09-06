@@ -39,7 +39,7 @@
                                 <td width='200'>Kode Item <?php echo form_error('kd_item') ?></td>
                                 <td><input type="text" class="form-control" name="kd_item" readonly="" id="kd_item"
                                         placeholder="Kode Item"
-                                        value="BRG<?php echo sprintf("%04s", $kode_barang) ?>" /></td>
+                                        value="I<?php echo date('dmYhms').$this->session->userdata('unit_id').sprintf("%04s", $kode_barang) ?>" /></td>
                             </tr>
                             <?php }else{ ?>
                             <tr>

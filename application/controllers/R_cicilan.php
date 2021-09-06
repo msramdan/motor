@@ -1131,7 +1131,7 @@ class R_cicilan extends CI_Controller
             'karyawan' =>$this->karyawan_model->get_all(),
             'jenis_pembayaran' =>$this->Jenis_pembayaran_model->get_all(),
             'mitra' =>$this->Mitra_model->get_all(),
-            'data_cicilan' =>$this->Sale_detail_model->get_by_id($invoice)
+            'data_cicilan' =>$this->Sale_detail_model->get_all_by_id($invoice)
         );
 
         $this->template->load('template','cicilan/kartu_piutang', $fetched);
@@ -1142,7 +1142,7 @@ class R_cicilan extends CI_Controller
         $pdf = new FPDF('P','mm','A4');
         $row = $this->Sale_model->get_kartupiutang_data($id);
         $bunga_cicilan = $this->Sale_model->get_bungapercicilan($id);
-        $data_cicilan = $this->Sale_detail_model->get_by_id($id);
+        $data_cicilan = $this->Sale_detail_model->get_all_by_id($id);
     
         $pdf->AddPage();
 
@@ -1241,7 +1241,7 @@ class R_cicilan extends CI_Controller
                 $pdf->Cell(25,8, $v->harus_dibayar - $v->pokok_cicilan, 1, 0);
                 $pdf->Cell(25,8, $pokok -= $v->pokok_cicilan, 1, 0);
                 $pdf->Cell(25,8, $bruto -= $v->harus_dibayar, 1, 0);
-                $pdf->Cell(25,8, 'Bayar', 1,1);
+                $pdf->Cell(25,8, $v->status, 1,1);
         }
 
         $pdf->setXY(20, 260);

@@ -12,6 +12,7 @@ class Lap_buku_besar extends CI_Controller
         $this->load->model('Sale_model');
         $this->load->model('User_m');
         $this->load->model('Laporan_model');
+        $this->load->model('Sale_detail_model');
         $this->load->library('form_validation');
     }
 
@@ -76,7 +77,8 @@ class Lap_buku_besar extends CI_Controller
             'total_rows' => $config['total_rows'],
             'start' => $start,
             'level_id' => $this->session->userdata('level_id'),
-            'menu_accessed' => $this->uri->segment(1)
+            'menu_accessed' => $this->uri->segment(1),
+            'classnyak' => $this
         );
 
         $this->template->load('template','laporan/list_bb', $data);
@@ -99,6 +101,19 @@ class Lap_buku_besar extends CI_Controller
         $data = $this->Laporan_model->getSaldoAkhirBB($status);
         return $data;
     }
+
+    function getBrutoInvoiceterkini($inv)
+    {
+        $data = $this->Sale_detail_model->getBrutoTotalTerkini($inv)->harus_dibayar;
+        return $data;
+    }
+
+    function getPokokInvoiceterkini($inv)
+    {
+        $data = $this->Sale_detail_model->getPokokTotalTerkini($inv)->pokok_cicilan;
+        return $data;
+    }
+
 
  //    public function read($id) 
  //    {

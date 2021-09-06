@@ -152,6 +152,26 @@ class Sale_detail_model extends CI_Model
             return 'tidak ada data';
         }
     }
+
+    function getBrutoTotalTerkini($invoice)
+    {
+        $this->db->select('SUM(harus_dibayar) as "harus_dibayar"')
+            ->group_start()
+                ->where('status','belum siap dibayar')
+                ->or_where('status','siap dibayar')
+            ->group_end();
+        return $this->db->get($this->table)->row();
+    }
+
+    function getPokokTotalTerkini($invoice)
+    {
+        $this->db->select('SUM(pokok_cicilan) as "pokok_cicilan"')
+            ->group_start()
+                ->where('status','belum siap dibayar')
+                ->or_where('status','siap dibayar')
+            ->group_end();
+        return $this->db->get($this->table)->row();
+    }
 }
 
 /* End of file Sale_detail_model.php */
