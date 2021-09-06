@@ -81,9 +81,9 @@
                         </ul>
                         <div id="myTabContent" class="tab-content">
                             <?php foreach ($info as $key => $data) { ?>
-                          <div role="tabpanel" class="tab-pane fade" id="tab_content<?php echo $data->info_id ?>" aria-labelledby="<?php echo $data->title ?>">
-                            <p><?php echo $data->desk ?></p>
-                          </div>
+                              <div role="tabpanel" class="tab-pane fade" id="tab_content<?php echo $data->info_id ?>" aria-labelledby="<?php echo $data->title ?>">
+                                <p><?php echo $data->desk ?></p>
+                              </div>
                           <?php } ?>
                         </div>
                       </div>

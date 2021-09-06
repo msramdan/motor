@@ -79,8 +79,9 @@ class Level extends CI_Controller
         $data = array(
             'button' => 'Create',
             'action' => site_url('level/create_action'),
-	    'level_id' => set_value('level_id'),
-	    'nama_level' => set_value('nama_level'),
+    	    'level_id' => set_value('level_id'),
+    	    'nama_level' => set_value('nama_level'),
+            'strict_authorization' => set_value('strict_authorization'),
 	);
         $this->template->load('template','level/level_form', $data);
     }
@@ -94,8 +95,9 @@ class Level extends CI_Controller
             $this->create();
         } else {
             $data = array(
-		'nama_level' => $this->input->post('nama_level',TRUE),
-	    );
+                'nama_level' => $this->input->post('nama_level',TRUE),
+                'strict_authorization' => $this->input->post('strict_authorization',TRUE),
+	       );
 
             $this->Level_model->insert($data);
             $this->session->set_flashdata('message', 'Create Record Success');
@@ -112,8 +114,9 @@ class Level extends CI_Controller
             $data = array(
                 'button' => 'Update',
                 'action' => site_url('level/update_action'),
-		'level_id' => set_value('level_id', $row->level_id),
-		'nama_level' => set_value('nama_level', $row->nama_level),
+        		'level_id' => set_value('level_id', $row->level_id),
+        		'nama_level' => set_value('nama_level', $row->nama_level),
+                'strict_authorization' => set_value('strict_authorization', $row->strict_authorization),
 	    );
             $this->template->load('template','level/level_form', $data);
         } else {

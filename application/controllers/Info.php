@@ -152,55 +152,12 @@ class Info extends CI_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('title', 'title', 'trim|required');
-	$this->form_validation->set_rules('desk', 'desk', 'trim|required');
+    	$this->form_validation->set_rules('title', 'title', 'trim|required');
+    	$this->form_validation->set_rules('desk', 'desk', 'trim|required');
 
-	$this->form_validation->set_rules('info_id', 'info_id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+    	$this->form_validation->set_rules('info_id', 'info_id', 'trim');
+    	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
-
-    public function excel()
-    {
-        is_allowed($this->uri->segment(1),'export');
-        $this->load->helper('exportexcel');
-        $namaFile = "info.xls";
-        $judul = "info";
-        $tablehead = 0;
-        $tablebody = 1;
-        $nourut = 1;
-        //penulisan header
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-        header("Content-Disposition: attachment;filename=" . $namaFile . "");
-        header("Content-Transfer-Encoding: binary ");
-
-        xlsBOF();
-
-        $kolomhead = 0;
-        xlsWriteLabel($tablehead, $kolomhead++, "No");
-	xlsWriteLabel($tablehead, $kolomhead++, "Title");
-	xlsWriteLabel($tablehead, $kolomhead++, "Desk");
-
-	foreach ($this->Info_model->get_all() as $data) {
-            $kolombody = 0;
-
-            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
-            xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->title);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->desk);
-
-	    $tablebody++;
-            $nourut++;
-        }
-
-        xlsEOF();
-        exit();
-    }
-
 }
 
 /* End of file Info.php */

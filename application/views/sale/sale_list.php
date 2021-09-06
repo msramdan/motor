@@ -52,11 +52,10 @@
 		<th>Invoice</th>
 		<th>Pelanggan</th>
 		<th>Item</th>
-		<th>Total Price Sale</th>
-        <th>Biaya Admin</th>
 		<th>Type Sale</th>
 		<th>Tanggal Sale</th>
 		<th>Penginput</th>
+        <th>Status</th>
 		<th>Action</th>
             </tr><?php
             foreach ($sale_data as $sale)
@@ -67,17 +66,50 @@
 			<td><?php echo $sale->invoice ?></td>
 			<td><?php echo $sale->nama_pelanggan ?></td>
 			<td><?php echo $sale->nama_item ?></td>
-			<td><?php echo $sale->total_price_sale ?></td>
-            <td><?php echo $sale->biaya_admin ?></td>
 			<td><?php echo $sale->type_sale ?></td>
 			<td><?php echo $sale->tanggal_sale ?></td>
 			<td><?php echo $sale->nama_user ?></td>
+            <td><?php
+                if($sale->status_sale === 'Selesai')
+                {?>
+                    <label class="label label-success">Selesai</label>
+                <?php
+                }
+                if ($sale->status_sale === 'Belum Dibayar') {
+                    ?>
+                    <label class="label label-danger">Belum Dibayar</label>
+                <?php
+                }
+                if ($sale->status_sale === 'Dalam Cicilan') {
+                    ?>
+                    <label class="label label-warning">Dalam Cicilan</label>
+                <?php
+                }
+                if ($sale->status_sale === 'Ditolak') {
+                    ?>
+                    <label class="label label-danger">Ditolak</label>
+                <?php
+                }?>
+                <?php
+                if ($sale->status_sale === 'Dalam Review') {
+                    ?>
+                    <label class="label label-warning">Menunggu Persetujuan</label>
+                <?php
+                }?>
+            </td>
 			<td style="text-align:center" width="200px">
-				<?php 
+                <?php 
 				echo show_button($menu_accessed, 'read', $sale->sale_id);
-				// echo anchor(site_url('sale/update/'.$sale->sale_id),'<i class="fa fa-pencil-square-o" aria-hidden="true"></i>','class="btn btn-primary btn-sm"'); 
-				// echo '  ';
-                echo show_button($menu_accessed, 'delete', $sale->sale_id);
+                if ($sale->type_sale === 'Kredit') {
+                    echo show_button('R_cicilan', 'update', $sale->invoice);
+                }
+                else
+                {
+                    echo show_button('R_onetimep', 'update', $sale->invoice);
+                }
+                if ($sale->status_sale !== 'Dalam Review') {
+                    echo show_button($menu_accessed, 'delete', $sale->sale_id);
+                }
 				?>
 			</td>
 		</tr>

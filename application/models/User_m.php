@@ -80,4 +80,12 @@ class User_m extends CI_Model {
         $this->db->insert('user_token',$user_token);
     }
 
+    function getgroupusaha($unit_id) {
+        $this->db->select('*')
+            ->from('grup')
+            ->join('unit','unit.grup_id = grup.grup_id')
+            ->where('unit.unit_id',$unit_id);
+        return $this->db->get()->row();
+    }
+
 }

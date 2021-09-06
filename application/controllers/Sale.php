@@ -17,16 +17,19 @@ class Sale extends CI_Controller
         $this->load->model('Sale_model');
         $this->load->model('karyawan_model');
         $this->load->model('Mitra_model');
+        $this->load->model('Sale_detail_model');
         $this->load->model('Item_model');
         $this->load->model('Pelanggan_model');
         $this->load->model('Dashboard_model');
         $this->load->model('Jenis_pembayaran_model');
+        $this->load->model('Approval_lists_model');
         $this->load->library('form_validation');
         $this->load->library('pdf');
     }
 
     public function index()
     {
+        is_allowed($this->uri->segment(1),null);
         $q = urldecode($this->input->get('q', TRUE));
         $start = intval($this->uri->segment(3));
         
@@ -63,18 +66,45 @@ class Sale extends CI_Controller
     {
         $row = $this->Sale_model->get_by_id($id);
         if ($row) {
-            $data = array(
-                'sale_id' => $row->sale_id,
-                'biaya_admin' => $row->biaya_admin,
-                'invoice' => $row->invoice,
-                'pelanggan_id' => $row->nama_pelanggan,
-                'item_id' => $row->nama_item,
-                'total_price_sale' => $row->total_price_sale,
-                'type_sale' => $row->type_sale,
-                'tanggal_sale' => $row->tanggal_sale,
-                'user_id' => $row->nama_user,
-            );
-            $this->template->load('template','sale/sale_read', $data);
+            if ($row->status_sale === 'Ditolak') {
+                $rowwapp = $this->Sale_model->get_by_id_w_appr($id);
+                $data = array(
+                    'sale_id' => $rowwapp->sale_id,
+                    'biaya_admin' => $rowwapp->biaya_admin,
+                    'invoice' => $rowwapp->invoice,
+                    'pelanggan_id' => $rowwapp->nama_pelanggan,
+                    'item_id' => $rowwapp->nama_item,
+                    'total_price_sale' => $rowwapp->total_price_sale,
+                    'type_sale' => $rowwapp->type_sale,
+                    'biaya_admin' => $rowwapp->biaya_admin,
+                    'total_bayar' => $rowwapp->total_bayar,
+                    'dibayar' => $rowwapp->dibayar,
+                    'status_sale' => $rowwapp->status_sale,
+                    'tanggal_sale' => $rowwapp->tanggal_sale,
+                    'last_updated' => $rowwapp->last_updated,
+                    'komentar' => $rowwapp->komentar,
+                    'user_id' => $rowwapp->nama_user,
+                );
+                $this->template->load('template','sale/sale_read', $data);
+            } else {
+                $data = array(
+                    'sale_id' => $row->sale_id,
+                    'biaya_admin' => $row->biaya_admin,
+                    'invoice' => $row->invoice,
+                    'pelanggan_id' => $row->nama_pelanggan,
+                    'item_id' => $row->nama_item,
+                    'total_price_sale' => $row->total_price_sale,
+                    'type_sale' => $row->type_sale,
+                    'biaya_admin' => $row->biaya_admin,
+                    'total_bayar' => $row->total_bayar,
+                    'dibayar' => $row->dibayar,
+                    'status_sale' => $row->status_sale,
+                    'tanggal_sale' => $row->tanggal_sale,
+                    'last_updated' => $row->last_updated,
+                    'user_id' => $row->nama_user,
+                );
+                $this->template->load('template','sale/sale_read', $data);
+            }
         } else {
             $this->session->set_flashdata('message', 'Record Not Found');
             redirect(site_url('sale'));
@@ -108,38 +138,81 @@ class Sale extends CI_Controller
     
     public function create_action() 
     {
-        $this->_rules();
-        if ($this->input->post('type_sale')=="Cash") {
-            $status_sale="Selesai";
-        }
-        if ($this->input->post('sales_referral')=="Karyawan") {
-            $contact_id = $this->input->post('karyawan_id');
-        }else if ($this->input->post('sales_referral')=="Mitra Sales") {
-            $contact_id = $this->input->post('mitra_id');
-        }
         
+        $durasi_cicilan = $this->input->post('durasi_cicil');
+
+        $dc = intval($durasi_cicilan);
+
+        if ($dc > 0) {
+            $id = $this->input->post('invoice',TRUE);
+            $itemid = $this->input->post('item_id',TRUE);
+            $pelanggan_id = $this->input->post('pelanggan_id',TRUE);
+
+            $durasi_cicilan = $this->input->post('durasi_cicil',TRUE);
+            
+            $total_price_sale = $this->input->post('total_price_sale',TRUE);
+
+            $tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale')));
+
+            $userid = $this->input->post('user_id');
 
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->create();
-        } else {
             $data = array(
-        		'invoice' => $this->input->post('invoice',TRUE),
-                'biaya_admin' => $this->input->post('biaya_admin',TRUE),
-                'jenis_bayar' => $this->input->post('jenis_pembayaran',TRUE),
-        		'pelanggan_id' => $this->input->post('pelanggan_id',TRUE),
-        		'item_id' => $this->input->post('item_id',TRUE),
-        		'total_price_sale' => $this->input->post('total_price_sale',TRUE),
-        		'type_sale' => $this->input->post('type_sale',TRUE),
-        		'tanggal_sale' => date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale',TRUE))),
-        		'user_id' => $this->input->post('user_id',TRUE),
-                'surveyor_id' => $this->input->post('surveyor_id',TRUE),
-                'sales_referral' => $this->input->post('sales_referral',TRUE),
-                'contact_id' => $contact_id,
-                'status_sale' => $status_sale,
-    	    );
+                'invoice' => $id,
+                'jenis_bayar' => 'N/A',
+                'pelanggan_id' => $pelanggan_id,
+                'item_id' => $itemid,
+                'total_price_sale' => $total_price_sale,
+                'biaya_admin' => 0,
+                'total_bayar' => 0,
+                'dibayar' => 0,
+                'type_sale' => 'Kredit',
+                'keadaan_cicilan' => '-',
+                'tanggal_sale' => $tanggalsale,
+                'user_id' => $userid,
+                'surveyor_id' => 'N/A',
+                'sales_referral' => 'N/A',
+                'contact_id' => 'N/A',
+                'status_sale' => 'Belum Dibayar',
+            );
 
-            $this->Sale_model->insert($data);
+            $this->Sale_model->insert($typeSale, $data);
+            $this->session->set_flashdata('message', 'Create Record Success');
+            redirect(site_url('sale'));
+        } else {
+            $id = $this->input->post('invoice',TRUE);
+            $itemid = $this->input->post('item_id',TRUE);
+            $pelanggan_id = $this->input->post('pelanggan_id',TRUE);
+
+            $durasi_cicilan = $this->input->post('durasi_cicil',TRUE);
+            
+            $total_price_sale = $this->input->post('total_price_sale',TRUE);
+
+            $tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggal_sale')));
+
+            $userid = $this->input->post('user_id');
+
+
+            $data = array(
+                'invoice' => $id,
+                'jenis_bayar' => 'N/A',
+                'pelanggan_id' => $pelanggan_id,
+                'item_id' => $itemid,
+                'total_price_sale' => $total_price_sale,
+                'biaya_admin' => 0,
+                'total_bayar' => 0,
+                'dibayar' => 0,
+                'type_sale' => 'Cash',
+                'keadaan_cicilan' => 'NULL',
+                'tanggal_sale' => $tanggalsale,
+                'user_id' => $userid,
+                'surveyor_id' => 'N/A',
+                'sales_referral' => 'N/A',
+                'contact_id' => 'N/A',
+                'status_sale' => 'Belum Dibayar',
+            );
+
+            $this->Sale_model->insert($typeSale, $data);
             $this->session->set_flashdata('message', 'Create Record Success');
             redirect(site_url('sale'));
         }
@@ -211,13 +284,13 @@ class Sale extends CI_Controller
 	$this->form_validation->set_rules('invoice', 'invoice', 'trim|required');
 	$this->form_validation->set_rules('pelanggan_id', 'pelanggan id', 'trim|required');
 	$this->form_validation->set_rules('item_id', 'item id', 'trim|required');
-	$this->form_validation->set_rules('total_price_sale', 'total price sale', 'trim|required');
-	$this->form_validation->set_rules('type_sale', 'type sale', 'trim|required');
-	$this->form_validation->set_rules('tanggal_sale', 'tanggal sale', 'trim|required');
-	$this->form_validation->set_rules('user_id', 'user id', 'trim|required');
+	// $this->form_validation->set_rules('total_price_sale', 'total price sale', 'trim|required');
+	// $this->form_validation->set_rules('type_sale', 'type sale', 'trim|required');
+	// $this->form_validation->set_rules('tanggal_sale', 'tanggal sale', 'trim|required');
+	// $this->form_validation->set_rules('user_id', 'user id', 'trim|required');
     $this->form_validation->set_rules('sales_referral', 'Sales Referral', 'trim|required');
-    $this->form_validation->set_rules('jenis_pembayaran', 'Jenis Pembayaran', 'trim|required');
-    $this->form_validation->set_rules('biaya_admin', 'Biaya Admin', 'trim|required');
+    // $this->form_validation->set_rules('jenis_pembayaran', 'Jenis Pembayaran', 'trim|required');
+    // $this->form_validation->set_rules('biaya_admin', 'Biaya Admin', 'trim|required');
 
 	$this->form_validation->set_rules('sale_id', 'sale_id', 'trim');
 	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
@@ -225,66 +298,144 @@ class Sale extends CI_Controller
 
     public function excel()
     {
+        // $spreadsheet = new Spreadsheet();
+        // $sheet = $spreadsheet->getActiveSheet();
+        // /*$sheet->mergeCells('A1:A2'); // No
+        // $sheet->mergeCells('B1:B2'); //invoice
+        // $sheet->mergeCells('C1:E1'); //item
+        // $sheet->mergeCells('F1:F2'); //kategori
+        // $sheet->mergeCells('G1:G2'); //jenis item
+        // $sheet->mergeCells('H1:H2'); //nama pelanggan
+        // $sheet->mergeCells('I1:I2'); //id pelanggan
+        // $sheet->mergeCells('J1:J2'); //id pembelian
+        // $sheet->mergeCells('K1:L1'); //waktu (meliputi tanggal dan jam)
+        // $sheet->mergeCells('M1:M2'); //Harga beli pokok
+        // $sheet->mergeCells('N1:S1'); //Haarga (meliputi perolehan, rekondisi, stnk, komisi, admin, lainnya)
+        // $sheet->mergeCells('T1:T2'); //User
+        
+        // $sheet->setCellValue('A1', 'No');
+        // $sheet->setCellValue('B1', 'Invoice');
+        // $sheet->setCellValue('C1', 'Item');
+        // $sheet->setCellValue('C2', 'Merek');
+        // $sheet->setCellValue('D2', 'Type');
+        // $sheet->setCellValue('E2', 'Nopol');
+        // $sheet->setCellValue('F1', 'Kategori');
+        // $sheet->setCellValue('G1', 'Jenis');
+        // $sheet->setCellValue('H1', 'Nama Pelanggan');
+        // $sheet->setCellValue('I1', 'ID Pelanggan');
+        // $sheet->setCellValue('J1', 'ID Pembelian');
+        // $sheet->setCellValue('K1', 'Waktu');
+        // $sheet->setCellValue('K2', 'Tanggal');
+        // $sheet->setCellValue('L2', 'Jam');
+        // $sheet->setCellValue('M1', 'Harga Beli Pokok');
+        // $sheet->setCellValue('N1', 'Harga');
+        // $sheet->setCellValue('N2', 'Perolehan');
+        // $sheet->setCellValue('O2', 'Rekondisi');
+        // $sheet->setCellValue('P2', 'STNK');
+        // $sheet->setCellValue('Q2', 'Komisi');
+        // $sheet->setCellValue('R2', 'Admin');
+        // $sheet->setCellValue('S2', 'Lainnya');
+        // $sheet->setCellValue('T1', 'User');*/
+
+        // $sheet->mergeCells('A1:A2'); // No
+        // $sheet->mergeCells('B1:B2'); //invoice
+        // $sheet->mergeCells('C1:C2'); //id pelanggan
+        // $sheet->mergeCells('D1:D2'); //Nama pelanggan
+        // $sheet->mergeCells('E1:F1'); //item (meliputi merek dan type)
+        // $sheet->mergeCells('G1:G2'); //TOTAL PRICE Sale
+        // $sheet->mergeCells('H1:H2'); //Type sale
+        // $sheet->mergeCells('I1:I2'); //TANGGAL Sale
+        // $sheet->mergeCells('J1:J2'); //USER
+
+        // $sheet->setCellVAlue('A1','No');
+        // $sheet->setCellVAlue('B1','Invoice');
+        // $sheet->setCellVAlue('C1','ID Pelanggan');
+        // $sheet->setCellVAlue('D1','Nama Pelanggan');
+        // $sheet->setCellVAlue('E1','item');
+        // $sheet->setCellVAlue('E2','Merek');
+        // $sheet->setCellVAlue('F2','Type');
+        // $sheet->setCellVAlue('G1','Total Price Sale');
+        // $sheet->setCellVAlue('H1','Type Sale');
+        // $sheet->setCellVAlue('I1','Tanggal Sale');
+        // $sheet->setCellVAlue('J1','User');
+        
+        // $nourut = 1;
+        // $baris = 3;
+        // foreach($this->Sale_model->get_all() as $data)
+        // {
+            
+        //     $sheet->setCellValue('A'.$baris, $nourut++);
+        //     $sheet->setCellValue('B'.$baris, $data->invoice);
+        //     $sheet->setCellValue('C'.$baris, $data->pelanggan_id);
+        //     $sheet->setCellValue('D'.$baris, $data->nama_pelanggan);
+        //     $sheet->setCellValue('E'.$baris, $data->nama_merek);
+        //     $sheet->setCellValue('F'.$baris, $data->nama_type);
+        //     $sheet->setCellValue('G'.$baris, $data->total_price_sale);
+        //     $sheet->setCellValue('H'.$baris, $data->type_sale);
+        //     $sheet->setCellValue('I'.$baris, $data->tanggal_sale);
+        //     $sheet->setCellValue('J'.$baris, $data->nama_user);
+        //     $baris++;
+        // }
+
+        
+        // $writer = new Xlsx($spreadsheet);
+        // $filename = 'sale-report';
+        
+        // header('Content-Type: application/vnd.ms-excel');
+        // header('Content-Disposition: attachment;filename="'. $filename .'.xlsx"'); 
+        // header('Cache-Control: max-age=0');
+
+        // $writer->save('php://output');
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        /*$sheet->mergeCells('A1:A2'); // No
-        $sheet->mergeCells('B1:B2'); //invoice
-        $sheet->mergeCells('C1:E1'); //item
-        $sheet->mergeCells('F1:F2'); //kategori
-        $sheet->mergeCells('G1:G2'); //jenis item
-        $sheet->mergeCells('H1:H2'); //nama pelanggan
-        $sheet->mergeCells('I1:I2'); //id pelanggan
-        $sheet->mergeCells('J1:J2'); //id pembelian
-        $sheet->mergeCells('K1:L1'); //waktu (meliputi tanggal dan jam)
-        $sheet->mergeCells('M1:M2'); //Harga beli pokok
-        $sheet->mergeCells('N1:S1'); //Haarga (meliputi perolehan, rekondisi, stnk, komisi, admin, lainnya)
-        $sheet->mergeCells('T1:T2'); //User
-        
-        $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Invoice');
-        $sheet->setCellValue('C1', 'Item');
-        $sheet->setCellValue('C2', 'Merek');
-        $sheet->setCellValue('D2', 'Type');
-        $sheet->setCellValue('E2', 'Nopol');
-        $sheet->setCellValue('F1', 'Kategori');
-        $sheet->setCellValue('G1', 'Jenis');
-        $sheet->setCellValue('H1', 'Nama Pelanggan');
-        $sheet->setCellValue('I1', 'ID Pelanggan');
-        $sheet->setCellValue('J1', 'ID Pembelian');
-        $sheet->setCellValue('K1', 'Waktu');
-        $sheet->setCellValue('K2', 'Tanggal');
-        $sheet->setCellValue('L2', 'Jam');
-        $sheet->setCellValue('M1', 'Harga Beli Pokok');
-        $sheet->setCellValue('N1', 'Harga');
-        $sheet->setCellValue('N2', 'Perolehan');
-        $sheet->setCellValue('O2', 'Rekondisi');
-        $sheet->setCellValue('P2', 'STNK');
-        $sheet->setCellValue('Q2', 'Komisi');
-        $sheet->setCellValue('R2', 'Admin');
-        $sheet->setCellValue('S2', 'Lainnya');
-        $sheet->setCellValue('T1', 'User');*/
 
         $sheet->mergeCells('A1:A2'); // No
         $sheet->mergeCells('B1:B2'); //invoice
-        $sheet->mergeCells('C1:C2'); //id pelanggan
-        $sheet->mergeCells('D1:D2'); //Nama pelanggan
-        $sheet->mergeCells('E1:F1'); //item (meliputi merek dan type)
-        $sheet->mergeCells('G1:G2'); //TOTAL PRICE Sale
-        $sheet->mergeCells('H1:H2'); //Type sale
-        $sheet->mergeCells('I1:I2'); //TANGGAL Sale
-        $sheet->mergeCells('J1:J2'); //USER
+        $sheet->mergeCells('C1:H1'); //item (meliputi merek dan type)
+        $sheet->mergeCells('I1:I2');
+        $sheet->mergeCells('J1:K1');
+        $sheet->mergeCells('L1:L2');
+        $sheet->mergeCells('M1:M2');
+        $sheet->mergeCells('N1:O1');
+        $sheet->mergeCells('P1:P2');
+        $sheet->mergeCells('Q1:Q2');
+        $sheet->mergeCells('R1:R2');
+        $sheet->mergeCells('S1:S2');
+        $sheet->mergeCells('T1:T2');
+        $sheet->mergeCells('U1:U2');
+        $sheet->mergeCells('V1:V2');
+        $sheet->mergeCells('W1:W2');
+        
 
-        $sheet->setCellVAlue('A1','No');
-        $sheet->setCellVAlue('B1','Invoice');
-        $sheet->setCellVAlue('C1','ID Pelanggan');
-        $sheet->setCellVAlue('D1','Nama Pelanggan');
-        $sheet->setCellVAlue('E1','item');
-        $sheet->setCellVAlue('E2','Merek');
-        $sheet->setCellVAlue('F2','Type');
-        $sheet->setCellVAlue('G1','Total Price Sale');
-        $sheet->setCellVAlue('H1','Type Sale');
-        $sheet->setCellVAlue('I1','Tanggal Sale');
-        $sheet->setCellVAlue('J1','User');
+        $sheet->setCellValue('A1','No');
+        $sheet->setCellValue('B1','Invoice');
+        $sheet->setCellValue('C1','item');
+        $sheet->setCellValue('C2','ID Item');
+        $sheet->setCellValue('D2','Merek');
+        $sheet->setCellValue('E2','Type');
+        $sheet->setCellValue('F2','STNK');
+        $sheet->setCellValue('G2','Kategori');
+        $sheet->setCellValue('H2','Jenis');
+        $sheet->setCellValue('I1','Surveyor');
+        $sheet->setCellValue('J1','Lokasi');
+        $sheet->setCellValue('J2','Unit');
+        $sheet->setCellValue('K2','Wipem');
+        $sheet->setCellValue('L1','Nama Pelanggan');
+        $sheet->setCellValue('M1','ID Pelanggan');
+        $sheet->setCellValue('N1','Waktu');
+        $sheet->setCellValue('N2','Tanggal');
+        $sheet->setCellValue('O2','Jam');
+        $sheet->setCellValue('P1','DP');
+        $sheet->setCellValue('Q1','TradeIn');
+        $sheet->setCellValue('R1','Harga Beli Pokok');
+        $sheet->setCellValue('S1','Harga Penjualan');
+        $sheet->setCellValue('T1','Markup');
+        $sheet->setCellValue('U1','Sales Pokok');
+        $sheet->setCellValue('V1','Durasi Cicil');
+        $sheet->setCellValue('W1','Bunga/bln');
+        
+
         
         $nourut = 1;
         $baris = 3;
@@ -293,14 +444,28 @@ class Sale extends CI_Controller
             
             $sheet->setCellValue('A'.$baris, $nourut++);
             $sheet->setCellValue('B'.$baris, $data->invoice);
-            $sheet->setCellValue('C'.$baris, $data->pelanggan_id);
-            $sheet->setCellValue('D'.$baris, $data->nama_pelanggan);
-            $sheet->setCellValue('E'.$baris, $data->nama_merek);
-            $sheet->setCellValue('F'.$baris, $data->nama_type);
-            $sheet->setCellValue('G'.$baris, $data->total_price_sale);
-            $sheet->setCellValue('H'.$baris, $data->type_sale);
-            $sheet->setCellValue('I'.$baris, $data->tanggal_sale);
-            $sheet->setCellValue('J'.$baris, $data->nama_user);
+            $sheet->setCellValue('C'.$baris, $data->item_id);
+            $sheet->setCellValue('D'.$baris, $data->nama_merek);
+            $sheet->setCellValue('E'.$baris, $data->nama_type);
+            $sheet->setCellValue('F'.$baris, $data->no_stnk);
+            $sheet->setCellValue('G'.$baris, $data->nama_kategori);
+            $sheet->setCellValue('H'.$baris, $data->nama_jenis_item);
+            $sheet->setCellValue('I'.$baris, $data->nama_karyawan);
+            $sheet->setCellValue('J'.$baris, $data->nama_unit);
+            $sheet->setCellValue('K'.$baris, $data->nama_unit);
+            $sheet->setCellValue('L'.$baris, $data->nama_pelanggan);
+            $sheet->setCellValue('M'.$baris, $data->pelanggan_id);
+            $sheet->setCellValue('N'.$baris, $data->tanggal_sale);
+            $sheet->setCellValue('O'.$baris, $data->tanggal_sale);
+            $sheet->setCellValue('P'.$baris, 'WAIT');
+            $sheet->setCellValue('Q'.$baris, $data->harga_beli);
+            $sheet->setCellValue('R'.$baris, $data->harga_pokok);
+            $sheet->setCellValue('S'.$baris, $data->total_bayar);
+            $sheet->setCellValue('T'.$baris, 'WAIT');
+            $sheet->setCellValue('U'.$baris, $data->total_price_sale);
+            $sheet->setCellValue('V'.$baris, 'WAIT');
+            $sheet->setCellValue('W'.$baris, 'WAIT');
+
             $baris++;
         }
 
@@ -393,6 +558,8 @@ class Sale extends CI_Controller
         $pdf->Cell(40,6,'(PENERIMA)',0,0,'R');
         $pdf->Output('result.pdf', 'D');
     }
+
+    
 
 }
 

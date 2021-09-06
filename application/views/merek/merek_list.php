@@ -70,7 +70,7 @@
         <div class="row">
             <div class="col-md-6">
                 
-	    </div>
+            </div>
             <div class="col-md-6 text-right">
                 <?php echo $pagination ?>
             </div>

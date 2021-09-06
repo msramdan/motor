@@ -95,7 +95,7 @@ class item extends CI_Controller
         is_allowed($this->uri->segment(1),'create');
         $dariDB = $this->Item_model->cekkodebarang();
         // contoh JRD0004, angka 3 adalah awal pengambilan angka, dan 4 jumlah angka yang diambil
-        $nourut = substr($dariDB, 3, 4);
+        $nourut = substr($dariDB, 15, 4);
         $kodeBarangSekarang = $nourut + 1;
 
         $data = array(

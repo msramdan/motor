@@ -158,10 +158,17 @@
 <script src="<?= base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript">
 
-const today = moment().format('MM-DD-YYYY');
-const yesterday = moment().day(-1);
-const sevendays = moment().day(-7);
-const thirtydays = moment().day(-30);
+
+
+const starttoday = moment().startOf('day');
+const endtoday = moment().endOf('day');
+const strYesterday = moment().day(-1).format('YYYY-MM-DD') + ' 23:59:59'
+const strSevendays = moment().day(-7).format('YYYY-MM-DD') + ' 23:59:59';
+const strThirtydays = moment().day(-30).format('YYYY-MM-DD')  + ' 23:59:59';
+
+const yesterday = moment(strYesterday.toString(), 'YYYY-MM-DD HH:mm:ss')
+const sevendays = moment(strSevendays.toString(), 'YYYY-MM-DD HH:mm:ss')
+const thirtydays = moment(strThirtydays.toString(), 'YYYY-MM-DD HH:mm:ss')
 
 const startOfMonth = moment().startOf('month');
 const endOfMonth = moment().endOf('month');
@@ -261,6 +268,7 @@ var umukchart = Highcharts.chart('container', {
     }]
 });
 
+
 $('#datepickerreport').daterangepicker({
     "autoApply": true,
     "timePicker": true,
@@ -269,19 +277,19 @@ $('#datepickerreport').daterangepicker({
     "timePickerSeconds": true,
     "ranges": {
         "Today": [
-            today,
-            today
+            starttoday,
+            endtoday
         ],
         "Yesterday": [
-            today,
+            starttoday,
             yesterday
         ],
         "Last 7 Days": [
-            today,
+            starttoday,
             sevendays
         ],
         "Last 30 Days": [
-            today,
+            starttoday,
             thirtydays
         ],
         "This Month": [
@@ -293,8 +301,8 @@ $('#datepickerreport').daterangepicker({
             nextMonthLastDay
         ]
     },
-    "startDate": today,
-    "endDate": today,
+    "startDate": starttoday,
+    "endDate": endtoday,
     "applyClass": "btn-primary"
     }, function(start, end, label) {
         console.log('New date range selected: ' + start.format('YYYY-MM-DD HH:mm:ss') + ' to ' + end.format('YYYY-MM-DD HH:mm:ss') + ' (predefined range: ' + label + ')');

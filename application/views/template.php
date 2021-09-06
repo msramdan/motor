@@ -44,6 +44,7 @@
                         <div class="profile_info">
                             <span><?= $this->session->userdata('nama_unit')?></span>
                             <h2><?= ucfirst($this->fungsi->user_login()->nama_user) ?></h2>
+                            <p style="font-size: 10px;"><?= '('.$this->fungsi->user_login()->nama_level.')' ?></p>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -110,7 +111,6 @@
                         <div class="nav toggle">
                             <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                         </div>
-
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
@@ -167,7 +167,7 @@
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    Aplikasi POS V.1 <a href="#"></a>
+                    Aplikasi POS V.2<a href="#"></a>
                 </div>
                 <div class="clearfix"></div>
             </footer>
@@ -181,6 +181,7 @@
     <script src="<?= base_url()?>assets/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- FastClick -->
     <script src="<?= base_url()?>assets/vendors/fastclick/lib/fastclick.js"></script>
+    <script src="<?= base_url() ?>assets/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <!-- NProgress -->
     <script src="<?= base_url()?>assets/vendors/nprogress/nprogress.js"></script>
     <script src="<?= base_url()?>assets/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>

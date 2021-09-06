@@ -65,6 +65,14 @@ function check_access($level_id, $menu_id ){
 
  }
 
+function cekstatuscicilan($invoice)
+{
+    $ci = get_instance();
+    $ci->db->select('jatuh_tempo, tanggal_dibayar');
+    $ci->db->where('sale_id', $invoice);
+    return $ci->db->get('sale_detail')->result_array();
+}
+
  //acces_delete
   function check_access_delete($level_id, $menu_id ){
     $ci = get_instance();
@@ -185,9 +193,6 @@ function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL)
         $result = $check->get()->row();
 
         if ($result->allow_status == 1) {
-            if ($function == 'export') {
-                $function = 'excel';
-            }
             $icon = '';
             $class = '';
             if ($id_data) {
@@ -211,18 +216,41 @@ function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL)
                     $class = 'class="btn btn-warning btn-sm"';
                     echo anchor(site_url($url.'/'.$function.'/'.$id_data), $icon,$class);
                 }
+
+                if ($function == 'export') {
+                    echo '<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="falsse">Export <span class="caret"></span>
+                        </button>
+                        <ul role="menu" class="dropdown-menu" style="top: 3rem; left: 12rem;">
+                          <li><a href="#">PDF</a>
+                          </li>
+                          <li><a href="'.base_url().$url.'/excel'.$id_data.'">Excel</a>
+                          </li>
+                          <li class="divider"></li>
+                          <li><a href="#">Lainnya</a>
+                          </li>
+                        </ul>';
+                }
             }
 
             if ($id_data == NULL || $id_data == '') {
                 if ($function == 'create') {
                     $icon = $text ? '<i class="fa fa-wpforms" aria-hidden="true"></i> '.$text : '<i class="fa fa-wpforms" aria-hidden="true"></i> Tambah data';
                     $class = 'class="btn btn-danger btn-sm"';
+                    echo anchor(site_url($url.'/'.$function), $icon,$class);
                 }
-                if ($function == 'excel') {
-                    $icon = '<i class="fa fa-file-excel-o" aria-hidden="true"></i> Export Ms Excel';
-                    $class = 'class="btn btn-success btn-sm"';
+                if ($function == 'export') {
+                    echo '<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="falsse">Export <span class="caret"></span>
+                        </button>
+                        <ul role="menu" class="dropdown-menu" style="top: 3rem; left: 12rem;">
+                          <li><a href="#">PDF</a>
+                          </li>
+                          <li><a href="'.base_url().$url.'/excel">Excel</a>
+                          </li>
+                          <li class="divider"></li>
+                          <li><a href="#">Lainnya</a>
+                          </li>
+                        </ul>';
                 }
-                echo anchor(site_url($url.'/'.$function), $icon,$class);
             }
             
         } else {
@@ -563,4 +591,12 @@ function longdate_indo($tanggal)
     else if($nama=="Saturday") {$nama_hari="Sabtu";}
     return $nama_hari.','.$tgl.' '.$bulan.' '.$thn;
 }
-    
+
+function get_precentage($total, $number)
+{
+    if ($total > 0) {
+        return round(($number * 100) / $total, 2);
+    } else {
+        return 0;
+    }
+}
