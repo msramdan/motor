@@ -88,7 +88,15 @@ class Laporan_model extends CI_Model
         return $this->db->get('sale')->result();
     }
 
-    function getallPaymentDatawithDate($from, $to, $allunit = NULL)
+    function getallPaymentDatawithDate(
+        $from,
+        $to,
+        $allunit = NULL,
+        $idpenjualan,
+        $namapelanggan,
+        $kategori,
+        $objek
+    )
     {
         $this->db->join('user', 'user.user_id = sale.user_id');
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
@@ -101,9 +109,15 @@ class Laporan_model extends CI_Model
         $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id','left');
         $this->db->join('history_pembayaran', 'history_pembayaran.id = sale.invoice');
 
-        $this->db->where('history_pembayaran.tanggal_bayar BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
-
         $this->db->like('item.unit_id',$allunit);
+
+        $this->db->like('sale.invoice',$idpenjualan);
+        $this->db->like('pelanggan.nama_pelanggan',$namapelanggan);
+
+        $this->db->like('item.kategori_id',$kategori);
+        $this->db->like('history_pembayaran.jenis_pembayaran',$objek);
+
+        $this->db->where('history_pembayaran.tanggal_bayar BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
 
         $this->db->order_by('history_pembayaran.tanggal_bayar', 'ASC');
         return $this->db->get('sale')->result();

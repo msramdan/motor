@@ -27,7 +27,7 @@
                     </div>
                     <div class="col-md-12">
                         <div>
-                            <div class="x_panel">
+                            <div class="x_panel" style="height: auto;">
                               <div class="x_title">
                                 <h2>Filter</h2>
                                 <ul class="nav navbar-right panel_toolbox">
@@ -36,7 +36,7 @@
                                 </ul>
                                 <div class="clearfix"></div>
                               </div>
-                              <div class="x_content">
+                              <div class="x_content" style="display: none;">
                                 <div class="col-md-6">
                                     <table class="table">
                                         <tr>

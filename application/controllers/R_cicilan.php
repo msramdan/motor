@@ -334,7 +334,17 @@ class R_cicilan extends CI_Controller
             'unit_id' => $this->session->userdata('unit_id')
         );
 
-        $this->Sale_model->inserttopaymenthistory($datahistorypayment);
+        $datahistorypaymentadmin = array(
+            'id' => $id,
+            'total_bayar' => $biaya_admin,
+            'tanggal_bayar' => $tanggalsale,
+            'jenis_pembayaran' => 'biaya admin',
+            'status' => 'dibayar',
+            'deskripsi' => 'bayar biaya admin cicilan',
+            'unit_id' => $this->session->userdata('unit_id')
+        );
+
+        $this->Sale_model->inserttopaymenthistory($datahistorypaymentadmin);
 
 
 
