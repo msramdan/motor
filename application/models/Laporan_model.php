@@ -47,21 +47,42 @@ class Laporan_model extends CI_Model
         return $this->db->query($query)->row();
     }
 
-    function getallSaleDatawithDate($from, $to, $allunit = NULL)
+    function getallSaleDatawithDate(
+        $from,
+        $to,
+        $allunit,
+        $idpenjualan,
+        $iditem,
+        $namapelanggan,
+        $salesreferral,
+        $mode,
+        $kategori,
+        $status
+    )
     {
+
         $this->db->join('user', 'user.user_id = sale.user_id');
         $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
         $this->db->join('item', 'item.item_id = sale.item_id','left');
         $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
         $this->db->join('type', 'type.type_id = item.type_id','left');
         $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id','left');
-        $this->db->join('karyawan', 'karyawan.karyawan_id = sale.surveyor_id','left');
         $this->db->join('unit', 'unit.unit_id = item.unit_id','left');
         $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id','left');
-
-        $this->db->where('sale.tanggal_sale BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
+        $this->db->join('karyawan', 'karyawan.karyawan_id = sale.surveyor_id','left');
 
         $this->db->like('item.unit_id',$allunit);
+
+        $this->db->like('sale.invoice',$idpenjualan);
+        $this->db->like('item.item_id',$iditem);
+        $this->db->like('pelanggan.nama_pelanggan',$namapelanggan);
+
+        $this->db->like('sale.sales_referral', $salesreferral);
+        $this->db->like('sale.type_Sale', $mode);
+        $this->db->like('item.kategori_id',$kategori);
+        $this->db->like('sale.keadaan_cicilan',$status);
+
+        $this->db->where('sale.tanggal_sale BETWEEN "'. date('Y-m-d', strtotime($from)). '" and "'. date('Y-m-d', strtotime($to)).'"');
 
         $this->db->order_by('sale.tanggal_sale', 'ASC');
         return $this->db->get('sale')->result();

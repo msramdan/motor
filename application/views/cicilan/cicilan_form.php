@@ -102,7 +102,7 @@
                       <tr>
                         <td></td>
                         <td></td>
-                        <td>Lama Cicilan<span id="warning1" style="margin: 0 10px;"></span></td>
+                        <td>Lama Cicilan<span id="warning1" style="margin: 0 10px;"><i class="fa fa-warning" style="color: #e2c227;"></i></span></td>
                         <td>
                           <input type="number" name="lama_cicilan" class="form-control input-nilai" id="lama_cicilan" value="" placeholder="Cicilan(x)">                          
                         </td>
@@ -447,9 +447,13 @@
         })
 
         $(document).on('click','#pilih2',function(){
-          stepstatus('3','Memproses')
+          stepstatus('2','Memproses')
           $('#surveyor_id').val($(this).data('surveyor_id'))
           $('#nama_surveyor').val($(this).data('nama_surveyor'))
           $('#modal-surveyor').modal('hide')
+        })
+
+        $(document).on('change','#sales_referral',function(){
+          stepstatus('3','Memproses')
         })
     </script>

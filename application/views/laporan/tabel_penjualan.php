@@ -1,6 +1,6 @@
-<?php echo show_button($this->uri->segment(1), 'export','?from='.$fromDate.'&to='.$toDate); ?>
+<?php echo show_button($this->uri->segment(1), 'export','?from='.$fromDate.'&to='.$toDate.'&idpenjualan='.$idpenjualan.'&iditem='.$iditem.'&namapelanggan='.$namapelanggan.'&salesreferral='.$salesrefferal.'&mode='.$mode.'&kategori='.$kategori.'&status='.$status); ?>
 <div class="box-body" style="overflow-x: scroll; ">
-	<table class="table table-bordered table-striped" style="margin-bottom: 10px">
+	<table class="table table-bordered table-striped table-report" style="margin-bottom: 10px">
 		<tr>
 			<th rowspan="2">No</th>
 	        <th rowspan="2">Invoice</th>
@@ -69,14 +69,14 @@
 		           <td><?php echo $data->pelanggan_id ?></td> 
 		           <td><?php echo $data->tanggal_sale ?></td> 
 		           <td><?php echo $data->tanggal_sale ?></td> 
-		           <td><?php echo $classnyak->History_pembayaran_model->getSingleDataHistoryPembayaran($data->invoice, 'dp cicilan')->total_bayar ?></td> 
-		           <td><?php echo $data->harga_beli ?></td> 
-		           <td><?php echo $data->harga_pokok ?></td> 
-		           <td><?php echo $data->total_bayar ?></td> 
-		           <td><?php echo (intval($data->total_bayar) - intval($data->harga_pokok)) ?></td> 
-		           <td><?php echo $data->total_price_sale ?></td> 
+		           <td class="dpvalue"><?php echo $classnyak->History_pembayaran_model->getSingleDataHistoryPembayaran($data->invoice, 'dp cicilan')->total_bayar ?></td> 
+		           <td class="tradeinvalue"><?php echo $data->harga_beli ?></td> 
+		           <td class="hargabelipokokvalue"><?php echo $data->harga_pokok ?></td> 
+		           <td class="hargapenjualanvalue"><?php echo $data->total_bayar ?></td> 
+		           <td class="hargamarkupvalue"><?php echo (intval($data->total_bayar) - intval($data->harga_pokok)) ?></td> 
+		           <td class="salespokokvalue"><?php echo $data->total_price_sale ?></td> 
 		           <td><?php echo $classnyak->Sale_model->get_bungapercicilan($data->invoice)->brapaxcicilan ?></td> 
-		           <td><?php echo $classnyak->Sale_model->get_bungapercicilan($data->invoice)->nilai_bunga_percicilan ?></td> 
+		           <td class="bungacicilanvalue"><?php echo $classnyak->Sale_model->get_bungapercicilan($data->invoice)->nilai_bunga_percicilan ?></td> 
 	           </tr>
 	           <?php
 	        }

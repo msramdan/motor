@@ -218,9 +218,9 @@ function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL)
                 }
 
                 if ($function == 'export') {
-                    echo '<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="falsse">Export <span class="caret"></span>
+                    echo '<div style="position: relative;"><button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">Export <span class="caret"></span>
                         </button>
-                        <ul role="menu" class="dropdown-menu" style="top: 3rem; left: 12rem;">
+                        <ul role="menu" class="dropdown-menu" style="top: 0; left: 7rem;">
                           <li><a href="#">PDF</a>
                           </li>
                           <li><a href="'.base_url().$url.'/excel'.$id_data.'">Excel</a>
@@ -228,7 +228,7 @@ function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL)
                           <li class="divider"></li>
                           <li><a href="#">Lainnya</a>
                           </li>
-                        </ul>';
+                        </ul></div>';
                 }
             }
 
@@ -239,9 +239,9 @@ function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL)
                     echo anchor(site_url($url.'/'.$function), $icon,$class);
                 }
                 if ($function == 'export') {
-                    echo '<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="falsse">Export <span class="caret"></span>
+                    echo '<div style="position: relative;"><button data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm" type="button" aria-expanded="false">Export <span class="caret"></span>
                         </button>
-                        <ul role="menu" class="dropdown-menu" style="top: 3rem; left: 12rem;">
+                        <ul role="menu" class="dropdown-menu" style="top: 0; left: 7rem;">
                           <li><a href="#">PDF</a>
                           </li>
                           <li><a href="'.base_url().$url.'/excel">Excel</a>
@@ -249,7 +249,7 @@ function show_button($url,$function,$id_data = NULL, $text = NULL, $icon = NULL)
                           <li class="divider"></li>
                           <li><a href="#">Lainnya</a>
                           </li>
-                        </ul>';
+                        </ul></div>';
                 }
             }
             

@@ -357,17 +357,4 @@
                 $('#bunga_cicilan').hide();
             }
         });
-
-        $("#sales_referral").change(function () {
-            if ($(this).val() == "" || $(this).val() == "Datang Langsung" ) {
-                $('#mitra_id').hide();
-                $('#karyawan_id').hide();
-            } else if ($(this).val() == "Karyawan"){
-                $('#karyawan_id').show();
-                $('#mitra_id').hide();
-            }else{
-                $('#mitra_id').show();
-                $('#karyawan_id').hide();
-            }
-        });
     </script>
