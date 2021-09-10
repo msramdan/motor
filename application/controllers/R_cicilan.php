@@ -345,6 +345,7 @@ class R_cicilan extends CI_Controller
         );
 
         $this->Sale_model->inserttopaymenthistory($datahistorypaymentadmin);
+        $this->Sale_model->inserttopaymenthistory($datahistorypayment);
 
 
 
