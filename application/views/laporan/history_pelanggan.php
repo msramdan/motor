@@ -15,7 +15,7 @@
                           <div class="controls">
                             <div class="input-prepend input-group">
                               <span class="add-on input-group-addon"><i class="glyphicon glyphicon-user fa fa-user"></i></span>
-                              <input type="number" name="tbno" id="tbno" class="form-control" placeholder="Masukan nomor KTP/KK">
+                              <input type="number" name="tbno" id="tbno" class="form-control" placeholder="Masukan nomor KTP/KK" value="<?php echo $no_ktp ?>">
                             </div>
                           </div>
                         </div>
@@ -75,6 +75,15 @@
             }
         });
     }
+
+    $(document).ready(function(){
+        if ($('#tbno').val()) {
+            console.log('it has value!!!')
+            fetch_history_pelanggan()
+        } else {
+            console.log('no')
+        }
+    })
 
     $(document).on('click','.btninitsearch', function(e){
         e.preventDefault()

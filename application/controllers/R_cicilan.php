@@ -22,6 +22,7 @@ class R_cicilan extends CI_Controller
         $this->load->model('karyawan_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Mitra_model');
+        $this->load->model('Laporan_model');
         $this->load->model('Pelanggan_model');
         $this->load->model('Onetimep_model');
         $this->load->model('Approval_lists_model');
@@ -1345,6 +1346,21 @@ class R_cicilan extends CI_Controller
         );
 
         $this->Approval_lists_model->insert($data);
+    }
+
+    function cek_history_pelanggan()
+    {
+        $noktp = $this->input->post('noktp');
+
+        $data = $this->Laporan_model->cek_data_history_pelanggan($noktp);
+
+        if ($data > 0) {
+            echo json_encode($noktp);
+        }
+        else
+        {
+            echo json_encode('not found');
+        }
     }
 
 }

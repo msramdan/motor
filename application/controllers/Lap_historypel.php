@@ -25,7 +25,21 @@ class Lap_historypel extends CI_Controller
     public function index()
     {
         is_allowed($this->uri->segment(1),null);
-        $this->template->load('template','laporan/history_pelanggan');
+
+         $v = array(
+            'no_ktp' => $this->session->flashdata('id')
+        );
+
+        $this->template->load('template','laporan/history_pelanggan', $v);
+    }
+
+    public function find()
+    {
+        $id = $this->input->get('id');
+
+        is_allowed($this->uri->segment(1),null);
+        $this->session->set_flashdata('id', $id);
+        redirect('Lap_historypel/', 'refresh');
     }
 
     public function fetch_tabel_history_pelanggan()

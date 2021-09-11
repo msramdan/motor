@@ -209,6 +209,14 @@ class Laporan_model extends CI_Model
         return $this->db->query($query)->row();
     }
 
+    function cek_data_history_pelanggan($noktp)
+    {
+        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
+
+        $this->db->where('pelanggan.no_ktp', $noktp);
+        
+        return $this->db->get('sale')->num_rows();
+    }
 }
 
 /* End of file Kategori_model.php */
