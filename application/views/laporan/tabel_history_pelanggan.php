@@ -22,10 +22,21 @@
 		foreach($lists_data as $data)
 	        {
 	        	?>
-
 	           <tr>
 		           <td><?php echo ++$no ?></td>
-		           <td><a href="<?php echo base_url().'r_cicilan/kartupiutang/'.$data->invoice ?>"><?php echo $data->nama_pelanggan ?></a></td> 
+		           <?php
+		           if ($data->type_sale == 'Kredit') {
+		           	?>
+		           		<td><a href="<?php echo base_url().'r_cicilan/update/'.$data->invoice ?>"><?php echo $data->nama_pelanggan ?></a></td> 
+		           		<?php
+		           }
+
+		           if ($data->type_sale == 'Cash') {
+		           	?>
+		           		<td><a href="<?php echo base_url().'r_onetimep/update/'.$data->invoice ?>"><?php echo $data->nama_pelanggan ?></a></td> 
+		           		<?php
+		           }
+		           ?>
 		           <td><?php echo $data->nama_grup ?></td> 
 		           <td><?php echo $data->nama_unit ?></td> 
 		           <td><?php echo $data->nama_kategori ?></td> 

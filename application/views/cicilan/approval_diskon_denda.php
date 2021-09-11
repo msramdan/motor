@@ -50,12 +50,12 @@ if ($dataa) {
 	?>
 	<form id="pengajuan_diskon_denda_form" method="post">
 		<div class="alert alert-danger">
-			<p><b>Perhatian:</b> Input dalam bentuk jumlah rupiah atau persen (untuk input persen sertakan simbol %)</p>
+			<p><b>Perhatian:</b> Input dalam bentuk jumlah angka</p>
 		</div>
 		<div class="input-group" style="
 		    position: relative;
 		    margin-bottom: 0;">
-            <input type="number" class="form-control" name="tbjumlahdiskon" placeholder="Contoh: 2.5% atau 25000">
+            <input type="number" class="form-control" name="tbjumlahdiskon" placeholder="Contoh: 25000">
             <input name="invoicehidden" type="hidden" value="<?php echo $invoice ?>">
         <input name="cicilanke" type="hidden" value="<?php echo $pembayaranke ?>">
         <input name="idcicilan" type="hidden" value="<?php echo $idcicilan ?>">

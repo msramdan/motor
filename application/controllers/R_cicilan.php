@@ -122,6 +122,10 @@ class R_cicilan extends CI_Controller
                 $this->show_cicilanfinalinfo($invoice);
             }
 
+            if ($row->status_sale === 'Ditolak' && $row->type_sale === 'Kredit') {
+                $this->show_cicilanditolak($invoice);
+            }
+
             if ($row->type_sale === 'Cash') {
                 
                 echo '  <div style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
@@ -497,6 +501,40 @@ class R_cicilan extends CI_Controller
             'cekdenda' => $this->cekDendapadaInvoice($invoice)
         );
         $this->load->view('cicilan/cicilan_selesaiinfo', $data);
+    }
+
+    public function show_cicilanditolak($invoice)
+    {
+        $row = $this->Approval_lists_model->get_by_invoice($invoice);
+
+        $sale = $this->Sale_model->get_by_invoice($invoice);
+
+        $data = array(
+            'approval_id' => $row->approval_id,
+            'invoice_id' => $row->invoice_id,
+            'whoisreviewing' => $row->approve_by,
+            'approval_status' => $row->approval_status,
+            'keterangan' => $row->keterangan,
+            'komentar' => $row->komentar,
+
+            'sale_id' => $sale->sale_id,
+            'biaya_admin' => $sale->biaya_admin,
+            'pelanggan_id' => $sale->nama_pelanggan,
+            'item_id' => $sale->nama_item,
+            'total_price_sale' => $sale->total_price_sale,
+            'type_sale' => $sale->type_sale,
+            'biaya_admin' => $sale->biaya_admin,
+            'total_bayar' => $sale->total_bayar,
+            'dibayar' => $sale->dibayar,
+            'status_sale' => $sale->status_sale,
+            'tanggal_sale' => $sale->tanggal_sale,
+            'last_updated' => $sale->last_updated,
+            'user_id' => $sale->nama_user,
+            'classnyak' => $this,
+
+            'berkas' =>$this->Pelanggan_model->get_berkas($sale->pelanggan_id),
+        );
+        $this->load->view('cicilan/cicilan_ditolakinfo', $data);
     }
 
     public function update_cicilan()
