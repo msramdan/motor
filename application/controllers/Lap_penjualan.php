@@ -18,13 +18,15 @@ class Lap_penjualan extends CI_Controller
         $this->load->model('Laporan_model');
         $this->load->model('Sale_model');
         $this->load->model('History_pembayaran_model');
+        $this->load->model('Kategori_model');
         $this->load->library('form_validation');
     }
 
     public function index()
     {
         is_allowed($this->uri->segment(1),null);
-        $this->template->load('template','laporan/penjualan');
+        $data['kategori'] = $this->Kategori_model->get_all();
+        $this->template->load('template','laporan/penjualan', $data);
     }
 
     public function fetch_tabel_penjualan()
@@ -33,7 +35,18 @@ class Lap_penjualan extends CI_Controller
         $to = $this->input->post('toDate');
         $allunit = $this->input->post('allunit');
 
-        if ($allunit == 'false') {
+
+        $idpenjualan = $this->input->post('idpenjualan');
+        $iditem = $this->input->post('iditem');
+        $namapelanggan = $this->input->post('namapelanggan');
+
+        $selectsalesreferral = $this->input->post('selectsalesreferral');
+        $selectmode = $this->input->post('selectmode');
+        $selectkategori = $this->input->post('selectkategori');
+        $selectstatus = $this->input->post('selectstatus');
+
+
+        if ($allunit == 'true') {
             $data['lists_data'] = $this->Laporan_model->getallSaleDatawithDate($from, $to);
             $data['fromDate'] = $from;
             $data['toDate'] = $to;
@@ -43,11 +56,32 @@ class Lap_penjualan extends CI_Controller
         }
         else
         {
-            $data['lists_data'] = $this->Laporan_model->getallSaleDatawithDate($from, $to, $this->session->userdata('unit_id'));
+            $data['lists_data'] = $this->Laporan_model->getallSaleDatawithDate(
+                $from,
+                $to,
+                $this->session->userdata('unit_id'),
+                $idpenjualan,
+                $iditem,
+                $namapelanggan,
+                $selectsalesreferral,
+                $selectmode,
+                $selectkategori,
+                $selectstatus
+            );
             $data['fromDate'] = $from;
             $data['toDate'] = $to;
             $data['allunit'] = $allunit;
             $data['classnyak'] = $this;
+
+            $data['idpenjualan'] = $idpenjualan;
+            $data['iditem'] = $iditem;
+            $data['namapelanggan'] = $namapelanggan;
+            $data['salesrefferal'] = $selectsalesreferral;
+            $data['mode'] = $selectmode;
+            $data['kategori'] = $selectkategori;
+            $data['status'] = $selectstatus;
+
+
             $this->load->view('laporan/tabel_penjualan', $data);
         }
     }
@@ -57,6 +91,13 @@ class Lap_penjualan extends CI_Controller
         $dateFrom = $this->input->get('from');
         $dateTo = $this->input->get('to');
 
+        $idpenjualan = $this->input->get('idpenjualan');
+        $iditem = $this->input->get('iditem');
+        $namapelanggan = $this->input->get('namapelanggan');
+        $salesreferral = $this->input->get('salesreferral');
+        $mode = $this->input->get('mode');
+        $kategori = $this->input->get('kategori');
+        $status = $this->input->get('status');
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -110,7 +151,18 @@ class Lap_penjualan extends CI_Controller
         
         $nourut = 1;
         $baris = 3;
-        foreach($this->Laporan_model->getallSaleDatawithDate($dateFrom,$dateTo) as $data)
+        foreach($this->Laporan_model->getallSaleDatawithDate(
+                $dateFrom,
+                $dateTo,
+                $this->session->userdata('unit_id'),
+                $idpenjualan,
+                $iditem,
+                $namapelanggan,
+                $salesreferral,
+                $mode,
+                $kategori,
+                $status
+            ) as $data)
         {
             
             $sheet->setCellValue('A'.$baris, $nourut++);

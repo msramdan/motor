@@ -1,9 +1,9 @@
-<?php echo show_button($this->uri->segment(1), 'export','?from='.$fromDate.'&to='.$toDate); ?>
+<?php echo show_button($this->uri->segment(1), 'export','?from='.$fromDate.'&to='.$toDate.'&idpenjualan='.$idpenjualan.'&namapelanggan='.$namapelanggan.'&kategori='.$kategori.'&objek='.$objek); ?>
 <div class="box-body" style="overflow-x: scroll; ">
 	<table class="table table-bordered table-striped" style="margin-bottom: 10px">
 		<tr>
 			<th rowspan="2">No</th>
-	        <th colspan="2">Invoice</th>
+	        <th colspan="2">Pelanggan</th>
 	        <th rowspan="2">Invoice</th>
 	        <th rowspan="2">Kategori</th>
 	        <th colspan="2">Waktu</th>

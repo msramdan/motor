@@ -65,6 +65,7 @@
                   <td>
                     <div class="form-group input-group">
                       <input type="hidden" id="pelanggan_id" name="pelanggan_id">
+                      <input type="hidden" id="no_ktp_pelanggan" name="no_ktp_pelanggan">
                       <input type="text" id="nama_pelanggan" name="nama_pelanggan" class="form-control" readonly="">
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modal-pelanggan">
@@ -139,7 +140,7 @@
                       <td>
                         <button class="btn btn-xs btn-info" id="select"
                           data-pelanggan_id="<?php echo $data->pelanggan_id ?>"
-                          data-nama_pelanggan="<?php echo $data->nama_pelanggan ?>">
+                          data-nama_pelanggan="<?php echo $data->nama_pelanggan ?>" data-no_ktp="<?php echo $data->no_ktp ?>">
                           <i class="fa fa-check"></i> Select
                         </button>
                       </td>
@@ -262,10 +263,10 @@
           stepstatus('2','Memproses')
         })
 
-
         $(document).on('click','#select',function(){
           $('#pelanggan_id').val($(this).data('pelanggan_id'))
           $('#nama_pelanggan').val($(this).data('nama_pelanggan'))
+          $('#no_ktp_pelanggan').val($(this).data('no_ktp'))
           $('#modal-pelanggan').modal('hide')
           stepstatus('3','Memproses')
         })
@@ -281,20 +282,59 @@
           const total_price_sale = $('#total_price_sale').val()
 
           console.log(durasicicilan)
+
           $('#step4').attr('hidden','true')
           if (durasicicilan > 2) {
+
             stepstatus('4','Mencari histori data pelanggan')
             setTimeout(function(){
+
+              var noktp = $('#no_ktp_pelanggan').val()
+
+              $.ajax({
+                 url: '<?php echo base_url() ?>r_cicilan/cek_history_pelanggan',
+                 type: 'post',
+                 data: {
+                      noktp: noktp
+                  },
+                  fail: function() {
+                      alert('Something is wrong');
+                  },
+                  error: function() {
+                      alert('Something is wrong');
+                  },
+                  success: function(data) {
+                    
+                    var ano = JSON.parse(data)
+
+                    if (ano != 'not found') {
+                      $('#step4').html(`
+                        <td colspan="2" align="center">
+                          <div>
+                            <h5>Data ${ano} Tersedia!</h5>
+                            <button type="button" class="btn btn-primary btn-konfirmasi-cek-infopelanggaan">OK</button>
+                            <a class="btn btn-primary btn-success" target="_blank" rel="noopener noreferrer" href="<?php echo base_url().'Lap_historypel/find?id='?>${ano}">CEK</a>
+                          </div>
+                        </td>
+                      `)
+                    } else {
+                      $('#step4').html(`
+                        <td colspan="2" align="center">
+                          <div>
+                            <h5>Tidak Ada Data</h5>
+                            <button type="button" class="btn btn-primary btn-konfirmasi-cek-infopelanggaan">OK</button>
+                          </div>
+                        </td>
+                      `)
+                    }
+                  }
+              });
+
               $('.btn-check-durasicicilan').html('<i class="fa fa-check"></i>')  
+            
             },2000)
-            $('#step4').html(`
-                <td colspan="2" align="center">
-                  <div>
-                    <h5>Lanjut?</h5>
-                    <button type="button" class="btn btn-primary btn-konfirmasi-cek-infopelanggaan">OK</button>
-                  </div>
-                </td>
-              `)
+
+
           } else if(durasicicilan == 0) {
             stepstatus('notes','Memproses')
             setTimeout(function(){
@@ -355,19 +395,6 @@
                 $('#dp').hide(); 
                 $('#lama_cicilan').hide();
                 $('#bunga_cicilan').hide();
-            }
-        });
-
-        $("#sales_referral").change(function () {
-            if ($(this).val() == "" || $(this).val() == "Datang Langsung" ) {
-                $('#mitra_id').hide();
-                $('#karyawan_id').hide();
-            } else if ($(this).val() == "Karyawan"){
-                $('#karyawan_id').show();
-                $('#mitra_id').hide();
-            }else{
-                $('#mitra_id').show();
-                $('#karyawan_id').hide();
             }
         });
     </script>

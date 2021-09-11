@@ -19,6 +19,7 @@ class Approval_lists extends CI_Controller
         $this->load->model('Denda_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Sale_detail_model');
+        $this->load->model('History_pembayaran_model');
         $this->load->model('Approval_lists_model');
         $this->load->library('form_validation');
         $this->load->library('pdf');
@@ -568,6 +569,8 @@ class Approval_lists extends CI_Controller
                         'status' => 'Ready'
                     );
                     $this->Item_model->update($checkdata->item_id, $statustoupdate);
+
+                    $this->History_pembayaran_model->delete($invoice);
                 }
 
                 if ($customAuthorizationCheck['status'] === 'alreadyapprove') {
@@ -592,8 +595,8 @@ class Approval_lists extends CI_Controller
         }
         
 
-        // $this->session->set_flashdata('message', 'Data berhasil diupdate');
-        // redirect(site_url('approval_lists'));  
+        $this->session->set_flashdata('message', 'Data berhasil diupdate');
+        redirect(site_url('approval_lists'));  
     }
 }
 

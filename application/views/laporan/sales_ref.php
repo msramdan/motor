@@ -1,6 +1,6 @@
 <div class="page-title">
     <div class="title_left">
-        <h3>LAPORAN PEMBAYARAN</h3>
+        <h3>LAPORAN PENJUALAN</h3>
     </div>
 </div>
 <div class="clearfix"></div>
@@ -40,38 +40,24 @@
                                 <div class="col-12">
                                     <table class="table">
                                         <tr>
-                                            <td>Invoice</td>
-                                            <td>:</td>
-                                            <td><input type="text" name="tbidpenjualan" id="tbidpenjualan"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nama Pelanggan</td>
-                                            <td>:</td>
-                                            <td><input type="text" name="tbnamapelanggan" id="tbnamapelanggan"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Objek</td>
-                                            <td>:</td>
-                                            <td>
-                                                <select id="selectobjek" name="selectobjek">
-                                                    <option value="">ALL</option>
-                                                    <option value="dp cicilan">Angsuran (DP)</option>
-                                                    <option value="bayar cicilan">Angsuran (Bayar Cicilan)</option>
-                                                    <option value="bayar denda">Denda</option>
-                                                    <option value="one time payment">One Time Payment   </option>
-                                                    <option value="biaya admin">Admin</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
                                             <td>Kategori</td>
                                             <td>:</td>
                                             <td>
-                                                <select id="selectkategori" name="selectkategori">
+                                                <select id="selectsalesref" name="selectsalesref">
                                                     <option value="">ALL</option>
-                                                    <?php foreach ($kategori as $key => $data) { ?>
-                                                        <option value="<?php echo $data->kategori_id ?>"><?php echo $data->nama_kategori ?></option>
-                                                    <?php } ?>
+                                                    <?php foreach($mitrasaleslist as $data)
+                                                    {
+                                                    	?>
+                                                    		<option value="<?php echo 'Mitra Sales-'.$data->mitra_id ?>"><?php echo $data->nama_mitra ?></option>
+                                                    	<?php
+                                                    } ?>
+
+                                                    <?php foreach($karyawanlist as $data)
+                                                    {
+                                                    	?>
+                                                    		<option value="<?php echo 'Karyawan-'.$data->karyawan_id ?>"><?php echo $data->nama_karyawan ?></option>
+                                                    	<?php
+                                                    } ?>
                                                 </select>
                                             </td>
                                         </tr>
@@ -86,10 +72,10 @@
                 <div id="datawrapper" style="margin-top: 3vh;">
                     <div class="info" style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
                         <div class="icon"><i class="fa fa-database" style="font-size: 65px"></i></div>
-                        <h3 class="title" style="color: #9d9d9d;s">Data pembayaran akan muncul disini</h3>
+                        <h3 class="title" style="color: #9d9d9d;s">Data Sales Referral akan muncul disini</h3>
                     <div>
                 </div>
-                <p><span><i class="fa fa-question-circle"></i></span> Mulai dengan memilih tanggal pembayaran yang terjadi</p>
+                <p><span><i class="fa fa-question-circle"></i></span> Mulai dengan memilih tanggal yang ingin dilihat pada isian diatas</p>
             </div>
         </div>
     </div>
@@ -99,7 +85,7 @@
 <script src="<?php echo base_url()?>assets/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript">
 
-    function fetch_payment_report() {
+    function fetch_salesref_report() {
         $('#datawrapper').html(`<div class="info" style="display: flex; flex-direction: column;margin-top: 17vh; text-align: center;">
                                 <div class="icon"><i class="fa fa-circle-o-notch fa-spin" style="font-size: 65px"></i></div>
                                 <h3 class="title" style="color: #9d9d9d;s">Memproses Permintaan...</h3>
@@ -108,22 +94,15 @@
         const from = $('#tbtglstart').val()
         const end = $('#tbtglend').val()
 
-        const idpenjualan = $('#tbidpenjualan').val()
-        const namapelanggan = $('#tbnamapelanggan').val()
-
-        const selectkategori = $('#selectkategori').val()
-        const selectobjek = $('#selectobjek').val()
+        const namasalesref = $('#selectsalesref').val()
 
         $.ajax({
             type : "POST",
-            url  : "<?php echo base_url() ?>/Lap_pembayaran/fetch_tabel_pembayaran",
+            url  : "<?php echo base_url() ?>/Lap_salesref/fetch_tabel_salesref",
             data : {
                 fromDate: from,
                 toDate: end,
-                idpenjualan: idpenjualan,
-                namapelanggan: namapelanggan,
-                selectkategori: selectkategori,
-                selectobjek: selectobjek,
+                selectsalesreferral: namasalesref,
                 allunit: 'false'
             },
             success: function(data){
@@ -142,18 +121,18 @@
 
     $(document).on('click','.btninitsearch', function(e){
         e.preventDefault()
-        fetch_payment_report()
+        fetch_salesref_report()
     });
 
 
     $('#datarange-picker').daterangepicker({
-        "startDate": moment().format('DD-MM-YYYY'),
-        "endDate": moment().format('DD-MM-YYYY')
-    }, function(start, end, label) {
-      console.log("New date range selected: " + start.format('YYYY-MM-DD') + " to " + end.format('YYYY-MM-DD') + " (predefined range: " + label + ")")
+	    "startDate": moment().format('DD-MM-YYYY'),
+	    "endDate": moment().format('DD-MM-YYYY')
+	}, function(start, end, label) {
+	  console.log("New date range selected: " + start.format('YYYY-MM-DD') + " to " + end.format('YYYY-MM-DD') + " (predefined range: " + label + ")")
       $('#tbtglstart').val(start.format('YYYY-MM-DD'))
       $('#tbtglend').val(end.format('YYYY-MM-DD'))
-    });
+	});
 
 
 </script>

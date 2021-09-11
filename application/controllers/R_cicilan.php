@@ -22,6 +22,7 @@ class R_cicilan extends CI_Controller
         $this->load->model('karyawan_model');
         $this->load->model('Jenis_pembayaran_model');
         $this->load->model('Mitra_model');
+        $this->load->model('Laporan_model');
         $this->load->model('Pelanggan_model');
         $this->load->model('Onetimep_model');
         $this->load->model('Approval_lists_model');
@@ -119,6 +120,10 @@ class R_cicilan extends CI_Controller
 
             if ($row->status_sale === 'Selesai' && $row->type_sale === 'Kredit') {
                 $this->show_cicilanfinalinfo($invoice);
+            }
+
+            if ($row->status_sale === 'Ditolak' && $row->type_sale === 'Kredit') {
+                $this->show_cicilanditolak($invoice);
             }
 
             if ($row->type_sale === 'Cash') {
@@ -334,6 +339,17 @@ class R_cicilan extends CI_Controller
             'unit_id' => $this->session->userdata('unit_id')
         );
 
+        $datahistorypaymentadmin = array(
+            'id' => $id,
+            'total_bayar' => $biaya_admin,
+            'tanggal_bayar' => $tanggalsale,
+            'jenis_pembayaran' => 'biaya admin',
+            'status' => 'dibayar',
+            'deskripsi' => 'bayar biaya admin cicilan',
+            'unit_id' => $this->session->userdata('unit_id')
+        );
+
+        $this->Sale_model->inserttopaymenthistory($datahistorypaymentadmin);
         $this->Sale_model->inserttopaymenthistory($datahistorypayment);
 
 
@@ -485,6 +501,40 @@ class R_cicilan extends CI_Controller
             'cekdenda' => $this->cekDendapadaInvoice($invoice)
         );
         $this->load->view('cicilan/cicilan_selesaiinfo', $data);
+    }
+
+    public function show_cicilanditolak($invoice)
+    {
+        $row = $this->Approval_lists_model->get_by_invoice($invoice);
+
+        $sale = $this->Sale_model->get_by_invoice($invoice);
+
+        $data = array(
+            'approval_id' => $row->approval_id,
+            'invoice_id' => $row->invoice_id,
+            'whoisreviewing' => $row->approve_by,
+            'approval_status' => $row->approval_status,
+            'keterangan' => $row->keterangan,
+            'komentar' => $row->komentar,
+
+            'sale_id' => $sale->sale_id,
+            'biaya_admin' => $sale->biaya_admin,
+            'pelanggan_id' => $sale->nama_pelanggan,
+            'item_id' => $sale->nama_item,
+            'total_price_sale' => $sale->total_price_sale,
+            'type_sale' => $sale->type_sale,
+            'biaya_admin' => $sale->biaya_admin,
+            'total_bayar' => $sale->total_bayar,
+            'dibayar' => $sale->dibayar,
+            'status_sale' => $sale->status_sale,
+            'tanggal_sale' => $sale->tanggal_sale,
+            'last_updated' => $sale->last_updated,
+            'user_id' => $sale->nama_user,
+            'classnyak' => $this,
+
+            'berkas' =>$this->Pelanggan_model->get_berkas($sale->pelanggan_id),
+        );
+        $this->load->view('cicilan/cicilan_ditolakinfo', $data);
     }
 
     public function update_cicilan()
@@ -1334,6 +1384,21 @@ class R_cicilan extends CI_Controller
         );
 
         $this->Approval_lists_model->insert($data);
+    }
+
+    function cek_history_pelanggan()
+    {
+        $noktp = $this->input->post('noktp');
+
+        $data = $this->Laporan_model->cek_data_history_pelanggan($noktp);
+
+        if ($data > 0) {
+            echo json_encode($noktp);
+        }
+        else
+        {
+            echo json_encode('not found');
+        }
     }
 
 }

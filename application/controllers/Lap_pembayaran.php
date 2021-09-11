@@ -18,13 +18,15 @@ class Lap_pembayaran extends CI_Controller
         $this->load->model('Laporan_model');
         $this->load->model('Sale_model');
         $this->load->model('History_pembayaran_model');
+        $this->load->model('Kategori_model');
         $this->load->library('form_validation');
     }
 
     public function index()
     {
         is_allowed($this->uri->segment(1),null);
-        $this->template->load('template','laporan/pembayaran');
+        $data['kategori'] = $this->Kategori_model->get_all();
+        $this->template->load('template','laporan/pembayaran', $data);
     }
 
     public function fetch_tabel_pembayaran()
@@ -33,7 +35,13 @@ class Lap_pembayaran extends CI_Controller
         $to = $this->input->post('toDate');
         $allunit = $this->input->post('allunit');
 
-        if ($allunit == 'false') {
+        $idpenjualan = $this->input->post('idpenjualan');
+        $namapelanggan = $this->input->post('namapelanggan');
+
+        $selectkategori = $this->input->post('selectkategori');
+        $selectobjek = $this->input->post('selectobjek');
+
+        if ($allunit == 'true') {
             $data['lists_data'] = $this->Laporan_model->getallPaymentDatawithDate($from, $to);
             $data['fromDate'] = $from;
             $data['toDate'] = $to;
@@ -43,11 +51,24 @@ class Lap_pembayaran extends CI_Controller
         }
         else
         {
-            $data['lists_data'] = $this->Laporan_model->getallPaymentDatawithDate($from, $to, $this->session->userdata('unit_id'));
+            $data['lists_data'] = $this->Laporan_model->getallPaymentDatawithDate(
+                $from,
+                $to,
+                $this->session->userdata('unit_id'),
+                $idpenjualan,
+                $namapelanggan,
+                $selectkategori,
+                $selectobjek
+            );
             $data['fromDate'] = $from;
             $data['toDate'] = $to;
             $data['allunit'] = $allunit;
             $data['classnyak'] = $this;
+
+            $data['idpenjualan'] = $idpenjualan;
+            $data['namapelanggan'] = $namapelanggan;
+            $data['kategori'] = $selectkategori;
+            $data['objek'] = $selectobjek;
             $this->load->view('laporan/tabel_pembayaran', $data);
         }
     }
@@ -57,6 +78,11 @@ class Lap_pembayaran extends CI_Controller
         $dateFrom = $this->input->get('from');
         $dateTo = $this->input->get('to');
 
+        $idpenjualan = $this->input->get('idpenjualan');
+        $namapelanggan = $this->input->get('namapelanggan');
+
+        $kategori = $this->input->get('kategori');
+        $objek = $this->input->get('objek');
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -88,7 +114,15 @@ class Lap_pembayaran extends CI_Controller
         
         $nourut = 1;
         $baris = 3;
-        foreach($this->Laporan_model->getallPaymentDatawithDate($dateFrom,$dateTo, $this->session->userdata('unit_id')) as $data)
+        foreach($this->Laporan_model->getallPaymentDatawithDate(
+                $dateFrom,
+                $dateTo,
+                $this->session->userdata('unit_id'),
+                $idpenjualan,
+                $namapelanggan,
+                $kategori,
+                $objek
+            ) as $data)
         {
             
             $sheet->setCellValue('A'.$baris, $nourut++);

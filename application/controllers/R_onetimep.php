@@ -279,6 +279,10 @@ class R_onetimep extends CI_Controller
             $contact_id = $this->input->post('mitra_id');
 		}
 
+        $dibayar = $this->input->post('wajibdibayar');
+
+        $biaya_admin = $this->input->post('biaya_admin');
+
 		$tanggalsale = date('Y-m-d H:i:s', strtotime($this->input->post('tanggalsalehidden')));
 
         $datatoupdate = array(
@@ -286,18 +290,18 @@ class R_onetimep extends CI_Controller
             'sales_referral' => $this->input->post('sales_referral'),
             'contact_id' => $contact_id,
             'total_price_sale' => $this->input->post('total_price_sale'),
-            'biaya_admin' => $this->input->post('biaya_admin'),
+            'biaya_admin' => $biaya_admin,
 
             
-            'total_bayar' => $this->input->post('wajibdibayar'),     
-            'dibayar' => $this->input->post('wajibdibayar'),
+            'total_bayar' => $dibayar,     
+            'dibayar' => $dibayar,
             
             'jenis_bayar' => $this->input->post('jenis_pembayaran'),
             
             'tanggal_sale' => $tanggalsale,
             
 
-            // 'pelanggan_id' => $this->input->post('pelanggan_id'),
+            // 'pelanggsan_id' => $this->input->post('pelanggan_id'),
             // 'item_id' => $itemid,
             // 'type_sale' => $typeSale,
             // 'user_id' => $this->input->post('user_id'),
@@ -315,6 +319,30 @@ class R_onetimep extends CI_Controller
 
         $this->Sale_model->update_data_dibayar($id, $datatoupdate);
         
+
+        $datahistorypayment = array(
+            'id' => $id,
+            'total_bayar' => $dibayar,
+            'tanggal_bayar' => $tanggalsale,
+            'jenis_pembayaran' => 'one time payment',
+            'status' => 'dibayar',
+            'deskripsi' => 'bayar cash',
+            'unit_id' => $this->session->userdata('unit_id')
+        );
+
+        $this->Sale_model->inserttopaymenthistory($datahistorypayment);
+
+        $datahistorypaymentadmin = array(
+            'id' => $id,
+            'total_bayar' => $biaya_admin,
+            'tanggal_bayar' => $tanggalsale,
+            'jenis_pembayaran' => 'biaya admin',
+            'status' => 'dibayar',
+            'deskripsi' => 'bayar biaya admin one time payment/cash',
+            'unit_id' => $this->session->userdata('unit_id')
+        );
+
+        $this->Sale_model->inserttopaymenthistory($datahistorypaymentadmin);
 
         $row = $this->Sale_model->get_by_invoice($id);
 

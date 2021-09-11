@@ -17,6 +17,13 @@ class History_pembayaran_model extends CI_Model
         return $this->db->get('history_pembayaran')->row();
     }
 
+    // delete data
+    function delete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('history_pembayaran');
+    }
+
     function getDataHistoryPembayaran($invoice, $jenispembayaraan, $filter = NULL)
     {
         $where = array(

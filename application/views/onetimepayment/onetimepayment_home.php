@@ -63,18 +63,7 @@
     })
     
     $('#btnsearchinvoice').on('click', function() {
-        const invoice = $('#tbinvoice').val()
-        $.ajax({
-            type : "POST",
-            url  : "<?php echo base_url() ?>/R_onetimep/searchInvoice",
-            data : {
-                idinvoice: invoice
-            },
-            success: function(data){
-                // const dt = JSON.parse(data)
-                $('#infoinvoicewrapper').html(data);
-            }
-        });
+        initsearch()
     })
 
     $(document).on('submit','#update_otp_payment_form', function(e){
@@ -84,13 +73,13 @@
 
         $.ajax({
             type: "POST",
-            url: "R_onetimep/update_payment",
+            url: "<?php echo base_url() ?>R_onetimep/update_payment",
             data: dataString,
             success: function(data){
                 // alert('Successful!');
                 Swal.fire({
                   icon: 'success',
-                  title: "Cicilan Lunas"
+                  title: "Pembayaran Tersimpan"
                 })
 
                 $('#infoinvoicewrapper').html(data);
