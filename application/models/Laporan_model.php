@@ -153,56 +153,61 @@ class Laporan_model extends CI_Model
         return $this->db->get('sale')->result();
     }
 
- //    // get all
- //    function get_all()
- //    {
- //        $this->db->order_by($this->id, $this->order);
- //        return $this->db->get($this->table)->result();
- //    }
+    function getallPelangganHistoryDatawithSpecifiedID($id, $typeid)
+    {
+        $this->db->join('user', 'user.user_id = sale.user_id');
+        $this->db->join('pelanggan', 'pelanggan.pelanggan_id = sale.pelanggan_id');
+        $this->db->join('item', 'item.item_id = sale.item_id','left');
+        $this->db->join('merek', 'merek.merek_id = item.merek_id','left');
+        $this->db->join('type', 'type.type_id = item.type_id','left');
+        $this->db->join('kategori', 'kategori.kategori_id = item.kategori_id','left');
+        $this->db->join('unit', 'unit.unit_id = item.unit_id','left');
+        $this->db->join('grup', 'grup.grup_id = unit.grup_id','left');
+        $this->db->join('jenis_item', 'jenis_item.jenis_item_id = item.jenis_item_id','left');
+        $this->db->join('karyawan', 'karyawan.karyawan_id = sale.surveyor_id','left');
 
- //    // get data by id
- //    function get_by_id($id)
- //    {
- //        $this->db->where($this->id, $id);
- //        return $this->db->get($this->table)->row();
- //    }
-    
- //    // get total rows
- //    function total_rows($q = NULL) {
- //        $this->db->like('kategori_id', $q);
-	// $this->db->or_like('nama_kategori', $q);
-	// $this->db->from($this->table);
- //        return $this->db->count_all_results();
- //    }
+        if ($typeid == 'KTP') {
+            $this->db->like('pelanggan.no_ktp', $id);
+        }
 
- //    // get data with limit and search
- //    function get_limit_data($limit, $start = 0, $q = NULL) {
- //        $this->db->order_by($this->id, $this->order);
- //        $this->db->like('kategori_id', $q);
-	// $this->db->or_like('nama_kategori', $q);
-	// $this->db->limit($limit, $start);
- //        return $this->db->get($this->table)->result();
- //    }
+        if ($typeid == 'KK') {
+            $this->db->like('pelanggan.no_kk', $id);
+        }
+        return $this->db->get('sale')->result();
+    }
 
- //    // insert data
- //    function insert($data)
- //    {
- //        $this->db->insert($this->table, $data);
- //    }
+    function getlastpaidcicilan($invoice)
+    {
+        $this->db->select('*')
+            ->from('sale_detail')
+            ->where('sale_id', $invoice)
+            ->where('status', 'dibayar')
+            ->order_by('jatuh_tempo','ASC')
+            ->limit(1);
 
- //    // update data
- //    function update($id, $data)
- //    {
- //        $this->db->where($this->id, $id);
- //        $this->db->update($this->table, $data);
- //    }
+        return $this->db->get()->result();
+    }
 
- //    // delete data
- //    function delete($id)
- //    {
- //        $this->db->where($this->id, $id);
- //        $this->db->delete($this->table);
- //    }
+    function gettotalterlambathari($invoice)
+    {
+        $query = "
+        SELECT
+            SUM(
+                CASE
+                    WHEN (DATEDIFF(tanggal_dibayar,jatuh_tempo) <= 0) THEN 
+                        0 
+                    WHEN (DATEDIFF(tanggal_dibayar,jatuh_tempo) IS NULL) THEN
+                        0
+                    ELSE 
+                        DATEDIFF(tanggal_dibayar,jatuh_tempo)
+                END
+            ) as 'total_telat_hari'
+        FROM `sale_detail` 
+        WHERE sale_id = '".$invoice."';
+        ";
+
+        return $this->db->query($query)->row();
+    }
 
 }
 

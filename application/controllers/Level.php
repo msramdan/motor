@@ -571,7 +571,7 @@ class Level extends CI_Controller
         }
         else
         {
-            echo 'nocontroller';
+            echo json_encode('nocontroller');
         }
     }
 }
